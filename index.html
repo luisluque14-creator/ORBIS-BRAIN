@@ -3,117 +3,251 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Dashboard</title>
+    <title>ORBIS BRAIN | Master Dashboard 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --black-deep: #0a0a0a;
-            --gold-primary: #d4af37; /* Oro Clásico */
-            --gold-soft: #f1d592;
-            --gray-dark: #1a1a1a;
-            --text-gray: #a0a0a0;
+            --black-mate: #121212; /* Fondo Negro Mate */
+            --black-deep: #0a0a0a; /* Fondo más profundo */
+            --gold-metalic: #d4af37; /* Oro Metalizado */
+            --gold-soft: #f1d592; /* Oro suave para texto secundario */
+            --gray-dark: #1e1e1e; /* Tarjetas */
+            --gray-border: #333; /* Bordes */
+            --text-main: #e0e0e0; /* Texto principal */
         }
 
         body {
-            background-color: var(--black-deep);
-            color: white;
-            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--black-mate);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
             margin: 0;
             display: flex;
             height: 100vh;
+            overflow: hidden;
         }
 
-        /* Sidebar Elegante */
+        /* --- SIDEBAR MAESTRO --- */
         .sidebar {
-            width: 250px;
-            background-color: var(--gray-dark);
-            border-right: 1px solid var(--gold-primary);
-            padding: 20px;
+            width: 260px;
+            background-color: var(--black-deep);
+            border-right: 1px solid var(--gold-metalic);
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
         }
 
-        .logo {
-            color: var(--gold-primary);
-            font-size: 24px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            margin-bottom: 50px;
+        .logo-container {
             text-align: center;
+            margin-bottom: 50px;
         }
 
-        /* Contenido Principal */
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-metalic);
+            font-size: 28px;
+            letter-spacing: 4px;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .tagline {
+            font-size: 10px;
+            color: var(--gold-soft);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        .nav-links {
+            flex: 1;
+        }
+
+        .nav-item {
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 15px 10px;
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(212, 175, 55, 0.1);
+            color: var(--gold-metalic);
+            border: 1px solid var(--gold-metalic);
+        }
+
+        .lang-selector {
+            border-top: 1px solid var(--gray-border);
+            padding-top: 20px;
+            font-size: 12px;
+            color: var(--gold-soft);
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
         .main-content {
             flex: 1;
             padding: 40px;
             overflow-y: auto;
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%);
+        }
+
+        .header-executive {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--gray-border);
+            padding-bottom: 20px;
         }
 
         .welcome-msg {
-            font-size: 32px;
+            font-size: 24px;
             font-weight: 300;
-            margin-bottom: 40px;
         }
 
         .welcome-msg b {
-            color: var(--gold-primary);
+            color: var(--gold-metalic);
             font-weight: 700;
+            font-family: 'Cinzel', serif;
         }
 
-        /* Tarjetas de Módulos (Génesis) */
-        .dashboard-grid {
+        .status-indicators {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* --- EL MAPA COMO INTELIGENCIA (BI) --- */
+        .map-container {
+            background-color: var(--gray-dark);
+            border: 2px solid var(--gold-metalic);
+            border-radius: 15px;
+            height: 400px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
+        }
+
+        .map-placeholder {
+            color: var(--gold-soft);
+            text-align: center;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Simulación de Zonas de Calor (Heatmap) */
+        .heatmap-dot {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.6);
+            box-shadow: 0 0 20px 10px rgba(212, 175, 55, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(1.5); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0.6; }
+        }
+
+        /* Marketplace Publicitario en Mapa */
+        .map-ad {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(10, 10, 10, 0.8);
+            border: 1px solid var(--gold-metalic);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            color: var(--gold-soft);
+            max-width: 150px;
+        }
+
+        /* --- GRILLA DE INFRAESTRUCTURA FINTECH --- */
+        .fintech-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
         }
 
-        .card {
-            background-color: var(--gray-dark);
-            border: 1px solid #333;
+        .card-executive {
+            background-color: var(--black-deep);
+            border: 1px solid var(--gray-border);
             border-radius: 12px;
             padding: 25px;
             transition: 0.3s;
+            position: relative;
         }
 
-        .card:hover {
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        .card-executive:hover {
+            border-color: var(--gold-metalic);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
         }
 
-        .card-title {
-            color: var(--gold-primary);
+        .card-title-executive {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-metalic);
             text-transform: uppercase;
             font-size: 12px;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
         }
 
-        .card-value {
-            font-size: 28px;
-            font-weight: bold;
+        .card-value-executive {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-main);
         }
 
-        .status-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            background: rgba(212, 175, 55, 0.1);
+        .fx-rate {
+            font-size: 12px;
             color: var(--gold-soft);
-            border: 1px solid var(--gold-primary);
-            margin-top: 10px;
+            margin-top: 5px;
         }
 
-        /* Botón de Acción */
-        .btn-gold {
-            background-color: var(--gold-primary);
+        .btn-gold-executive {
+            background: linear-gradient(45deg, #d4af37, #f1d592);
             color: black;
             border: none;
-            padding: 15px 25px;
-            border-radius: 8px;
+            padding: 12px 20px;
+            border-radius: 6px;
             font-weight: bold;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 1px;
             cursor: pointer;
-            margin-top: 20px;
             width: 100%;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-gold-executive:hover {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* --- BRAIN OPERATIVA (IA) --- */
+        .brain-status {
+            margin-top: 30px;
+            background-color: rgba(20, 20, 20, 0.5);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .protocol-status {
+            font-size: 12px;
+            color: #4CAF50; /* Verde para activo */
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
     </style>
@@ -121,36 +255,73 @@
 <body>
 
     <div class="sidebar">
-        <div class="logo">ORBIS</div>
-        <nav>
-            <p style="color: var(--gold-soft); font-size: 12px;">MODALIDADES</p>
-            <div class="status-badge">Turismo Global 🌍</div>
-            <div class="status-badge" style="opacity: 0.5;">Proyecto Venezuela 🇻🇪</div>
-        </nav>
+        <div class="logo-container">
+            <div class="logo-text">ORBIS</div>
+            <div class="tagline">Brain Network 2026</div>
+        </div>
+
+        <div class="nav-links">
+            <a href="#" class="nav-item active">Central de Inteligencia</a>
+            <a href="#" class="nav-item">Billetera Black & Gold</a>
+            <a href="#" class="nav-item">Smart FX Arbitraje</a>
+            <a href="#" class="nav-item">Escudo de Oro Disputas</a>
+            <a href="#" class="nav-item">Reportes Ejecutivos</a>
+        </div>
+
+        <div class="lang-selector">
+            🌐 Idioma: <b>ES</b> | EN | PT | FR | DE | ZH
+        </div>
     </div>
 
     <div class="main-content">
-        <div class="welcome-msg">Bienvenido a <b>ORBIS BRAIN</b></div>
+        <div class="header-executive">
+            <div class="welcome-msg">Bienvenido a <b>ORBIS BRAIN</b></div>
+            <div class="status-indicators">
+                <div class="fx-rate">USD/EUR: 0.92 | USD/VES: Smart FX Activo</div>
+            </div>
+        </div>
 
-        <div class="dashboard-grid">
-            <div class="card">
-                <div class="card-title">La Bóveda (The Vault)</div>
-                <div class="card-value">$500.00</div>
-                <div class="status-badge">Fondos en Escrow Protegidos</div>
+        <div class="map-container">
+            <div class="map-placeholder">
+                <div style="font-size: 24px;">MAPA DE INTELIGENCIA GLOBAL</div>
+                <div class="tagline" style="margin-top: 10px;">Zonas de Calor y Demanda en Tiempo Real</div>
+            </div>
+            <div class="heatmap-dot" style="width: 30px; height: 30px; top: 150px; left: 200px;"></div> <div class="heatmap-dot" style="width: 20px; height: 20px; top: 180px; left: 300px;"></div> <div class="heatmap-dot" style="width: 25px; height: 25px; top: 120px; left: 450px;"></div> <div class="map-ad">
+                <b style="color: var(--gold-metalic);">PROMOCIÓN DORADA:</b><br>
+                Mundial 2026 - Hoteles en CDMX<br>
+                <span style="text-decoration: underline;">Ver Inventario</span>
+            </div>
+        </div>
+
+        <div class="fintech-grid">
+            <div class="card-executive">
+                <div class="card-title-executive">Bóveda de Garantía (Escrow)</div>
+                <div class="card-value-executive">$1,250,000.00</div>
+                <div class="fx-rate">Custodia Segura en EE. UU. (Stripe Connect)</div>
+                <button class="btn-gold-executive">Gestionar Fondos</button>
             </div>
 
-            <div class="card">
-                <div class="card-title">Comisiones Disponibles</div>
-                <div class="card-value">$130.00</div>
-                <button class="btn-gold">Retirar Fondos</button>
-            </div>
-
-            <div class="card">
-                <div class="card-title">Radar Génesis</div>
-                <div style="margin-top: 10px;">
-                    <div style="font-size: 14px; margin-bottom: 10px;">👤 Juan Pérez: <span style="color: #4CAF50;">Verificado</span></div>
-                    <div style="font-size: 14px;">🛡️ Seguro: <span style="color: #4CAF50;">Activo</span></div>
+            <div class="card-executive">
+                <div class="card-title-executive">Billetera Black & Gold</div>
+                <div class="card-value-executive">$85,400.00</div>
+                <div class="fx-rate">Saldos Disponibles para Retiro</div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-gold-executive">Retirar</button>
+                    <button class="btn-gold-executive" style="background: var(--gray-dark); color: var(--gold-metalic); border: 1px solid var(--gold-metalic);">Generar Tarjeta Virtual</button>
                 </div>
+            </div>
+
+            <div class="card-executive">
+                <div class="card-title-executive">Rendimiento Smart FX (Arbitraje)</div>
+                <div class="card-value-executive">+$3,210.50</div>
+                <div class="fx-rate">Ganancia por diferencial de divisas (IA)</div>
+            </div>
+        </div>
+
+        <div class="brain-status">
+            <div class="card-title-executive" style="margin-bottom: 10px;">Estatus del Sistema "BRAIN" (Google AI Pro)</div>
+            <div class="protocol-status">
+                <span style="font-size: 20px;">🛡️</span> <b>Protocolo Escudo de Oro Activo:</b> IA resolviendo disputas. Tiempo promedio: 3m 12s.
             </div>
         </div>
     </div>
