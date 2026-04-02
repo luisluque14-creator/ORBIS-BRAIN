@@ -26,12 +26,12 @@
             overflow: hidden;
         }
 
-        /* --- SIDEBAR MAESTRO --- */
+        /* --- SIDEBAR MAESTRO CON LOGO --- */
         .sidebar {
             width: 260px;
             background-color: var(--black-deep);
             border-right: 1px solid var(--gold-metalic);
-            padding: 30px 20px;
+            padding: 15px; /* Reducimos padding para ajustar el logo */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -39,15 +39,25 @@
 
         .logo-container {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--gray-border);
+            padding-bottom: 15px;
+        }
+
+        .logo-img {
+            max-width: 220px; /* Ajusta el tamaño del logo */
+            height: auto;
+            /* Quitamos el borde redondeado para respetar la forma del logo */
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); /* Brillo dorado */
         }
 
         .logo-text {
             font-family: 'Cinzel', serif;
             color: var(--gold-metalic);
-            font-size: 28px;
-            letter-spacing: 4px;
+            font-size: 24px;
+            letter-spacing: 3px;
             font-weight: 700;
+            margin-top: 10px;
             text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
 
@@ -66,24 +76,25 @@
         .nav-item {
             color: var(--text-main);
             text-decoration: none;
-            padding: 15px 10px;
+            padding: 12px 10px;
             display: flex;
             align-items: center;
             border-radius: 8px;
             transition: 0.3s;
-            font-size: 14px;
+            font-size: 13px;
+            border: 1px solid transparent;
         }
 
         .nav-item:hover, .nav-item.active {
-            background-color: rgba(212, 175, 55, 0.1);
+            background-color: rgba(212, 175, 55, 0.05);
             color: var(--gold-metalic);
-            border: 1px solid var(--gold-metalic);
+            border-color: var(--gold-metalic);
         }
 
         .lang-selector {
             border-top: 1px solid var(--gray-border);
-            padding-top: 20px;
-            font-size: 12px;
+            padding-top: 15px;
+            font-size: 11px;
             color: var(--gold-soft);
         }
 
@@ -99,13 +110,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             border-bottom: 1px solid var(--gray-border);
-            padding-bottom: 20px;
+            padding-bottom: 15px;
         }
 
         .welcome-msg {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 300;
         }
 
@@ -125,8 +136,8 @@
             background-color: var(--gray-dark);
             border: 2px solid var(--gold-metalic);
             border-radius: 15px;
-            height: 400px;
-            margin-bottom: 30px;
+            height: 350px;
+            margin-bottom: 25px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -174,14 +185,14 @@
         .fintech-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
+            gap: 20px;
         }
 
         .card-executive {
             background-color: var(--black-deep);
             border: 1px solid var(--gray-border);
             border-radius: 12px;
-            padding: 25px;
+            padding: 20px;
             transition: 0.3s;
             position: relative;
         }
@@ -195,19 +206,19 @@
             font-family: 'Cinzel', serif;
             color: var(--gold-metalic);
             text-transform: uppercase;
-            font-size: 12px;
+            font-size: 11px;
             letter-spacing: 2px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .card-value-executive {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 700;
             color: var(--text-main);
         }
 
         .fx-rate {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--gold-soft);
             margin-top: 5px;
         }
@@ -216,15 +227,15 @@
             background: linear-gradient(45deg, #d4af37, #f1d592);
             color: black;
             border: none;
-            padding: 12px 20px;
+            padding: 10px 15px;
             border-radius: 6px;
             font-weight: bold;
             text-transform: uppercase;
-            font-size: 11px;
+            font-size: 10px;
             letter-spacing: 1px;
             cursor: pointer;
             width: 100%;
-            margin-top: 20px;
+            margin-top: 15px;
             transition: 0.3s;
         }
 
@@ -235,19 +246,19 @@
 
         /* --- BRAIN OPERATIVA (IA) --- */
         .brain-status {
-            margin-top: 30px;
+            margin-top: 25px;
             background-color: rgba(20, 20, 20, 0.5);
             border: 1px solid #333;
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
         }
 
         .protocol-status {
-            font-size: 12px;
+            font-size: 11px;
             color: #4CAF50; /* Verde para activo */
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
     </style>
@@ -256,6 +267,7 @@
 
     <div class="sidebar">
         <div class="logo-container">
+            <img src="Gemini_Generated_Image_phxml4phxml4phxm (1).jpg" alt="ORBIS BRAIN" class="logo-img">
             <div class="logo-text">ORBIS</div>
             <div class="tagline">Brain Network 2026</div>
         </div>
@@ -283,10 +295,10 @@
 
         <div class="map-container">
             <div class="map-placeholder">
-                <div style="font-size: 24px;">MAPA DE INTELIGENCIA GLOBAL</div>
+                <div style="font-size: 20px;">MAPA DE INTELIGENCIA GLOBAL</div>
                 <div class="tagline" style="margin-top: 10px;">Zonas de Calor y Demanda en Tiempo Real</div>
             </div>
-            <div class="heatmap-dot" style="width: 30px; height: 30px; top: 150px; left: 200px;"></div> <div class="heatmap-dot" style="width: 20px; height: 20px; top: 180px; left: 300px;"></div> <div class="heatmap-dot" style="width: 25px; height: 25px; top: 120px; left: 450px;"></div> <div class="map-ad">
+            <div class="heatmap-dot" style="width: 25px; height: 25px; top: 120px; left: 180px;"></div> <div class="heatmap-dot" style="width: 15px; height: 15px; top: 150px; left: 260px;"></div> <div class="heatmap-dot" style="width: 20px; height: 20px; top: 100px; left: 380px;"></div> <div class="map-ad">
                 <b style="color: var(--gold-metalic);">PROMOCIÓN DORADA:</b><br>
                 Mundial 2026 - Hoteles en CDMX<br>
                 <span style="text-decoration: underline;">Ver Inventario</span>
@@ -321,7 +333,7 @@
         <div class="brain-status">
             <div class="card-title-executive" style="margin-bottom: 10px;">Estatus del Sistema "BRAIN" (Google AI Pro)</div>
             <div class="protocol-status">
-                <span style="font-size: 20px;">🛡️</span> <b>Protocolo Escudo de Oro Activo:</b> IA resolviendo disputas. Tiempo promedio: 3m 12s.
+                <span style="font-size: 16px;">🛡️</span> <b>Protocolo Escudo de Oro Activo:</b> IA resolviendo disputas. Tiempo promedio: 3m 12s.
             </div>
         </div>
     </div>
