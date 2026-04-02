@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORBIS BRAIN | Dashboard</title>
+    <style>
+        :root {
+            --black-deep: #0a0a0a;
+            --gold-primary: #d4af37; /* Oro Clásico */
+            --gold-soft: #f1d592;
+            --gray-dark: #1a1a1a;
+            --text-gray: #a0a0a0;
+        }
+
+        body {
+            background-color: var(--black-deep);
+            color: white;
+            font-family: 'Inter', -apple-system, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar Elegante */
+        .sidebar {
+            width: 250px;
+            background-color: var(--gray-dark);
+            border-right: 1px solid var(--gold-primary);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo {
+            color: var(--gold-primary);
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+
+        /* Contenido Principal */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .welcome-msg {
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        .welcome-msg b {
+            color: var(--gold-primary);
+            font-weight: 700;
+        }
+
+        /* Tarjetas de Módulos (Génesis) */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background-color: var(--gray-dark);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 25px;
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .card-title {
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .card-value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold-soft);
+            border: 1px solid var(--gold-primary);
+            margin-top: 10px;
+        }
+
+        /* Botón de Acción */
+        .btn-gold {
+            background-color: var(--gold-primary);
+            color: black;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="logo">ORBIS</div>
+        <nav>
+            <p style="color: var(--gold-soft); font-size: 12px;">MODALIDADES</p>
+            <div class="status-badge">Turismo Global 🌍</div>
+            <div class="status-badge" style="opacity: 0.5;">Proyecto Venezuela 🇻🇪</div>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="welcome-msg">Bienvenido a <b>ORBIS BRAIN</b></div>
+
+        <div class="dashboard-grid">
+            <div class="card">
+                <div class="card-title">La Bóveda (The Vault)</div>
+                <div class="card-value">$500.00</div>
+                <div class="status-badge">Fondos en Escrow Protegidos</div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Comisiones Disponibles</div>
+                <div class="card-value">$130.00</div>
+                <button class="btn-gold">Retirar Fondos</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Radar Génesis</div>
+                <div style="margin-top: 10px;">
+                    <div style="font-size: 14px; margin-bottom: 10px;">👤 Juan Pérez: <span style="color: #4CAF50;">Verificado</span></div>
+                    <div style="font-size: 14px;">🛡️ Seguro: <span style="color: #4CAF50;">Activo</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
