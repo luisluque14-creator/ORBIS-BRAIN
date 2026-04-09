@@ -45,7 +45,7 @@
         }
 
         .logo-img {
-            max-width: 220px;
+            max-width: 200px;
             height: auto;
             box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); 
         }
@@ -56,7 +56,6 @@
             font-size: 24px;
             letter-spacing: 3px;
             font-weight: 700;
-            margin-top: 10px;
         }
 
         .nav-links { flex: 1; }
@@ -70,13 +69,13 @@
             border-radius: 8px;
             transition: 0.3s;
             font-size: 13px;
-            border: 1px solid transparent;
+            margin-bottom: 5px;
         }
 
         .nav-item:hover, .nav-item.active {
             background-color: rgba(212, 175, 55, 0.05);
             color: var(--gold-metalic);
-            border-color: var(--gold-metalic);
+            border: 1px solid var(--gold-metalic);
         }
 
         /* --- CONTENIDO --- */
@@ -100,7 +99,7 @@
             background: linear-gradient(45deg, #d4af37, #f1d592);
             color: #000;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 6px;
             font-weight: bold;
             font-size: 12px;
@@ -109,41 +108,14 @@
             transition: 0.3s;
         }
 
-        .btn-new-op:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-        }
+        .btn-new-op:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
 
-        .fintech-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .card-executive {
-            background-color: var(--black-deep);
-            border: 1px solid var(--gray-border);
-            border-radius: 12px;
-            padding: 20px;
-        }
-
-        .card-title-executive {
-            font-family: 'Cinzel', serif;
-            color: var(--gold-metalic);
-            font-size: 11px;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-        }
-
-        .card-value-executive { font-size: 32px; font-weight: 700; }
-
-        /* --- MODAL FORMULARIO --- */
+        /* --- MODAL --- */
         .modal {
-            display: none; /* Oculto por defecto */
+            display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.9);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -154,49 +126,44 @@
             border: 2px solid var(--gold-metalic);
             padding: 30px;
             border-radius: 15px;
-            width: 450px;
+            width: 480px;
             box-shadow: 0 0 50px rgba(212, 175, 55, 0.2);
         }
 
         .modal-header {
             font-family: 'Cinzel', serif;
             color: var(--gold-metalic);
-            font-size: 20px;
+            font-size: 18px;
             margin-bottom: 20px;
             text-align: center;
+            letter-spacing: 2px;
         }
 
         .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 11px; color: var(--gold-soft); margin-bottom: 5px; }
+        .form-group label { display: block; font-size: 10px; color: var(--gold-soft); margin-bottom: 5px; letter-spacing: 1px; }
         .form-group input, .form-group select {
             width: 100%;
             background: #1a1a1a;
             border: 1px solid var(--gray-border);
             color: #fff;
-            padding: 10px;
+            padding: 12px;
             border-radius: 5px;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
-        /* --- REGISTRO ESPEJO --- */
-        .mirror-registry {
-            background-color: var(--black-deep);
-            border: 1px solid var(--gold-metalic);
-            border-radius: 12px;
-            overflow: hidden;
+        .calc-display {
+            background: #000;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            margin-top: 15px;
+            font-size: 12px;
         }
 
-        .mirror-header {
-            background-color: rgba(212, 175, 55, 0.1);
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--gold-metalic);
-            font-family: 'Cinzel', serif;
-        }
+        .calc-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .calc-total { border-top: 1px solid #333; padding-top: 8px; font-weight: bold; color: #4CAF50; font-size: 14px; }
 
-        .mirror-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-        .mirror-table th, .mirror-table td { padding: 15px 20px; border-bottom: 1px solid var(--gray-border); text-align: left; }
-        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 10px; }
-        .status-sync { background: rgba(76, 175, 80, 0.2); color: #4CAF50; border: 1px solid #4CAF50; }
     </style>
 </head>
 <body>
@@ -208,78 +175,127 @@
             <div style="font-size: 10px; color: var(--gold-soft); letter-spacing: 2px;">BRAIN NETWORK 2026</div>
         </div>
         <div class="nav-links">
-            <a href="#" class="nav-item active">Central de Inteligencia</a>
+            <a href="#" class="nav-item active">Master Dashboard</a>
             <a href="#" class="nav-item">Registro Espejo</a>
-            <a href="#" class="nav-item">Billetera Black & Gold</a>
+            <a href="#" class="nav-item">Billetera B&G</a>
         </div>
     </div>
 
     <div class="main-content">
         <div class="header-executive">
-            <div style="font-size: 22px;">Bienvenido a <b>ORBIS BRAIN</b></div>
+            <div style="font-size: 22px;">Bienvenido, <b>Luis Alfredo</b></div>
             <button class="btn-new-op" onclick="openModal()">Nueva Operación +</button>
         </div>
 
-        <div class="fintech-grid">
-            <div class="card-executive">
-                <div class="card-title-executive">Bóveda de Garantía</div>
-                <div class="card-value-executive">$1,250,000.00</div>
-            </div>
-            <div class="card-executive">
-                <div class="card-title-executive">Billetera Black & Gold</div>
-                <div class="card-value-executive">$85,400.00</div>
-            </div>
-        </div>
-
-        <div class="mirror-registry">
-            <div class="mirror-header">REGISTRO ESPEJO SINCRONIZADO</div>
-            <table class="mirror-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Aliado</th>
-                        <th>Proveedor</th>
-                        <th>Monto</th>
-                        <th>Estatus</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    <tr>
-                        <td>#OB-9921</td>
-                        <td>Luis Luque</td>
-                        <td>Eurobuilding CCS</td>
-                        <td>$450.00</td>
-                        <td><span class="status-badge status-sync">Sincronizado</span></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div style="text-align: center; margin-top: 100px; color: #555;">
+            <p>Selecciona <b>"Nueva Operación"</b> para inyectar datos en los rieles de gestión.</p>
         </div>
     </div>
 
     <div id="opModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">REGISTRAR OPERACIÓN</div>
-            <div class="form-group">
-                <label>NOMBRE DEL ALIADO (Agencia/Freelancer)</label>
-                <input type="text" placeholder="Ej. Global Travel">
+            <div class="modal-header">REGISTRO DE RIELES | GÉNESIS</div>
+            
+            <div style="background: rgba(212, 175, 55, 0.1); padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 10px; border: 1px solid var(--gold-metalic); color: var(--gold-soft); text-align: center;">
+                ⚠️ <b>NORMA ORBIS:</b> Seguro de viaje obligatorio para sincronización.
             </div>
+
             <div class="form-group">
-                <label>PROVEEDOR (Hotel/Servicio)</label>
-                <input type="text" placeholder="Ej. JW Marriott">
+                <label>NOMBRE DEL ALIADO (AGENCIA/FREELANCER)</label>
+                <input type="text" id="aliado_name" placeholder="Ej: Luis Luque">
             </div>
+
             <div class="form-group">
-                <label>MONTO TOTAL ($)</label>
-                <input type="number" placeholder="0.00">
+                <label>PROVEEDOR (HOTEL/AEROLÍNEA)</label>
+                <input type="text" id="proveedor_name" placeholder="Ej: Eurobuilding CCS">
             </div>
-            <button class="btn-new-op" style="width: 100%; margin-bottom: 10px;">Cargar en Espejo</button>
-            <button onclick="closeModal()" style="width: 100%; background: none; border: 1px solid #555; color: #888; padding: 10px; border-radius: 6px; cursor: pointer;">Cancelar</button>
+
+            <div style="display: flex; gap: 10px;">
+                <div class="form-group" style="flex: 2;">
+                    <label>MONTO TOTAL ($)</label>
+                    <input type="number" id="monto_total" oninput="calcularGénesis()" placeholder="0.00">
+                </div>
+                <div class="form-group" style="flex: 1.5;">
+                    <label>COMISIÓN ALIADO ($)</label>
+                    <input type="number" id="val_aliado" oninput="calcularGénesis()" placeholder="0.00">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>TIPO DE SEGURO</label>
+                <select id="tipo_seguro" onchange="calcularGénesis()">
+                    <option value="interno">Protección ORBIS BRAIN ($3.00 - Integrado)</option>
+                    <option value="externo">Seguro Externo (Validado - Fee $0)</option>
+                </select>
+            </div>
+
+            <div class="calc-display">
+                <div class="calc-row"><span>Fee Fijo ORBIS:</span> <span>$5.00</span></div>
+                <div class="calc-row"><span>Escudo de Oro (0.5%):</span> <span id="lbl_escudo">$0.00</span></div>
+                <div class="calc-row"><span>Riel Bancario (3.6%):</span> <span id="lbl_banco">$0.00</span></div>
+                <div class="calc-row calc-total"><span>NETO PROVEEDOR:</span> <span id="lbl_proveedor">$0.00</span></div>
+            </div>
+
+            <button class="btn-new-op" id="btn_enviar" onclick="enviarAlCerebro()" style="width: 100%; margin-top: 20px;">ACTIVAR RIELES Y CARGAR</button>
+            <button onclick="closeModal()" style="width: 100%; background:none; border:none; color:#555; margin-top:10px; cursor:pointer; font-size: 11px;">CANCELAR</button>
         </div>
     </div>
 
     <script>
+        const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbyMsr6eq_AIWuuhQxCGlPhr6Gs3OR5zX9GNZhHhPAew9eHckYFGJ4cB4ThP3re9DS0vLg/exec";
+
         function openModal() { document.getElementById('opModal').style.display = 'flex'; }
         function closeModal() { document.getElementById('opModal').style.display = 'none'; }
-    </script>
 
+        function calcularGénesis() {
+            let total = parseFloat(document.getElementById('monto_total').value) || 0;
+            let cAliado = parseFloat(document.getElementById('val_aliado').value) || 0;
+            let tSeguro = document.getElementById('tipo_seguro').value;
+
+            let escudo = total * 0.005;
+            let pasarela = total * 0.036;
+            let margenSeguro = (tSeguro === "interno") ? 1.00 : 0.00;
+            let neto = total - cAliado - 5.00 - margenSeguro - escudo - pasarela;
+
+            document.getElementById('lbl_escudo').innerText = "$" + escudo.toFixed(2);
+            document.getElementById('lbl_banco').innerText = "$" + pasarela.toFixed(2);
+            document.getElementById('lbl_proveedor').innerText = "$" + (neto > 0 ? neto.toFixed(2) : "0.00");
+        }
+
+        async function enviarAlCerebro() {
+            const btn = document.getElementById('btn_enviar');
+            const datos = {
+                aliado: document.getElementById('aliado_name').value,
+                proveedor: document.getElementById('proveedor_name').value,
+                monto: document.getElementById('monto_total').value,
+                comision_aliado: document.getElementById('val_aliado').value,
+                tipo_seguro: document.getElementById('tipo_seguro').value
+            };
+
+            if (!datos.monto || !datos.aliado) {
+                alert("Socio, completa los datos básicos para activar los rieles.");
+                return;
+            }
+
+            btn.innerText = "INYECTANDO EN RIELES...";
+            btn.disabled = true;
+
+            try {
+                await fetch(URL_SCRIPT, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify(datos)
+                });
+
+                alert("¡ÉXITO! Operación registrada en el Escudo de Oro.");
+                closeModal();
+                location.reload(); // Refresca para limpiar
+            } catch (e) {
+                alert("Error de conexión con los rieles.");
+                btn.innerText = "ACTIVAR RIELES Y CARGAR";
+                btn.disabled = false;
+            }
+        }
+    </script>
 </body>
 </html>
