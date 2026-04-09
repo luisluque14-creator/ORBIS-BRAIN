@@ -26,6 +26,7 @@
             overflow: hidden;
         }
 
+        /* --- SIDEBAR --- */
         .sidebar {
             width: 260px;
             background-color: var(--black-deep);
@@ -59,14 +60,6 @@
             text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
 
-        .tagline {
-            font-size: 10px;
-            color: var(--gold-soft);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 5px;
-        }
-
         .nav-links {
             flex: 1;
         }
@@ -89,13 +82,7 @@
             border-color: var(--gold-metalic);
         }
 
-        .lang-selector {
-            border-top: 1px solid var(--gray-border);
-            padding-top: 15px;
-            font-size: 11px;
-            color: var(--gold-soft);
-        }
-
+        /* --- CONTENIDO --- */
         .main-content {
             flex: 1;
             padding: 40px;
@@ -112,73 +99,16 @@
             padding-bottom: 15px;
         }
 
-        .welcome-msg {
-            font-size: 22px;
-            font-weight: 300;
-        }
-
         .welcome-msg b {
             color: var(--gold-metalic);
-            font-weight: 700;
             font-family: 'Cinzel', serif;
-        }
-
-        .status-indicators {
-            display: flex;
-            gap: 15px;
-        }
-
-        .map-container {
-            background-color: var(--gray-dark);
-            border: 2px solid var(--gold-metalic);
-            border-radius: 15px;
-            height: 350px;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.1);
-        }
-
-        .map-placeholder {
-            color: var(--gold-soft);
-            text-align: center;
-            font-family: 'Cinzel', serif;
-        }
-
-        .heatmap-dot {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(212, 175, 55, 0.6);
-            box-shadow: 0 0 20px 10px rgba(212, 175, 55, 0.4);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.6; }
-            50% { transform: scale(1.5); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 0.6; }
-        }
-
-        .map-ad {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background-color: rgba(10, 10, 10, 0.8);
-            border: 1px solid var(--gold-metalic);
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 10px;
-            color: var(--gold-soft);
-            max-width: 150px;
         }
 
         .fintech-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
+            margin-bottom: 30px;
         }
 
         .card-executive {
@@ -186,19 +116,12 @@
             border: 1px solid var(--gray-border);
             border-radius: 12px;
             padding: 20px;
-            transition: 0.3s;
             position: relative;
-        }
-
-        .card-executive:hover {
-            border-color: var(--gold-metalic);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
         }
 
         .card-title-executive {
             font-family: 'Cinzel', serif;
             color: var(--gold-metalic);
-            text-transform: uppercase;
             font-size: 11px;
             letter-spacing: 2px;
             margin-bottom: 15px;
@@ -207,52 +130,68 @@
         .card-value-executive {
             font-size: 32px;
             font-weight: 700;
-            color: var(--text-main);
         }
 
-        .fx-rate {
-            font-size: 11px;
-            color: var(--gold-soft);
-            margin-top: 5px;
-        }
-
-        .btn-gold-executive {
-            background: linear-gradient(45deg, #d4af37, #f1d592);
-            color: black;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 10px;
-            letter-spacing: 1px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
-            transition: 0.3s;
-        }
-
-        .btn-gold-executive:hover {
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
-            transform: translateY(-2px);
-        }
-
-        .brain-status {
-            margin-top: 25px;
-            background-color: rgba(20, 20, 20, 0.5);
-            border: 1px solid #333;
+        /* --- REGISTRO ESPEJO --- */
+        .mirror-registry {
+            background-color: var(--black-deep);
+            border: 1px solid var(--gold-metalic);
             border-radius: 12px;
-            padding: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            margin-top: 20px;
         }
 
-        .protocol-status {
-            font-size: 11px;
-            color: #4CAF50;
+        .mirror-header {
+            background-color: rgba(212, 175, 55, 0.1);
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--gold-metalic);
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
         }
 
+        .mirror-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            text-align: left;
+        }
+
+        .mirror-table th {
+            padding: 15px 20px;
+            color: var(--gold-metalic);
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .mirror-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .status-sync { background: rgba(76, 175, 80, 0.2); color: #4CAF50; border: 1px solid #4CAF50; }
+        .status-pending { background: rgba(212, 175, 55, 0.2); color: var(--gold-metalic); border: 1px solid var(--gold-metalic); }
+
+        .live-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 5px;
+            animation: pulse-green 1.5s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -261,76 +200,83 @@
         <div class="logo-container">
             <img src="logo-orbis.png" alt="ORBIS BRAIN" class="logo-img">
             <div class="logo-text">ORBIS</div>
-            <div class="tagline">Brain Network 2026</div>
+            <div style="font-size: 10px; color: var(--gold-soft); letter-spacing: 2px;">BRAIN NETWORK 2026</div>
         </div>
-
         <div class="nav-links">
             <a href="#" class="nav-item active">Central de Inteligencia</a>
+            <a href="#" class="nav-item">Registro Espejo</a>
             <a href="#" class="nav-item">Billetera Black & Gold</a>
-            <a href="#" class="nav-item">Smart FX Arbitraje</a>
-            <a href="#" class="nav-item">Escudo de Oro Disputas</a>
-            <a href="#" class="nav-item">Reportes Ejecutivos</a>
+            <a href="#" class="nav-item">Escudo de Oro</a>
         </div>
-
-        <div class="lang-selector">
-            🌐 Idioma: <b>ES</b> | EN | PT | FR | DE | ZH
+        <div style="color: var(--gold-soft); font-size: 11px; padding-top: 15px; border-top: 1px solid var(--gray-border);">
+            🌐 Idioma: <b>ES</b>
         </div>
     </div>
 
     <div class="main-content">
         <div class="header-executive">
-            <div class="welcome-msg">Bienvenido a <b>ORBIS BRAIN</b></div>
-            <div class="status-indicators">
-                <div class="fx-rate">USD/EUR: 0.92 | USD/VES: Smart FX Activo</div>
-            </div>
-        </div>
-
-        <div class="map-container">
-            <div class="map-placeholder">
-                <div style="font-size: 20px;">MAPA DE INTELIGENCIA GLOBAL</div>
-                <div class="tagline" style="margin-top: 10px;">Zonas de Calor y Demanda en Tiempo Real</div>
-            </div>
-            <div class="heatmap-dot" style="width: 25px; height: 25px; top: 120px; left: 180px;"></div>
-            <div class="heatmap-dot" style="width: 15px; height: 15px; top: 150px; left: 260px;"></div>
-            <div class="heatmap-dot" style="width: 20px; height: 20px; top: 100px; left: 380px;"></div>
-            <div class="map-ad">
-                <b style="color: var(--gold-metalic);">PROMOCIÓN DORADA:</b><br>
-                Mundial 2026 - Hoteles en CDMX<br>
-                <span style="text-decoration: underline;">Ver Inventario</span>
-            </div>
+            <div style="font-size: 22px;">Bienvenido a <b>ORBIS BRAIN</b></div>
+            <div style="font-size: 11px; color: var(--gold-soft);">Smart FX: Activo | Bóveda Protegida</div>
         </div>
 
         <div class="fintech-grid">
             <div class="card-executive">
-                <div class="card-title-executive">Bóveda de Garantía (Escrow)</div>
+                <div class="card-title-executive">Bóveda de Garantía</div>
                 <div class="card-value-executive">$1,250,000.00</div>
-                <div class="fx-rate">Custodia Segura en EE. UU. (Stripe Connect)</div>
-                <button class="btn-gold-executive">Gestionar Fondos</button>
             </div>
-
             <div class="card-executive">
                 <div class="card-title-executive">Billetera Black & Gold</div>
                 <div class="card-value-executive">$85,400.00</div>
-                <div class="fx-rate">Saldos Disponibles para Retiro</div>
-                <div style="display: flex; gap: 10px;">
-                    <button class="btn-gold-executive">Retirar</button>
-                    <button class="btn-gold-executive" style="background: var(--gray-dark); color: var(--gold-metalic); border: 1px solid var(--gold-metalic);">Generar Tarjeta Virtual</button>
-                </div>
             </div>
-
             <div class="card-executive">
-                <div class="card-title-executive">Rendimiento Smart FX (Arbitraje)</div>
+                <div class="card-title-executive">Rendimiento Smart FX</div>
                 <div class="card-value-executive">+$3,210.50</div>
-                <div class="fx-rate">Ganancia por diferencial de divisas (IA)</div>
             </div>
         </div>
 
-        <div class="brain-status">
-            <div class="card-title-executive" style="margin-bottom: 10px;">Estatus del Sistema "BRAIN" (Google AI Pro)</div>
-            <div class="protocol-status">
-                <span style="font-size: 16px;">🛡️</span> <b>Protocolo Escudo de Oro Activo:</b> IA resolviendo disputas. Tiempo promedio: 3m 12s.
+        <div class="mirror-registry">
+            <div class="mirror-header">
+                <div style="font-family: 'Cinzel', serif; font-weight: 700;">
+                    <span class="live-indicator"></span> REGISTRO ESPEJO SINCRONIZADO
+                </div>
+                <div style="font-size: 10px; color: var(--gold-soft);">Sincronización: Live</div>
             </div>
+            <table class="mirror-table">
+                <thead>
+                    <tr>
+                        <th>ID Operación</th>
+                        <th>Origen (Agencia/Freelancer)</th>
+                        <th>Destino (Hotel/Servicio)</th>
+                        <th>Monto (Escrow)</th>
+                        <th>Estatus Espejo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#OB-9921</td>
+                        <td>Luis Luque (Master)</td>
+                        <td>Hotel Eurobuilding CCS</td>
+                        <td>$450.00</td>
+                        <td><span class="status-badge status-sync">Sincronizado</span></td>
+                    </tr>
+                    <tr>
+                        <td>#OB-9925</td>
+                        <td>Agencia Global Travel</td>
+                        <td>JW Marriott Madrid</td>
+                        <td>$1,200.00</td>
+                        <td><span class="status-badge status-sync">Sincronizado</span></td>
+                    </tr>
+                    <tr>
+                        <td>#OB-9930</td>
+                        <td>Freelancer VIP #04</td>
+                        <td>Posada Canaima G&P</td>
+                        <td>$850.00</td>
+                        <td><span class="status-badge status-pending">Validando Pago...</span></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+
 </body>
 </html>
