@@ -57,12 +57,9 @@
             letter-spacing: 3px;
             font-weight: 700;
             margin-top: 10px;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
         }
 
-        .nav-links {
-            flex: 1;
-        }
+        .nav-links { flex: 1; }
 
         .nav-item {
             color: var(--text-main);
@@ -99,9 +96,22 @@
             padding-bottom: 15px;
         }
 
-        .welcome-msg b {
-            color: var(--gold-metalic);
+        .btn-new-op {
+            background: linear-gradient(45deg, #d4af37, #f1d592);
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 12px;
+            cursor: pointer;
             font-family: 'Cinzel', serif;
+            transition: 0.3s;
+        }
+
+        .btn-new-op:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
         }
 
         .fintech-grid {
@@ -116,7 +126,6 @@
             border: 1px solid var(--gray-border);
             border-radius: 12px;
             padding: 20px;
-            position: relative;
         }
 
         .card-title-executive {
@@ -127,9 +136,46 @@
             margin-bottom: 15px;
         }
 
-        .card-value-executive {
-            font-size: 32px;
-            font-weight: 700;
+        .card-value-executive { font-size: 32px; font-weight: 700; }
+
+        /* --- MODAL FORMULARIO --- */
+        .modal {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: var(--black-deep);
+            border: 2px solid var(--gold-metalic);
+            padding: 30px;
+            border-radius: 15px;
+            width: 450px;
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.2);
+        }
+
+        .modal-header {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-metalic);
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 11px; color: var(--gold-soft); margin-bottom: 5px; }
+        .form-group input, .form-group select {
+            width: 100%;
+            background: #1a1a1a;
+            border: 1px solid var(--gray-border);
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-sizing: border-box;
         }
 
         /* --- REGISTRO ESPEJO --- */
@@ -138,60 +184,19 @@
             border: 1px solid var(--gold-metalic);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            margin-top: 20px;
         }
 
         .mirror-header {
             background-color: rgba(212, 175, 55, 0.1);
             padding: 15px 20px;
             border-bottom: 1px solid var(--gold-metalic);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-family: 'Cinzel', serif;
         }
 
-        .mirror-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-            text-align: left;
-        }
-
-        .mirror-table th {
-            padding: 15px 20px;
-            color: var(--gold-metalic);
-            border-bottom: 1px solid var(--gray-border);
-        }
-
-        .mirror-table td {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--gray-border);
-        }
-
-        .status-badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: bold;
-        }
-
+        .mirror-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .mirror-table th, .mirror-table td { padding: 15px 20px; border-bottom: 1px solid var(--gray-border); text-align: left; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 10px; }
         .status-sync { background: rgba(76, 175, 80, 0.2); color: #4CAF50; border: 1px solid #4CAF50; }
-        .status-pending { background: rgba(212, 175, 55, 0.2); color: var(--gold-metalic); border: 1px solid var(--gold-metalic); }
-
-        .live-indicator {
-            width: 8px;
-            height: 8px;
-            background-color: #4CAF50;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 5px;
-            animation: pulse-green 1.5s infinite;
-        }
-
-        @keyframes pulse-green {
-            0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; }
-        }
     </style>
 </head>
 <body>
@@ -206,17 +211,13 @@
             <a href="#" class="nav-item active">Central de Inteligencia</a>
             <a href="#" class="nav-item">Registro Espejo</a>
             <a href="#" class="nav-item">Billetera Black & Gold</a>
-            <a href="#" class="nav-item">Escudo de Oro</a>
-        </div>
-        <div style="color: var(--gold-soft); font-size: 11px; padding-top: 15px; border-top: 1px solid var(--gray-border);">
-            🌐 Idioma: <b>ES</b>
         </div>
     </div>
 
     <div class="main-content">
         <div class="header-executive">
             <div style="font-size: 22px;">Bienvenido a <b>ORBIS BRAIN</b></div>
-            <div style="font-size: 11px; color: var(--gold-soft);">Smart FX: Activo | Bóveda Protegida</div>
+            <button class="btn-new-op" onclick="openModal()">Nueva Operación +</button>
         </div>
 
         <div class="fintech-grid">
@@ -228,55 +229,57 @@
                 <div class="card-title-executive">Billetera Black & Gold</div>
                 <div class="card-value-executive">$85,400.00</div>
             </div>
-            <div class="card-executive">
-                <div class="card-title-executive">Rendimiento Smart FX</div>
-                <div class="card-value-executive">+$3,210.50</div>
-            </div>
         </div>
 
         <div class="mirror-registry">
-            <div class="mirror-header">
-                <div style="font-family: 'Cinzel', serif; font-weight: 700;">
-                    <span class="live-indicator"></span> REGISTRO ESPEJO SINCRONIZADO
-                </div>
-                <div style="font-size: 10px; color: var(--gold-soft);">Sincronización: Live</div>
-            </div>
+            <div class="mirror-header">REGISTRO ESPEJO SINCRONIZADO</div>
             <table class="mirror-table">
                 <thead>
                     <tr>
-                        <th>ID Operación</th>
-                        <th>Origen (Agencia/Freelancer)</th>
-                        <th>Destino (Hotel/Servicio)</th>
-                        <th>Monto (Escrow)</th>
-                        <th>Estatus Espejo</th>
+                        <th>ID</th>
+                        <th>Aliado</th>
+                        <th>Proveedor</th>
+                        <th>Monto</th>
+                        <th>Estatus</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="table-body">
                     <tr>
                         <td>#OB-9921</td>
-                        <td>Luis Luque (Master)</td>
-                        <td>Hotel Eurobuilding CCS</td>
+                        <td>Luis Luque</td>
+                        <td>Eurobuilding CCS</td>
                         <td>$450.00</td>
                         <td><span class="status-badge status-sync">Sincronizado</span></td>
-                    </tr>
-                    <tr>
-                        <td>#OB-9925</td>
-                        <td>Agencia Global Travel</td>
-                        <td>JW Marriott Madrid</td>
-                        <td>$1,200.00</td>
-                        <td><span class="status-badge status-sync">Sincronizado</span></td>
-                    </tr>
-                    <tr>
-                        <td>#OB-9930</td>
-                        <td>Freelancer VIP #04</td>
-                        <td>Posada Canaima G&P</td>
-                        <td>$850.00</td>
-                        <td><span class="status-badge status-pending">Validando Pago...</span></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+
+    <div id="opModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">REGISTRAR OPERACIÓN</div>
+            <div class="form-group">
+                <label>NOMBRE DEL ALIADO (Agencia/Freelancer)</label>
+                <input type="text" placeholder="Ej. Global Travel">
+            </div>
+            <div class="form-group">
+                <label>PROVEEDOR (Hotel/Servicio)</label>
+                <input type="text" placeholder="Ej. JW Marriott">
+            </div>
+            <div class="form-group">
+                <label>MONTO TOTAL ($)</label>
+                <input type="number" placeholder="0.00">
+            </div>
+            <button class="btn-new-op" style="width: 100%; margin-bottom: 10px;">Cargar en Espejo</button>
+            <button onclick="closeModal()" style="width: 100%; background: none; border: 1px solid #555; color: #888; padding: 10px; border-radius: 6px; cursor: pointer;">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        function openModal() { document.getElementById('opModal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('opModal').style.display = 'none'; }
+    </script>
 
 </body>
 </html>
