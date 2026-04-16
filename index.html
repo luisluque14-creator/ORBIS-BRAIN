@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Multi-Riel v3.1 Security</title>
+    <title>ORBIS BRAIN | Certificación Contable v3.2</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -32,7 +32,7 @@
         th { text-align: left; color: var(--gold-metalic); font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; padding: 18px; border-bottom: 2px solid var(--gray-border); }
         td { padding: 18px; border-bottom: 1px solid #222; font-size: 14px; color: #ccc; }
 
-        /* --- MODAL MULTI-PROVEEDOR --- */
+        /* --- MODAL --- */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
         .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 40px; border-radius: 25px; width: 900px; max-height: 90vh; overflow-y: auto; }
         
@@ -40,10 +40,10 @@
         .grid-inputs { display: grid; grid-template-columns: 2fr 2fr 1fr 40px; gap: 15px; margin-bottom: 10px; align-items: end; }
         
         label { display: block; font-size: 10px; color: var(--gold-soft); margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
-        input, select { width: 100%; background: #141414; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+        input, select { width: 100%; background: #141414; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; box-sizing: border-box; font-size: 14px; transition: 0.3s; }
         
-        /* Estilo para campos obligatorios con error */
-        .input-error { border: 1px solid #d9534f !important; background: rgba(217, 83, 79, 0.05) !important; }
+        /* Estilo para errores */
+        .input-error { border: 1px solid #d9534f !important; background: rgba(217, 83, 79, 0.1) !important; }
 
         .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px; font-size: 12px; transition: 0.3s; }
         .btn-add:hover { background: rgba(212, 175, 55, 0.1); }
@@ -95,7 +95,7 @@
 
     <div id="opModal" class="modal">
         <div class="modal-content">
-            <h2 style="font-family: 'Cinzel'; color: var(--gold-metalic); text-align: center; letter-spacing: 4px;">ORQUESTACIÓN MULTI-PROVEEDOR</h2>
+            <h2 style="font-family: 'Cinzel'; color: var(--gold-metalic); text-align: center; letter-spacing: 4px;">CERTIFICACIÓN DE FONDOS</h2>
             
             <div class="form-section">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
@@ -104,8 +104,8 @@
                         <input type="text" id="aliado_name" placeholder="Agencia / Freelancer" oninput="this.classList.remove('input-error')">
                     </div>
                     <div class="form-group">
-                        <label>Comisión del Aliado ($)</label>
-                        <input type="number" id="comision_aliado" oninput="calcularTodo()" value="0">
+                        <label>Comisión del Aliado ($) <span style="color:#d9534f">*</span></label>
+                        <input type="number" id="comision_aliado" oninput="this.classList.remove('input-error'); calcularTodo()" placeholder="Monto para Libro Contable">
                     </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                             </select>
                         </div>
                         <div><input type="text" class="prov-name" placeholder="Nombre del Proveedor"></div>
-                        <div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div>
+                        <div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="Costo Neto"></div>
                         <div></div>
                     </div>
                 </div>
@@ -162,7 +162,7 @@
             div.innerHTML = `
                 <div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Boleto Aéreo</option><option value="Transporte">🚐 Transporte</option></select></div>
                 <div><input type="text" class="prov-name" placeholder="Nombre del Proveedor"></div>
-                <div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div>
+                <div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="Costo Neto"></div>
                 <button class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>
             `;
             document.getElementById('contenedor-servicios').appendChild(div);
@@ -187,7 +187,6 @@
                 const tabla = document.getElementById('cuerpo-tabla');
                 tabla.innerHTML = "";
                 datos.reverse().forEach(op => {
-                    // Si el aliado está vacío en el historial, mostramos "S/N" para identificar errores viejos
                     const nombreAliado = op.aliado && op.aliado.trim() !== "" ? op.aliado : "<span style='color:#d9534f'>[SIN NOMBRE]</span>";
                     tabla.innerHTML += `<tr><td>${op.id}</td><td>${nombreAliado}</td><td>Multi-Servicio</td><td style="font-weight:bold">$${parseFloat(op.monto).toFixed(2)}</td><td><span style="color:var(--gold-metalic)">PENDIENTE</span></td></tr>`;
                 });
@@ -197,13 +196,27 @@
         async function enviarAlCerebro() {
             const btn = document.getElementById('btn_enviar');
             const inputAliado = document.getElementById('aliado_name');
-            const nombreAliado = inputAliado.value.trim();
+            const inputComision = document.getElementById('comision_aliado');
             
-            // --- BLINDAJE DE SEGURIDAD (MODO CEO) ---
+            const nombreAliado = inputAliado.value.trim();
+            const valorComision = parseFloat(inputComision.value);
+
+            // --- VALIDACIÓN MODO CERTIFICACIÓN CONTABLE ---
+            
+            let error = false;
+
             if (nombreAliado === "") {
                 inputAliado.classList.add('input-error');
-                inputAliado.focus();
-                alert("⚠️ ATENCIÓN SOCIO:\n\nNo se puede activar el riel sin la Identificación del Aliado.\n\nPor favor, ingresa el nombre de la Agencia o Freelancer responsable.");
+                error = true;
+            }
+
+            if (isNaN(valorComision) || valorComision <= 0) {
+                inputComision.classList.add('input-error');
+                error = true;
+            }
+
+            if (error) {
+                alert("⚠️ PROTOCOLO DE CERTIFICACIÓN:\n\nPara que este registro sea válido como libro contable, el nombre del Aliado y la Comisión son obligatorios.");
                 return;
             }
 
@@ -221,31 +234,28 @@
             });
 
             if (!montosCargados) {
-                alert("⚠️ ERROR: El monto de los servicios no puede ser cero.");
+                alert("⚠️ ERROR: No se puede certificar una operación con servicios en cero.");
                 return;
             }
-
-            const comision = parseFloat(document.getElementById('comision_aliado').value) || 0;
 
             const payload = {
                 aliado: nombreAliado,
                 proveedor: proveedoresStr,
-                monto: totalServicios + comision,
-                comision_aliado: comision,
+                monto: totalServicios + valorComision,
+                comision_aliado: valorComision,
                 tipo_seguro: "interno"
             };
 
-            btn.innerText = "INYECTANDO RIELES...";
+            btn.innerText = "CERTIFICANDO OPERACIÓN...";
             btn.disabled = true;
 
             try {
                 await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-                alert("¡RIEL SINCRONIZADO!\nLa operación ha sido registrada bajo la autoría de: " + nombreAliado);
+                alert("¡CERTIFICACIÓN EXITOSA!\nIngreso registrado correctamente para el Aliado.");
                 location.reload();
             } catch (e) {
-                alert("Error de conexión. Intenta de nuevo.");
+                alert("Fallo en los rieles de sincronización.");
                 btn.disabled = false;
-                btn.innerText = "ACTIVAR RIELES Y SINCRONIZAR";
             }
         }
 
