@@ -3,56 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Certificación Contable v3.2</title>
+    <title>ORBIS BRAIN | Fiscal Compliance v3.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
         }
-
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
-
-        /* --- SIDEBAR --- */
         .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; }
         .logo-container { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 20px; }
-        .logo-img { max-width: 200px; height: auto; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); margin-bottom: 10px; }
-        .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; }
-        .nav-item { color: var(--text-main); text-decoration: none; padding: 14px 12px; display: flex; align-items: center; border-radius: 8px; transition: 0.3s; font-size: 14px; margin-bottom: 8px; }
-        .nav-item.active { background-color: rgba(212, 175, 55, 0.05); color: var(--gold-metalic); border: 1px solid var(--gold-metalic); }
-
-        /* --- MAIN CONTENT --- */
+        .logo-img { max-width: 200px; height: auto; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+        .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; margin-top: 10px; }
         .main-content { flex: 1; padding: 50px; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); }
-        .header-executive { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 25px; }
-        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 16px 32px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* --- TABLA --- */
+        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 16px 32px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; }
         .table-container { background: rgba(0,0,0,0.6); border-radius: 18px; border: 1px solid var(--gray-border); padding: 30px; }
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; color: var(--gold-metalic); font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; padding: 18px; border-bottom: 2px solid var(--gray-border); }
-        td { padding: 18px; border-bottom: 1px solid #222; font-size: 14px; color: #ccc; }
-
-        /* --- MODAL --- */
+        th { text-align: left; color: var(--gold-metalic); font-size: 11px; text-transform: uppercase; padding: 18px; border-bottom: 2px solid var(--gray-border); }
+        td { padding: 18px; border-bottom: 1px solid #222; font-size: 14px; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
-        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 40px; border-radius: 25px; width: 900px; max-height: 90vh; overflow-y: auto; }
-        
+        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 40px; border-radius: 25px; width: 950px; max-height: 90vh; overflow-y: auto; }
         .form-section { border-bottom: 1px solid #222; padding-bottom: 20px; margin-bottom: 20px; }
-        .grid-inputs { display: grid; grid-template-columns: 2fr 2fr 1fr 40px; gap: 15px; margin-bottom: 10px; align-items: end; }
-        
-        label { display: block; font-size: 10px; color: var(--gold-soft); margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
-        input, select { width: 100%; background: #141414; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; box-sizing: border-box; font-size: 14px; transition: 0.3s; }
-        
-        /* Estilo para errores */
+        .grid-inputs { display: grid; grid-template-columns: 1.5fr 2fr 1fr 40px; gap: 15px; margin-bottom: 10px; align-items: end; }
+        label { display: block; font-size: 10px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; }
+        input, select { width: 100%; background: #141414; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 14px; }
         .input-error { border: 1px solid #d9534f !important; background: rgba(217, 83, 79, 0.1) !important; }
-
-        .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px; font-size: 12px; transition: 0.3s; }
-        .btn-add:hover { background: rgba(212, 175, 55, 0.1); }
-        .btn-remove { background: #d9534f33; color: #d9534f; border: 1px solid #d9534f; border-radius: 5px; cursor: pointer; height: 40px; }
-
-        .summary-box { background: #000; padding: 20px; border-radius: 12px; border: 1px solid #333; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .sum-item { text-align: center; }
-        .sum-val { display: block; font-size: 18px; font-weight: bold; color: var(--gold-metalic); }
-        .sum-lbl { font-size: 9px; color: #666; text-transform: uppercase; }
+        .summary-box { background: #000; padding: 25px; border-radius: 12px; border: 1px solid #333; display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-top: 20px; }
+        .sum-item { text-align: center; border-right: 1px solid #222; }
+        .sum-item:last-child { border-right: none; }
+        .sum-val { display: block; font-size: 16px; font-weight: bold; color: var(--gold-metalic); }
+        .sum-lbl { font-size: 8px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
@@ -63,28 +43,24 @@
             <div class="logo-text">ORBIS</div>
             <div style="font-size: 10px; color: var(--gold-soft); letter-spacing: 3px;">BRAIN NETWORK</div>
         </div>
-        <div class="nav-links">
-            <a href="#" class="nav-item active">🏛️ Master Dashboard</a>
-            <a href="#" class="nav-item">📋 Registro Espejo</a>
-            <a href="#" class="nav-item">💰 Billetera B&G</a>
-        </div>
+        <div style="color:var(--gold-metalic); font-size:12px;">🏛️ Master Dashboard</div>
     </div>
 
     <div class="main-content">
-        <div class="header-executive">
-            <div style="font-size: 26px; font-family: 'Cinzel';">SISTEMA <span style="color:var(--gold-metalic)">GÉNESIS</span> ACTIVADO</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+            <h1 style="font-family:'Cinzel'">BIENVENIDO, <span style="color:var(--gold-metalic)">LUIS ALFREDO</span></h1>
             <button class="btn-gold" onclick="openModal()">Nueva Orquestación +</button>
         </div>
 
         <div class="table-container">
-            <h2 style="font-family: 'Cinzel'; font-size: 18px; letter-spacing: 2px;">REGISTRO ESPEJO (TIEMPO REAL)</h2>
+            <h2 style="font-family:'Cinzel'; font-size:18px;">LIBRO AUXILIAR CONTABLE (ESPEJO)</h2>
             <table id="tabla-orbis">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Aliado</th>
-                        <th>Servicios</th>
-                        <th>Total Operación</th>
+                        <th>Detalle Fiscal</th>
+                        <th>Total Facturado</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
@@ -95,171 +71,138 @@
 
     <div id="opModal" class="modal">
         <div class="modal-content">
-            <h2 style="font-family: 'Cinzel'; color: var(--gold-metalic); text-align: center; letter-spacing: 4px;">CERTIFICACIÓN DE FONDOS</h2>
+            <h2 style="font-family:'Cinzel'; color:var(--gold-metalic); text-align:center;">CERTIFICACIÓN FISCAL Y CONTABLE</h2>
             
             <div class="form-section">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="form-group">
-                        <label>Identificación del Aliado <span style="color:#d9534f">*</span></label>
-                        <input type="text" id="aliado_name" placeholder="Agencia / Freelancer" oninput="this.classList.remove('input-error')">
+                <div style="display:grid; grid-template-columns: 1.5fr 1fr 0.8fr; gap:20px;">
+                    <div>
+                        <label>Identificación del Aliado *</label>
+                        <input type="text" id="aliado_name" placeholder="Nombre Legal / RIF">
                     </div>
-                    <div class="form-group">
-                        <label>Comisión del Aliado ($) <span style="color:#d9534f">*</span></label>
-                        <input type="number" id="comision_aliado" oninput="this.classList.remove('input-error'); calcularTodo()" placeholder="Monto para Libro Contable">
+                    <div>
+                        <label>Comisión de Gestión ($) *</label>
+                        <input type="number" id="comision_aliado" oninput="calcularTodo()" placeholder="Honorarios">
+                    </div>
+                    <div>
+                        <label>Impuesto Local (%)</label>
+                        <input type="number" id="impuesto_pct" oninput="calcularTodo()" value="16">
                     </div>
                 </div>
             </div>
 
             <div class="form-section">
-                <label>Desglose de Servicios / Proveedores</label>
+                <label>Detalle de Proveedores y Servicios (Obligatorio)</label>
                 <div id="contenedor-servicios">
                     <div class="grid-inputs servicio-row">
-                        <div>
-                            <select class="tipo-srv" onchange="calcularTodo()">
-                                <option value="Hotel">🏨 Hotel</option>
-                                <option value="Vuelo">✈️ Boleto Aéreo</option>
-                                <option value="Transporte">🚐 Transporte</option>
-                                <option value="Seguro">🛡️ Seguro Extra</option>
-                            </select>
-                        </div>
-                        <div><input type="text" class="prov-name" placeholder="Nombre del Proveedor"></div>
-                        <div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="Costo Neto"></div>
+                        <select class="tipo-srv" onchange="calcularTodo()">
+                            <option value="Hotel">🏨 Hotel</option>
+                            <option value="Vuelo">✈️ Boleto Aéreo</option>
+                            <option value="Transporte">🚐 Transporte</option>
+                        </select>
+                        <input type="text" class="prov-name" placeholder="Nombre Legal del Proveedor *" oninput="this.classList.remove('input-error')">
+                        <input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="Costo Neto">
                         <div></div>
                     </div>
                 </div>
-                <button class="btn-add" onclick="agregarFila()">+ AÑADIR OTRO SERVICIO (MULTIPLE PROVEEDOR)</button>
+                <button style="background:none; border:1px dashed var(--gold-metalic); color:var(--gold-metalic); width:100%; padding:10px; cursor:pointer; font-size:11px;" onclick="agregarFila()">+ AÑADIR OTRO PROVEEDOR AL REGISTRO</button>
             </div>
 
             <div class="summary-box">
-                <div class="sum-item">
-                    <span class="sum-lbl">Monto Total Cliente</span>
-                    <span id="res-total" class="sum-val">$0.00</span>
-                </div>
-                <div class="sum-item">
-                    <span class="sum-lbl">Escudo de Oro (0.5%)</span>
-                    <span id="res-escudo" class="sum-val">$0.00</span>
-                </div>
-                <div class="sum-item">
-                    <span class="sum-lbl">Fee Fijo ORBIS</span>
-                    <span class="sum-val">$5.00</span>
-                </div>
+                <div class="sum-item"><span class="sum-lbl">Neto Servicios</span><span id="res-neto" class="sum-val">$0.00</span></div>
+                <div class="sum-item"><span class="sum-lbl">Impuestos Calculados</span><span id="res-imp" class="sum-val">$0.00</span></div>
+                <div class="sum-item"><span class="sum-lbl">Escudo de Oro (0.5%)</span><span id="res-escudo" class="sum-val">$0.00</span></div>
+                <div class="sum-item" style="border:none;"><span class="sum-lbl">TOTAL CLIENTE</span><span id="res-total" class="sum-val" style="color:#4CAF50;">$0.00</span></div>
             </div>
 
-            <button class="btn-gold" id="btn_enviar" onclick="enviarAlCerebro()" style="width: 100%; margin-top: 30px;">ACTIVAR RIELES Y SINCRONIZAR</button>
-            <button onclick="closeModal()" style="width:100%; background:none; border:none; color:#555; margin-top:15px; cursor:pointer; font-size:12px;">DESCARTAR</button>
+            <button class="btn-gold" id="btn_enviar" onclick="enviarAlCerebro()" style="width:100%; margin-top:30px;">VALIDAR Y CERTIFICAR LIBRO</button>
+            <button onclick="closeModal()" style="width:100%; background:none; border:none; color:#555; margin-top:10px; cursor:pointer; font-size:11px;">DESCARTAR</button>
         </div>
     </div>
 
     <script>
         const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwx34Vu9no8Pgp-VS2c5tvoYAPv80xzKPyo7VsDPppq7tm4shv6NxIpIoT9KqM8AcQUXg/exec";
 
-        function openModal() { document.getElementById('opModal').style.display = 'flex'; }
-        function closeModal() { document.getElementById('opModal').style.display = 'none'; }
+        function openModal() { document.getElementById('opModal').style.display='flex'; }
+        function closeModal() { document.getElementById('opModal').style.display='none'; }
 
         function agregarFila() {
             const div = document.createElement('div');
             div.className = 'grid-inputs servicio-row';
             div.innerHTML = `
-                <div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Boleto Aéreo</option><option value="Transporte">🚐 Transporte</option></select></div>
-                <div><input type="text" class="prov-name" placeholder="Nombre del Proveedor"></div>
-                <div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="Costo Neto"></div>
-                <button class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>
+                <select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Boleto Aéreo</option><option value="Transporte">🚐 Transporte</option></select>
+                <input type="text" class="prov-name" placeholder="Nombre Legal del Proveedor *" oninput="this.classList.remove('input-error')">
+                <input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="Costo Neto">
+                <button style="background:#d9534f33; color:#d9534f; border:1px solid #d9534f; border-radius:5px; cursor:pointer;" onclick="this.parentElement.remove(); calcularTodo();">X</button>
             `;
             document.getElementById('contenedor-servicios').appendChild(div);
         }
 
         function calcularTodo() {
-            let totalServicios = 0;
-            document.querySelectorAll('.monto-srv').forEach(input => {
-                totalServicios += parseFloat(input.value) || 0;
-            });
+            let neto = 0;
+            document.querySelectorAll('.monto-srv').forEach(i => neto += parseFloat(i.value) || 0);
+            
             const comision = parseFloat(document.getElementById('comision_aliado').value) || 0;
-            const granTotal = totalServicios + comision;
+            const pctImp = parseFloat(document.getElementById('impuesto_pct').value) || 0;
+            
+            const subtotal = neto + comision;
+            const impuesto = subtotal * (pctImp / 100);
+            const granTotal = subtotal + impuesto;
             const escudo = granTotal * 0.005;
-            document.getElementById('res-total').innerText = "$" + granTotal.toFixed(2);
-            document.getElementById('res-escudo').innerText = "$" + escudo.toFixed(2);
-        }
 
-        async function cargarHistorial() {
-            try {
-                const res = await fetch(URL_SCRIPT);
-                const datos = await res.json();
-                const tabla = document.getElementById('cuerpo-tabla');
-                tabla.innerHTML = "";
-                datos.reverse().forEach(op => {
-                    const nombreAliado = op.aliado && op.aliado.trim() !== "" ? op.aliado : "<span style='color:#d9534f'>[SIN NOMBRE]</span>";
-                    tabla.innerHTML += `<tr><td>${op.id}</td><td>${nombreAliado}</td><td>Multi-Servicio</td><td style="font-weight:bold">$${parseFloat(op.monto).toFixed(2)}</td><td><span style="color:var(--gold-metalic)">PENDIENTE</span></td></tr>`;
-                });
-            } catch (e) { console.log("Cargando..."); }
+            document.getElementById('res-neto').innerText = "$" + subtotal.toFixed(2);
+            document.getElementById('res-imp').innerText = "$" + impuesto.toFixed(2);
+            document.getElementById('res-escudo').innerText = "$" + escudo.toFixed(2);
+            document.getElementById('res-total').innerText = "$" + granTotal.toFixed(2);
         }
 
         async function enviarAlCerebro() {
             const btn = document.getElementById('btn_enviar');
-            const inputAliado = document.getElementById('aliado_name');
-            const inputComision = document.getElementById('comision_aliado');
+            const aliado = document.getElementById('aliado_name');
+            const comision = document.getElementById('comision_aliado');
             
-            const nombreAliado = inputAliado.value.trim();
-            const valorComision = parseFloat(inputComision.value);
+            let fault = false;
+            if(!aliado.value.trim()) { aliado.classList.add('input-error'); fault = true; }
+            if(!comision.value || comision.value <= 0) { comision.classList.add('input-error'); fault = true; }
 
-            // --- VALIDACIÓN MODO CERTIFICACIÓN CONTABLE ---
-            
-            let error = false;
-
-            if (nombreAliado === "") {
-                inputAliado.classList.add('input-error');
-                error = true;
-            }
-
-            if (isNaN(valorComision) || valorComision <= 0) {
-                inputComision.classList.add('input-error');
-                error = true;
-            }
-
-            if (error) {
-                alert("⚠️ PROTOCOLO DE CERTIFICACIÓN:\n\nPara que este registro sea válido como libro contable, el nombre del Aliado y la Comisión son obligatorios.");
-                return;
-            }
-
-            let totalServicios = 0;
-            let proveedoresStr = "";
-            let montosCargados = false;
-
+            let provStr = "";
             document.querySelectorAll('.servicio-row').forEach(row => {
-                const tipo = row.querySelector('.tipo-srv').value;
-                const nombre = row.querySelector('.prov-name').value;
-                const monto = parseFloat(row.querySelector('.monto-srv').value) || 0;
-                if (monto > 0) montosCargados = true;
-                totalServicios += monto;
-                proveedoresStr += `${tipo}: ${nombre} | `;
+                const pName = row.querySelector('.prov-name');
+                const pMonto = row.querySelector('.monto-srv').value;
+                if(!pName.value.trim()) { pName.classList.add('input-error'); fault = true; }
+                provStr += `${row.querySelector('.tipo-srv').value}: ${pName.value} ($${pMonto}) | `;
             });
 
-            if (!montosCargados) {
-                alert("⚠️ ERROR: No se puede certificar una operación con servicios en cero.");
-                return;
-            }
+            if(fault) { alert("⚠️ BLOQUEO FISCAL:\n\nTodos los proveedores y la comisión deben estar identificados para la validez legal del documento."); return; }
 
-            const payload = {
-                aliado: nombreAliado,
-                proveedor: proveedoresStr,
-                monto: totalServicios + valorComision,
-                comision_aliado: valorComision,
-                tipo_seguro: "interno"
-            };
-
-            btn.innerText = "CERTIFICANDO OPERACIÓN...";
+            btn.innerText = "CERTIFICANDO CONTABILIDAD...";
             btn.disabled = true;
 
-            try {
-                await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-                alert("¡CERTIFICACIÓN EXITOSA!\nIngreso registrado correctamente para el Aliado.");
-                location.reload();
-            } catch (e) {
-                alert("Fallo en los rieles de sincronización.");
-                btn.disabled = false;
-            }
+            const totalFinal = document.getElementById('res-total').innerText.replace("$","");
+
+            await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: JSON.stringify({
+                aliado: aliado.value,
+                proveedor: provStr + " [Impuesto: " + document.getElementById('impuesto_pct').value + "%]",
+                monto: totalFinal,
+                comision_aliado: comision.value,
+                tipo_seguro: "fiscal_v3.5"
+            })});
+
+            alert("¡CERTIFICACIÓN COMPLETADA!\nRegistro inyectado en el Libro Auxiliar Contable.");
+            location.reload();
         }
 
-        window.onload = cargarHistorial;
+        async function cargar() {
+            try {
+                const res = await fetch(URL_SCRIPT);
+                const data = await res.json();
+                const tbody = document.getElementById('cuerpo-tabla');
+                tbody.innerHTML = "";
+                data.reverse().forEach(op => {
+                    tbody.innerHTML += `<tr><td>${op.id}</td><td>${op.aliado}</td><td style="font-size:11px; color:#777;">${op.proveedor}</td><td style="font-weight:bold; color:var(--gold-metalic)">$${parseFloat(op.monto).toFixed(2)}</td><td><span style="color:#4CAF50">CERTIFICADO</span></td></tr>`;
+                });
+            } catch(e) {}
+        }
+        window.onload = cargar;
     </script>
 </body>
 </html>
