@@ -3,244 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master Dashboard v2.5</title>
+    <title>ORBIS BRAIN | Multi-Riel v3.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --black-mate: #121212;
-            --black-deep: #0a0a0a;
-            --gold-metalic: #d4af37;
-            --gold-soft: #f1d592;
-            --gray-dark: #1e1e1e;
-            --gray-border: #333;
-            --text-main: #e0e0e0;
+            --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
+            --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
         }
 
-        body {
-            background-color: var(--black-mate);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
+        body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
 
-        /* --- SIDEBAR (CON LOGO AMPLIADO) --- */
-        .sidebar {
-            width: 280px;
-            background-color: var(--black-deep);
-            border-right: 1px solid var(--gold-metalic);
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+        /* --- SIDEBAR --- */
+        .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; }
+        .logo-container { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 20px; }
+        .logo-img { max-width: 200px; height: auto; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); margin-bottom: 10px; }
+        .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; }
+        .nav-item { color: var(--text-main); text-decoration: none; padding: 14px 12px; display: flex; align-items: center; border-radius: 8px; transition: 0.3s; font-size: 14px; margin-bottom: 8px; }
+        .nav-item.active { background-color: rgba(212, 175, 55, 0.05); color: var(--gold-metalic); border: 1px solid var(--gold-metalic); }
 
-        .logo-container {
-            text-align: center;
-            margin-bottom: 40px;
-            border-bottom: 1px solid var(--gray-border);
-            padding-bottom: 20px;
-        }
+        /* --- MAIN CONTENT --- */
+        .main-content { flex: 1; padding: 50px; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); }
+        .header-executive { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 25px; }
+        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 16px 32px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Usamos el placeholder para el logo grande */
-        .logo-img {
-            max-width: 220px;
-            height: auto;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); 
-            margin-bottom: 15px;
-        }
+        /* --- TABLA --- */
+        .table-container { background: rgba(0,0,0,0.6); border-radius: 18px; border: 1px solid var(--gray-border); padding: 30px; }
+        table { width: 100%; border-collapse: collapse; }
+        th { text-align: left; color: var(--gold-metalic); font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; padding: 18px; border-bottom: 2px solid var(--gray-border); }
+        td { padding: 18px; border-bottom: 1px solid #222; font-size: 14px; color: #ccc; }
 
-        .logo-text {
-            font-family: 'Cinzel', serif;
-            color: var(--gold-metalic);
-            font-size: 28px;
-            letter-spacing: 4px;
-            font-weight: 700;
-        }
-
-        .nav-links { flex: 1; }
-
-        .nav-item {
-            color: var(--text-main);
-            text-decoration: none;
-            padding: 14px 12px;
-            display: flex;
-            align-items: center;
-            border-radius: 8px;
-            transition: 0.3s;
-            font-size: 14px;
-            margin-bottom: 8px;
-            border: 1px solid transparent;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background-color: rgba(212, 175, 55, 0.05);
-            color: var(--gold-metalic);
-            border: 1px solid var(--gold-metalic);
-        }
-
-        /* --- CONTENIDO PRINCIPAL --- */
-        .main-content {
-            flex: 1;
-            padding: 50px;
-            overflow-y: auto;
-            background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%);
-        }
-
-        .header-executive {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-            border-bottom: 1px solid var(--gray-border);
-            padding-bottom: 25px;
-        }
-
-        .btn-gold {
-            background: linear-gradient(45deg, #d4af37, #f1d592);
-            color: #000;
-            border: none;
-            padding: 16px 32px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            font-family: 'Cinzel', serif;
-            transition: 0.3s;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-gold:hover { transform: scale(1.03); box-shadow: 0 0 30px rgba(212, 175, 55, 0.5); }
-        .btn-gold:disabled { background: #555; cursor: not-allowed; }
-
-        /* --- TABLA DE REGISTRO ESPEJO (SINCRONIZADA) --- */
-        .table-container {
-            background: rgba(0,0,0,0.6);
-            border-radius: 18px;
-            border: 1px solid var(--gray-border);
-            padding: 30px;
-            margin-top: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th {
-            text-align: left;
-            color: var(--gold-metalic);
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            padding: 18px;
-            border-bottom: 2px solid var(--gray-border);
-            font-weight: 700;
-        }
-
-        td {
-            padding: 18px;
-            border-bottom: 1px solid #222;
-            font-size: 14px;
-            color: #ccc;
-        }
-
-        tr:hover td { background-color: rgba(212, 175, 55, 0.02); }
-
-        .status-pill {
-            background: rgba(212, 175, 55, 0.1);
-            color: var(--gold-metalic);
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: bold;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            text-transform: uppercase;
-        }
-
-        /* --- MODAL AMPLIA "ORQUESTACIÓN" (DE VUELTA) --- */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.94);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
-        }
-
-        .modal-content {
-            background: var(--black-deep);
-            border: 2px solid var(--gold-metalic);
-            padding: 50px;
-            border-radius: 25px;
-            width: 800px; /* <--- MODAL AMPLIA DE VUELTA */
-            box-shadow: 0 0 90px rgba(212, 175, 55, 0.3);
-            position: relative;
-        }
-
-        .modal-header {
-            font-family: 'Cinzel', serif;
-            color: var(--gold-metalic);
-            font-size: 28px;
-            margin-bottom: 30px;
-            text-align: center;
-            letter-spacing: 5px;
-            font-weight: 700;
-        }
-
-        .form-row {
-            display: flex;
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-
-        .form-group { flex: 1; }
-        .form-group label { 
-            display: block; 
-            font-size: 12px; 
-            color: var(--gold-soft); 
-            margin-bottom: 10px; 
-            letter-spacing: 1.5px; 
-            text-transform: uppercase;
-            font-weight: 600;
-        }
+        /* --- MODAL MULTI-PROVEEDOR --- */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(8px); }
+        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 40px; border-radius: 25px; width: 900px; max-height: 90vh; overflow-y: auto; }
         
-        .form-group input, .form-group select {
-            width: 100%;
-            background: #141414;
-            border: 1px solid var(--gray-border);
-            color: #fff;
-            padding: 18px;
-            border-radius: 10px;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            transition: 0.3s;
-        }
+        .form-section { border-bottom: 1px solid #222; padding-bottom: 20px; margin-bottom: 20px; }
+        .grid-inputs { display: grid; grid-template-columns: 2fr 2fr 1fr 40px; gap: 15px; margin-bottom: 10px; align-items: end; }
+        
+        label { display: block; font-size: 10px; color: var(--gold-soft); margin-bottom: 8px; letter-spacing: 1px; text-transform: uppercase; }
+        input, select { width: 100%; background: #141414; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+        
+        .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 10px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 10px; font-size: 12px; transition: 0.3s; }
+        .btn-add:hover { background: rgba(212, 175, 55, 0.1); }
+        .btn-remove { background: #d9534f33; color: #d9534f; border: 1px solid #d9534f; border-radius: 5px; cursor: pointer; height: 40px; }
 
-        .form-group input:focus { border-color: var(--gold-metalic); outline: none; background: #1a1a1a; box-shadow: 0 0 15px rgba(212, 175, 55, 0.1); }
-
-        .btn-cancel {
-            width: 100%;
-            background: none;
-            border: none;
-            color: #777;
-            margin-top: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            letter-spacing: 1.5px;
-            transition: 0.3s;
-            text-transform: uppercase;
-        }
-        .btn-cancel:hover { color: #aaa; }
-
+        .summary-box { background: #000; padding: 20px; border-radius: 12px; border: 1px solid #333; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .sum-item { text-align: center; }
+        .sum-val { display: block; font-size: 18px; font-weight: bold; color: var(--gold-metalic); }
+        .sum-lbl { font-size: 9px; color: #666; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -249,162 +58,171 @@
         <div class="logo-container">
             <img src="logo-orbis.png" alt="ORBIS BRAIN" class="logo-img">
             <div class="logo-text">ORBIS</div>
-            <div style="font-size: 11px; color: var(--gold-soft); letter-spacing: 3px; font-weight: 300;">BRAIN NETWORK</div>
+            <div style="font-size: 10px; color: var(--gold-soft); letter-spacing: 3px;">BRAIN NETWORK</div>
         </div>
         <div class="nav-links">
             <a href="#" class="nav-item active">🏛️ Master Dashboard</a>
             <a href="#" class="nav-item">📋 Registro Espejo</a>
             <a href="#" class="nav-item">💰 Billetera B&G</a>
         </div>
-        <div style="font-size: 11px; color: #555; text-align: center; border-top: 1px solid #222; pt: 15px;">v2.5 Prestigio Operativo</div>
     </div>
 
     <div class="main-content">
         <div class="header-executive">
-            <div style="font-size: 26px; font-family: 'Cinzel'; font-weight: 700;">BIENVENIDO, <span style="color:var(--gold-metalic)">LUIS ALFREDO</span></div>
-            <button class="btn-gold" onclick="openModal()">Nueva Operación +</button>
+            <div style="font-size: 26px; font-family: 'Cinzel';">SISTEMA <span style="color:var(--gold-metalic)">GÉNESIS</span> ACTIVADO</div>
+            <button class="btn-gold" onclick="openModal()">Nueva Orquestación +</button>
         </div>
 
         <div class="table-container">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <h2 style="font-family: 'Cinzel'; font-size: 20px; margin: 0; letter-spacing: 2px;">REGISTRO ESPEJO (Tiempo Real)</h2>
-                <div id="sync-status" style="font-size: 12px; color: #555;">Sincronizando rieles...</div>
-            </div>
+            <h2 style="font-family: 'Cinzel'; font-size: 18px; letter-spacing: 2px;">REGISTRO ESPEJO (TIEMPO REAL)</h2>
             <table id="tabla-orbis">
                 <thead>
                     <tr>
-                        <th>ID OPERACIÓN</th>
-                        <th>ALIADO</th>
-                        <th>MONTO TOTAL</th>
-                        <th>NETO PROVEEDOR</th>
-                        <th>ESTADO</th>
+                        <th>ID</th>
+                        <th>Aliado</th>
+                        <th>Servicios</th>
+                        <th>Total Operación</th>
+                        <th>Estado</th>
                     </tr>
                 </thead>
-                <tbody id="cuerpo-tabla">
-                    </tbody>
+                <tbody id="cuerpo-tabla"></tbody>
             </table>
         </div>
     </div>
 
     <div id="opModal" class="modal">
         <div class="modal-content">
-            <div class="modal-header">ORQUESTACIÓN DE FONDOS</div>
+            <h2 style="font-family: 'Cinzel'; color: var(--gold-metalic); text-align: center; letter-spacing: 4px;">ORQUESTACIÓN MULTI-PROVEEDOR</h2>
             
-            <div style="background: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 10px; margin-bottom: 35px; font-size: 12px; border: 1px solid rgba(212, 175, 55, 0.3); color: var(--gold-soft); text-align: center; letter-spacing: 1.5px;">
-                ⚠️ <b>ESTÁNDAR DE PRESTIGIO:</b> Cobertura de viaje obligatoria para validación de rieles.
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Identificación del Aliado</label>
-                    <input type="text" id="aliado_name" placeholder="Nombre de Agencia o Freelancer">
-                </div>
-                <div class="form-group">
-                    <label>Proveedor Destino</label>
-                    <input type="text" id="proveedor_name" placeholder="Hotel / Aerolínea / Transporte">
+            <div class="form-section">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Identificación del Aliado</label>
+                        <input type="text" id="aliado_name" placeholder="Agencia / Freelancer">
+                    </div>
+                    <div class="form-group">
+                        <label>Comisión del Aliado ($)</label>
+                        <input type="number" id="comision_aliado" oninput="calcularTodo()" value="0">
+                    </div>
                 </div>
             </div>
 
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Monto Total Operación ($)</label>
-                    <input type="number" id="monto_total" placeholder="0.00" style="font-weight: bold; font-size: 20px; color: var(--gold-metalic);">
+            <div class="form-section">
+                <label>Desglose de Servicios / Proveedores</label>
+                <div id="contenedor-servicios">
+                    <div class="grid-inputs servicio-row">
+                        <div>
+                            <select class="tipo-srv" onchange="calcularTodo()">
+                                <option value="Hotel">🏨 Hotel</option>
+                                <option value="Vuelo">✈️ Boleto Aéreo</option>
+                                <option value="Transporte">🚐 Transporte</option>
+                                <option value="Seguro">🛡️ Seguro Extra</option>
+                            </select>
+                        </div>
+                        <div><input type="text" class="prov-name" placeholder="Nombre del Proveedor"></div>
+                        <div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div>
+                        <div></div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label>Comisión Aliado ($)</label>
-                    <input type="number" id="val_aliado" placeholder="0.00">
+                <button class="btn-add" onclick="agregarFila()">+ AÑADIR OTRO SERVICIO (MULTIPLE PROVEEDOR)</button>
+            </div>
+
+            <div class="summary-box">
+                <div class="sum-item">
+                    <span class="sum-lbl">Monto Total Cliente</span>
+                    <span id="res-total" class="sum-val">$0.00</span>
+                </div>
+                <div class="sum-item">
+                    <span class="sum-lbl">Escudo de Oro (0.5%)</span>
+                    <span id="res-escudo" class="sum-val">$0.00</span>
+                </div>
+                <div class="sum-item">
+                    <span class="sum-lbl">Fee Fijo ORBIS</span>
+                    <span class="sum-val">$5.00</span>
                 </div>
             </div>
 
-            <div class="form-group" style="margin-bottom: 35px;">
-                <label>Selección de Cobertura (Obligatoria)</label>
-                <select id="tipo_seguro">
-                    <option value="interno">Protección ORBIS BRAIN ($3.00 - Cobertura Integrada)</option>
-                    <option value="externo">Seguro Externo Validado (Fee de Registro $0.00)</option>
-                </select>
-            </div>
-
-            <button class="btn-gold" id="btn_enviar" onclick="enviarAlCerebro()" style="width: 100%; font-size: 16px;">ACTIVAR RIELES Y CARGAR EN ESPEJO</button>
-            <button onclick="closeModal()" class="btn-cancel">DESCARTAR OPERACIÓN</button>
+            <button class="btn-gold" id="btn_enviar" onclick="enviarAlCerebro()" style="width: 100%; margin-top: 30px;">ACTIVAR RIELES Y SINCRONIZAR</button>
+            <button onclick="closeModal()" style="width:100%; background:none; border:none; color:#555; margin-top:15px; cursor:pointer; font-size:12px;">DESCARTAR</button>
         </div>
     </div>
 
     <script>
-        // CABLE DE CONEXIÓN ÚNICO (TU URL YA ESTÁ AQUÍ)
         const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwx34Vu9no8Pgp-VS2c5tvoYAPv80xzKPyo7VsDPppq7tm4shv6NxIpIoT9KqM8AcQUXg/exec";
 
         function openModal() { document.getElementById('opModal').style.display = 'flex'; }
         function closeModal() { document.getElementById('opModal').style.display = 'none'; }
 
-        // --- FUNCIÓN LECTURA (GET) ---
+        function agregarFila() {
+            const div = document.createElement('div');
+            div.className = 'grid-inputs servicio-row';
+            div.innerHTML = `
+                <div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Boleto Aéreo</option><option value="Transporte">🚐 Transporte</option></select></div>
+                <div><input type="text" class="prov-name" placeholder="Nombre del Proveedor"></div>
+                <div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div>
+                <button class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>
+            `;
+            document.getElementById('contenedor-servicios').appendChild(div);
+        }
+
+        function calcularTodo() {
+            let totalServicios = 0;
+            document.querySelectorAll('.monto-srv').forEach(input => {
+                totalServicios += parseFloat(input.value) || 0;
+            });
+
+            const comision = parseFloat(document.getElementById('comision_aliado').value) || 0;
+            const granTotal = totalServicios + comision;
+            const escudo = granTotal * 0.005;
+
+            document.getElementById('res-total').innerText = "$" + granTotal.toFixed(2);
+            document.getElementById('res-escudo').innerText = "$" + escudo.toFixed(2);
+        }
+
         async function cargarHistorial() {
             try {
-                const respuesta = await fetch(URL_SCRIPT);
-                const datos = await respuesta.json();
+                const res = await fetch(URL_SCRIPT);
+                const datos = await res.json();
                 const tabla = document.getElementById('cuerpo-tabla');
-                const status = document.getElementById('sync-status');
-                
                 tabla.innerHTML = "";
-                status.innerText = "Sincronizado 🟢";
-                status.style.color = "#4CAF50";
-
-                // Mostramos las operaciones, las más nuevas primero
                 datos.reverse().forEach(op => {
-                    tabla.innerHTML += `
-                        <tr>
-                            <td style="font-family: monospace; color: var(--gold-soft); font-weight: bold; letter-spacing: 1px;">${op.id}</td>
-                            <td>${op.aliado}</td>
-                            <td style="font-weight: bold; color: #fff; font-size: 15px;">$${parseFloat(op.monto).toFixed(2)}</td>
-                            <td style="color: #4CAF50; font-weight: bold; font-size: 15px;">$${parseFloat(op.neto).toFixed(2)}</td>
-                            <td><span class="status-pill">${op.estado}</span></td>
-                        </tr>
-                    `;
+                    tabla.innerHTML += `<tr><td>${op.id}</td><td>${op.aliado}</td><td>Multi-Servicio</td><td style="font-weight:bold">$${parseFloat(op.monto).toFixed(2)}</td><td><span style="color:var(--gold-metalic)">PENDIENTE</span></td></tr>`;
                 });
-            } catch (e) {
-                document.getElementById('sync-status').innerText = "Esperando inyección...";
-                console.log("Cargando rieles...");
-            }
+            } catch (e) { console.log("Cargando..."); }
         }
 
-        // --- FUNCIÓN ESCRITURA (POST) ---
         async function enviarAlCerebro() {
             const btn = document.getElementById('btn_enviar');
+            const aliados = document.getElementById('aliado_name').value;
+            
+            let totalServicios = 0;
+            let proveedoresStr = "";
+            document.querySelectorAll('.servicio-row').forEach(row => {
+                const tipo = row.querySelector('.tipo-srv').value;
+                const nombre = row.querySelector('.prov-name').value;
+                const monto = parseFloat(row.querySelector('.monto-srv').value) || 0;
+                totalServicios += monto;
+                proveedoresStr += `${tipo}: ${nombre} | `;
+            });
+
+            const comision = parseFloat(document.getElementById('comision_aliado').value) || 0;
+
             const payload = {
-                aliado: document.getElementById('aliado_name').value,
-                proveedor: document.getElementById('proveedor_name').value,
-                monto: document.getElementById('monto_total').value,
-                comision_aliado: document.getElementById('val_aliado').value,
-                tipo_seguro: document.getElementById('tipo_seguro').value
+                aliado: aliados,
+                proveedor: proveedoresStr,
+                monto: totalServicios + comision,
+                comision_aliado: comision,
+                tipo_seguro: "interno"
             };
 
-            // Validación básica
-            if(!payload.monto || !payload.aliado || !payload.proveedor) {
-                return alert("Socio, los rieles requieren Aliado, Proveedor y Monto para iniciar.");
-            }
-
-            btn.innerText = "INYECTANDO DATOS EN LOS RIELES...";
+            btn.innerText = "INYECTANDO RIELES...";
             btn.disabled = true;
 
-            try {
-                // Envío con no-cors (ciego pero seguro)
-                await fetch(URL_SCRIPT, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    body: JSON.stringify(payload)
-                });
-
-                alert("¡ÉXITO! Operación inyectada en el Escudo de Oro.");
-                closeModal();
-                // Limpiamos y recargamos para ver la nueva fila
-                location.reload(); 
-            } catch (e) {
-                alert("Error crítico en los rieles de gestión.");
-                btn.innerText = "ACTIVAR RIELES Y CARGAR EN ESPEJO";
-                btn.disabled = false;
-            }
+            await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+            alert("¡Multi-Riel Sincronizado!");
+            location.reload();
         }
 
-        // Cargar datos al iniciar la página
         window.onload = cargarHistorial;
     </script>
 </body>
