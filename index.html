@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>ORBIS BRAIN | Master Dashboard v2.5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --gold: #d4af37;
-            --gold-soft: #f1d592;
-            --black-deep: #0a0a0a;
             --black-mate: #121212;
+            --black-deep: #0a0a0a;
+            --gold-metalic: #d4af37;
+            --gold-soft: #f1d592;
+            --gray-dark: #1e1e1e;
             --gray-border: #333;
             --text-main: #e0e0e0;
         }
@@ -25,146 +26,250 @@
             overflow: hidden;
         }
 
-        /* --- SIDEBAR --- */
+        /* --- SIDEBAR (CON LOGO AMPLIADO) --- */
         .sidebar {
-            width: 260px;
+            width: 280px;
             background-color: var(--black-deep);
-            border-right: 1px solid var(--gold);
-            padding: 20px;
+            border-right: 1px solid var(--gold-metalic);
+            padding: 25px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--gray-border);
+            padding-bottom: 20px;
+        }
+
+        /* Usamos el placeholder para el logo grande */
+        .logo-img {
+            max-width: 220px;
+            height: auto;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); 
+            margin-bottom: 15px;
         }
 
         .logo-text {
             font-family: 'Cinzel', serif;
-            color: var(--gold);
-            font-size: 24px;
-            text-align: center;
-            letter-spacing: 3px;
-            margin-bottom: 5px;
+            color: var(--gold-metalic);
+            font-size: 28px;
+            letter-spacing: 4px;
+            font-weight: 700;
         }
 
-        /* --- CONTENIDO --- */
+        .nav-links { flex: 1; }
+
+        .nav-item {
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 14px 12px;
+            display: flex;
+            align-items: center;
+            border-radius: 8px;
+            transition: 0.3s;
+            font-size: 14px;
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: rgba(212, 175, 55, 0.05);
+            color: var(--gold-metalic);
+            border: 1px solid var(--gold-metalic);
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
         .main-content {
             flex: 1;
-            padding: 40px;
+            padding: 50px;
             overflow-y: auto;
             background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%);
         }
 
-        .header {
+        .header-executive {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             border-bottom: 1px solid var(--gray-border);
-            padding-bottom: 20px;
+            padding-bottom: 25px;
         }
 
         .btn-gold {
             background: linear-gradient(45deg, #d4af37, #f1d592);
             color: #000;
             border: none;
-            padding: 14px 28px;
+            padding: 16px 32px;
             border-radius: 8px;
             font-weight: bold;
+            font-size: 14px;
             cursor: pointer;
             font-family: 'Cinzel', serif;
             transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .btn-gold:hover { transform: scale(1.02); box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); }
+        .btn-gold:hover { transform: scale(1.03); box-shadow: 0 0 30px rgba(212, 175, 55, 0.5); }
+        .btn-gold:disabled { background: #555; cursor: not-allowed; }
 
-        /* --- TABLA DE REGISTRO ESPEJO --- */
+        /* --- TABLA DE REGISTRO ESPEJO (SINCRONIZADA) --- */
         .table-container {
-            background: rgba(0,0,0,0.5);
-            border-radius: 15px;
+            background: rgba(0,0,0,0.6);
+            border-radius: 18px;
             border: 1px solid var(--gray-border);
-            padding: 25px;
-            margin-top: 20px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         th {
             text-align: left;
-            color: var(--gold);
-            font-size: 11px;
+            color: var(--gold-metalic);
+            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 15px;
-            border-bottom: 1px solid var(--gray-border);
+            letter-spacing: 1.5px;
+            padding: 18px;
+            border-bottom: 2px solid var(--gray-border);
+            font-weight: 700;
         }
 
         td {
-            padding: 15px;
+            padding: 18px;
             border-bottom: 1px solid #222;
-            font-size: 13px;
+            font-size: 14px;
+            color: #ccc;
         }
+
+        tr:hover td { background-color: rgba(212, 175, 55, 0.02); }
 
         .status-pill {
             background: rgba(212, 175, 55, 0.1);
-            color: var(--gold);
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 10px;
+            color: var(--gold-metalic);
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 11px;
             font-weight: bold;
             border: 1px solid rgba(212, 175, 55, 0.3);
+            text-transform: uppercase;
         }
 
-        /* --- MODAL --- */
+        /* --- MODAL AMPLIA "ORQUESTACIÓN" (DE VUELTA) --- */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.94);
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(5px);
         }
 
         .modal-content {
             background: var(--black-deep);
-            border: 2px solid var(--gold);
-            padding: 40px;
-            border-radius: 20px;
-            width: 700px;
+            border: 2px solid var(--gold-metalic);
+            padding: 50px;
+            border-radius: 25px;
+            width: 800px; /* <--- MODAL AMPLIA DE VUELTA */
+            box-shadow: 0 0 90px rgba(212, 175, 55, 0.3);
+            position: relative;
         }
 
-        .form-row { display: flex; gap: 20px; margin-bottom: 20px; }
+        .modal-header {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-metalic);
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+            letter-spacing: 5px;
+            font-weight: 700;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
         .form-group { flex: 1; }
-        label { display: block; color: var(--gold-soft); font-size: 11px; margin-bottom: 8px; }
-        input, select {
+        .form-group label { 
+            display: block; 
+            font-size: 12px; 
+            color: var(--gold-soft); 
+            margin-bottom: 10px; 
+            letter-spacing: 1.5px; 
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        .form-group input, .form-group select {
             width: 100%;
-            background: #161616;
+            background: #141414;
             border: 1px solid var(--gray-border);
             color: #fff;
-            padding: 15px;
-            border-radius: 8px;
+            padding: 18px;
+            border-radius: 10px;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            transition: 0.3s;
         }
+
+        .form-group input:focus { border-color: var(--gold-metalic); outline: none; background: #1a1a1a; box-shadow: 0 0 15px rgba(212, 175, 55, 0.1); }
+
+        .btn-cancel {
+            width: 100%;
+            background: none;
+            border: none;
+            color: #777;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            letter-spacing: 1.5px;
+            transition: 0.3s;
+            text-transform: uppercase;
+        }
+        .btn-cancel:hover { color: #aaa; }
+
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <div class="logo-text">ORBIS</div>
-        <p style="font-size: 10px; text-align: center; letter-spacing: 2px; color: var(--gold-soft);">BRAIN NETWORK</p>
-        <div style="margin-top: 40px; color: var(--gold); font-size: 13px;">🏛️ Master Dashboard</div>
+        <div class="logo-container">
+            <img src="logo-orbis.png" alt="ORBIS BRAIN" class="logo-img">
+            <div class="logo-text">ORBIS</div>
+            <div style="font-size: 11px; color: var(--gold-soft); letter-spacing: 3px; font-weight: 300;">BRAIN NETWORK</div>
+        </div>
+        <div class="nav-links">
+            <a href="#" class="nav-item active">🏛️ Master Dashboard</a>
+            <a href="#" class="nav-item">📋 Registro Espejo</a>
+            <a href="#" class="nav-item">💰 Billetera B&G</a>
+        </div>
+        <div style="font-size: 11px; color: #555; text-align: center; border-top: 1px solid #222; pt: 15px;">v2.5 Prestigio Operativo</div>
     </div>
 
     <div class="main-content">
-        <div class="header">
-            <h1 style="font-family: 'Cinzel';">Bienvenido, <span style="color:var(--gold)">Luis Alfredo</span></h1>
+        <div class="header-executive">
+            <div style="font-size: 26px; font-family: 'Cinzel'; font-weight: 700;">BIENVENIDO, <span style="color:var(--gold-metalic)">LUIS ALFREDO</span></div>
             <button class="btn-gold" onclick="openModal()">Nueva Operación +</button>
         </div>
 
         <div class="table-container">
-            <h2 style="font-family: 'Cinzel'; font-size: 18px; margin-top: 0;">Registro Espejo (Sincronizado)</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h2 style="font-family: 'Cinzel'; font-size: 20px; margin: 0; letter-spacing: 2px;">REGISTRO ESPEJO (Tiempo Real)</h2>
+                <div id="sync-status" style="font-size: 12px; color: #555;">Sincronizando rieles...</div>
+            </div>
             <table id="tabla-orbis">
                 <thead>
                     <tr>
@@ -178,67 +283,90 @@
                 <tbody id="cuerpo-tabla">
                     </tbody>
             </table>
-            <div id="loader" style="text-align: center; padding: 20px; color: #555;">Sincronizando rieles...</div>
         </div>
     </div>
 
     <div id="opModal" class="modal">
         <div class="modal-content">
-            <h2 style="font-family: 'Cinzel'; color: var(--gold); text-align: center;">ORQUESTACIÓN DE FONDOS</h2>
-            <div class="form-row">
-                <div class="form-group"><label>Aliado</label><input type="text" id="aliado_name"></div>
-                <div class="form-group"><label>Proveedor</label><input type="text" id="proveedor_name"></div>
+            <div class="modal-header">ORQUESTACIÓN DE FONDOS</div>
+            
+            <div style="background: rgba(212, 175, 55, 0.08); padding: 15px; border-radius: 10px; margin-bottom: 35px; font-size: 12px; border: 1px solid rgba(212, 175, 55, 0.3); color: var(--gold-soft); text-align: center; letter-spacing: 1.5px;">
+                ⚠️ <b>ESTÁNDAR DE PRESTIGIO:</b> Cobertura de viaje obligatoria para validación de rieles.
             </div>
+
             <div class="form-row">
-                <div class="form-group"><label>Monto Total ($)</label><input type="number" id="monto_total"></div>
-                <div class="form-group"><label>Comisión Aliado ($)</label><input type="number" id="val_aliado"></div>
+                <div class="form-group">
+                    <label>Identificación del Aliado</label>
+                    <input type="text" id="aliado_name" placeholder="Nombre de Agencia o Freelancer">
+                </div>
+                <div class="form-group">
+                    <label>Proveedor Destino</label>
+                    <input type="text" id="proveedor_name" placeholder="Hotel / Aerolínea / Transporte">
+                </div>
             </div>
-            <div class="form-group" style="margin-bottom: 25px;">
-                <label>Tipo de Seguro</label>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Monto Total Operación ($)</label>
+                    <input type="number" id="monto_total" placeholder="0.00" style="font-weight: bold; font-size: 20px; color: var(--gold-metalic);">
+                </div>
+                <div class="form-group">
+                    <label>Comisión Aliado ($)</label>
+                    <input type="number" id="val_aliado" placeholder="0.00">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom: 35px;">
+                <label>Selección de Cobertura (Obligatoria)</label>
                 <select id="tipo_seguro">
-                    <option value="interno">Protección ORBIS BRAIN ($3.00)</option>
-                    <option value="externo">Seguro Externo ($0.00)</option>
+                    <option value="interno">Protección ORBIS BRAIN ($3.00 - Cobertura Integrada)</option>
+                    <option value="externo">Seguro Externo Validado (Fee de Registro $0.00)</option>
                 </select>
             </div>
-            <button class="btn-gold" id="btn_enviar" onclick="enviarAlCerebro()" style="width: 100%;">ACTIVAR RIELES Y CARGAR</button>
-            <button onclick="closeModal()" style="width: 100%; background:none; border:none; color:#555; margin-top:15px; cursor:pointer;">CANCELAR</button>
+
+            <button class="btn-gold" id="btn_enviar" onclick="enviarAlCerebro()" style="width: 100%; font-size: 16px;">ACTIVAR RIELES Y CARGAR EN ESPEJO</button>
+            <button onclick="closeModal()" class="btn-cancel">DESCARTAR OPERACIÓN</button>
         </div>
     </div>
 
     <script>
+        // CABLE DE CONEXIÓN ÚNICO (TU URL YA ESTÁ AQUÍ)
         const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwx34Vu9no8Pgp-VS2c5tvoYAPv80xzKPyo7VsDPppq7tm4shv6NxIpIoT9KqM8AcQUXg/exec";
 
         function openModal() { document.getElementById('opModal').style.display = 'flex'; }
         function closeModal() { document.getElementById('opModal').style.display = 'none'; }
 
-        // LEER DATOS DE GOOGLE SHEETS
+        // --- FUNCIÓN LECTURA (GET) ---
         async function cargarHistorial() {
             try {
                 const respuesta = await fetch(URL_SCRIPT);
                 const datos = await respuesta.json();
                 const tabla = document.getElementById('cuerpo-tabla');
-                const loader = document.getElementById('loader');
+                const status = document.getElementById('sync-status');
                 
                 tabla.innerHTML = "";
-                loader.style.display = "none";
+                status.innerText = "Sincronizado 🟢";
+                status.style.color = "#4CAF50";
 
+                // Mostramos las operaciones, las más nuevas primero
                 datos.reverse().forEach(op => {
                     tabla.innerHTML += `
                         <tr>
-                            <td style="font-family: monospace; color: var(--gold-soft);">${op.id}</td>
+                            <td style="font-family: monospace; color: var(--gold-soft); font-weight: bold; letter-spacing: 1px;">${op.id}</td>
                             <td>${op.aliado}</td>
-                            <td style="font-weight: bold;">$${parseFloat(op.monto).toFixed(2)}</td>
-                            <td style="color: #4CAF50;">$${parseFloat(op.neto).toFixed(2)}</td>
+                            <td style="font-weight: bold; color: #fff; font-size: 15px;">$${parseFloat(op.monto).toFixed(2)}</td>
+                            <td style="color: #4CAF50; font-weight: bold; font-size: 15px;">$${parseFloat(op.neto).toFixed(2)}</td>
                             <td><span class="status-pill">${op.estado}</span></td>
                         </tr>
                     `;
                 });
             } catch (e) {
-                console.log("Esperando datos...");
+                document.getElementById('sync-status').innerText = "Esperando inyección...";
+                console.log("Cargando rieles...");
             }
         }
 
-        // ENVIAR DATOS A GOOGLE SHEETS
+        // --- FUNCIÓN ESCRITURA (POST) ---
         async function enviarAlCerebro() {
             const btn = document.getElementById('btn_enviar');
             const payload = {
@@ -249,26 +377,34 @@
                 tipo_seguro: document.getElementById('tipo_seguro').value
             };
 
-            if(!payload.monto || !payload.aliado) return alert("Completa los datos, socio.");
+            // Validación básica
+            if(!payload.monto || !payload.aliado || !payload.proveedor) {
+                return alert("Socio, los rieles requieren Aliado, Proveedor y Monto para iniciar.");
+            }
 
-            btn.innerText = "INYECTANDO EN RIELES...";
+            btn.innerText = "INYECTANDO DATOS EN LOS RIELES...";
             btn.disabled = true;
 
             try {
+                // Envío con no-cors (ciego pero seguro)
                 await fetch(URL_SCRIPT, {
                     method: 'POST',
                     mode: 'no-cors',
                     body: JSON.stringify(payload)
                 });
-                alert("¡Operación Exitosa!");
-                location.reload();
+
+                alert("¡ÉXITO! Operación inyectada en el Escudo de Oro.");
+                closeModal();
+                // Limpiamos y recargamos para ver la nueva fila
+                location.reload(); 
             } catch (e) {
-                alert("Error en la conexión.");
+                alert("Error crítico en los rieles de gestión.");
+                btn.innerText = "ACTIVAR RIELES Y CARGAR EN ESPEJO";
                 btn.disabled = false;
             }
         }
 
-        // Cargar datos al iniciar
+        // Cargar datos al iniciar la página
         window.onload = cargarHistorial;
     </script>
 </body>
