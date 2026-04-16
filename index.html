@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Estructura de Poder v4.6</title>
+    <title>ORBIS BRAIN | Soberanía Fiscal v4.7</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -143,7 +143,7 @@
                 <div class="sum-item" style="border: 1px solid #333; border-radius: 10px;"><span class="sum-lbl">Total Impuestos</span><span id="res-imp" class="sum-val" style="color:#fff">$0.00</span></div>
                 <div class="sum-item"><span class="sum-lbl">Fee Orbis Brain</span><span id="res-fee-fijo" class="sum-val">$6.00</span></div>
                 <div class="sum-item"><span class="sum-lbl">Escudo Oro (0.5%)</span><span id="res-escudo" class="sum-val">$0.00</span></div>
-                <div class="sum-item" style="background: rgba(212, 175, 55, 0.15); border-radius: 10px;"><span class="sum-lbl" style="color:var(--gold-metalic)">GANANCIA NETA</span><span id="res-ganancia" class="sum-val" style="color:var(--gold-soft); font-size:20px;">$0.00</span></div>
+                <div class="sum-item" style="background: rgba(212, 175, 55, 0.15); border-radius: 10px;"><span class="sum-lbl" style="color:var(--gold-metalic)">GANANCIA NETA ALIADO</span><span id="res-ganancia" class="sum-val" style="color:var(--gold-soft); font-size:20px;">$0.00</span></div>
                 <div class="sum-item" style="border:none;"><span class="sum-lbl">TOTAL FACTURADO</span><span id="res-total" class="sum-val" style="color:#4CAF50; font-size:20px;">$0.00</span></div>
             </div>
 
@@ -180,7 +180,6 @@
         function calcularTodo() {
             const esInterno = document.getElementById('tipo_seguro_sel').value === 'interno';
             let netoSeguro = esInterno ? 2.00 : 0;
-            let comisionSeguro = 0; // El aliado no gana por el seguro interno en esta lógica
             
             let totalNetoServicios = netoSeguro;
             let totalComisAliado = 0;
@@ -192,7 +191,6 @@
 
             document.getElementById('comision_aliado').value = totalComisAliado.toFixed(2);
             
-            // Si es interno, cobramos $5 + $1 margen = $6. Si es externo, solo $5.
             const feeBase = 5.00;
             const margenSeguro = esInterno ? 1.00 : 0;
             const feeFinal = feeBase + margenSeguro;
@@ -202,19 +200,27 @@
             const baseImponible = totalNetoServicios + totalComisAliado + feeFinal;
 
             let taxTotal = 0;
+            let tasaPromedio = 0;
+            let numTaxes = 0;
             document.querySelectorAll('.tax-row').forEach(row => {
                 const pct = parseFloat(row.querySelector('.tax-val').value) || 0;
                 taxTotal += baseImponible * (pct / 100);
+                tasaPromedio += pct;
+                numTaxes++;
             });
 
             const granTotal = baseImponible + taxTotal;
             const escudo = granTotal * 0.005;
-            const gananciaNeta = totalComisAliado - feeBase - escudo; // Restamos solo el fee base del aliado
+            
+            // --- LÓGICA DE GANANCIA NETA ALIADO (REPARADA) ---
+            // El Aliado solo paga impuestos sobre SU comisión. No sobre el Fee de Orbis.
+            const impuestosSobreComision = totalComisAliado * (tasaPromedio / 100);
+            const gananciaNetaAliado = totalComisAliado - impuestosSobreComision;
 
             document.getElementById('res-neto').innerText = "$" + baseImponible.toFixed(2);
             document.getElementById('res-imp').innerText = "$" + taxTotal.toFixed(2);
             document.getElementById('res-escudo').innerText = "$" + escudo.toFixed(2);
-            document.getElementById('res-ganancia').innerText = "$" + (gananciaNeta > 0 ? gananciaNeta.toFixed(2) : "0.00");
+            document.getElementById('res-ganancia').innerText = "$" + (gananciaNetaAliado > 0 ? gananciaNetaAliado.toFixed(2) : "0.00");
             document.getElementById('res-total').innerText = "$" + granTotal.toFixed(2);
         }
 
@@ -222,7 +228,7 @@
             const btn = document.getElementById('btn_enviar');
             const aliado = document.getElementById('aliado_name').value;
             const rif = document.getElementById('aliado_rif').value;
-            if(!aliado || !rif) return alert("Faltan datos fiscales.");
+            if(!aliado || !rif) return alert("Identificación del aliado requerida.");
 
             btn.innerText = "CERTIFICANDO...";
             btn.disabled = true;
@@ -231,7 +237,7 @@
                 aliado: aliado + " [" + rif + "]",
                 monto: document.getElementById('res-total').innerText.replace("$",""),
                 comision_aliado: document.getElementById('comision_aliado').value,
-                proveedor: "Fiscal Cert v4.6 [OB Protect Mode]"
+                proveedor: "Soberanía Fiscal v4.7"
             };
 
             await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
@@ -246,7 +252,7 @@
                 const tbody = document.getElementById('cuerpo-tabla');
                 tbody.innerHTML = "";
                 data.reverse().forEach(op => {
-                    tbody.innerHTML += `<tr><td style="padding:15px; font-family:monospace;">${op.id}</td><td style="font-weight:600;">${op.aliado}</td><td style="font-size:11px; color:#777;">Certificación v4.6</td><td style="font-weight:800; color:var(--gold-metalic)">$${parseFloat(op.monto).toFixed(2)}</td><td><span style="color:#4CAF50; font-size:10px; border:1px solid #4CAF50; padding:2px 5px; border-radius:4px;">CERTIFICADO</span></td></tr>`;
+                    tbody.innerHTML += `<tr><td style="padding:15px; font-family:monospace;">${op.id}</td><td style="font-weight:600;">${op.aliado}</td><td style="font-size:11px; color:#777;">Certificación v4.7</td><td style="font-weight:800; color:var(--gold-metalic)">$${parseFloat(op.monto).toFixed(2)}</td><td><span style="color:#4CAF50; font-size:10px; border:1px solid #4CAF50; padding:2px 5px; border-radius:4px;">CERTIFICADO</span></td></tr>`;
                 });
             } catch(e) {}
         }
