@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Certificación Global v3.8</title>
+    <title>ORBIS BRAIN | Simetría Fiscal v3.9</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -22,22 +22,22 @@
         .main-content { flex: 1; padding: 50px; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); }
         .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 18px 36px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 15px; letter-spacing: 1px; }
 
-        /* MODAL TITÁN v3.8 */
+        /* MODAL TITÁN v3.9 */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 60px; border-radius: 30px; width: 1200px; max-height: 94vh; overflow-y: auto; box-shadow: 0 0 60px rgba(0,0,0,1); }
         
-        /* AJUSTE SOLICITADO: Título más pequeño y elegante */
         .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 24px; margin-bottom: 40px; letter-spacing: 3px; border-bottom: 1px solid #222; padding-bottom: 25px; font-weight: 500; }
 
         .form-section { background: rgba(255,255,255,0.02); padding: 35px; border-radius: 20px; margin-bottom: 30px; border: 1px solid #222; }
         
+        /* ESTRUCTURA DE CELDAS SIMÉTRICAS */
         .full-row { margin-bottom: 25px; }
-        .grid-header { display: grid; grid-template-columns: 1fr 0.5fr; gap: 30px; }
+        .grid-symmetry { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; } /* Celdas iguales */
         
         .grid-inputs { display: grid; grid-template-columns: 1.5fr 3fr 1.5fr 60px; gap: 20px; margin-bottom: 20px; align-items: end; }
         
-        label { display: block; font-size: 13px; color: var(--gold-soft); margin-bottom: 12px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.5px; }
-        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 22px; border-radius: 12px; font-size: 17px; transition: 0.3s; }
+        label { display: block; font-size: 12px; color: var(--gold-soft); margin-bottom: 12px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
+        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 20px; border-radius: 12px; font-size: 16px; transition: 0.3s; }
         input:focus { border-color: var(--gold-metalic); outline: none; box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
         
         .summary-box { background: #000; padding: 40px; border-radius: 20px; border: 1px solid var(--gold-metalic); display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; margin-top: 40px; }
@@ -90,16 +90,21 @@
             
             <div class="form-section">
                 <div class="full-row">
-                    <label>Identificación Fiscal del Aliado (Nombre Largo / RIF) *</label>
-                    <input type="text" id="aliado_name" placeholder="Ej: Inversiones Turísticas Internacionales C.A. / RIF: J-00000000-0">
+                    <label>Identificación Fiscal del Aliado (Nombre Largo) *</label>
+                    <input type="text" id="aliado_name" placeholder="Ej: Inversiones Turísticas Internacionales C.A.">
                 </div>
-                <div class="grid-header">
+                
+                <div class="grid-symmetry">
                     <div>
-                        <label>Honorarios de Gestión ($) *</label>
-                        <input type="number" id="comision_aliado" oninput="calcularTodo()" placeholder="Monto Neto de Comisión">
+                        <label>R.I.F. / Identificación Tributaria *</label>
+                        <input type="text" id="aliado_rif" placeholder="J-00000000-0">
                     </div>
                     <div>
-                        <label>Tax / Impuesto (%)</label>
+                        <label>Honorarios de Gestión ($) *</label>
+                        <input type="number" id="comision_aliado" oninput="calcularTodo()" placeholder="Monto Comisión">
+                    </div>
+                    <div>
+                        <label>Tax / Impuesto Local (%)</label>
                         <input type="number" id="impuesto_pct" oninput="calcularTodo()" value="16">
                     </div>
                 </div>
@@ -122,7 +127,7 @@
                         <div></div>
                     </div>
                 </div>
-                <button class="btn-add" onclick="agregarFila()">+ AGREGAR OTRO PROVEEDOR O SEGURO AL REGISTRO</button>
+                <button class="btn-add" onclick="agregarFila()">+ AGREGAR PROVEEDOR O SEGURO AL REGISTRO</button>
             </div>
 
             <div class="summary-box">
@@ -134,7 +139,7 @@
             </div>
 
             <button class="btn-gold" id="btn_enviar" onclick="enviarAlCerebro()" style="width:100%; margin-top:45px; font-size:18px; padding:25px;">VALIDAR Y CERTIFICAR OPERACIÓN ESPEJO</button>
-            <button onclick="closeModal()" style="width:100%; background:none; border:none; color:#555; margin-top:25px; cursor:pointer; font-size:14px; letter-spacing:1px; text-transform:uppercase;">Descartar Registro</button>
+            <button onclick="closeModal()" style="width:100%; background:none; border:none; color:#555; margin-top:25px; cursor:pointer; font-size:14px; text-transform:uppercase;">Descartar Registro</button>
         </div>
     </div>
 
@@ -175,27 +180,35 @@
         async function enviarAlCerebro() {
             const btn = document.getElementById('btn_enviar');
             const aliado = document.getElementById('aliado_name');
+            const rif = document.getElementById('aliado_rif');
             const comision = document.getElementById('comision_aliado');
             let fault = false;
+
             if(!aliado.value.trim()) { aliado.style.borderColor='#d9534f'; fault = true; }
+            if(!rif.value.trim()) { rif.style.borderColor='#d9534f'; fault = true; }
             if(!comision.value || comision.value <= 0) { comision.style.borderColor='#d9534f'; fault = true; }
+
             let provStr = "";
             document.querySelectorAll('.servicio-row').forEach(row => {
                 const pName = row.querySelector('.prov-name');
                 if(!pName.value.trim()) { pName.style.borderColor='#d9534f'; fault = true; }
                 provStr += `${row.querySelector('.tipo-srv').value}: ${pName.value} | `;
             });
-            if(fault) { alert("⚠️ PROTOCOLO DE CERTIFICACIÓN:\n\nTodos los nombres fiscales y montos son obligatorios."); return; }
-            btn.innerText = "CERTIFICANDO REGISTRO...";
+
+            if(fault) { alert("⚠️ BLOQUEO DE SEGURIDAD:\n\nPara que la certificación sea válida internacionalmente, el Nombre, RIF y Comisión son obligatorios."); return; }
+
+            btn.innerText = "CERTIFICANDO REGISTRO ESPEJO...";
             btn.disabled = true;
+
             await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: JSON.stringify({
-                aliado: aliado.value,
+                aliado: aliado.value + " (RIF: " + rif.value + ")",
                 proveedor: provStr + " [Fee: $5.00]",
                 monto: document.getElementById('res-total').innerText.replace("$",""),
                 comision_aliado: comision.value,
-                tipo_seguro: "global_cert_v3.8"
+                tipo_seguro: "global_cert_v3.9"
             })});
-            alert("¡OPERACIÓN CERTIFICADA!");
+
+            alert("¡CERTIFICACIÓN COMPLETADA!");
             location.reload();
         }
 
