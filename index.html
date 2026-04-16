@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Global Tax Engine v4.1</title>
+    <title>ORBIS BRAIN | Contabilidad de Precisión v4.2</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -18,25 +18,22 @@
         .logo-img { max-width: 200px; height: auto; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
         .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; margin-top: 10px; }
         
-        /* MAIN */
         .main-content { flex: 1; padding: 50px; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); }
         .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 18px 36px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 15px; letter-spacing: 1px; }
 
-        /* MODAL v4.1 */
+        /* MODAL v4.2 */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 40px 60px; border-radius: 30px; width: 1200px; max-height: 94vh; overflow-y: auto; box-shadow: 0 0 60px rgba(0,0,0,1); }
+        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 40px 60px; border-radius: 30px; width: 1250px; max-height: 94vh; overflow-y: auto; box-shadow: 0 0 60px rgba(0,0,0,1); }
         
         .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 24px; margin-bottom: 20px; letter-spacing: 3px; border-bottom: 1px solid #222; padding-bottom: 15px; font-weight: 500; }
 
-        .form-section { background: rgba(255,255,255,0.02); padding: 25px 35px; border-radius: 20px; margin-bottom: 25px; border: 1px solid #222; }
+        .form-section { background: rgba(255,255,255,0.02); padding: 25px 35px; border-radius: 20px; border: 1px solid #222; min-height: 280px; }
         
-        .grid-symmetry { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .tax-grid { display: grid; grid-template-columns: 2fr 1fr 60px; gap: 15px; margin-bottom: 15px; align-items: end; }
-        .grid-inputs { display: grid; grid-template-columns: 1.5fr 3fr 1.5fr 60px; gap: 20px; margin-bottom: 20px; align-items: end; }
+        .tax-grid { display: grid; grid-template-columns: 2fr 1fr 50px; gap: 15px; margin-bottom: 15px; align-items: end; }
+        .grid-inputs { display: grid; grid-template-columns: 1.2fr 2fr 1fr 50px; gap: 15px; margin-bottom: 15px; align-items: end; }
         
         label { display: block; font-size: 11px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
-        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 18px; border-radius: 12px; font-size: 15px; transition: 0.3s; }
-        input:focus { border-color: var(--gold-metalic); outline: none; }
+        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 18px; border-radius: 12px; font-size: 15px; transition: 0.3s; box-sizing: border-box; }
         
         .summary-box { background: #000; padding: 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; margin-top: 30px; }
         .sum-item { text-align: center; border-right: 1px solid #222; }
@@ -44,10 +41,8 @@
         .sum-val { display: block; font-size: 20px; font-weight: 800; color: var(--gold-metalic); margin-bottom: 5px; }
         .sum-lbl { font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
 
-        .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); width: 100%; padding: 15px; cursor: pointer; border-radius: 10px; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-top: 5px; }
-        .btn-add:hover { background: rgba(212, 175, 55, 0.05); }
-        .save-config { display: flex; align-items: center; gap: 10px; color: #666; font-size: 11px; margin-top: 15px; cursor: pointer; }
-        .save-config input { width: 16px; height: 16px; cursor: pointer; }
+        .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); width: 100%; padding: 12px; cursor: pointer; border-radius: 10px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        .btn-remove { background: none; color: #d9534f; border: 1px solid #d9534f; border-radius: 10px; cursor: pointer; height: 55px; width: 100%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -68,14 +63,14 @@
         </div>
 
         <div class="table-container" style="background: rgba(0,0,0,0.6); padding:30px; border-radius:20px; border:1px solid #333;">
-            <h2 style="font-family:'Cinzel'; font-size:18px; color:var(--gold-metalic)">CERTIFICACIONES INTERNACIONALES REGISTRADAS</h2>
+            <h2 style="font-family:'Cinzel'; font-size:18px; color:var(--gold-metalic)">LIBRO DE CERTIFICACIÓN CONTABLE ESPEJO</h2>
             <table style="width:100%; border-collapse: collapse; margin-top:20px;">
                 <thead style="border-bottom: 2px solid var(--gold-metalic);">
                     <tr style="text-align: left; color:var(--gold-soft); font-size: 12px; text-transform:uppercase;">
                         <th style="padding:20px;">ID Operación</th>
-                        <th>Aliado / RIF</th>
-                        <th>Detalle Servicios & Taxes</th>
-                        <th>Total Factura</th>
+                        <th>Aliado / Fiscal ID</th>
+                        <th>Conceptos & Taxes</th>
+                        <th>Total Certificado</th>
                         <th>Estado</th>
                     </tr>
                 </thead>
@@ -88,64 +83,64 @@
         <div class="modal-content">
             <div class="modal-title">REGISTRO PARA CERTIFICACIÓN FISCAL Y CONTABLE</div>
             
-            <div class="form-section">
-                <div style="display:grid; grid-template-columns: 2fr 1fr; gap:20px;">
+            <div class="form-section" style="min-height: auto; margin-bottom: 25px;">
+                <div style="display:grid; grid-template-columns: 2fr 1fr 1fr; gap:20px;">
                     <div>
-                        <label>Nombre Fiscal del Aliado Responsable *</label>
-                        <input type="text" id="aliado_name" placeholder="Ej: Inversiones Turísticas Internacionales C.A.">
+                        <label>Identificación Fiscal del Aliado *</label>
+                        <input type="text" id="aliado_name" placeholder="Nombre Legal o Agencia">
                     </div>
                     <div>
                         <label>R.I.F. / Tax ID *</label>
-                        <input type="text" id="aliado_rif" placeholder="Identificación Tributaria">
+                        <input type="text" id="aliado_rif" placeholder="ID Tributario">
                     </div>
-                </div>
-                <div style="margin-top:20px;">
-                    <label>Honorarios de Gestión del Aliado ($) *</label>
-                    <input type="number" id="comision_aliado" oninput="calcularTodo()" placeholder="Monto de la Comisión Neta">
+                    <div>
+                        <label>Comisión Aliado ($) *</label>
+                        <input type="number" id="comision_aliado" oninput="calcularTodo()" placeholder="Ganancia neta">
+                    </div>
                 </div>
             </div>
 
-            <div style="display:grid; grid-template-columns: 1.5fr 1fr; gap:25px;">
+            <div style="display:grid; grid-template-columns: 1.5fr 1fr; gap:25px; align-items: stretch;">
                 <div class="form-section">
-                    <label>Desglose de Proveedores y Servicios</label>
-                    <div id="contenedor-servicios">
+                    <label>Bases Imponibles (Proveedores / Servicios)</label>
+                    <div id="contenedor-servicios" style="margin-top: 15px;">
                         <div class="grid-inputs servicio-row">
                             <div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Seguro">🛡️ Seguro</option></select></div>
-                            <div><input type="text" class="prov-name" placeholder="Proveedor / Aseguradora *"></div>
-                            <div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="Costo"></div>
+                            <div><input type="text" class="prov-name" placeholder="Proveedor *"></div>
+                            <div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="Neto"></div>
                             <div></div>
                         </div>
                     </div>
-                    <button class="btn-add" onclick="agregarFila()">+ AGREGAR SERVICIO</button>
+                    <button class="btn-add" onclick="agregarFila()">+ AÑADIR CONCEPTO</button>
                 </div>
 
                 <div class="form-section">
-                    <label>Configuración de Impuestos y Tasas Locales</label>
-                    <div id="contenedor-taxes">
+                    <label>Tasas e Impuestos (Sobre Base Imponible)</label>
+                    <div id="contenedor-taxes" style="margin-top: 15px;">
                         <div class="tax-grid tax-row">
-                            <div><input type="text" class="tax-name" placeholder="Nombre (Ej: IVA, IGTF, VAT)" oninput="guardarPreferencias()"></div>
-                            <div><input type="number" class="tax-val" placeholder="%" oninput="calcularTodo(); guardarPreferencias();"></div>
+                            <div><input type="text" class="tax-name" placeholder="Ej: IVA, IGTF"></div>
+                            <div><input type="number" class="tax-val" oninput="calcularTodo()" placeholder="%"></div>
                             <div></div>
                         </div>
                     </div>
-                    <button class="btn-add" onclick="agregarTax()">+ AGREGAR IMPUESTO</button>
-                    <div class="save-config">
-                        <input type="checkbox" id="fijar_impuestos"> 
-                        <label for="fijar_impuestos" style="color:#666; margin:0; cursor:pointer;">Fijar estos impuestos para futuras operaciones</label>
+                    <button class="btn-add" onclick="agregarTax()">+ AÑADIR TASA</button>
+                    <div style="margin-top: 20px; display: flex; align-items: center; gap: 10px;">
+                        <input type="checkbox" id="fijar_impuestos" style="width:18px; height:18px;"> 
+                        <label for="fijar_impuestos" style="color:#666; margin:0; cursor:pointer; font-size:10px;">Fijar impuestos para futuras operaciones</label>
                     </div>
                 </div>
             </div>
 
             <div class="summary-box">
-                <div class="sum-item"><span class="sum-lbl">Neto Aliado + Prov</span><span id="res-neto" class="sum-val">$0.00</span></div>
+                <div class="sum-item"><span class="sum-lbl">Base Imponible</span><span id="res-neto" class="sum-val">$0.00</span></div>
                 <div class="sum-item"><span class="sum-lbl">Total Impuestos</span><span id="res-imp" class="sum-val">$0.00</span></div>
                 <div class="sum-item"><span class="sum-lbl">Fee Orbis Brain</span><span class="sum-val">$5.00</span></div>
                 <div class="sum-item"><span class="sum-lbl">Escudo Oro (0.5%)</span><span id="res-escudo" class="sum-val">$0.00</span></div>
-                <div class="sum-item" style="border:none;"><span class="sum-lbl">TOTAL CERTIFICADO</span><span id="res-total" class="sum-val" style="color:#4CAF50; font-size:24px;">$0.00</span></div>
+                <div class="sum-item" style="border:none;"><span class="sum-lbl">TOTAL A PAGAR CLIENTE</span><span id="res-total" class="sum-val" style="color:#4CAF50; font-size:24px;">$0.00</span></div>
             </div>
 
-            <button class="btn-gold" id="btn_enviar" onclick="enviarAlCerebro()" style="width:100%; margin-top:35px; font-size:18px; padding:22px;">VALIDAR Y CERTIFICAR OPERACIÓN</button>
-            <button onclick="closeModal()" style="width:100%; background:none; border:none; color:#444; margin-top:20px; cursor:pointer; font-size:12px; text-transform:uppercase;">Cancelar Registro</button>
+            <button class="btn-gold" id="btn_enviar" onclick="enviarAlCerebro()" style="width:100%; margin-top:35px; font-size:18px; padding:22px;">CERTIFICAR Y SINCRONIZAR LIBRO</button>
+            <button onclick="closeModal()" style="width:100%; background:none; border:none; color:#444; margin-top:15px; cursor:pointer; font-size:11px; text-transform:uppercase;">Cancelar Registro</button>
         </div>
     </div>
 
@@ -164,8 +159,8 @@
             div.innerHTML = `
                 <div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Seguro">🛡️ Seguro</option></select></div>
                 <div><input type="text" class="prov-name" placeholder="Proveedor *"></div>
-                <div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="Costo"></div>
-                <button style="background:none; color:#d9534f; border:1px solid #d9534f; border-radius:12px; cursor:pointer; height:55px;" onclick="this.parentElement.remove(); calcularTodo();">X</button>
+                <div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="Neto"></div>
+                <button class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>
             `;
             document.getElementById('contenedor-servicios').appendChild(div);
         }
@@ -176,41 +171,42 @@
             div.innerHTML = `
                 <div><input type="text" class="tax-name" placeholder="Impuesto"></div>
                 <div><input type="number" class="tax-val" oninput="calcularTodo()" placeholder="%"></div>
-                <button style="background:none; color:#d9534f; border:1px solid #d9534f; border-radius:12px; cursor:pointer; height:55px;" onclick="this.parentElement.remove(); calcularTodo();">X</button>
+                <button class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>
             `;
             document.getElementById('contenedor-taxes').appendChild(div);
         }
 
         function calcularTodo() {
-            let netoServicios = 0;
-            document.querySelectorAll('.monto-srv').forEach(i => netoServicios += parseFloat(i.value) || 0);
+            let baseServicios = 0;
+            document.querySelectorAll('.monto-srv').forEach(i => baseServicios += parseFloat(i.value) || 0);
+            
             const comision = parseFloat(document.getElementById('comision_aliado').value) || 0;
             const feeFijo = 5.00;
-            const subtotalBase = netoServicios + comision + feeFijo;
+            
+            // La Base Imponible real para el cálculo de impuestos
+            const baseImponible = baseServicios + comision + feeFijo;
 
             let totalImpuestos = 0;
             document.querySelectorAll('.tax-row').forEach(row => {
                 const pct = parseFloat(row.querySelector('.tax-val').value) || 0;
-                totalImpuestos += subtotalBase * (pct / 100);
+                totalImpuestos += baseImponible * (pct / 100);
             });
 
-            const granTotal = subtotalBase + totalImpuestos;
+            const granTotal = baseImponible + totalImpuestos;
             const escudo = granTotal * 0.005;
 
-            document.getElementById('res-neto').innerText = "$" + (netoServicios + comision).toFixed(2);
+            document.getElementById('res-neto').innerText = "$" + baseImponible.toFixed(2);
             document.getElementById('res-imp').innerText = "$" + totalImpuestos.toFixed(2);
             document.getElementById('res-escudo').innerText = "$" + escudo.toFixed(2);
             document.getElementById('res-total').innerText = "$" + granTotal.toFixed(2);
+            
+            if(document.getElementById('fijar_impuestos').checked) guardarPreferencias();
         }
 
         function guardarPreferencias() {
-            if(!document.getElementById('fijar_impuestos').checked) return;
             const taxes = [];
             document.querySelectorAll('.tax-row').forEach(row => {
-                taxes.push({ 
-                    name: row.querySelector('.tax-name').value, 
-                    val: row.querySelector('.tax-val').value 
-                });
+                taxes.push({ name: row.querySelector('.tax-name').value, val: row.querySelector('.tax-val').value });
             });
             localStorage.setItem('orbis_taxes', JSON.stringify(taxes));
         }
@@ -224,10 +220,7 @@
                 taxes.forEach(t => {
                     const div = document.createElement('div');
                     div.className = 'tax-grid tax-row';
-                    div.innerHTML = `
-                        <div><input type="text" class="tax-name" value="${t.name}"></div>
-                        <div><input type="number" class="tax-val" oninput="calcularTodo()" value="${t.val}"></div>
-                        <div></div>`;
+                    div.innerHTML = `<div><input type="text" class="tax-name" value="${t.name}"></div><div><input type="number" class="tax-val" oninput="calcularTodo()" value="${t.val}"></div><div></div>`;
                     cont.appendChild(div);
                 });
                 document.getElementById('fijar_impuestos').checked = true;
@@ -237,28 +230,17 @@
 
         async function enviarAlCerebro() {
             const btn = document.getElementById('btn_enviar');
-            const aliado = document.getElementById('aliado_name');
-            const rif = document.getElementById('aliado_rif');
-            const comision = document.getElementById('comision_aliado');
-            if(!aliado.value.trim() || !rif.value.trim() || !comision.value) { alert("Complete los datos fiscales"); return; }
-
-            let taxDetails = "";
-            document.querySelectorAll('.tax-row').forEach(r => {
-                taxDetails += `${r.querySelector('.tax-name').value}(${r.querySelector('.tax-val').value}%) `;
-            });
-
-            btn.innerText = "REGISTRANDO EN BLOCKCHAIN...";
+            const payload = {
+                aliado: document.getElementById('aliado_name').value + " [" + document.getElementById('aliado_rif').value + "]",
+                monto: document.getElementById('res-total').innerText.replace("$",""),
+                comision_aliado: document.getElementById('comision_aliado').value
+            };
+            
+            btn.innerText = "CERTIFICANDO REGISTRO...";
             btn.disabled = true;
 
-            await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: JSON.stringify({
-                aliado: aliado.value + " [" + rif.value + "]",
-                proveedor: "Taxes: " + taxDetails + " + Fee Orbis",
-                monto: document.getElementById('res-total').innerText.replace("$",""),
-                comision_aliado: comision.value,
-                tipo_seguro: "global_v4.1"
-            })});
-
-            alert("CERTIFICACIÓN EXITOSA");
+            await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+            alert("¡CERTIFICACIÓN COMPLETADA!");
             location.reload();
         }
 
@@ -269,14 +251,7 @@
                 const tbody = document.getElementById('cuerpo-tabla');
                 tbody.innerHTML = "";
                 data.reverse().forEach(op => {
-                    tbody.innerHTML += `
-                        <tr style="border-bottom: 1px solid #222;">
-                            <td style="padding:20px; color:var(--gold-soft); font-family:monospace; font-weight:bold;">${op.id}</td>
-                            <td style="font-weight:600;">${op.aliado}</td>
-                            <td style="font-size:12px; color:#999; line-height:1.5;">${op.proveedor}</td>
-                            <td style="font-weight:800; color:var(--gold-metalic); font-size:16px;">$${parseFloat(op.monto).toFixed(2)}</td>
-                            <td><span style="background:rgba(76,175,80,0.1); color:#4CAF50; padding:8px 15px; border-radius:8px; font-size:11px; font-weight:bold; border:1px solid rgba(76,175,80,0.3);">CERTIFICADO</span></td>
-                        </tr>`;
+                    tbody.innerHTML += `<tr><td style="padding:20px; font-family:monospace;">${op.id}</td><td style="font-weight:600;">${op.aliado}</td><td style="font-size:12px; color:#777;">Operación Certificada v4.2</td><td style="font-weight:800; color:var(--gold-metalic)">$${parseFloat(op.monto).toFixed(2)}</td><td><span style="color:#4CAF50; font-size:10px;">CERTIFICADO</span></td></tr>`;
                 });
             } catch(e) {}
         }
