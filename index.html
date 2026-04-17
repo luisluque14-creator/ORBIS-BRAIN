@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Proporción Áurea v6.9</title>
+    <title>ORBIS BRAIN | Seguridad de Red v6.10</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -31,7 +31,7 @@
         th { text-align: left; color: var(--gold-soft); font-size: 10px; text-transform: uppercase; padding: 15px; border-bottom: 2px solid var(--gold-metalic); }
         td { padding: 15px; border-bottom: 1px solid #222; font-size: 13px; }
 
-        /* MODAL COMPACTA */
+        /* MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 25px 60px; border-radius: 30px; width: 1200px; max-height: 94vh; overflow-y: auto; }
         
@@ -80,7 +80,15 @@
         <div class="table-container">
             <table>
                 <thead><tr><th>Categoría</th><th>Nombre Legal</th><th>RIF</th><th>País</th><th>Acción</th></tr></thead>
-                <tbody id="cuerpo-tabla-prov"></tbody>
+                <tbody id="cuerpo-tabla-prov">
+                    <tr id="row-EJEMPLO">
+                        <td>HOTEL</td>
+                        <td style="font-weight:bold; letter-spacing:1px;">CARACAS C.A</td>
+                        <td>J-123456</td>
+                        <td>VENEZUELA</td>
+                        <td><button onclick="confirmarEliminar('CARACAS C.A', 'EJEMPLO')" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px; font-weight:bold; text-transform:uppercase;">Eliminar</button></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -129,16 +137,6 @@
                         </div>
                     </div>
                     <button class="btn-add-small" onclick="addField('phone-container', 'phone')">+ Agregar otro teléfono</button>
-                    
-                    <label style="margin-top:15px;">Canales de Correo Electrónico</label>
-                    <div id="email-container">
-                        <div class="dynamic-row">
-                            <input type="email" class="prov-email" placeholder="ADMIN@CORREO.COM" oninput="this.value = this.value.toUpperCase()">
-                            <span style="font-size:10px; color:gray; padding-top:10px;">PRINCIPAL</span>
-                            <div></div>
-                        </div>
-                    </div>
-                    <button class="btn-add-small" onclick="addField('email-container', 'email')">+ Agregar otro correo</button>
                 </div>
 
                 <div class="form-section">
@@ -152,11 +150,6 @@
                                 <option value="EUR (€)">EUR (€)</option>
                             </select>
                         </div>
-                    </div>
-                    <div style="background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);">
-                        <p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.5;">
-                            <b>RED GLOBAL ORBIS:</b> ESTE PROVEEDOR SERÁ INTEGRADO A LA RED MAESTRA DE ALIADOS PARA ORQUESTACIÓN INTERNACIONAL.
-                        </p>
                     </div>
                 </div>
             </div>
@@ -190,22 +183,16 @@
                 el.value = '';
                 el.classList.remove('input-error');
             });
-
             document.getElementById('phone-container').innerHTML = `
                 <div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+"> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select><div></div></div>
                 <div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+"> <select class="is-whatsapp"><option value="no" selected>📞 LLAMADA</option><option value="yes">🟢 WHATSAPP</option></select><button class="btn-remove" onclick="this.parentElement.remove()">×</button></div>`;
-            document.getElementById('email-container').innerHTML = `<div class="dynamic-row"><input type="email" class="prov-email" placeholder="ADMIN@CORREO.COM"> <span style="font-size:10px; color:gray; padding-top:10px;">PRINCIPAL</span><div></div></div>`;
         }
 
         function addField(containerId, type) {
             const container = document.getElementById(containerId);
             const div = document.createElement('div');
             div.className = 'dynamic-row';
-            if(type === 'phone') {
-                div.innerHTML = `<input type="text" class="prov-phone" placeholder="+"> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no" selected>📞 LLAMADA</option></select> <button class="btn-remove" onclick="this.parentElement.remove()">×</button>`;
-            } else {
-                div.innerHTML = `<input type="email" class="prov-email" placeholder="OTRO@CORREO.COM" oninput="this.value = this.value.toUpperCase()"> <span></span> <button class="btn-remove" onclick="this.parentElement.remove()">×</button>`;
-            }
+            div.innerHTML = `<input type="text" class="prov-phone" placeholder="+"> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no" selected>📞 LLAMADA</option></select> <button class="btn-remove" onclick="this.parentElement.remove()">×</button>`;
             container.appendChild(div);
         }
 
@@ -232,17 +219,28 @@
 
         function ejecutarGuardado(nombre, rif, pais) {
             const tbody = document.getElementById('cuerpo-tabla-prov');
-            tbody.innerHTML += `<tr id="row-${rif}">
+            const newRowId = 'row-' + rif.replace(/\s+/g, '');
+            tbody.innerHTML += `<tr id="${newRowId}">
                 <td>${document.getElementById('prov_cat').value}</td>
                 <td style="font-weight:bold; letter-spacing:1px;">${nombre}</td>
                 <td>${rif}</td>
                 <td>${pais}</td>
-                <td><button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td>
+                <td><button onclick="confirmarEliminar('${nombre}', '${newRowId}')" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px; font-weight:bold; text-transform:uppercase;">Eliminar</button></td>
             </tr>`;
             
             alert("✅ REGISTRO EXITOSO.");
             document.getElementById('provModal').style.display = 'none';
             resetFicha();
+        }
+
+        // --- FUNCIÓN DE ELIMINACIÓN SEGURA SOLICITADA POR EL SOCIO ---
+        function confirmarEliminar(nombreProv, rowId) {
+            const mensaje = `🏛️ ORBIS BRAIN SECURITY:\n\n¿CONFIRMA QUE DESEA ELIMINAR ESTE PROVEEDOR?\n\nEL PROVEEDOR [ ${nombreProv} ] SERÁ ELIMINADO DE TODA LA RED MAESTRA DE ALIADOS.`;
+            
+            if(confirm(mensaje)) {
+                document.getElementById(rowId).remove();
+                alert(`SISTEMA: PROVEEDOR [ ${nombreProv} ] ELIMINADO CORRECTAMENTE.`);
+            }
         }
 
         window.onclick = function(event) { if (event.target.className === 'modal') { event.target.style.display = "none"; } }
