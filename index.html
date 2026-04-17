@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | World Edition v5.6</title>
+    <title>ORBIS BRAIN | World & Exchange v5.7</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,44 +12,33 @@
             --gold-gradient: linear-gradient(90deg, transparent, #d4af37, #f1d592, #d4af37, transparent);
         }
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
-        
         .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; }
         .logo-container { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 20px; }
         .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; margin-top: 10px; }
-        
         .main-content { flex: 1; padding: 50px; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); }
         .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; transition: 0.3s; }
-
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 30px 60px; border-radius: 30px; width: 1350px; max-height: 96vh; overflow-y: auto; }
-        
         .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 15px 0; opacity: 0.8; }
         .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 24px; letter-spacing: 3px; margin: 0; }
-
         .main-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 20px; align-items: stretch; margin-top: 15px; }
         .form-section { background: rgba(255,255,255,0.02); padding: 20px 30px; border-radius: 20px; border: 1px solid #222; display: flex; flex-direction: column; }
-        
         label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
-        
         .grid-inputs { display: grid; grid-template-columns: 1.2fr 2fr 1fr 1fr 40px; gap: 12px; margin-bottom: 12px; align-items: end; }
         .tax-grid { display: grid; grid-template-columns: 2fr 1.2fr 40px; gap: 12px; margin-bottom: 12px; align-items: end; }
-        
         .tax-input-wrapper { position: relative; display: flex; align-items: center; }
         .tax-symbol { position: absolute; right: 15px; color: var(--gold-soft); font-weight: bold; font-size: 16px; pointer-events: none; }
-        
         input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
-
+        .input-error { border-color: #d9534f !important; }
         .summary-box { background: #000; padding: 25px 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 20px; }
         .sum-item { text-align: center; border-right: 1px solid #222; padding: 0 5px; }
         .sum-item:last-child { border-right: none; }
-        .sum-val { display: block; font-size: 18px; font-weight: 800; color: var(--gold-metalic); margin-bottom: 5px; }
+        .sum-val { display: block; font-size: 20px; font-weight: 800; color: var(--gold-metalic); margin-bottom: 5px; }
         .sum-lbl { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; }
-
         .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); width: 100%; padding: 10px; cursor: pointer; border-radius: 8px; font-size: 11px; font-weight: bold; text-transform: uppercase; margin-top: 10px; }
         .btn-remove { background: none; color: #d9534f; border: 1px solid #d9534f; border-radius: 8px; cursor: pointer; height: 46px; width: 100%; display: flex; align-items: center; justify-content: center; }
         .btn-cancel { background: transparent; color: #666; border: 1px solid #333; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 20px auto 0; display: block; transition: all 0.4s ease; }
         .btn-cancel:hover { color: #d9534f; border-color: #d9534f; background: rgba(217, 83, 79, 0.05); }
-
         .row-fixed { background: rgba(212, 175, 55, 0.05); border-radius: 10px; padding: 5px; border: 1px solid rgba(212, 175, 55, 0.2); }
         .btn-submit { width: 100%; margin-top: 20px; padding: 18px; font-size: 15px; }
     </style>
@@ -84,7 +73,7 @@
                                 <option value="د.إ">AED (د.إ) - Dirham</option>
                             </select>
                         </div>
-                        <div><label style="color:var(--gold-metalic)">Honorarios Aliado <span class="curr-sym">$</span> *</label><input type="number" id="comision_aliado" readonly style="background: #111; color: var(--gold-metalic); font-weight: bold; border-color: var(--gold-metalic);"></div>
+                        <div><label style="color:var(--gold-metalic)">Honorarios Aliado (<span class="curr-sym">$</span>)</label><input type="number" id="comision_aliado" readonly style="background: #111; color: var(--gold-metalic); font-weight: bold; border-color: var(--gold-metalic);"></div>
                     </div>
                 </div>
 
@@ -116,13 +105,12 @@
                         <label style="color:var(--gold-metalic)">Tasas e Impuestos (%)</label>
                         <div id="contenedor-taxes">
                             <div class="tax-grid tax-row">
-                                <div><input type="text" class="tax-name" placeholder="IVA, IGTF, TAX... *" list="sugerencias_impuestos"></div>
+                                <div><input type="text" class="tax-name" placeholder="Nombre Impuesto *" list="sugerencias_impuestos"></div>
                                 <div class="tax-input-wrapper"><input type="number" class="tax-val" oninput="calcularTodo()" placeholder="0"><span class="tax-symbol">% *</span></div>
                                 <div></div>
                             </div>
                         </div>
-                        <datalist id="sugerencias_impuestos">
-                            </datalist>
+                        <datalist id="sugerencias_impuestos"></datalist>
                         <button type="button" class="btn-add" onclick="agregarTax()">+ AGREGAR TASA</button>
                     </div>
                 </div>
@@ -145,22 +133,28 @@
     <script>
         const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwx34Vu9no8Pgp-VS2c5tvoYAPv80xzKPyo7VsDPppq7tm4shv6NxIpIoT9KqM8AcQUXg/exec";
         
+        // MOTOR DE TASAS (Actualizable por el CEO)
+        const TASAS = {
+            "$": 1.00,
+            "Bs.": 45.00,
+            "€": 0.93,
+            "د.إ": 3.67
+        };
+
         const SUGERENCIAS = {
             "$": ["Sales Tax", "Federal Tax", "Vat"],
-            "Bs.": ["IVA 16%", "IGTF 3%", "Retención"],
-            "€": ["VAT (IVA)", "Tasa Turística", "Tax"],
-            "د.إ": ["VAT 5%", "Municipality Fee", "Tourism Dirham"]
+            "Bs.": ["IVA 16%", "IGTF 3%", "ISLR"],
+            "€": ["VAT (IVA)", "Tasa Turística"],
+            "د.إ": ["VAT 5%", "Municipality Fee"]
         };
 
         function cambiarMoneda() {
             const sym = document.getElementById('moneda_global').value;
             document.querySelectorAll('.curr-sym').forEach(el => el.innerText = sym);
-            
             const dl = document.getElementById('sugerencias_impuestos');
             dl.innerHTML = "";
             SUGERENCIAS[sym].forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s;
+                const opt = document.createElement('option'); opt.value = s;
                 dl.appendChild(opt);
             });
             calcularTodo();
@@ -171,6 +165,14 @@
         function confirmarCancelacion() {
             if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán todos los datos actuales.")) {
                 document.getElementById('registroForm').reset();
+                document.getElementById('filas-dinamicas').innerHTML = `
+                    <div class="grid-inputs servicio-row">
+                        <div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option></select></div>
+                        <div><input type="text" class="prov-name" placeholder="Proveedor *"></div>
+                        <div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div>
+                        <div><input type="number" class="comision-ind" oninput="calcularTodo()" placeholder="0.00" style="color:var(--gold-soft)"></div>
+                        <button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>
+                    </div>`;
                 document.getElementById('opModal').style.display='none';
             }
         }
@@ -188,26 +190,40 @@
         }
 
         function calcularTodo() {
+            const sym = document.getElementById('moneda_global').value;
+            const tasa = TASAS[sym];
             const esInterno = document.getElementById('tipo_seguro_sel').value === 'interno';
-            let netoSeguro = esInterno ? 2.00 : 0;
-            let totalNetoServicios = netoSeguro; let totalComisAliado = 0;
+            
+            // Fijos en moneda local
+            let netoSeguroLocal = (esInterno ? 2.00 : 0) * tasa;
+            let feeOrbisLocal = 5.00 * tasa;
+            let margenSeguroLocal = (esInterno ? 1.00 : 0) * tasa;
+            let feeFinalLocal = feeOrbisLocal + margenSeguroLocal;
+
+            let totalNetoServicios = netoSeguroLocal; 
+            let totalComisAliado = 0;
+
             document.querySelectorAll('.servicio-row').forEach(row => {
                 totalNetoServicios += parseFloat(row.querySelector('.monto-srv').value) || 0;
                 totalComisAliado += parseFloat(row.querySelector('.comision-ind').value) || 0;
             });
+
             document.getElementById('comision_aliado').value = totalComisAliado.toFixed(2);
-            const feeBase = 5.00; const margenSeguro = esInterno ? 1.00 : 0; const feeFinal = feeBase + margenSeguro;
-            document.getElementById('res-fee-fijo').innerHTML = feeFinal.toFixed(2) + ' <span class="curr-sym">' + document.getElementById('moneda_global').value + '</span>';
-            const baseImponible = totalNetoServicios + totalComisAliado + feeFinal;
+            document.getElementById('res-fee-fijo').innerHTML = feeFinalLocal.toFixed(2) + ' <span class="curr-sym">' + sym + '</span>';
+
+            const baseImponible = totalNetoServicios + totalComisAliado + feeFinalLocal;
+
             let taxTotal = 0; let tasaAcumulada = 0;
             document.querySelectorAll('.tax-row').forEach(row => {
                 const pct = parseFloat(row.querySelector('.tax-val').value) || 0;
                 taxTotal += baseImponible * (pct / 100); tasaAcumulada += pct;
             });
-            const granTotal = baseImponible + taxTotal; const escudo = granTotal * 0.005;
+
+            const granTotal = baseImponible + taxTotal; 
+            const escudo = granTotal * 0.005;
             const impuestosSobreComision = totalComisAliado * (tasaAcumulada / 100);
             const gananciaNetaAliado = totalComisAliado - impuestosSobreComision;
-            const sym = document.getElementById('moneda_global').value;
+
             document.getElementById('res-neto').innerHTML = baseImponible.toFixed(2) + ' ' + sym;
             document.getElementById('res-imp').innerHTML = taxTotal.toFixed(2) + ' ' + sym;
             document.getElementById('res-escudo').innerHTML = escudo.toFixed(2) + ' ' + sym;
@@ -226,9 +242,9 @@
                 aliado: document.getElementById('aliado_name').value + " [" + document.getElementById('aliado_rif').value + "]",
                 monto: document.getElementById('res-total').innerText,
                 comision_aliado: document.getElementById('comision_aliado').value,
-                proveedor: "World Edition v5.6"
+                proveedor: "World v5.7"
             })});
-            alert("CERTIFICACIÓN SINCRONIZADA CON EL LIBRO"); 
+            alert("CERTIFICACIÓN SINCRONIZADA"); 
             location.reload();
         }
 
@@ -236,7 +252,7 @@
             try {
                 const res = await fetch(URL_SCRIPT); const data = await res.json(); const tbody = document.getElementById('cuerpo-tabla');
                 tbody.innerHTML = ""; data.reverse().forEach(op => {
-                    tbody.innerHTML += `<tr><td style="padding:15px; font-family:monospace;">${op.id}</td><td style="font-weight:600;">${op.aliado}</td><td style="font-size:11px; color:#777;">World v5.6</td><td style="font-weight:800; color:var(--gold-metalic)">${op.monto}</td><td><span style="color:#4CAF50; font-size:10px; border:1px solid #4CAF50; padding:2px 5px; border-radius:4px;">CERTIFICADO</span></td></tr>`;
+                    tbody.innerHTML += `<tr><td style="padding:15px; font-family:monospace;">${op.id}</td><td style="font-weight:600;">${op.aliado}</td><td style="font-size:11px; color:#777;">Sincronizado v5.7</td><td style="font-weight:800; color:var(--gold-metalic)">${op.monto}</td><td><span style="color:#4CAF50; font-size:10px; border:1px solid #4CAF50; padding:2px 5px; border-radius:4px;">CERTIFICADO</span></td></tr>`;
                 });
             } catch(e) {}
         }
