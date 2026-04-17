@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Blindaje v6.11</title>
+    <title>ORBIS BRAIN | Acceso Maestro v6.12</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -22,8 +22,7 @@
         .view-section { display: none; flex: 1; padding: 50px; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); }
         .view-section.active { display: block; }
 
-        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 18px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 14px; letter-spacing: 3px; transition: 0.3s; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4); }
+        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 18px 28px; border-radius: 8px; font-weight: bold; font-family: 'Cinzel'; text-transform: uppercase; font-size: 14px; letter-spacing: 3px; cursor: pointer; transition: 0.3s; width: 100%; }
         
         .table-container { background: rgba(0,0,0,0.6); padding: 30px; border-radius: 20px; border: 1px solid #333; margin-top: 20px; }
         table { width: 100%; border-collapse: collapse; }
@@ -32,33 +31,26 @@
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 25px 60px; border-radius: 30px; width: 1200px; max-height: 94vh; overflow-y: auto; }
-        
         .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 10px 0; opacity: 0.8; }
-        .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 24px; letter-spacing: 5px; margin: 5px 0; font-weight: 500; }
+        .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 24px; letter-spacing: 5px; margin: 5px 0; }
 
         .form-section { background: rgba(255,255,255,0.02); padding: 25px; border-radius: 20px; border: 1px solid #222; margin-bottom: 20px; }
         label { display: block; font-size: 11px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
         input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 14px; box-sizing: border-box; text-transform: uppercase; }
         
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
-        
-        .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
-        .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 10px auto 0; display: block; width: 100%; transition: all 0.4s ease; }
+        .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 15px auto 0; display: block; width: 100%; transition: 0.3s; }
         .btn-cancel-elite:hover { color: #d9534f; border-color: #d9534f; background: rgba(217, 83, 79, 0.05); }
     </style>
 </head>
 <body>
 
     <script>
-        const USUARIO_ACTUAL = "LUIS_ALFREDO"; // Tu nombre en el sistema
+        // CONFIGURACIÓN DE IDENTIDAD MAESTRA
+        const USUARIO_ACTUAL = "LUIS_ALFREDO"; 
     </script>
 
     <div class="sidebar">
-        <div class="logo-container">
-            <div class="logo-text">ORBIS</div>
-            <div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px;">BRAIN NETWORK</div>
-        </div>
+        <div class="logo-container"><div class="logo-text">ORBIS</div><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px;">BRAIN NETWORK</div></div>
         <button class="nav-btn" onclick="showView('certificacion', this)">🏛️ Certificaciones</button>
         <button class="nav-btn active" onclick="showView('directorio', this)">👥 Directorio Maestro</button>
     </div>
@@ -72,13 +64,13 @@
             <table>
                 <thead><tr><th>Categoría</th><th>Nombre Legal</th><th>RIF</th><th>País</th><th>Propietario</th><th>Acción</th></tr></thead>
                 <tbody id="cuerpo-tabla-prov">
-                    <tr id="row-PEDRO123">
+                    <tr id="row-TEST-001">
                         <td>AGENCIA</td>
-                        <td style="font-weight:bold;">VIAJES PEDRO C.A</td>
-                        <td>J-999999</td>
-                        <td>ESPAÑA</td>
-                        <td style="color:#777; font-size:10px;">PEDRO_PEREZ</td>
-                        <td><button onclick="confirmarEliminar('VIAJES PEDRO C.A', 'row-PEDRO123', 'PEDRO_PEREZ')" style="background:none; border:none; color:#444; cursor:pointer; font-size:10px; font-weight:bold; text-transform:uppercase;">Eliminar</button></td>
+                        <td style="font-weight:bold; letter-spacing:1px;">VIAJES PRUEBA C.A</td>
+                        <td>J-12345678-9</td>
+                        <td>VENEZUELA</td>
+                        <td style="color:var(--gold-soft); font-size:10px;">LUIS_ALFREDO</td>
+                        <td><button onclick="confirmarEliminar('VIAJES PRUEBA C.A', 'row-TEST-001', 'LUIS_ALFREDO')" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px; font-weight:bold; text-transform:uppercase;">Eliminar</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -90,24 +82,17 @@
             <hr class="gold-divider">
             <div class="modal-title">RED MAESTRA</div>
             <hr class="gold-divider">
-
             <div class="form-section" style="margin-top:20px;">
-                <div class="grid-3">
-                    <div><label>Categoría *</label>
-                        <select id="prov_cat">
-                            <option value="HOTEL">🏨 HOTEL</option>
-                            <option value="AGENCIA">🏢 AGENCIA</option>
-                        </select>
-                    </div>
+                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;">
+                    <div><label>Categoría *</label><select id="prov_cat"><option value="HOTEL">🏨 HOTEL</option><option value="AGENCIA">🏢 AGENCIA</option></select></div>
                     <div><label>Nombre Legal *</label><input type="text" id="prov_nombre" oninput="this.value = this.value.toUpperCase()"></div>
                     <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" oninput="this.value = this.value.toUpperCase()"></div>
                 </div>
-                <div class="grid-3" style="margin-top:20px;">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-top:20px;">
                     <div><label>País *</label><input type="text" id="prov_pais" oninput="this.value = this.value.toUpperCase()"></div>
                     <div><label>Moneda *</label><select id="prov_moneda"><option value="USD ($)">USD ($)</option></select></div>
                 </div>
             </div>
-
             <button class="btn-gold" style="padding: 22px;" onclick="iniciarGuardado()">REGISTRAR EN RED MAESTRA</button>
             <button class="btn-cancel-elite" onclick="closeModal('provModal')">Cancelar y Salir</button>
         </div>
@@ -128,13 +113,11 @@
             const nombre = document.getElementById('prov_nombre').value;
             const rif = document.getElementById('prov_rif').value;
             const pais = document.getElementById('prov_pais').value;
+            if(!nombre || !rif || !pais) return alert("⚠️ DATOS INCOMPLETOS.");
 
-            if(!nombre || !rif || !pais) return alert("⚠️ ERROR: DATOS INNEGOCIABLES FALTANTES.");
-
-            if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿CONFIRMA EL REGISTRO?")) {
+            if(confirm("🏛️ SEGURIDAD ORBIS: ¿CONFIRMA EL REGISTRO?")) {
                 const tbody = document.getElementById('cuerpo-tabla-prov');
-                const rowId = 'row-' + rif.replace(/\s+/g, '');
-                
+                const rowId = 'row-' + Date.now();
                 tbody.innerHTML += `<tr id="${rowId}">
                     <td>${document.getElementById('prov_cat').value}</td>
                     <td style="font-weight:bold;">${nombre}</td>
@@ -147,20 +130,17 @@
             }
         }
 
-        // --- LÓGICA DE PROPIEDAD INTELECTUAL ---
         function confirmarEliminar(nombreProv, rowId, propietario) {
-            // Check de Seguridad: ¿Eres tú el dueño?
             if (propietario !== USUARIO_ACTUAL) {
-                alert(`🏛️ BLOQUEO DE SEGURIDAD ORBIS BRAIN:\n\nUSTED NO TIENE PERMISOS PARA ELIMINAR ESTE REGISTRO.\n\nPROPIETARIO ORIGINAL: ${propietario}\n\nSolo el creador de la ficha técnica puede purgar estos datos de la Red Maestra.`);
+                alert(`🏛️ BLOQUEO DE SEGURIDAD ORBIS BRAIN:\n\nUSTED NO TIENE PERMISOS PARA ELIMINAR ESTE REGISTRO.\n\nPROPIETARIO ORIGINAL: ${propietario}`);
                 return;
             }
 
-            // Si eres el dueño, procede con la advertencia que diseñamos
-            const mensaje = `🏛️ SEGURIDAD DE RED:\n\n¿CONFIRMA QUE DESEA ELIMINAR ESTE PROVEEDOR?\n\nEL PROVEEDOR [ ${nombreProv} ] SERÁ ELIMINADO DE TODA LA RED MAESTRA.`;
+            const mensaje = `🏛️ ORBIS BRAIN SECURITY:\n\n¿CONFIRMA QUE DESEA ELIMINAR ESTE PROVEEDOR?\n\nEL PROVEEDOR [ ${nombreProv} ] SERÁ ELIMINADO DE TODA LA RED MAESTRA DE ALIADOS.`;
             
             if(confirm(mensaje)) {
                 document.getElementById(rowId).remove();
-                alert("SISTEMA: DATOS PURGADOS CORRECTAMENTE.");
+                alert(`SISTEMA: PROVEEDOR [ ${nombreProv} ] PURGADO CORRECTAMENTE.`);
             }
         }
     </script>
