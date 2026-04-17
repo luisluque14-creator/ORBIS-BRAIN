@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Sistema Integrado v7.0</title>
+    <title>ORBIS BRAIN | Full Core v7.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -14,47 +14,55 @@
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
         /* SIDEBAR */
-        .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; z-index: 10; }
+        .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; }
         .logo-container { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 20px; }
         .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; margin-top: 10px; }
-        .nav-btn { background: transparent; border: 1px solid transparent; color: #888; padding: 15px; text-align: left; font-family: 'Cinzel'; font-size: 12px; letter-spacing: 2px; cursor: pointer; transition: 0.3s; margin-bottom: 10px; border-radius: 8px; width: 100%; }
+        .nav-btn { background: transparent; border: 1px solid transparent; color: #888; padding: 15px; text-align: left; font-family: 'Cinzel'; font-size: 12px; letter-spacing: 2px; cursor: pointer; transition: 0.3s; margin-bottom: 10px; border-radius: 8px; }
         .nav-btn.active { color: var(--gold-metalic); border: 1px solid var(--gold-metalic); background: rgba(212, 175, 55, 0.1); }
 
         /* VISTAS */
-        .view-section { display: none; flex: 1; padding: 50px; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); }
+        .view-section { display: none; flex: 1; padding: 40px; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); }
         .view-section.active { display: block; }
 
-        h1 { font-family: 'Cinzel'; font-size: 26px; margin-bottom: 30px; }
-        .gold-txt { color: var(--gold-metalic); }
-
-        /* TABLAS */
-        .table-container { background: rgba(0,0,0,0.6); padding: 30px; border-radius: 20px; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* TABLAS Y BOTONES */
+        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; font-family: 'Cinzel'; text-transform: uppercase; cursor: pointer; transition: 0.3s; }
+        .table-container { background: rgba(0,0,0,0.6); padding: 30px; border-radius: 20px; border: 1px solid #333; margin-top: 20px; }
         table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; color: var(--gold-soft); font-size: 10px; text-transform: uppercase; padding: 15px; border-bottom: 2px solid var(--gold-metalic); letter-spacing: 1px; }
+        th { text-align: left; color: var(--gold-soft); font-size: 10px; text-transform: uppercase; padding: 15px; border-bottom: 2px solid var(--gold-metalic); }
         td { padding: 15px; border-bottom: 1px solid #222; font-size: 13px; }
 
-        /* BOTONES */
-        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 15px 25px; border-radius: 8px; font-weight: bold; font-family: 'Cinzel'; text-transform: uppercase; font-size: 12px; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
-        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4); }
-
-        /* MODAL */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 25px 60px; border-radius: 30px; width: 1100px; max-height: 90vh; overflow-y: auto; }
-        .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 10px 0; opacity: 0.8; }
+        /* MODALES */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.97); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
+        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 30px 60px; border-radius: 30px; width: 1300px; max-height: 96vh; overflow-y: auto; }
+        .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 15px 0; opacity: 0.8; }
         .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 22px; letter-spacing: 5px; margin: 5px 0; }
 
-        .form-section { background: rgba(255,255,255,0.02); padding: 20px; border-radius: 15px; border: 1px solid #222; margin-bottom: 20px; }
-        label { display: block; font-size: 10px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; }
-        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 10px; border-radius: 6px; font-size: 13px; box-sizing: border-box; text-transform: uppercase; }
+        /* FORMULARIOS */
+        .form-section { background: rgba(255,255,255,0.02); padding: 20px; border-radius: 20px; border: 1px solid #222; margin-bottom: 15px; }
+        label { display: block; font-size: 11px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
+        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: 0.3s; }
+        input:focus { border-color: var(--gold-metalic); outline: none; }
+        .input-error { border-color: #d9534f !important; background: rgba(217, 83, 79, 0.05); }
 
-        .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 12px; border-radius: 6px; cursor: pointer; font-size: 10px; text-transform: uppercase; width: 100%; margin-top: 10px; transition: 0.3s; }
-        .btn-cancel-elite:hover { color: #d9534f; border-color: #d9534f; }
+        /* SUMMARY BOX */
+        .summary-box { background: #000; padding: 20px; border-radius: 20px; border: 1px solid var(--gold-metalic); display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 15px; }
+        .sum-item { text-align: center; border-right: 1px solid #222; }
+        .sum-item:last-child { border-right: none; }
+        .sum-val { display: block; font-size: 18px; font-weight: 800; color: var(--gold-metalic); }
+        .sum-lbl { font-size: 9px; color: #aaa; text-transform: uppercase; }
+
+        .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 12px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; width: 100%; margin-top: 10px; transition: 0.4s; }
+        .btn-cancel-elite:hover { color: #d9534f; border-color: #d9534f; background: rgba(217, 83, 79, 0.05); }
+        
+        .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
+        .row-fixed { background: rgba(212, 175, 55, 0.05); border-radius: 10px; padding: 10px; border: 1px solid rgba(212, 175, 55, 0.2); }
     </style>
 </head>
 <body>
 
     <script>
-        const USUARIO_ACTUAL = "LUIS_ALFREDO"; 
+        const USUARIO_ACTUAL = "LUIS_ALFREDO";
+        const TASAS = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
     </script>
 
     <div class="sidebar">
@@ -67,130 +75,202 @@
     </div>
 
     <div id="view-certificacion" class="view-section active">
-        <h1>SISTEMA DE <span class="gold-txt">CERTIFICACIÓN GLOBAL</span></h1>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+            <h1 style="font-family:'Cinzel';">SISTEMA DE <span style="color:var(--gold-metalic)">CERTIFICACIÓN</span></h1>
+            <button class="btn-gold" onclick="openModal('opModal')">Nueva Orquestación +</button>
+        </div>
         <div class="table-container">
             <table>
-                <thead>
-                    <tr>
-                        <th>ID Master</th>
-                        <th>Aliado Estratégico</th>
-                        <th>Monto Operativo</th>
-                        <th>Estado de Red</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>OB-2026-001</td>
-                        <td style="font-weight: bold;">ALIADO EJEMPLO GLOBAL</td>
-                        <td>$ 25,000.00</td>
-                        <td><span style="color: #5cb85c;">● ACTIVO</span></td>
-                    </tr>
-                </tbody>
+                <thead><tr><th>ID Operación</th><th>Aliado</th><th>Monto Certificado</th><th>Estado</th></tr></thead>
+                <tbody id="tabla-ops"></tbody>
             </table>
         </div>
     </div>
 
     <div id="view-directorio" class="view-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-            <h1>DIRECTORIO <span class="gold-txt">GLOBAL DE ALIADOS</span></h1>
+            <h1 style="font-family:'Cinzel';">DIRECTORIO <span style="color:var(--gold-metalic)">GLOBAL</span></h1>
             <button class="btn-gold" onclick="openModal('provModal')">Cargar Ficha Técnica +</button>
         </div>
         <div class="table-container">
             <table>
-                <thead>
-                    <tr>
-                        <th>Categoría</th>
-                        <th>Nombre Legal</th>
-                        <th>RIF / Tax ID</th>
-                        <th>País</th>
-                        <th>Propietario</th>
-                        <th>Acción</th>
-                    </tr>
-                </thead>
-                <tbody id="cuerpo-tabla-prov">
-                    <tr id="row-TEST-001">
-                        <td>AGENCIA</td>
-                        <td style="font-weight:bold;">VIAJES PRUEBA C.A</td>
-                        <td>J-12345678-9</td>
-                        <td>VENEZUELA</td>
-                        <td style="color:var(--gold-soft); font-size:10px;">LUIS_ALFREDO</td>
-                        <td><button onclick="confirmarEliminar('VIAJES PRUEBA C.A', 'row-TEST-001', 'LUIS_ALFREDO')" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px; font-weight:bold; text-transform:uppercase;">Eliminar</button></td>
-                    </tr>
-                </tbody>
+                <thead><tr><th>Categoría</th><th>Nombre Legal</th><th>RIF</th><th>País</th><th>Acción</th></tr></thead>
+                <tbody id="tabla-prov"></tbody>
             </table>
+        </div>
+    </div>
+
+    <div id="opModal" class="modal">
+        <div class="modal-content">
+            <hr class="gold-divider">
+            <div class="modal-title">REGISTRO PARA CERTIFICACIÓN FISCAL Y CONTABLE</div>
+            <hr class="gold-divider">
+            <form id="formOp">
+                <div class="form-section">
+                    <div style="display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap:15px;">
+                        <div><label>Nombre Fiscal Aliado *</label><input type="text" id="aliado_n"></div>
+                        <div><label>RIF / Tax ID *</label><input type="text" id="aliado_r"></div>
+                        <div><label>Moneda *</label>
+                            <select id="moneda_op" onchange="cambiarMonedaOp()">
+                                <option value="$">USD ($)</option>
+                                <option value="Bs.">Bs. (VES)</option>
+                                <option value="€">EUR (€)</option>
+                            </select>
+                        </div>
+                        <div><label>Honorarios (<span class="curr-sym">$</span>)</label><input type="number" id="hono_aliado" readonly></div>
+                    </div>
+                </div>
+                <div style="display:grid; grid-template-columns: 1.8fr 1fr; gap:20px;">
+                    <div class="form-section">
+                        <label>Bases Imponibles & Comisiones</label>
+                        <div class="row-fixed" style="display:grid; grid-template-columns: 1fr 1.5fr 1fr 1fr; gap:10px; margin-bottom:10px;">
+                            <select id="seguro_sel" onchange="calcularOp()"><option value="in">🛡️ ORBIS PROTECT</option></select>
+                            <input type="text" value="ORBIS BRAIN NETWORK" readonly>
+                            <input type="number" id="seguro_base" value="2.00" readonly>
+                            <input type="number" value="0.00" readonly>
+                        </div>
+                        <div id="filas-servicios">
+                            <div class="dynamic-row srv-row">
+                                <select><option value="HOTEL">🏨 HOTEL</option></select>
+                                <input type="text" placeholder="Proveedor *">
+                                <input type="number" class="val-base" placeholder="Base" oninput="calcularOp()">
+                                <input type="number" class="val-com" placeholder="Comisión" oninput="calcularOp()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <label>Tasas e Impuestos (%)</label>
+                        <div id="filas-taxes">
+                            <div class="dynamic-row tax-row">
+                                <input type="text" placeholder="Nombre Impuesto *">
+                                <input type="number" class="val-tax" placeholder="%" oninput="calcularOp()">
+                                <span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="summary-box">
+                <div class="sum-item"><span class="sum-lbl">Base</span><span id="res-base" class="sum-val">0.00</span></div>
+                <div class="sum-item"><span class="sum-lbl">Impuestos</span><span id="res-tax" class="sum-val">0.00</span></div>
+                <div class="sum-item"><span class="sum-lbl">Fee Orbis</span><span id="res-fee" class="sum-val">6.00</span></div>
+                <div class="sum-item"><span class="sum-lbl">Escudo Oro</span><span id="res-esc" class="sum-val">0.00</span></div>
+                <div class="sum-item" style="background:rgba(212,175,55,0.1)"><span class="sum-lbl">Ganancia Neta</span><span id="res-gan" class="sum-val">0.00</span></div>
+                <div class="sum-item"><span class="sum-lbl">Total Facturado</span><span id="res-tot" class="sum-val" style="color:#5cb85c">0.00</span></div>
+            </div>
+            <button class="btn-gold" style="width:100%; margin-top:20px;" onclick="validarOp()">VALIDAR Y SINCRONIZAR</button>
+            <button class="btn-cancel-elite" onclick="closeModal('opModal')">Cancelar</button>
         </div>
     </div>
 
     <div id="provModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider">
-            <div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div>
+            <div class="modal-title">RED MAESTRA</div>
             <hr class="gold-divider">
-            <div class="form-section" style="margin-top:20px;">
-                <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:20px;">
-                    <div><label>Categoría *</label>
-                        <select id="prov_cat">
-                            <option value="HOTEL">🏨 HOTEL</option>
-                            <option value="AGENCIA">🏢 AGENCIA</option>
-                            <option value="TRASLADO">🚐 TRASLADO</option>
-                        </select>
-                    </div>
-                    <div><label>Nombre Legal *</label><input type="text" id="prov_nombre" oninput="this.value = this.value.toUpperCase()"></div>
-                    <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" oninput="this.value = this.value.toUpperCase()"></div>
+            <div class="warning-box" style="background:rgba(217,83,79,0.1); border:1px solid #d9534f; padding:12px; border-radius:10px; margin:20px 0;">
+                <p style="font-size:11px; margin:0;">⚠️ <b>POLÍTICA:</b> NOMBRE LEGAL, RIF Y PAÍS SON INNEGOCIABLES TRAS EL REGISTRO.</p>
+            </div>
+            <div class="form-section">
+                <div style="display:grid; grid-template-columns: 1fr 1.5fr 1fr; gap:20px;">
+                    <div><label>Categoría *</label><select id="p_cat"><option value="HOTEL">🏨 HOTEL</option><option value="AGENCIA">🏢 AGENCIA</option></select></div>
+                    <div><label>Nombre Legal *</label><input type="text" id="p_nom" placeholder="ESCRIBA EL NOMBRE LEGAL" oninput="this.value=this.value.toUpperCase()"></div>
+                    <div><label>RIF / Tax ID *</label><input type="text" id="p_rif" placeholder="ESCRIBA EL RIF" oninput="this.value=this.value.toUpperCase()"></div>
                 </div>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-top:20px;">
-                    <div><label>País de Operación *</label><input type="text" id="prov_pais" oninput="this.value = this.value.toUpperCase()"></div>
-                    <div><label>Moneda Base *</label><select id="prov_moneda"><option value="USD ($)">USD ($)</option><option value="VES (Bs.)">VES (Bs.)</option></select></div>
+                    <div class="form-section" style="margin-bottom:0">
+                        <label>Canales de Contacto</label>
+                        <div id="p_tel_cont">
+                            <div class="dynamic-row"><input type="text" placeholder="+"> <select><option>🟢 WHATSAPP</option></select><div></div></div>
+                            <div class="dynamic-row"><input type="text" placeholder="+"> <select><option>📞 LLAMADA</option></select><div></div></div>
+                        </div>
+                        <div class="dynamic-row" style="margin-top:10px;"><input type="email" placeholder="ADMIN@CORREO.COM" oninput="this.value=this.value.toUpperCase()"> <span style="font-size:9px; padding-top:12px;">PRINCIPAL</span></div>
+                    </div>
+                    <div>
+                        <label>País *</label><input type="text" id="p_pai" placeholder="ESCRIBA EL PAÍS" oninput="this.value=this.value.toUpperCase()">
+                        <label style="margin-top:15px;">Moneda Base *</label><select id="p_mon"><option value="USD ($)">USD ($)</option><option value="VES (Bs.)">VES (Bs.)</option></select>
+                    </div>
                 </div>
             </div>
-            <button class="btn-gold" style="width:100%; padding: 20px;" onclick="iniciarGuardado()">REGISTRAR EN RED MAESTRA</button>
+            <button class="btn-gold" style="padding:22px" onclick="guardarProv()">REGISTRAR EN RED MAESTRA</button>
             <button class="btn-cancel-elite" onclick="closeModal('provModal')">Cancelar y Salir</button>
         </div>
     </div>
 
     <script>
-        // Lógica de navegación entre pestañas
-        function showView(viewId, btn) {
-            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+        function showView(v, btn) {
+            document.querySelectorAll('.view-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('view-' + viewId).classList.add('active');
+            document.getElementById('view-'+v).classList.add('active');
             btn.classList.add('active');
         }
 
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function openModal(id) { document.getElementById(id).style.display='flex'; }
+        function closeModal(id) { if(confirm("¿Seguro que desea salir?")) document.getElementById(id).style.display='none'; }
 
-        function iniciarGuardado() {
-            const nombre = document.getElementById('prov_nombre').value;
-            const rif = document.getElementById('prov_rif').value;
-            const pais = document.getElementById('prov_pais').value;
-            
-            if(!nombre || !rif || !pais) return alert("⚠️ ERROR: DATOS MAESTROS FALTANTES.");
+        // Lógica de Certificación
+        function cambiarMonedaOp() {
+            const sym = document.getElementById('moneda_op').value;
+            document.querySelectorAll('.curr-sym').forEach(e => e.innerText = sym);
+            calcularOp();
+        }
 
-            if(confirm("🏛️ SEGURIDAD ORBIS: ¿CONFIRMA EL REGISTRO?")) {
-                const tbody = document.getElementById('cuerpo-tabla-prov');
-                const rowId = 'row-' + Date.now();
-                tbody.innerHTML += `<tr id="${rowId}">
-                    <td>${document.getElementById('prov_cat').value}</td>
-                    <td style="font-weight:bold;">${nombre}</td>
-                    <td>${rif}</td>
-                    <td>${pais}</td>
-                    <td style="color:var(--gold-soft); font-size:10px;">${USUARIO_ACTUAL}</td>
-                    <td><button onclick="confirmarEliminar('${nombre}', '${rowId}', '${USUARIO_ACTUAL}')" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px; font-weight:bold; text-transform:uppercase;">Eliminar</button></td>
-                </tr>`;
-                closeModal('provModal');
-                alert("✅ PROVEEDOR INTEGRADO A LA RED.");
+        function calcularOp() {
+            const sym = document.getElementById('moneda_op').value;
+            const tasa = TASAS[sym] || 1;
+            let baseSrv = 2.00 * tasa; let comAliado = 0;
+            document.querySelectorAll('.srv-row').forEach(r => {
+                baseSrv += parseFloat(r.querySelector('.val-base').value) || 0;
+                comAliado += parseFloat(r.querySelector('.val-com').value) || 0;
+            });
+            document.getElementById('hono_aliado').value = comAliado.toFixed(2);
+            let feeOrbis = 6.00 * tasa;
+            let baseImp = baseSrv + comAliado + feeOrbis;
+            let taxTot = 0; let taxPctTot = 0;
+            document.querySelectorAll('.tax-row').forEach(r => {
+                let p = parseFloat(r.querySelector('.val-tax').value) || 0;
+                taxTot += baseImp * (p/100); taxPctTot += p;
+            });
+            let tot = baseImp + taxTot;
+            document.getElementById('res-base').innerText = baseImp.toFixed(2) + " " + sym;
+            document.getElementById('res-tax').innerText = taxTot.toFixed(2) + " " + sym;
+            document.getElementById('res-fee').innerText = feeOrbis.toFixed(2) + " " + sym;
+            document.getElementById('res-esc').innerText = (tot * 0.005).toFixed(2) + " " + sym;
+            document.getElementById('res-gan').innerText = (comAliado * (1 - taxPctTot/100)).toFixed(2) + " " + sym;
+            document.getElementById('res-tot').innerText = tot.toFixed(2) + " " + sym;
+        }
+
+        function validarOp() {
+            if(confirm("🏛️ ORBIS BRAIN: ¿Confirma la sincronización contable?")) {
+                const tbody = document.getElementById('tabla-ops');
+                tbody.innerHTML += `<tr><td>OB-${Date.now()}</td><td>${document.getElementById('aliado_n').value}</td><td>${document.getElementById('res-tot').innerText}</td><td style="color:#5cb85c">CERTIFICADO</td></tr>`;
+                document.getElementById('opModal').style.display='none';
             }
         }
 
-        function confirmarEliminar(nombreProv, rowId, propietario) {
-            if (propietario !== USUARIO_ACTUAL) {
-                alert(`🏛️ BLOQUEO: SOLO EL PROPIETARIO [${propietario}] PUEDE ELIMINAR ESTE REGISTRO.`);
-                return;
+        // Lógica de Directorio
+        function guardarProv() {
+            const n = document.getElementById('p_nom'); const r = document.getElementById('p_rif'); const p = document.getElementById('p_pai');
+            let err = false; [n,r,p].forEach(i => { if(!i.value.trim()){ i.classList.add('input-error'); err=true; }else i.classList.remove('input-error'); });
+            if(err) return alert("⚠️ ERROR: DATOS INNEGOCIABLES VACÍOS.");
+            
+            const mon = document.getElementById('p_mon').value;
+            if(confirm(`¿CONFIRMA QUE LA MONEDA [ ${mon} ] ES LA CORRECTA?`)) {
+                if(confirm("🏛️ ¿REGISTRAR EN RED MAESTRA?")) {
+                    const rowId = 'row-'+Date.now();
+                    document.getElementById('tabla-prov').innerHTML += `<tr id="${rowId}">
+                        <td>${document.getElementById('p_cat').value}</td>
+                        <td style="font-weight:bold">${n.value}</td><td>${r.value}</td><td>${p.value}</td>
+                        <td><button onclick="borrarProv('${n.value}','${rowId}')" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px; font-weight:bold;">ELIMINAR</button></td>
+                    </tr>`;
+                    document.getElementById('provModal').style.display='none';
+                }
             }
-            if(confirm(`🏛️ ORBIS BRAIN SECURITY:\n\n¿CONFIRMA QUE DESEA ELIMINAR A [ ${nombreProv} ] DE TODA LA RED MAESTRA?`)) {
-                document.getElementById(rowId).remove();
-                alert("SISTEMA: REGISTRO PURGADO.");
+        }
+
+        function borrarProv(nom, id) {
+            if(confirm(`🏛️ ADVERTENCIA: ¿ELIMINAR A [ ${nom} ] DE LA RED MAESTRA?`)) {
+                document.getElementById(id).remove();
             }
         }
     </script>
