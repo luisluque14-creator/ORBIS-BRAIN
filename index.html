@@ -233,8 +233,21 @@
         }
 
         function agregarTax() {
-            const div = document.createElement('div'); div.className = 'tax-grid tax-row';
-            div.innerHTML = `<div><input type="text" class="tax-name" placeholder="Impuesto *"></div><div class="tax-input-wrapper"><input type="number" class="tax-val" oninput="calcularTodo()" placeholder="0"><span class="tax-symbol">% *</span></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
+            const div = document.createElement('div'); 
+            div.className = 'tax-grid tax-row';
+            div.style.display = 'grid';
+            div.style.gridTemplateColumns = '2fr 1.2fr 40px';
+            div.style.gap = '12px';
+            div.style.alignItems = 'end';
+            div.style.marginBottom = '12px';
+
+            div.innerHTML = `
+                <div><input type="text" class="tax-name" placeholder="Impuesto *"></div>
+                <div class="tax-input-wrapper">
+                    <input type="number" class="tax-val" oninput="calcularTodo()" placeholder="0">
+                    <span class="tax-symbol" style="position:absolute; right:15px; color:var(--gold-soft); font-weight:bold;">%</span>
+                </div>
+                <button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();" style="height:46px; border:1px solid #d9534f; color:#d9534f; background:none; border-radius:8px; cursor:pointer;">X</button>`;
             document.getElementById('contenedor-taxes').appendChild(div);
         }
 
