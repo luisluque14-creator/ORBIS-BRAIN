@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Agilidad v6.3</title>
+    <title>ORBIS BRAIN | Conectividad Total v6.4</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -44,7 +44,6 @@
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 10px; text-transform: uppercase; width: 100%; margin-bottom: 15px; }
         
-        /* BOTÓN CANCELAR REIMAGINADO */
         .btn-cancel-elite {
             background: transparent;
             color: #666;
@@ -67,7 +66,6 @@
             background: rgba(217, 83, 79, 0.05);
             letter-spacing: 3px;
         }
-
         .btn-remove { background: none; border: none; color: #d9534f; cursor: pointer; font-weight: bold; font-size: 16px; }
     </style>
 </head>
@@ -78,28 +76,25 @@
             <div class="logo-text">ORBIS</div>
             <div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px;">BRAIN NETWORK</div>
         </div>
-        <button class="nav-btn active" onclick="showView('certificacion', this)">🏛️ Certificaciones</button>
-        <button class="nav-btn" onclick="showView('directorio', this)">👥 Directorio Maestro</button>
+        <button class="nav-btn" onclick="showView('certificacion', this)">🏛️ Certificaciones</button>
+        <button class="nav-btn active" onclick="showView('directorio', this)">👥 Directorio Maestro</button>
     </div>
 
-    <div id="view-certificacion" class="view-section active">
-        <h1 style="font-family:'Cinzel'; font-size: 26px;">CERTIFICACIÓN <span style="color:var(--gold-metalic)">SISTÉMICA</span></h1>
+    <div id="view-certificacion" class="view-section">
+        <h1 style="font-family:'Cinzel'; font-size: 26px;">CERTIFICACIÓN <span style="color:var(--gold-metalic)">GLOBAL</span></h1>
         <div class="table-container">
-            <table>
-                <thead><tr><th>ID</th><th>Aliado</th><th>Monto</th><th>Estado</th></tr></thead>
-                <tbody id="cuerpo-tabla"></tbody>
-            </table>
+            <table><thead><tr><th>ID</th><th>Aliado</th><th>Monto</th><th>Estado</th></tr></thead><tbody id="cuerpo-tabla"></tbody></table>
         </div>
     </div>
 
-    <div id="view-directorio" class="view-section">
+    <div id="view-directorio" class="view-section active">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
             <h1 style="font-family:'Cinzel'; font-size: 26px;">DIRECTORIO <span style="color:var(--gold-metalic)">GLOBAL</span></h1>
             <button class="btn-gold" onclick="openModal('provModal')">Cargar Ficha Técnica +</button>
         </div>
         <div class="table-container">
             <table>
-                <thead><tr><th>Categoría</th><th>Nombre Legal (Único)</th><th>RIF</th><th>País</th><th>Acción</th></tr></thead>
+                <thead><tr><th>Categoría</th><th>Nombre Legal</th><th>RIF</th><th>País</th><th>Acción</th></tr></thead>
                 <tbody id="cuerpo-tabla-prov"></tbody>
             </table>
         </div>
@@ -110,7 +105,7 @@
             <div class="warning-box">
                 <span style="font-size: 24px;">⚠️</span>
                 <p style="font-size: 12px; margin: 0; color: #f8d7da;">
-                    <b>POLÍTICA DE INTEGRIDAD:</b> Una vez registrado, el <b>NOMBRE LEGAL</b> y el <b>RIF</b> no podrán ser editados para garantizar la trazabilidad contable. Si requiere cambios, deberá eliminar y re-crear el registro.
+                    <b>POLÍTICA DE INTEGRIDAD:</b> El NOMBRE LEGAL y RIF no podrán ser editados tras el registro.
                 </p>
             </div>
 
@@ -123,8 +118,8 @@
                             <option value="FREELANCER">👨‍💻 FREELANCER</option>
                         </select>
                     </div>
-                    <div><label>Nombre Legal (MAYÚSCULAS) *</label><input type="text" id="prov_nombre" placeholder="MARGARITA HOTEL C.A" oninput="this.value = this.value.toUpperCase()"></div>
-                    <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="J-00000000-0" oninput="this.value = this.value.toUpperCase()"></div>
+                    <div><label>Nombre Legal *</label><input type="text" id="prov_nombre" oninput="this.value = this.value.toUpperCase()"></div>
+                    <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" oninput="this.value = this.value.toUpperCase()"></div>
                 </div>
             </div>
 
@@ -136,6 +131,11 @@
                             <input type="text" class="prov-phone" placeholder="+58...">
                             <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select>
                             <div></div>
+                        </div>
+                        <div class="dynamic-row">
+                            <input type="text" class="prov-phone" placeholder="+58...">
+                            <select class="is-whatsapp"><option value="no" selected>📞 LLAMADA</option><option value="yes">🟢 WHATSAPP</option></select>
+                            <button class="btn-remove" onclick="this.parentElement.remove()">×</button>
                         </div>
                     </div>
                     <button class="btn-add-small" onclick="addField('phone-container', 'phone')">+ Agregar otro teléfono</button>
@@ -159,7 +159,7 @@
                     </div>
                     <div style="background: rgba(212, 175, 55, 0.05); padding: 20px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);">
                         <p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.6;">
-                            <b>RED GLOBAL ORBIS:</b> Al registrar este proveedor, estará disponible para todos los aliados de la red, facilitando la orquestación masiva y estandarización de pagos.
+                            <b>RED GLOBAL ORBIS:</b> Este proveedor será visible para toda la red de aliados.
                         </p>
                     </div>
                 </div>
@@ -183,10 +183,15 @@
         function closeModal(id) { 
             if(confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos de la ficha actual.")) {
                 document.getElementById(id).style.display = 'none';
-                // Reset manual de rieles dinámicos para que siempre abra con uno solo
-                document.getElementById('phone-container').innerHTML = `<div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+58..."> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select><div></div></div>`;
-                document.getElementById('email-container').innerHTML = `<div class="dynamic-row"><input type="email" class="prov-email" placeholder="ADMIN@CORREO.COM"> <span style="font-size:10px; color:gray; padding-top:10px;">PRINCIPAL</span><div></div></div>`;
+                resetFicha();
             }
+        }
+
+        function resetFicha() {
+            document.getElementById('phone-container').innerHTML = `
+                <div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+58..."> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select><div></div></div>
+                <div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+58..."> <select class="is-whatsapp"><option value="no" selected>📞 LLAMADA</option><option value="yes">🟢 WHATSAPP</option></select><button class="btn-remove" onclick="this.parentElement.remove()">×</button></div>`;
+            document.getElementById('email-container').innerHTML = `<div class="dynamic-row"><input type="email" class="prov-email" placeholder="ADMIN@CORREO.COM"> <span style="font-size:10px; color:gray; padding-top:10px;">PRINCIPAL</span><div></div></div>`;
         }
 
         function addField(containerId, type) {
@@ -194,7 +199,7 @@
             const div = document.createElement('div');
             div.className = 'dynamic-row';
             if(type === 'phone') {
-                div.innerHTML = `<input type="text" class="prov-phone" placeholder="+..."> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select> <button class="btn-remove" onclick="this.parentElement.remove()">×</button>`;
+                div.innerHTML = `<input type="text" class="prov-phone" placeholder="+..."> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no" selected>📞 LLAMADA</option></select> <button class="btn-remove" onclick="this.parentElement.remove()">×</button>`;
             } else {
                 div.innerHTML = `<input type="email" class="prov-email" placeholder="OTRO@CORREO.COM" oninput="this.value = this.value.toUpperCase()"> <span></span> <button class="btn-remove" onclick="this.parentElement.remove()">×</button>`;
             }
@@ -204,28 +209,15 @@
         function guardarProv() {
             const nombre = document.getElementById('prov_nombre').value;
             const rif = document.getElementById('prov_rif').value;
-            if(!nombre || !rif) return alert("⚠️ ERROR: NOMBRE LEGAL Y RIF SON REQUISITOS DE INTEGRIDAD.");
+            if(!nombre || !rif) return alert("⚠️ ERROR: DATOS INCOMPLETOS.");
             
-            if(confirm("🏛️ ORBIS BRAIN SECURITY:\n¿Confirma el registro de este proveedor en la red maestra?")){
+            if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro?")){
                 const tbody = document.getElementById('cuerpo-tabla-prov');
-                tbody.innerHTML += `<tr id="row-${rif}">
-                    <td>${document.getElementById('prov_cat').value}</td>
-                    <td style="font-weight:bold; letter-spacing:1px;">${nombre}</td>
-                    <td>${rif}</td>
-                    <td>${document.getElementById('prov_pais').value || '---'}</td>
-                    <td><button onclick="confirmarEliminar('${rif}')" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td>
-                </tr>`;
-                alert("✅ REGISTRO EXITOSO");
+                tbody.innerHTML += `<tr id="row-${rif}"><td>${document.getElementById('prov_cat').value}</td><td style="font-weight:bold;">${nombre}</td><td>${rif}</td><td>${document.getElementById('prov_pais').value || '---'}</td><td><button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td></tr>`;
                 document.getElementById('provModal').style.display = 'none';
+                resetFicha();
             }
         }
-
-        function confirmarEliminar(id) {
-            if(confirm("🏛️ ¿SEGURO QUE DESEA ELIMINAR ESTE PROVEEDOR? ESTA ACCIÓN NO SE PUEDE DESHACER.")) {
-                document.getElementById('row-' + id).remove();
-            }
-        }
-
         window.onclick = function(event) { if (event.target.className === 'modal') { event.target.style.display = "none"; } }
     </script>
 </body>
