@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Blindaje Innegociable v4.9</title>
+    <title>ORBIS BRAIN | Protocolo de Seguridad v5.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -16,7 +16,7 @@
         .logo-img { max-width: 180px; height: auto; box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
         .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; margin-top: 10px; }
         .main-content { flex: 1; padding: 50px; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); }
-        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 18px 36px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; }
+        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 12px 24px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 40px 60px; border-radius: 30px; width: 1300px; max-height: 94vh; overflow-y: auto; box-shadow: 0 0 60px rgba(0,0,0,1); }
         .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 22px; margin-bottom: 20px; letter-spacing: 2px; border-bottom: 1px solid #222; padding-bottom: 15px; }
@@ -27,10 +27,9 @@
         .tax-symbol { position: absolute; right: 15px; color: var(--gold-soft); font-weight: bold; font-size: 16px; pointer-events: none; }
         label { display: block; font-size: 10px; color: var(--gold-soft); margin-bottom: 6px; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
         input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 15px; border-radius: 10px; font-size: 14px; transition: 0.3s; box-sizing: border-box; }
-        .input-error { border-color: #d9534f !important; box-shadow: 0 0 10px rgba(217, 83, 79, 0.2); }
+        .input-error { border-color: #d9534f !important; }
         .summary-box { background: #000; padding: 30px; border-radius: 20px; border: 1px solid var(--gold-metalic); display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 30px; }
         .sum-item { text-align: center; border-right: 1px solid #222; padding: 0 5px; }
-        .sum-item:last-child { border-right: none; }
         .sum-val { display: block; font-size: 18px; font-weight: 800; color: var(--gold-metalic); margin-bottom: 3px; }
         .sum-lbl { font-size: 8px; color: #888; text-transform: uppercase; letter-spacing: 1px; line-height: 1.1; }
         .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); width: 100%; padding: 10px; cursor: pointer; border-radius: 8px; font-size: 10px; font-weight: bold; text-transform: uppercase; margin-top: auto; }
@@ -51,48 +50,50 @@
     <div id="opModal" class="modal">
         <div class="modal-content">
             <div class="modal-title">REGISTRO PARA CERTIFICACIÓN FISCAL Y CONTABLE</div>
-            <div class="form-section" style="min-height: auto; margin-bottom: 20px; padding: 20px 35px;">
-                <div style="display:grid; grid-template-columns: 2fr 1.2fr 1fr; gap:20px;">
-                    <div><label>Nombre Fiscal del Aliado *</label><input type="text" id="aliado_name" placeholder="Nombre Legal o Agencia"></div>
-                    <div><label>RIF / Tax ID *</label><input type="text" id="aliado_rif" placeholder="Identificación Tributaria"></div>
-                    <div><label style="color:var(--gold-metalic)">Total Honorarios Aliado ($) *</label><input type="number" id="comision_aliado" readonly style="background: #111; color: var(--gold-metalic); font-weight: bold; border-color: var(--gold-metalic);"></div>
+            <form id="registroForm">
+                <div class="form-section" style="min-height: auto; margin-bottom: 20px; padding: 20px 35px;">
+                    <div style="display:grid; grid-template-columns: 2fr 1.2fr 1fr; gap:20px;">
+                        <div><label>Nombre Fiscal del Aliado *</label><input type="text" id="aliado_name" placeholder="Nombre Legal o Agencia"></div>
+                        <div><label>RIF / Tax ID *</label><input type="text" id="aliado_rif" placeholder="Identificación Tributaria"></div>
+                        <div><label style="color:var(--gold-metalic)">Total Honorarios Aliado ($) *</label><input type="number" id="comision_aliado" readonly style="background: #111; color: var(--gold-metalic); font-weight: bold; border-color: var(--gold-metalic);"></div>
+                    </div>
                 </div>
-            </div>
-            <div style="display:grid; grid-template-columns: 1.8fr 1fr; gap:20px;">
-                <div class="form-section">
-                    <label>Bases Imponibles & Comisiones Individuales</label>
-                    <div id="contenedor-servicios" style="margin-top: 10px;">
-                        <div class="grid-inputs row-fixed">
-                            <div><label>Cobertura</label><select id="tipo_seguro_sel" onchange="calcularTodo()"><option value="interno">🛡️ ORBIS PROTECT</option><option value="externo">📋 SEGURO EXTERNO</option></select></div>
-                            <div><label>Proveedor / Aseguradora</label><input type="text" id="seguro_prov" value="ORBIS BRAIN NETWORK" readonly style="color:#666;"></div>
-                            <div><label>Base *</label><input type="number" id="seguro_neto" value="2.00" readonly style="color:#888;"></div>
-                            <div><label>Comisión *</label><input type="number" id="seguro_com" value="0.00" readonly style="color:#888;"></div>
-                            <div style="display:flex; align-items:center; justify-content:center; color:var(--gold-metalic);">🔒</div>
-                        </div>
-                        <div id="filas-dinamicas" style="margin-top:10px;">
-                            <div class="grid-inputs servicio-row">
-                                <div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option></select></div>
-                                <div><input type="text" class="prov-name" placeholder="Nombre del Proveedor *"></div>
-                                <div><label>Base *</label><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div>
-                                <div><label>Comisión *</label><input type="number" class="comision-ind" oninput="calcularTodo()" placeholder="0.00" style="color:var(--gold-soft)"></div>
-                                <button class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>
+                <div style="display:grid; grid-template-columns: 1.8fr 1fr; gap:20px;">
+                    <div class="form-section">
+                        <label>Bases Imponibles & Comisiones Individuales</label>
+                        <div id="contenedor-servicios" style="margin-top: 10px;">
+                            <div class="grid-inputs row-fixed">
+                                <div><label>Cobertura</label><select id="tipo_seguro_sel" onchange="calcularTodo()"><option value="interno">🛡️ ORBIS PROTECT</option><option value="externo">📋 SEGURO EXTERNO</option></select></div>
+                                <div><label>Proveedor / Aseguradora</label><input type="text" id="seguro_prov" value="ORBIS BRAIN NETWORK" readonly style="color:#666;"></div>
+                                <div><label>Base *</label><input type="number" id="seguro_neto" value="2.00" readonly style="color:#888;"></div>
+                                <div><label>Comisión *</label><input type="number" id="seguro_com" value="0.00" readonly style="color:#888;"></div>
+                                <div style="display:flex; align-items:center; justify-content:center; color:var(--gold-metalic);">🔒</div>
+                            </div>
+                            <div id="filas-dinamicas" style="margin-top:10px;">
+                                <div class="grid-inputs servicio-row">
+                                    <div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option></select></div>
+                                    <div><input type="text" class="prov-name" placeholder="Nombre del Proveedor *"></div>
+                                    <div><label>Base *</label><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div>
+                                    <div><label>Comisión *</label><input type="number" class="comision-ind" oninput="calcularTodo()" placeholder="0.00" style="color:var(--gold-soft)"></div>
+                                    <button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>
+                                </div>
                             </div>
                         </div>
+                        <button type="button" class="btn-add" onclick="agregarFila()">+ AGREGAR OTRO PROVEEDOR</button>
                     </div>
-                    <button class="btn-add" onclick="agregarFila()">+ AGREGAR OTRO PROVEEDOR</button>
-                </div>
-                <div class="form-section">
-                    <label style="color:var(--gold-metalic)">Tasas e Impuestos Locales (%)</label>
-                    <div id="contenedor-taxes" style="margin-top: 10px;">
-                        <div class="tax-grid tax-row">
-                            <div><input type="text" class="tax-name" placeholder="Nombre Impuesto *"></div>
-                            <div class="tax-input-wrapper"><input type="number" class="tax-val" oninput="calcularTodo()" placeholder="0"><span class="tax-symbol">% *</span></div>
-                            <div></div>
+                    <div class="form-section">
+                        <label style="color:var(--gold-metalic)">Tasas e Impuestos Locales (%)</label>
+                        <div id="contenedor-taxes" style="margin-top: 10px;">
+                            <div class="tax-grid tax-row">
+                                <div><input type="text" class="tax-name" placeholder="Nombre Impuesto *"></div>
+                                <div class="tax-input-wrapper"><input type="number" class="tax-val" oninput="calcularTodo()" placeholder="0"><span class="tax-symbol">% *</span></div>
+                                <div></div>
+                            </div>
                         </div>
+                        <button type="button" class="btn-add" onclick="agregarTax()">+ AGREGAR TASA</button>
                     </div>
-                    <button class="btn-add" onclick="agregarTax()">+ AGREGAR TASA</button>
                 </div>
-            </div>
+            </form>
             <div class="summary-box">
                 <div class="sum-item"><span class="sum-lbl">Base Imponible</span><span id="res-neto" class="sum-val">$0.00</span></div>
                 <div class="sum-item" style="border: 1px solid #333; border-radius: 10px;"><span class="sum-lbl">Total Impuestos</span><span id="res-imp" class="sum-val" style="color:#fff">$0.00</span></div>
@@ -101,25 +102,37 @@
                 <div class="sum-item" style="background: rgba(212, 175, 55, 0.15); border-radius: 10px;"><span class="sum-lbl" style="color:var(--gold-metalic)">GANANCIA NETA ALIADO</span><span id="res-ganancia" class="sum-val" style="color:var(--gold-soft); font-size:20px;">$0.00</span></div>
                 <div class="sum-item" style="border:none;"><span class="sum-lbl">TOTAL FACTURADO</span><span id="res-total" class="sum-val" style="color:#4CAF50; font-size:20px;">$0.00</span></div>
             </div>
-            <button class="btn-gold" id="btn_enviar" onclick="enviarAlCerebro()" style="width:100%; margin-top:30px; font-size:16px; padding:20px;">VALIDAR Y SINCRONIZAR CERTIFICACIÓN</button>
-            <button onclick="closeModal()" style="width:100%; background:none; border:none; color:#444; margin-top:10px; cursor:pointer; font-size:10px; text-transform:uppercase;">Cancelar</button>
+            <button class="btn-gold" id="btn_enviar" onclick="confirmarRegistro()" style="width:100%; margin-top:30px;">VALIDAR Y SINCRONIZAR CERTIFICACIÓN</button>
+            <button type="button" onclick="confirmarCancelacion()" style="width:100%; background:none; border:none; color:#444; margin-top:15px; cursor:pointer; font-size:10px; text-transform:uppercase; letter-spacing:1px;">Cancelar Registro</button>
         </div>
     </div>
 
     <script>
         const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbwx34Vu9no8Pgp-VS2c5tvoYAPv80xzKPyo7VsDPppq7tm4shv6NxIpIoT9KqM8AcQUXg/exec";
         function openModal() { document.getElementById('opModal').style.display='flex'; calcularTodo(); }
-        function closeModal() { document.getElementById('opModal').style.display='none'; }
+        
+        function confirmarCancelacion() {
+            if (confirm("¿Está seguro que desea cancelar? Se perderán todos los datos ingresados.")) {
+                document.getElementById('registroForm').reset();
+                document.getElementById('filas-dinamicas').innerHTML = ''; // Limpiar filas dinámicas
+                agregarFila(); // Reponer una fila base
+                calcularTodo();
+                document.getElementById('opModal').style.display='none';
+            }
+        }
+
         function agregarFila() {
             const div = document.createElement('div'); div.className = 'grid-inputs servicio-row';
-            div.innerHTML = `<div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option></select></div><div><input type="text" class="prov-name" placeholder="Nombre del Proveedor *"></div><div><label>Base *</label><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div><div><label>Comisión *</label><input type="number" class="comision-ind" oninput="calcularTodo()" placeholder="0.00" style="color:var(--gold-soft)"></div><button class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
+            div.innerHTML = `<div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option></select></div><div><input type="text" class="prov-name" placeholder="Nombre del Proveedor *"></div><div><label>Base *</label><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div><div><label>Comisión *</label><input type="number" class="comision-ind" oninput="calcularTodo()" placeholder="0.00" style="color:var(--gold-soft)"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
             document.getElementById('filas-dinamicas').appendChild(div);
         }
+
         function agregarTax() {
             const div = document.createElement('div'); div.className = 'tax-grid tax-row';
-            div.innerHTML = `<div><input type="text" class="tax-name" placeholder="Nombre Impuesto *"></div><div class="tax-input-wrapper"><input type="number" class="tax-val" oninput="calcularTodo()" placeholder="0"><span class="tax-symbol">% *</span></div><button class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
+            div.innerHTML = `<div><input type="text" class="tax-name" placeholder="Nombre Impuesto *"></div><div class="tax-input-wrapper"><input type="number" class="tax-val" oninput="calcularTodo()" placeholder="0"><span class="tax-symbol">% *</span></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
             document.getElementById('contenedor-taxes').appendChild(div);
         }
+
         function calcularTodo() {
             const esInterno = document.getElementById('tipo_seguro_sel').value === 'interno';
             let netoSeguro = esInterno ? 2.00 : 0;
@@ -147,51 +160,40 @@
             document.getElementById('res-total').innerText = "$" + granTotal.toFixed(2);
         }
 
+        function confirmarRegistro() {
+            // Validar innegociables primero
+            let fault = false;
+            const name = document.getElementById('aliado_name');
+            const rif = document.getElementById('aliado_rif');
+            if(!name.value.trim()){ name.classList.add('input-error'); fault = true; } else name.classList.remove('input-error');
+            if(!rif.value.trim()){ rif.classList.add('input-error'); fault = true; } else rif.classList.remove('input-error');
+
+            if(fault) return alert("⚠️ BLOQUEO: Faltan datos fiscales obligatorios.");
+
+            if (confirm("🏛️ ORBIS BRAIN SECURITY:\n¿Confirma que desea continuar con el proceso de registro?\n\nALERTA: Una vez registrada la información, no se puede revertir o anular.")) {
+                enviarAlCerebro();
+            }
+        }
+
         async function enviarAlCerebro() {
             const btn = document.getElementById('btn_enviar');
-            const innegociables = [
-                { el: document.getElementById('aliado_name'), msg: "Nombre Fiscal del Aliado" },
-                { el: document.getElementById('aliado_rif'), msg: "RIF / Tax ID" }
-            ];
-            
-            let fault = false;
-            innegociables.forEach(item => {
-                if(!item.el.value.trim()) { item.el.classList.add('input-error'); fault = true; }
-                else item.el.classList.remove('input-error');
-            });
-
-            document.querySelectorAll('.servicio-row').forEach(row => {
-                const p = row.querySelector('.prov-name');
-                const b = row.querySelector('.monto-srv');
-                const c = row.querySelector('.comision-ind');
-                if(!p.value.trim()) { p.classList.add('input-error'); fault = true; } else p.classList.remove('input-error');
-                if(!b.value || b.value <= 0) { b.classList.add('input-error'); fault = true; } else b.classList.remove('input-error');
-                if(!c.value || c.value < 0) { c.classList.add('input-error'); fault = true; } else c.classList.remove('input-error');
-            });
-
-            document.querySelectorAll('.tax-row').forEach(row => {
-                const n = row.querySelector('.tax-name');
-                const v = row.querySelector('.tax-val');
-                if(!n.value.trim()) { n.classList.add('input-error'); fault = true; } else n.classList.remove('input-error');
-                if(!v.value || v.value < 0) { v.classList.add('input-error'); fault = true; } else v.classList.remove('input-error');
-            });
-
-            if(fault) return alert("⚠️ BLOQUEO DE SEGURIDAD:\nExisten campos 'Innegociables' (*) vacíos o con errores. La certificación requiere datos completos.");
-
-            btn.innerText = "INYECTANDO..."; btn.disabled = true;
+            btn.innerText = "SINCRONIZANDO..."; btn.disabled = true;
             await fetch(URL_SCRIPT, { method: 'POST', mode: 'no-cors', body: JSON.stringify({
                 aliado: document.getElementById('aliado_name').value + " [" + document.getElementById('aliado_rif').value + "]",
                 monto: document.getElementById('res-total').innerText.replace("$",""),
                 comision_aliado: document.getElementById('comision_aliado').value,
-                proveedor: "Soberanía Fiscal v4.9 [Innegociables Mode]"
+                proveedor: "Protocolo de Seguridad v5.0"
             })});
-            alert("CERTIFICACIÓN EXITOSA"); location.reload();
+            alert("CERTIFICACIÓN REGISTRADA CON ÉXITO"); 
+            document.getElementById('registroForm').reset();
+            location.reload();
         }
+
         async function cargar() {
             try {
                 const res = await fetch(URL_SCRIPT); const data = await res.json(); const tbody = document.getElementById('cuerpo-tabla');
                 tbody.innerHTML = ""; data.reverse().forEach(op => {
-                    tbody.innerHTML += `<tr><td style="padding:15px; font-family:monospace;">${op.id}</td><td style="font-weight:600;">${op.aliado}</td><td style="font-size:11px; color:#777;">Certificación v4.9</td><td style="font-weight:800; color:var(--gold-metalic)">$${parseFloat(op.monto).toFixed(2)}</td><td><span style="color:#4CAF50; font-size:10px; border:1px solid #4CAF50; padding:2px 5px; border-radius:4px;">CERTIFICADO</span></td></tr>`;
+                    tbody.innerHTML += `<tr><td style="padding:15px; font-family:monospace;">${op.id}</td><td style="font-weight:600;">${op.aliado}</td><td style="font-size:11px; color:#777;">Sincronizado v5.0</td><td style="font-weight:800; color:var(--gold-metalic)">$${parseFloat(op.monto).toFixed(2)}</td><td><span style="color:#4CAF50; font-size:10px; border:1px solid #4CAF50; padding:2px 5px; border-radius:4px;">CERTIFICADO</span></td></tr>`;
                 });
             } catch(e) {}
         }
