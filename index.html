@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Conectividad Total v6.4</title>
+    <title>ORBIS BRAIN | Global Connectivity v6.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -44,6 +44,7 @@
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 10px; text-transform: uppercase; width: 100%; margin-bottom: 15px; }
         
+        /* BOTÓN CANCELAR REIMAGINADO */
         .btn-cancel-elite {
             background: transparent;
             color: #666;
@@ -105,7 +106,7 @@
             <div class="warning-box">
                 <span style="font-size: 24px;">⚠️</span>
                 <p style="font-size: 12px; margin: 0; color: #f8d7da;">
-                    <b>POLÍTICA DE INTEGRIDAD:</b> El NOMBRE LEGAL y RIF no podrán ser editados tras el registro.
+                    <b>POLÍTICA DE INTEGRIDAD:</b> EL NOMBRE LEGAL Y RIF NO PODRÁN SER EDITADOS TRAS EL REGISTRO PARA GARANTIZAR LA TRAZABILIDAD.
                 </p>
             </div>
 
@@ -116,10 +117,11 @@
                             <option value="HOTEL">🏨 HOTEL</option>
                             <option value="AGENCIA">🏢 AGENCIA</option>
                             <option value="FREELANCER">👨‍💻 FREELANCER</option>
+                            <option value="TRASLADO">🚐 TRASLADO</option>
                         </select>
                     </div>
-                    <div><label>Nombre Legal *</label><input type="text" id="prov_nombre" oninput="this.value = this.value.toUpperCase()"></div>
-                    <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" oninput="this.value = this.value.toUpperCase()"></div>
+                    <div><label>Nombre Legal *</label><input type="text" id="prov_nombre" placeholder="MARGARITA HOTEL C.A" oninput="this.value = this.value.toUpperCase()"></div>
+                    <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="J-00000000-0" oninput="this.value = this.value.toUpperCase()"></div>
                 </div>
             </div>
 
@@ -128,12 +130,12 @@
                     <label>Canales de Telefonía / WhatsApp</label>
                     <div id="phone-container">
                         <div class="dynamic-row">
-                            <input type="text" class="prov-phone" placeholder="+58...">
+                            <input type="text" class="prov-phone" placeholder="+">
                             <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select>
                             <div></div>
                         </div>
                         <div class="dynamic-row">
-                            <input type="text" class="prov-phone" placeholder="+58...">
+                            <input type="text" class="prov-phone" placeholder="+">
                             <select class="is-whatsapp"><option value="no" selected>📞 LLAMADA</option><option value="yes">🟢 WHATSAPP</option></select>
                             <button class="btn-remove" onclick="this.parentElement.remove()">×</button>
                         </div>
@@ -154,12 +156,12 @@
                 <div class="form-section">
                     <label>Ubicación y Operación</label>
                     <div class="grid-3" style="grid-template-columns: 1fr 1fr; margin-bottom:15px;">
-                        <div><label>País</label><input type="text" id="prov_pais" oninput="this.value = this.value.toUpperCase()"></div>
-                        <div><label>Moneda Base</label><select id="prov_moneda"><option value="$">USD</option><option value="Bs.">VES</option></select></div>
+                        <div><label>País</label><input type="text" id="prov_pais" placeholder="VENEZUELA" oninput="this.value = this.value.toUpperCase()"></div>
+                        <div><label>Moneda Base</label><select id="prov_moneda"><option value="$">USD</option><option value="Bs.">VES</option><option value="€">EUR</option></select></div>
                     </div>
                     <div style="background: rgba(212, 175, 55, 0.05); padding: 20px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);">
                         <p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.6;">
-                            <b>RED GLOBAL ORBIS:</b> Este proveedor será visible para toda la red de aliados.
+                            <b>RED GLOBAL ORBIS:</b> ESTE PROVEEDOR SERÁ VISIBLE PARA TODA LA RED DE ALIADOS, FACILITANDO LA ORQUESTACIÓN INTERNACIONAL.
                         </p>
                     </div>
                 </div>
@@ -181,7 +183,7 @@
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         
         function closeModal(id) { 
-            if(confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos de la ficha actual.")) {
+            if(confirm("🏛️ ATENCIÓN: ¿SEGURO QUE DESEA CANCELAR? SE PERDERÁN LOS DATOS DE LA FICHA ACTUAL.")) {
                 document.getElementById(id).style.display = 'none';
                 resetFicha();
             }
@@ -189,9 +191,12 @@
 
         function resetFicha() {
             document.getElementById('phone-container').innerHTML = `
-                <div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+58..."> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select><div></div></div>
-                <div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+58..."> <select class="is-whatsapp"><option value="no" selected>📞 LLAMADA</option><option value="yes">🟢 WHATSAPP</option></select><button class="btn-remove" onclick="this.parentElement.remove()">×</button></div>`;
+                <div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+"> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select><div></div></div>
+                <div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+"> <select class="is-whatsapp"><option value="no" selected>📞 LLAMADA</option><option value="yes">🟢 WHATSAPP</option></select><button class="btn-remove" onclick="this.parentElement.remove()">×</button></div>`;
             document.getElementById('email-container').innerHTML = `<div class="dynamic-row"><input type="email" class="prov-email" placeholder="ADMIN@CORREO.COM"> <span style="font-size:10px; color:gray; padding-top:10px;">PRINCIPAL</span><div></div></div>`;
+            document.getElementById('prov_nombre').value = '';
+            document.getElementById('prov_rif').value = '';
+            document.getElementById('prov_pais').value = '';
         }
 
         function addField(containerId, type) {
@@ -199,7 +204,7 @@
             const div = document.createElement('div');
             div.className = 'dynamic-row';
             if(type === 'phone') {
-                div.innerHTML = `<input type="text" class="prov-phone" placeholder="+..."> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no" selected>📞 LLAMADA</option></select> <button class="btn-remove" onclick="this.parentElement.remove()">×</button>`;
+                div.innerHTML = `<input type="text" class="prov-phone" placeholder="+"> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no" selected>📞 LLAMADA</option></select> <button class="btn-remove" onclick="this.parentElement.remove()">×</button>`;
             } else {
                 div.innerHTML = `<input type="email" class="prov-email" placeholder="OTRO@CORREO.COM" oninput="this.value = this.value.toUpperCase()"> <span></span> <button class="btn-remove" onclick="this.parentElement.remove()">×</button>`;
             }
@@ -209,9 +214,9 @@
         function guardarProv() {
             const nombre = document.getElementById('prov_nombre').value;
             const rif = document.getElementById('prov_rif').value;
-            if(!nombre || !rif) return alert("⚠️ ERROR: DATOS INCOMPLETOS.");
+            if(!nombre || !rif) return alert("⚠️ ERROR: NOMBRE LEGAL Y RIF SON REQUISITOS DE INTEGRIDAD.");
             
-            if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro?")){
+            if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿CONFIRMA EL REGISTRO EN LA RED MAESTRA?")){
                 const tbody = document.getElementById('cuerpo-tabla-prov');
                 tbody.innerHTML += `<tr id="row-${rif}"><td>${document.getElementById('prov_cat').value}</td><td style="font-weight:bold;">${nombre}</td><td>${rif}</td><td>${document.getElementById('prov_pais').value || '---'}</td><td><button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td></tr>`;
                 document.getElementById('provModal').style.display = 'none';
