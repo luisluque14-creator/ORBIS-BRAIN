@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Global Connectivity v6.5</title>
+    <title>ORBIS BRAIN | Blindaje de Datos v6.6</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,7 +13,6 @@
         }
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        /* SIDEBAR */
         .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; }
         .logo-container { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 20px; }
         .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; margin-top: 10px; }
@@ -23,7 +22,7 @@
         .view-section { display: none; flex: 1; padding: 50px; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); }
         .view-section.active { display: block; }
 
-        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; transition: 0.3s; }
+        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; transition: 0.3s; width: 100%; }
         .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
         
         .table-container { background: rgba(0,0,0,0.6); padding: 30px; border-radius: 20px; border: 1px solid #333; margin-top: 20px; }
@@ -36,37 +35,19 @@
         
         .form-section { background: rgba(255,255,255,0.02); padding: 25px; border-radius: 20px; border: 1px solid #222; margin-bottom: 20px; }
         label { display: block; font-size: 11px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
-        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 14px; box-sizing: border-box; text-transform: uppercase; }
+        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 14px; box-sizing: border-box; text-transform: uppercase; transition: 0.3s; }
         
+        /* Efecto de error para innegociables */
+        .input-error { border-color: #d9534f !important; background: rgba(217, 83, 79, 0.05); }
+
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 10px; text-transform: uppercase; width: 100%; margin-bottom: 15px; }
         
-        /* BOTÓN CANCELAR REIMAGINADO */
-        .btn-cancel-elite {
-            background: transparent;
-            color: #666;
-            border: 1px solid #333;
-            padding: 12px 25px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin: 15px auto 0;
-            display: block;
-            width: 100%;
-            transition: all 0.4s ease;
-        }
-        .btn-cancel-elite:hover {
-            color: #d9534f;
-            border-color: #d9534f;
-            background: rgba(217, 83, 79, 0.05);
-            letter-spacing: 3px;
-        }
+        .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 15px auto 0; display: block; width: 100%; transition: all 0.4s ease; }
+        .btn-cancel-elite:hover { color: #d9534f; border-color: #d9534f; background: rgba(217, 83, 79, 0.05); letter-spacing: 3px; }
         .btn-remove { background: none; border: none; color: #d9534f; cursor: pointer; font-weight: bold; font-size: 16px; }
     </style>
 </head>
@@ -91,7 +72,7 @@
     <div id="view-directorio" class="view-section active">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
             <h1 style="font-family:'Cinzel'; font-size: 26px;">DIRECTORIO <span style="color:var(--gold-metalic)">GLOBAL</span></h1>
-            <button class="btn-gold" onclick="openModal('provModal')">Cargar Ficha Técnica +</button>
+            <button class="btn-gold" style="width:auto;" onclick="openModal('provModal')">Cargar Ficha Técnica +</button>
         </div>
         <div class="table-container">
             <table>
@@ -106,7 +87,7 @@
             <div class="warning-box">
                 <span style="font-size: 24px;">⚠️</span>
                 <p style="font-size: 12px; margin: 0; color: #f8d7da;">
-                    <b>POLÍTICA DE INTEGRIDAD:</b> EL NOMBRE LEGAL Y RIF NO PODRÁN SER EDITADOS TRAS EL REGISTRO PARA GARANTIZAR LA TRAZABILIDAD.
+                    <b>POLÍTICA DE INTEGRIDAD:</b> EL NOMBRE LEGAL, RIF Y PAÍS SON INNEGOCIABLES Y NO PODRÁN SER EDITADOS TRAS EL REGISTRO PARA GARANTIZAR LA TRAZABILIDAD.
                 </p>
             </div>
 
@@ -156,8 +137,14 @@
                 <div class="form-section">
                     <label>Ubicación y Operación</label>
                     <div class="grid-3" style="grid-template-columns: 1fr 1fr; margin-bottom:15px;">
-                        <div><label>País</label><input type="text" id="prov_pais" placeholder="VENEZUELA" oninput="this.value = this.value.toUpperCase()"></div>
-                        <div><label>Moneda Base</label><select id="prov_moneda"><option value="$">USD</option><option value="Bs.">VES</option><option value="€">EUR</option></select></div>
+                        <div><label>País *</label><input type="text" id="prov_pais" placeholder="ESCRIBA EL PAÍS" oninput="this.value = this.value.toUpperCase()"></div>
+                        <div><label>Moneda Base *</label>
+                            <select id="prov_moneda">
+                                <option value="USD ($)">USD ($)</option>
+                                <option value="VES (Bs.)">VES (Bs.)</option>
+                                <option value="EUR (€)">EUR (€)</option>
+                            </select>
+                        </div>
                     </div>
                     <div style="background: rgba(212, 175, 55, 0.05); padding: 20px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);">
                         <p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.6;">
@@ -167,7 +154,7 @@
                 </div>
             </div>
 
-            <button class="btn-gold" style="width:100%; padding: 20px; margin-top:10px;" onclick="guardarProv()">REGISTRAR EN RED MAESTRA</button>
+            <button class="btn-gold" style="padding: 20px; margin-top:10px;" onclick="iniciarGuardado()">REGISTRAR EN RED MAESTRA</button>
             <button class="btn-cancel-elite" onclick="closeModal('provModal')">Cancelar y Salir</button>
         </div>
     </div>
@@ -197,6 +184,8 @@
             document.getElementById('prov_nombre').value = '';
             document.getElementById('prov_rif').value = '';
             document.getElementById('prov_pais').value = '';
+            // Limpiar clases de error
+            ['prov_nombre', 'prov_rif', 'prov_pais'].forEach(id => document.getElementById(id).classList.remove('input-error'));
         }
 
         function addField(containerId, type) {
@@ -211,18 +200,44 @@
             container.appendChild(div);
         }
 
-        function guardarProv() {
-            const nombre = document.getElementById('prov_nombre').value;
-            const rif = document.getElementById('prov_rif').value;
-            if(!nombre || !rif) return alert("⚠️ ERROR: NOMBRE LEGAL Y RIF SON REQUISITOS DE INTEGRIDAD.");
-            
-            if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿CONFIRMA EL REGISTRO EN LA RED MAESTRA?")){
-                const tbody = document.getElementById('cuerpo-tabla-prov');
-                tbody.innerHTML += `<tr id="row-${rif}"><td>${document.getElementById('prov_cat').value}</td><td style="font-weight:bold;">${nombre}</td><td>${rif}</td><td>${document.getElementById('prov_pais').value || '---'}</td><td><button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td></tr>`;
-                document.getElementById('provModal').style.display = 'none';
-                resetFicha();
+        function iniciarGuardado() {
+            const nombre = document.getElementById('prov_nombre');
+            const rif = document.getElementById('prov_rif');
+            const pais = document.getElementById('prov_pais');
+            const moneda = document.getElementById('prov_moneda').value;
+
+            // Validación de innegociables
+            let error = false;
+            [nombre, rif, pais].forEach(el => {
+                if(!el.value.trim()){ el.classList.add('input-error'); error = true; } 
+                else { el.classList.remove('input-error'); }
+            });
+
+            if(error) return alert("⚠️ BLOQUEO DE SEGURIDAD: NOMBRE LEGAL, RIF Y PAÍS SON DATOS INNEGOCIABLES.");
+
+            // Secuencia de confirmaciones solicitada por el socio
+            if(confirm(`¿CONFIRMA QUE LA MONEDA [ ${moneda} ] ES LA CORRESPONDIENTE A ESTE PROVEEDOR?`)) {
+                if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿CONFIRMA EL REGISTRO EN LA RED MAESTRA?")) {
+                    ejecutarGuardado(nombre.value, rif.value, pais.value);
+                }
             }
         }
+
+        function ejecutarGuardado(nombre, rif, pais) {
+            const tbody = document.getElementById('cuerpo-tabla-prov');
+            tbody.innerHTML += `<tr id="row-${rif}">
+                <td>${document.getElementById('prov_cat').value}</td>
+                <td style="font-weight:bold; letter-spacing:1px;">${nombre}</td>
+                <td>${rif}</td>
+                <td>${pais}</td>
+                <td><button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td>
+            </tr>`;
+            
+            alert("✅ REGISTRO EXITOSO: EL PROVEEDOR HA SIDO INTEGRADO A LA RED GLOBAL.");
+            document.getElementById('provModal').style.display = 'none';
+            resetFicha();
+        }
+
         window.onclick = function(event) { if (event.target.className === 'modal') { event.target.style.display = "none"; } }
     </script>
 </body>
