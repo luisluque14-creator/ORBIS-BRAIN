@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Sello de Oro v6.8</title>
+    <title>ORBIS BRAIN | Proporción Áurea v6.9</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -31,11 +31,12 @@
         th { text-align: left; color: var(--gold-soft); font-size: 10px; text-transform: uppercase; padding: 15px; border-bottom: 2px solid var(--gold-metalic); }
         td { padding: 15px; border-bottom: 1px solid #222; font-size: 13px; }
 
+        /* MODAL COMPACTA */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 40px 60px; border-radius: 30px; width: 1200px; max-height: 90vh; overflow-y: auto; }
+        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 25px 60px; border-radius: 30px; width: 1200px; max-height: 94vh; overflow-y: auto; }
         
-        .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 15px 0; opacity: 0.8; }
-        .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 24px; letter-spacing: 5px; margin: 0; font-weight: 500; }
+        .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 10px 0; opacity: 0.8; }
+        .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 24px; letter-spacing: 5px; margin: 5px 0; font-weight: 500; }
 
         .form-section { background: rgba(255,255,255,0.02); padding: 25px; border-radius: 20px; border: 1px solid #222; margin-bottom: 20px; }
         label { display: block; font-size: 11px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
@@ -46,10 +47,9 @@
         .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
-        .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 10px; text-transform: uppercase; width: 100%; margin-bottom: 15px; transition: 0.3s; }
-        .btn-add-small:hover { background: rgba(212, 175, 55, 0.1); color: #fff; }
-
-        .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 15px auto 0; display: block; width: 100%; transition: all 0.4s ease; }
+        .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 10px; text-transform: uppercase; width: 100%; margin-bottom: 15px; }
+        
+        .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 10px auto 0; display: block; width: 100%; transition: all 0.4s ease; }
         .btn-cancel-elite:hover { color: #d9534f; border-color: #d9534f; background: rgba(217, 83, 79, 0.05); letter-spacing: 3px; }
         .btn-remove { background: none; border: none; color: #d9534f; cursor: pointer; font-weight: bold; font-size: 16px; }
     </style>
@@ -91,10 +91,10 @@
             <div class="modal-title">RED MAESTRA</div>
             <hr class="gold-divider">
 
-            <div class="warning-box" style="margin-top: 25px;">
-                <span style="font-size: 24px;">⚠️</span>
-                <p style="font-size: 12px; margin: 0; color: #f8d7da;">
-                    <b>POLÍTICA DE INTEGRIDAD:</b> NOMBRE LEGAL, RIF Y PAÍS SON DATOS INNEGOCIABLES. NO PODRÁN SER EDITADOS TRAS EL REGISTRO.
+            <div class="warning-box" style="margin-top: 20px; padding: 12px;">
+                <span style="font-size: 20px;">⚠️</span>
+                <p style="font-size: 11px; margin: 0; color: #f8d7da;">
+                    <b>POLÍTICA DE INTEGRIDAD:</b> NOMBRE LEGAL, RIF Y PAÍS SON DATOS INNEGOCIABLES.
                 </p>
             </div>
 
@@ -130,7 +130,7 @@
                     </div>
                     <button class="btn-add-small" onclick="addField('phone-container', 'phone')">+ Agregar otro teléfono</button>
                     
-                    <label style="margin-top:20px;">Canales de Correo Electrónico</label>
+                    <label style="margin-top:15px;">Canales de Correo Electrónico</label>
                     <div id="email-container">
                         <div class="dynamic-row">
                             <input type="email" class="prov-email" placeholder="ADMIN@CORREO.COM" oninput="this.value = this.value.toUpperCase()">
@@ -153,15 +153,15 @@
                             </select>
                         </div>
                     </div>
-                    <div style="background: rgba(212, 175, 55, 0.05); padding: 20px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);">
-                        <p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.6;">
+                    <div style="background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);">
+                        <p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.5;">
                             <b>RED GLOBAL ORBIS:</b> ESTE PROVEEDOR SERÁ INTEGRADO A LA RED MAESTRA DE ALIADOS PARA ORQUESTACIÓN INTERNACIONAL.
                         </p>
                     </div>
                 </div>
             </div>
 
-            <button class="btn-gold" style="padding: 24px; margin-top:10px;" onclick="iniciarGuardado()">REGISTRAR EN RED MAESTRA</button>
+            <button class="btn-gold" style="padding: 22px;" onclick="iniciarGuardado()">REGISTRAR EN RED MAESTRA</button>
             <button class="btn-cancel-elite" onclick="closeModal('provModal')">Cancelar y Salir</button>
         </div>
     </div>
@@ -177,7 +177,7 @@
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         
         function closeModal(id) { 
-            if(confirm("🏛️ ATENCIÓN: ¿SEGURO QUE DESEA CANCELAR? SE PERDERÁN LOS DATOS DE LA FICHA ACTUAL.")) {
+            if(confirm("🏛️ ATENCIÓN: ¿SEGURO QUE DESEA CANCELAR?")) {
                 document.getElementById(id).style.display = 'none';
                 resetFicha();
             }
@@ -221,10 +221,10 @@
                 else { el.classList.remove('input-error'); }
             });
 
-            if(error) return alert("⚠️ BLOQUEO DE SEGURIDAD: NOMBRE LEGAL, RIF Y PAÍS SON DATOS INNEGOCIABLES.");
+            if(error) return alert("⚠️ BLOQUEO: NOMBRE LEGAL, RIF Y PAÍS SON INNEGOCIABLES.");
 
-            if(confirm(`¿CONFIRMA QUE LA MONEDA [ ${moneda} ] ES LA CORRESPONDIENTE A ESTE PROVEEDOR?`)) {
-                if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿CONFIRMA EL REGISTRO EN LA RED MAESTRA?")) {
+            if(confirm(`¿CONFIRMA QUE LA MONEDA [ ${moneda} ] ES LA CORRESPONDIENTE?`)) {
+                if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿CONFIRMA EL REGISTRO?")) {
                     ejecutarGuardado(nombre.value, rif.value, pais.value);
                 }
             }
@@ -240,7 +240,7 @@
                 <td><button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td>
             </tr>`;
             
-            alert("✅ REGISTRO EXITOSO: EL PROVEEDOR HA SIDO INTEGRADO A LA RED GLOBAL.");
+            alert("✅ REGISTRO EXITOSO.");
             document.getElementById('provModal').style.display = 'none';
             resetFicha();
         }
