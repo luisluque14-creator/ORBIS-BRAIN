@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Integrity v6.2</title>
+    <title>ORBIS BRAIN | Agilidad v6.3</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,10 +13,10 @@
         }
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
+        /* SIDEBAR */
         .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; }
         .logo-container { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 20px; }
         .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; margin-top: 10px; }
-        
         .nav-btn { background: transparent; border: 1px solid transparent; color: #888; padding: 15px; text-align: left; font-family: 'Cinzel'; font-size: 12px; letter-spacing: 2px; cursor: pointer; transition: 0.3s; margin-bottom: 10px; border-radius: 8px; }
         .nav-btn.active { color: var(--gold-metalic); border: 1px solid var(--gold-metalic); background: rgba(212, 175, 55, 0.1); }
 
@@ -24,6 +24,7 @@
         .view-section.active { display: block; }
 
         .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; transition: 0.3s; }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
         
         .table-container { background: rgba(0,0,0,0.6); padding: 30px; border-radius: 20px; border: 1px solid #333; margin-top: 20px; }
         table { width: 100%; border-collapse: collapse; }
@@ -42,6 +43,31 @@
         
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 10px; text-transform: uppercase; width: 100%; margin-bottom: 15px; }
+        
+        /* BOTÓN CANCELAR REIMAGINADO */
+        .btn-cancel-elite {
+            background: transparent;
+            color: #666;
+            border: 1px solid #333;
+            padding: 12px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 15px auto 0;
+            display: block;
+            width: 100%;
+            transition: all 0.4s ease;
+        }
+        .btn-cancel-elite:hover {
+            color: #d9534f;
+            border-color: #d9534f;
+            background: rgba(217, 83, 79, 0.05);
+            letter-spacing: 3px;
+        }
+
         .btn-remove { background: none; border: none; color: #d9534f; cursor: pointer; font-weight: bold; font-size: 16px; }
     </style>
 </head>
@@ -140,7 +166,7 @@
             </div>
 
             <button class="btn-gold" style="width:100%; padding: 20px; margin-top:10px;" onclick="guardarProv()">REGISTRAR EN RED MAESTRA</button>
-            <button class="btn-cancel" style="margin-top:15px; background:none; border:none; color:#666; cursor:pointer; width:100%;" onclick="closeModal('provModal')">CANCELAR Y SALIR</button>
+            <button class="btn-cancel-elite" onclick="closeModal('provModal')">Cancelar y Salir</button>
         </div>
     </div>
 
@@ -153,7 +179,15 @@
         }
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        
+        function closeModal(id) { 
+            if(confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos de la ficha actual.")) {
+                document.getElementById(id).style.display = 'none';
+                // Reset manual de rieles dinámicos para que siempre abra con uno solo
+                document.getElementById('phone-container').innerHTML = `<div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+58..."> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select><div></div></div>`;
+                document.getElementById('email-container').innerHTML = `<div class="dynamic-row"><input type="email" class="prov-email" placeholder="ADMIN@CORREO.COM"> <span style="font-size:10px; color:gray; padding-top:10px;">PRINCIPAL</span><div></div></div>`;
+            }
+        }
 
         function addField(containerId, type) {
             const container = document.getElementById(containerId);
@@ -172,17 +206,18 @@
             const rif = document.getElementById('prov_rif').value;
             if(!nombre || !rif) return alert("⚠️ ERROR: NOMBRE LEGAL Y RIF SON REQUISITOS DE INTEGRIDAD.");
             
-            const tbody = document.getElementById('cuerpo-tabla-prov');
-            tbody.innerHTML += `<tr id="row-${rif}">
-                <td>${document.getElementById('prov_cat').value}</td>
-                <td style="font-weight:bold; letter-spacing:1px;">${nombre}</td>
-                <td>${rif}</td>
-                <td>${document.getElementById('prov_pais').value || '---'}</td>
-                <td><button onclick="confirmarEliminar('${rif}')" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td>
-            </tr>`;
-            
-            alert("✅ REGISTRO EXITOSO: EL PROVEEDOR AHORA ES PARTE DE LA RED ORBIS BRAIN.");
-            closeModal('provModal');
+            if(confirm("🏛️ ORBIS BRAIN SECURITY:\n¿Confirma el registro de este proveedor en la red maestra?")){
+                const tbody = document.getElementById('cuerpo-tabla-prov');
+                tbody.innerHTML += `<tr id="row-${rif}">
+                    <td>${document.getElementById('prov_cat').value}</td>
+                    <td style="font-weight:bold; letter-spacing:1px;">${nombre}</td>
+                    <td>${rif}</td>
+                    <td>${document.getElementById('prov_pais').value || '---'}</td>
+                    <td><button onclick="confirmarEliminar('${rif}')" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td>
+                </tr>`;
+                alert("✅ REGISTRO EXITOSO");
+                document.getElementById('provModal').style.display = 'none';
+            }
         }
 
         function confirmarEliminar(id) {
