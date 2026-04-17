@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Seguridad de Red v6.10</title>
+    <title>ORBIS BRAIN | Blindaje v6.11</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,7 +13,6 @@
         }
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        /* SIDEBAR */
         .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; }
         .logo-container { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 20px; }
         .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; margin-top: 10px; }
@@ -24,14 +23,13 @@
         .view-section.active { display: block; }
 
         .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 18px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 14px; letter-spacing: 3px; transition: 0.3s; width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4); letter-spacing: 4px; }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4); }
         
         .table-container { background: rgba(0,0,0,0.6); padding: 30px; border-radius: 20px; border: 1px solid #333; margin-top: 20px; }
         table { width: 100%; border-collapse: collapse; }
         th { text-align: left; color: var(--gold-soft); font-size: 10px; text-transform: uppercase; padding: 15px; border-bottom: 2px solid var(--gold-metalic); }
         td { padding: 15px; border-bottom: 1px solid #222; font-size: 13px; }
 
-        /* MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 25px 60px; border-radius: 30px; width: 1200px; max-height: 94vh; overflow-y: auto; }
         
@@ -40,21 +38,21 @@
 
         .form-section { background: rgba(255,255,255,0.02); padding: 25px; border-radius: 20px; border: 1px solid #222; margin-bottom: 20px; }
         label { display: block; font-size: 11px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
-        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 14px; box-sizing: border-box; text-transform: uppercase; transition: 0.3s; }
+        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 14px; box-sizing: border-box; text-transform: uppercase; }
         
-        .input-error { border-color: #d9534f !important; background: rgba(217, 83, 79, 0.05) !important; }
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
-        .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 10px; text-transform: uppercase; width: 100%; margin-bottom: 15px; }
-        
         .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 10px auto 0; display: block; width: 100%; transition: all 0.4s ease; }
-        .btn-cancel-elite:hover { color: #d9534f; border-color: #d9534f; background: rgba(217, 83, 79, 0.05); letter-spacing: 3px; }
-        .btn-remove { background: none; border: none; color: #d9534f; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .btn-cancel-elite:hover { color: #d9534f; border-color: #d9534f; background: rgba(217, 83, 79, 0.05); }
     </style>
 </head>
 <body>
+
+    <script>
+        const USUARIO_ACTUAL = "LUIS_ALFREDO"; // Tu nombre en el sistema
+    </script>
 
     <div class="sidebar">
         <div class="logo-container">
@@ -65,13 +63,6 @@
         <button class="nav-btn active" onclick="showView('directorio', this)">👥 Directorio Maestro</button>
     </div>
 
-    <div id="view-certificacion" class="view-section">
-        <h1 style="font-family:'Cinzel'; font-size: 26px;">CERTIFICACIÓN <span style="color:var(--gold-metalic)">GLOBAL</span></h1>
-        <div class="table-container">
-            <table><thead><tr><th>ID</th><th>Aliado</th><th>Monto</th><th>Estado</th></tr></thead><tbody id="cuerpo-tabla"></tbody></table>
-        </div>
-    </div>
-
     <div id="view-directorio" class="view-section active">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
             <h1 style="font-family:'Cinzel'; font-size: 26px;">DIRECTORIO <span style="color:var(--gold-metalic)">GLOBAL</span></h1>
@@ -79,14 +70,15 @@
         </div>
         <div class="table-container">
             <table>
-                <thead><tr><th>Categoría</th><th>Nombre Legal</th><th>RIF</th><th>País</th><th>Acción</th></tr></thead>
+                <thead><tr><th>Categoría</th><th>Nombre Legal</th><th>RIF</th><th>País</th><th>Propietario</th><th>Acción</th></tr></thead>
                 <tbody id="cuerpo-tabla-prov">
-                    <tr id="row-EJEMPLO">
-                        <td>HOTEL</td>
-                        <td style="font-weight:bold; letter-spacing:1px;">CARACAS C.A</td>
-                        <td>J-123456</td>
-                        <td>VENEZUELA</td>
-                        <td><button onclick="confirmarEliminar('CARACAS C.A', 'EJEMPLO')" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px; font-weight:bold; text-transform:uppercase;">Eliminar</button></td>
+                    <tr id="row-PEDRO123">
+                        <td>AGENCIA</td>
+                        <td style="font-weight:bold;">VIAJES PEDRO C.A</td>
+                        <td>J-999999</td>
+                        <td>ESPAÑA</td>
+                        <td style="color:#777; font-size:10px;">PEDRO_PEREZ</td>
+                        <td><button onclick="confirmarEliminar('VIAJES PEDRO C.A', 'row-PEDRO123', 'PEDRO_PEREZ')" style="background:none; border:none; color:#444; cursor:pointer; font-size:10px; font-weight:bold; text-transform:uppercase;">Eliminar</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -99,58 +91,20 @@
             <div class="modal-title">RED MAESTRA</div>
             <hr class="gold-divider">
 
-            <div class="warning-box" style="margin-top: 20px; padding: 12px;">
-                <span style="font-size: 20px;">⚠️</span>
-                <p style="font-size: 11px; margin: 0; color: #f8d7da;">
-                    <b>POLÍTICA DE INTEGRIDAD:</b> NOMBRE LEGAL, RIF Y PAÍS SON DATOS INNEGOCIABLES.
-                </p>
-            </div>
-
-            <div class="form-section">
+            <div class="form-section" style="margin-top:20px;">
                 <div class="grid-3">
                     <div><label>Categoría *</label>
                         <select id="prov_cat">
                             <option value="HOTEL">🏨 HOTEL</option>
                             <option value="AGENCIA">🏢 AGENCIA</option>
-                            <option value="FREELANCER">👨‍💻 FREELANCER</option>
-                            <option value="TRASLADO">🚐 TRASLADO</option>
                         </select>
                     </div>
-                    <div><label>Nombre Legal *</label><input type="text" id="prov_nombre" placeholder="ESCRIBA EL NOMBRE LEGAL" oninput="this.value = this.value.toUpperCase()"></div>
-                    <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="ESCRIBA EL RIF / TAX ID" oninput="this.value = this.value.toUpperCase()"></div>
+                    <div><label>Nombre Legal *</label><input type="text" id="prov_nombre" oninput="this.value = this.value.toUpperCase()"></div>
+                    <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" oninput="this.value = this.value.toUpperCase()"></div>
                 </div>
-            </div>
-
-            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:20px;">
-                <div class="form-section">
-                    <label>Canales de Telefonía / WhatsApp</label>
-                    <div id="phone-container">
-                        <div class="dynamic-row">
-                            <input type="text" class="prov-phone" placeholder="+">
-                            <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select>
-                            <div></div>
-                        </div>
-                        <div class="dynamic-row">
-                            <input type="text" class="prov-phone" placeholder="+">
-                            <select class="is-whatsapp"><option value="no" selected>📞 LLAMADA</option><option value="yes">🟢 WHATSAPP</option></select>
-                            <button class="btn-remove" onclick="this.parentElement.remove()">×</button>
-                        </div>
-                    </div>
-                    <button class="btn-add-small" onclick="addField('phone-container', 'phone')">+ Agregar otro teléfono</button>
-                </div>
-
-                <div class="form-section">
-                    <label>Ubicación y Operación</label>
-                    <div class="grid-3" style="grid-template-columns: 1fr 1fr; margin-bottom:15px;">
-                        <div><label>País *</label><input type="text" id="prov_pais" placeholder="ESCRIBA EL PAÍS" oninput="this.value = this.value.toUpperCase()"></div>
-                        <div><label>Moneda Base *</label>
-                            <select id="prov_moneda">
-                                <option value="USD ($)">USD ($)</option>
-                                <option value="VES (Bs.)">VES (Bs.)</option>
-                                <option value="EUR (€)">EUR (€)</option>
-                            </select>
-                        </div>
-                    </div>
+                <div class="grid-3" style="margin-top:20px;">
+                    <div><label>País *</label><input type="text" id="prov_pais" oninput="this.value = this.value.toUpperCase()"></div>
+                    <div><label>Moneda *</label><select id="prov_moneda"><option value="USD ($)">USD ($)</option></select></div>
                 </div>
             </div>
 
@@ -168,82 +122,47 @@
         }
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        
-        function closeModal(id) { 
-            if(confirm("🏛️ ATENCIÓN: ¿SEGURO QUE DESEA CANCELAR?")) {
-                document.getElementById(id).style.display = 'none';
-                resetFicha();
-            }
-        }
-
-        function resetFicha() {
-            const campos = ['prov_nombre', 'prov_rif', 'prov_pais'];
-            campos.forEach(id => {
-                const el = document.getElementById(id);
-                el.value = '';
-                el.classList.remove('input-error');
-            });
-            document.getElementById('phone-container').innerHTML = `
-                <div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+"> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select><div></div></div>
-                <div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+"> <select class="is-whatsapp"><option value="no" selected>📞 LLAMADA</option><option value="yes">🟢 WHATSAPP</option></select><button class="btn-remove" onclick="this.parentElement.remove()">×</button></div>`;
-        }
-
-        function addField(containerId, type) {
-            const container = document.getElementById(containerId);
-            const div = document.createElement('div');
-            div.className = 'dynamic-row';
-            div.innerHTML = `<input type="text" class="prov-phone" placeholder="+"> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no" selected>📞 LLAMADA</option></select> <button class="btn-remove" onclick="this.parentElement.remove()">×</button>`;
-            container.appendChild(div);
-        }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function iniciarGuardado() {
-            const nombre = document.getElementById('prov_nombre');
-            const rif = document.getElementById('prov_rif');
-            const pais = document.getElementById('prov_pais');
-            const moneda = document.getElementById('prov_moneda').value;
+            const nombre = document.getElementById('prov_nombre').value;
+            const rif = document.getElementById('prov_rif').value;
+            const pais = document.getElementById('prov_pais').value;
 
-            let error = false;
-            [nombre, rif, pais].forEach(el => {
-                if(!el.value.trim()){ el.classList.add('input-error'); error = true; } 
-                else { el.classList.remove('input-error'); }
-            });
+            if(!nombre || !rif || !pais) return alert("⚠️ ERROR: DATOS INNEGOCIABLES FALTANTES.");
 
-            if(error) return alert("⚠️ BLOQUEO: NOMBRE LEGAL, RIF Y PAÍS SON INNEGOCIABLES.");
-
-            if(confirm(`¿CONFIRMA QUE LA MONEDA [ ${moneda} ] ES LA CORRESPONDIENTE?`)) {
-                if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿CONFIRMA EL REGISTRO?")) {
-                    ejecutarGuardado(nombre.value, rif.value, pais.value);
-                }
+            if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿CONFIRMA EL REGISTRO?")) {
+                const tbody = document.getElementById('cuerpo-tabla-prov');
+                const rowId = 'row-' + rif.replace(/\s+/g, '');
+                
+                tbody.innerHTML += `<tr id="${rowId}">
+                    <td>${document.getElementById('prov_cat').value}</td>
+                    <td style="font-weight:bold;">${nombre}</td>
+                    <td>${rif}</td>
+                    <td>${pais}</td>
+                    <td style="color:var(--gold-soft); font-size:10px;">${USUARIO_ACTUAL}</td>
+                    <td><button onclick="confirmarEliminar('${nombre}', '${rowId}', '${USUARIO_ACTUAL}')" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px; font-weight:bold; text-transform:uppercase;">Eliminar</button></td>
+                </tr>`;
+                closeModal('provModal');
             }
         }
 
-        function ejecutarGuardado(nombre, rif, pais) {
-            const tbody = document.getElementById('cuerpo-tabla-prov');
-            const newRowId = 'row-' + rif.replace(/\s+/g, '');
-            tbody.innerHTML += `<tr id="${newRowId}">
-                <td>${document.getElementById('prov_cat').value}</td>
-                <td style="font-weight:bold; letter-spacing:1px;">${nombre}</td>
-                <td>${rif}</td>
-                <td>${pais}</td>
-                <td><button onclick="confirmarEliminar('${nombre}', '${newRowId}')" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px; font-weight:bold; text-transform:uppercase;">Eliminar</button></td>
-            </tr>`;
-            
-            alert("✅ REGISTRO EXITOSO.");
-            document.getElementById('provModal').style.display = 'none';
-            resetFicha();
-        }
+        // --- LÓGICA DE PROPIEDAD INTELECTUAL ---
+        function confirmarEliminar(nombreProv, rowId, propietario) {
+            // Check de Seguridad: ¿Eres tú el dueño?
+            if (propietario !== USUARIO_ACTUAL) {
+                alert(`🏛️ BLOQUEO DE SEGURIDAD ORBIS BRAIN:\n\nUSTED NO TIENE PERMISOS PARA ELIMINAR ESTE REGISTRO.\n\nPROPIETARIO ORIGINAL: ${propietario}\n\nSolo el creador de la ficha técnica puede purgar estos datos de la Red Maestra.`);
+                return;
+            }
 
-        // --- FUNCIÓN DE ELIMINACIÓN SEGURA SOLICITADA POR EL SOCIO ---
-        function confirmarEliminar(nombreProv, rowId) {
-            const mensaje = `🏛️ ORBIS BRAIN SECURITY:\n\n¿CONFIRMA QUE DESEA ELIMINAR ESTE PROVEEDOR?\n\nEL PROVEEDOR [ ${nombreProv} ] SERÁ ELIMINADO DE TODA LA RED MAESTRA DE ALIADOS.`;
+            // Si eres el dueño, procede con la advertencia que diseñamos
+            const mensaje = `🏛️ SEGURIDAD DE RED:\n\n¿CONFIRMA QUE DESEA ELIMINAR ESTE PROVEEDOR?\n\nEL PROVEEDOR [ ${nombreProv} ] SERÁ ELIMINADO DE TODA LA RED MAESTRA.`;
             
             if(confirm(mensaje)) {
                 document.getElementById(rowId).remove();
-                alert(`SISTEMA: PROVEEDOR [ ${nombreProv} ] ELIMINADO CORRECTAMENTE.`);
+                alert("SISTEMA: DATOS PURGADOS CORRECTAMENTE.");
             }
         }
-
-        window.onclick = function(event) { if (event.target.className === 'modal') { event.target.style.display = "none"; } }
     </script>
 </body>
 </html>
