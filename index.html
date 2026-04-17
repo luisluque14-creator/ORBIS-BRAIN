@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Estructura Blindada v5.4</title>
+    <title>ORBIS BRAIN | Cierre de Élite v5.5</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -15,11 +15,11 @@
         
         .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; }
         .logo-container { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 20px; }
-        .logo-img { max-width: 180px; height: auto; }
         .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; margin-top: 10px; }
         
         .main-content { flex: 1; padding: 50px; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); }
-        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; }
+        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; transition: 0.3s; }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
 
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 30px 60px; border-radius: 30px; width: 1350px; max-height: 96vh; overflow-y: auto; }
@@ -27,9 +27,7 @@
         .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 15px 0; opacity: 0.8; }
         .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 24px; letter-spacing: 3px; margin: 0; }
 
-        /* CONTENEDOR PRINCIPAL DE FORMULARIO */
         .main-grid { display: grid; grid-template-columns: 1.8fr 1fr; gap: 20px; align-items: stretch; margin-top: 15px; }
-
         .form-section { background: rgba(255,255,255,0.02); padding: 20px 30px; border-radius: 20px; border: 1px solid #222; display: flex; flex-direction: column; }
         
         label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
@@ -41,10 +39,8 @@
         .tax-symbol { position: absolute; right: 15px; color: var(--gold-soft); font-weight: bold; font-size: 16px; pointer-events: none; }
         
         input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
-        .input-error { border-color: #d9534f !important; }
 
-        /* SUMMARY BOX REESTRUCTURADO */
-        .summary-box { background: #000; padding: 25px 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 20px; clear: both; }
+        .summary-box { background: #000; padding: 25px 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 20px; }
         .sum-item { text-align: center; border-right: 1px solid #222; padding: 0 5px; }
         .sum-item:last-child { border-right: none; }
         .sum-val { display: block; font-size: 20px; font-weight: 800; color: var(--gold-metalic); margin-bottom: 5px; }
@@ -52,6 +48,30 @@
 
         .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); width: 100%; padding: 10px; cursor: pointer; border-radius: 8px; font-size: 11px; font-weight: bold; text-transform: uppercase; margin-top: 10px; }
         .btn-remove { background: none; color: #d9534f; border: 1px solid #d9534f; border-radius: 8px; cursor: pointer; height: 46px; width: 100%; display: flex; align-items: center; justify-content: center; }
+        
+        /* BOTÓN CANCELAR REIMAGINADO (SOLICITADO) */
+        .btn-cancel {
+            background: transparent;
+            color: #666;
+            border: 1px solid #333;
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 20px auto 0;
+            display: block;
+            transition: all 0.4s ease;
+        }
+        .btn-cancel:hover {
+            color: #d9534f;
+            border-color: #d9534f;
+            background: rgba(217, 83, 79, 0.05);
+            letter-spacing: 3px;
+        }
+
         .row-fixed { background: rgba(212, 175, 55, 0.05); border-radius: 10px; padding: 5px; border: 1px solid rgba(212, 175, 55, 0.2); }
         .btn-submit { width: 100%; margin-top: 20px; padding: 18px; font-size: 15px; }
     </style>
@@ -129,7 +149,7 @@
             </div>
 
             <button class="btn-gold btn-submit" id="btn_enviar" onclick="confirmarRegistro()">VALIDAR Y SINCRONIZAR CERTIFICACIÓN</button>
-            <button type="button" onclick="confirmarCancelacion()" style="width:100%; background:none; border:none; color:#444; margin-top:12px; cursor:pointer; font-size:11px; text-transform:uppercase; letter-spacing:1.5px;">Cancelar Registro</button>
+            <button type="button" class="btn-cancel" onclick="confirmarCancelacion()">Cancelar Registro</button>
         </div>
     </div>
 
@@ -138,7 +158,7 @@
         function openModal() { document.getElementById('opModal').style.display='flex'; calcularTodo(); }
         
         function confirmarCancelacion() {
-            if (confirm("¿Desea cancelar?")) {
+            if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán todos los datos actuales.")) {
                 document.getElementById('registroForm').reset();
                 document.getElementById('opModal').style.display='none';
             }
@@ -184,7 +204,7 @@
         }
 
         function confirmarRegistro() {
-            if (confirm("¿Confirma el registro?")) enviarAlCerebro();
+            if (confirm("🏛️ ORBIS BRAIN NETWORK:\n¿Confirma la sincronización de esta certificación?\n\nRecuerde: Este registro no se puede revertir.")) enviarAlCerebro();
         }
 
         async function enviarAlCerebro() {
@@ -194,9 +214,9 @@
                 aliado: document.getElementById('aliado_name').value + " [" + document.getElementById('aliado_rif').value + "]",
                 monto: document.getElementById('res-total').innerText.replace("$",""),
                 comision_aliado: document.getElementById('comision_aliado').value,
-                proveedor: "Fijo v5.4"
+                proveedor: "Élite v5.5"
             })});
-            alert("CERTIFICACIÓN REGISTRADA"); 
+            alert("CERTIFICACIÓN SINCRONIZADA CON EL LIBRO"); 
             location.reload();
         }
 
@@ -204,7 +224,7 @@
             try {
                 const res = await fetch(URL_SCRIPT); const data = await res.json(); const tbody = document.getElementById('cuerpo-tabla');
                 tbody.innerHTML = ""; data.reverse().forEach(op => {
-                    tbody.innerHTML += `<tr><td style="padding:15px; font-family:monospace;">${op.id}</td><td style="font-weight:600;">${op.aliado}</td><td style="font-size:11px; color:#777;">Sincronizado v5.4</td><td style="font-weight:800; color:var(--gold-metalic)">$${parseFloat(op.monto).toFixed(2)}</td><td><span style="color:#4CAF50; font-size:10px; border:1px solid #4CAF50; padding:2px 5px; border-radius:4px;">CERTIFICADO</span></td></tr>`;
+                    tbody.innerHTML += `<tr><td style="padding:15px; font-family:monospace;">${op.id}</td><td style="font-weight:600;">${op.aliado}</td><td style="font-size:11px; color:#777;">Sincronizado v5.5</td><td style="font-weight:800; color:var(--gold-metalic)">$${parseFloat(op.monto).toFixed(2)}</td><td><span style="color:#4CAF50; font-size:10px; border:1px solid #4CAF50; padding:2px 5px; border-radius:4px;">CERTIFICADO</span></td></tr>`;
                 });
             } catch(e) {}
         }
