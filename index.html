@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Directorio v6.0</title>
+    <title>ORBIS BRAIN | Conectividad v6.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,14 +13,14 @@
         }
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        /* SIDEBAR DINÁMICA */
+        /* SIDEBAR */
         .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; }
         .logo-container { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 20px; }
         .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; margin-top: 10px; }
         
         .nav-btn { background: transparent; border: 1px solid transparent; color: #888; padding: 15px; text-align: left; font-family: 'Cinzel'; font-size: 12px; letter-spacing: 2px; cursor: pointer; transition: 0.3s; margin-bottom: 10px; border-radius: 8px; }
         .nav-btn:hover { color: var(--gold-soft); background: rgba(212, 175, 55, 0.05); }
-        .nav-btn.active { color: var(--gold-metalic); border: 1px solid var(--gold-metalic); background: rgba(212, 175, 55, 0.1); box-shadow: 0 0 15px rgba(212, 175, 55, 0.1); }
+        .nav-btn.active { color: var(--gold-metalic); border: 1px solid var(--gold-metalic); background: rgba(212, 175, 55, 0.1); }
 
         /* VISTAS */
         .view-section { display: none; flex: 1; padding: 50px; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); }
@@ -37,19 +37,19 @@
 
         /* MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 30px 60px; border-radius: 30px; width: 1350px; max-height: 96vh; overflow-y: auto; }
+        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 30px 60px; border-radius: 30px; width: 1350px; max-height: 96vh; overflow-y: auto; box-shadow: 0 0 60px rgba(0,0,0,1); }
         .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 15px 0; opacity: 0.8; }
-        
+        .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 24px; letter-spacing: 3px; margin: 0; }
+
         /* FORMULARIOS */
         .form-section { background: rgba(255,255,255,0.02); padding: 25px 35px; border-radius: 20px; border: 1px solid #222; margin-bottom: 20px; }
-        label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
+        label { display: block; font-size: 12px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
         input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-
-        .summary-box { background: #000; padding: 25px 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 20px; }
-        .sum-val { display: block; font-size: 20px; font-weight: 800; color: var(--gold-metalic); margin-bottom: 5px; }
-        .sum-lbl { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; }
         
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .phone-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; align-items: center; }
+
+        .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 10px; text-transform: uppercase; margin-top: 5px; width: 100%; }
         .btn-cancel { background: transparent; color: #666; border: 1px solid #333; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 20px auto 0; display: block; }
     </style>
 </head>
@@ -62,18 +62,17 @@
         </div>
         <button class="nav-btn active" onclick="showView('certificacion', this)">🏛️ Certificaciones</button>
         <button class="nav-btn" onclick="showView('directorio', this)">👥 Directorio Aliados</button>
-        <div style="margin-top: auto; color: var(--gold-metalic); font-size: 10px; text-align: center; font-family: 'Cinzel'; opacity: 0.5;">v6.0 Operational</div>
     </div>
 
     <div id="view-certificacion" class="view-section active">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
             <h1 style="font-family:'Cinzel'; font-size: 28px;">CERTIFICACIÓN <span style="color:var(--gold-metalic)">GLOBAL</span></h1>
-            <button class="btn-gold" onclick="openModal('opModal')">Nueva Orquestación +</button>
+            <button class="btn-gold">Nueva Orquestación +</button>
         </div>
         <div class="table-container">
             <table>
                 <thead>
-                    <tr><th>ID Operación</th><th>Aliado Responsable</th><th>Detalle Fiscal</th><th>Total Certificado</th><th>Estado</th></tr>
+                    <tr><th>ID</th><th>Aliado</th><th>Detalle</th><th>Total</th><th>Estado</th></tr>
                 </thead>
                 <tbody id="cuerpo-tabla"></tbody>
             </table>
@@ -88,47 +87,10 @@
         <div class="table-container">
             <table>
                 <thead>
-                    <tr><th>Categoría</th><th>Nombre Legal</th><th>RIF / TAX ID</th><th>País</th><th>Estado</th></tr>
+                    <tr><th>Categoría</th><th>Nombre</th><th>RIF</th><th>Contacto</th><th>Estado</th></tr>
                 </thead>
-                <tbody id="cuerpo-tabla-prov">
-                    </tbody>
+                <tbody id="cuerpo-tabla-prov"></tbody>
             </table>
-        </div>
-    </div>
-
-    <div id="opModal" class="modal">
-        <div class="modal-content">
-            <hr class="gold-divider">
-            <div class="modal-title">REGISTRO PARA CERTIFICACIÓN FISCAL Y CONTABLE</div>
-            <hr class="gold-divider">
-            <form id="registroForm">
-                <div class="form-section">
-                    <div class="grid-3" style="grid-template-columns: 1.5fr 1fr 1fr 1fr;">
-                        <div><label>Nombre Fiscal del Aliado *</label><input type="text" id="aliado_name"></div>
-                        <div><label>RIF / Tax ID *</label><input type="text" id="aliado_rif"></div>
-                        <div>
-                            <label>Moneda *</label>
-                            <select id="moneda_global" onchange="cambiarMoneda()">
-                                <option value="$">USD ($)</option>
-                                <option value="Bs.">Bs. (VE)</option>
-                                <option value="€">EUR (€)</option>
-                                <option value="د.إ">AED (AED)</option>
-                            </select>
-                        </div>
-                        <div><label style="color:var(--gold-metalic)">Honorarios (<span class="curr-sym">$</span>)</label><input type="number" id="comision_aliado" readonly></div>
-                    </div>
-                </div>
-                </form>
-            <div class="summary-box">
-                <div class="sum-item"><span class="sum-lbl">Base</span><span id="res-neto" class="sum-val">0.00</span></div>
-                <div class="sum-item"><span class="sum-lbl">Impuestos</span><span id="res-imp" class="sum-val">0.00</span></div>
-                <div class="sum-item"><span class="sum-lbl">Fee Orbis</span><span id="res-fee-fijo" class="sum-val">6.00</span></div>
-                <div class="sum-item"><span class="sum-lbl">Escudo Oro</span><span id="res-escudo" class="sum-val">0.00</span></div>
-                <div class="sum-item" style="background:rgba(212,175,55,0.1)"><span class="sum-lbl">Ganancia Neta</span><span id="res-ganancia" class="sum-val">0.00</span></div>
-                <div class="sum-item"><span class="sum-lbl">Total Facturado</span><span id="res-total" class="sum-val" style="color:#4CAF50">0.00</span></div>
-            </div>
-            <button class="btn-gold" style="width:100%; margin-top:20px;" onclick="confirmarRegistro()">Sincronizar Certificación</button>
-            <button class="btn-cancel" onclick="closeModal('opModal')">Cerrar</button>
         </div>
     </div>
 
@@ -137,6 +99,7 @@
             <hr class="gold-divider">
             <div class="modal-title">FICHA TÉCNICA DE PROVEEDOR / ALIADO</div>
             <hr class="gold-divider">
+            
             <div class="form-section">
                 <div class="grid-3">
                     <div>
@@ -146,33 +109,63 @@
                             <option value="Agencia">🏢 Agencia de Viajes</option>
                             <option value="Freelancer">👨‍💻 Freelancer / Guía</option>
                             <option value="Traslado">🚐 Transporte / Traslado</option>
-                            <option value="Vuelo">✈️ Aerolínea / Consolidador</option>
                         </select>
                     </div>
-                    <div><label>Nombre Legal / Razón Social *</label><input type="text" id="prov_nombre" placeholder="Ej: Marriott Caracas"></div>
-                    <div><label>RIF / TAX ID / Fiscal ID *</label><input type="text" id="prov_rif" placeholder="Identificación Legal"></div>
+                    <div><label>Nombre Legal / Razón Social *</label><input type="text" id="prov_nombre"></div>
+                    <div><label>RIF / TAX ID / Fiscal ID *</label><input type="text" id="prov_rif"></div>
                 </div>
+                
                 <div class="grid-3" style="margin-top:20px;">
-                    <div><label>País de Operación *</label><input type="text" id="prov_pais" placeholder="Ej: Venezuela"></div>
+                    <div><label>País de Operación *</label><input type="text" id="prov_pais"></div>
                     <div><label>Moneda Predeterminada *</label>
                         <select id="prov_moneda">
                             <option value="$">Dólares ($)</option>
                             <option value="Bs.">Bolívares (Bs.)</option>
-                            <option value="€">Euros (€)</option>
-                            <option value="د.إ">Dirhams (AED)</option>
                         </select>
                     </div>
-                    <div><label>Correo de Contacto</label><input type="email" id="prov_email" placeholder="aliado@correo.com"></div>
+                    <div><label>Correo Electrónico</label><input type="email" id="prov_email"></div>
+                </div>
+
+                <div class="gold-divider" style="margin: 30px 0 20px 0; height: 1px;"></div>
+
+                <div style="display:grid; grid-template-columns: 1.5fr 1fr; gap:30px;">
+                    <div>
+                        <label>Números de Teléfono de Contacto *</label>
+                        <div id="phone-container">
+                            <div class="phone-row">
+                                <input type="text" class="prov-phone" placeholder="+00 000 0000000">
+                                <select class="is-whatsapp">
+                                    <option value="no">📞 Solo Llamada</option>
+                                    <option value="yes">🟢 WhatsApp</option>
+                                </select>
+                                <div></div>
+                            </div>
+                            <div class="phone-row">
+                                <input type="text" class="prov-phone" placeholder="Segundo número (opcional)">
+                                <select class="is-whatsapp">
+                                    <option value="no">📞 Solo Llamada</option>
+                                    <option value="yes" selected>🟢 WhatsApp</option>
+                                </select>
+                                <div></div>
+                            </div>
+                        </div>
+                        <button class="btn-add-small" onclick="addPhoneField()">+ Agregar otro número de contacto</button>
+                    </div>
+                    
+                    <div style="background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);">
+                        <p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.5;">
+                            💡 <b>Nota de Orquestación:</b> Distinguir los números con WhatsApp permite una comunicación más ágil entre los aliados de la red ORBIS BRAIN.
+                        </p>
+                    </div>
                 </div>
             </div>
-            <button class="btn-gold" style="width:100%;" onclick="guardarProveedor()">Registrar en Directorio Maestro</button>
-            <button class="btn-cancel" onclick="closeModal('provModal')">Cancelar Registro</button>
+
+            <button class="btn-gold" style="width:100%;" onclick="guardarProv()">REGISTRAR EN DIRECTORIO MAESTRO</button>
+            <button class="btn-cancel" onclick="closeModal('provModal')">CANCELAR REGISTRO</button>
         </div>
     </div>
 
     <script>
-        const TASAS = {"$": 1.00, "Bs.": 45.00, "€": 0.93, "د.إ": 3.67};
-
         function showView(viewId, btn) {
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
@@ -183,38 +176,41 @@
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        function guardarProveedor() {
-            const nombre = document.getElementById('prov_nombre').value;
-            const rif = document.getElementById('prov_rif').value;
-            if(!nombre || !rif) return alert("⚠️ Error: Nombre y RIF son innegociables.");
-            
-            // Aquí simulamos el guardado (luego conectaremos al Sheets)
-            const tbody = document.getElementById('cuerpo-tabla-prov');
-            tbody.innerHTML += `<tr>
-                <td>${document.getElementById('prov_cat').value}</td>
-                <td style="font-weight:bold;">${nombre}</td>
-                <td>${rif}</td>
-                <td>${document.getElementById('prov_pais').value}</td>
-                <td><span style="color:#d4af37; font-size:10px; border:1px solid #d4af37; padding:2px 5px; border-radius:4px;">ACTIVO</span></td>
-            </tr>`;
-            
-            alert("✅ Proveedor registrado con éxito en el Directorio Maestro.");
-            closeModal('provModal');
+        function addPhoneField() {
+            const container = document.getElementById('phone-container');
+            const div = document.createElement('div');
+            div.className = 'phone-row';
+            div.innerHTML = `
+                <input type="text" class="prov-phone" placeholder="Número adicional">
+                <select class="is-whatsapp">
+                    <option value="no">📞 Solo Llamada</option>
+                    <option value="yes">🟢 WhatsApp</option>
+                </select>
+                <button onclick="this.parentElement.remove()" style="background:none; border:none; color:#d9534f; cursor:pointer; font-weight:bold;">X</button>
+            `;
+            container.appendChild(div);
         }
 
-        // --- Funciones de Cálculo (v5.7) heredadas ---
-        function cambiarMoneda() {
-            const sym = document.getElementById('moneda_global').value;
-            document.querySelectorAll('.curr-sym').forEach(el => el.innerText = sym);
-            calcularTodo();
-        }
-        
-        function calcularTodo() {
-            const sym = document.getElementById('moneda_global').value;
-            const tasa = TASAS[sym];
-            const feeFinalLocal = 6.00 * tasa;
-            document.getElementById('res-fee-fijo').innerText = feeFinalLocal.toFixed(2) + " " + sym;
-            // (Resto de la lógica de cálculo simplificada para la demo de navegación)
+        function guardarProv() {
+            const nombre = document.getElementById('prov_nombre').value;
+            const rif = document.getElementById('prov_rif').value;
+            if(!nombre || !rif) return alert("⚠️ Razón Social y RIF son obligatorios.");
+            
+            // Lógica de guardado visual
+            const tbody = document.getElementById('cuerpo-tabla-prov');
+            const cat = document.getElementById('prov_cat').value;
+            const pais = document.getElementById('prov_pais').value;
+            
+            tbody.innerHTML += `<tr>
+                <td>${cat}</td>
+                <td style="font-weight:bold;">${nombre}</td>
+                <td>${rif}</td>
+                <td style="font-size:11px;">${pais}</td>
+                <td><span style="color:#d4af37; font-size:10px; border:1px solid #d4af37; padding:2px 5px; border-radius:4px;">CERTIFICADO</span></td>
+            </tr>`;
+            
+            alert("✅ Proveedor orquestado exitosamente en el Directorio.");
+            closeModal('provModal');
         }
 
         window.onclick = function(event) {
