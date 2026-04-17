@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Conectividad v6.1</title>
+    <title>ORBIS BRAIN | Integrity v6.2</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,44 +13,36 @@
         }
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        /* SIDEBAR */
         .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; }
         .logo-container { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 20px; }
         .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; margin-top: 10px; }
         
         .nav-btn { background: transparent; border: 1px solid transparent; color: #888; padding: 15px; text-align: left; font-family: 'Cinzel'; font-size: 12px; letter-spacing: 2px; cursor: pointer; transition: 0.3s; margin-bottom: 10px; border-radius: 8px; }
-        .nav-btn:hover { color: var(--gold-soft); background: rgba(212, 175, 55, 0.05); }
         .nav-btn.active { color: var(--gold-metalic); border: 1px solid var(--gold-metalic); background: rgba(212, 175, 55, 0.1); }
 
-        /* VISTAS */
         .view-section { display: none; flex: 1; padding: 50px; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); }
         .view-section.active { display: block; }
 
-        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; transition: 0.3s; }
+        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; transition: 0.3s; }
         
-        /* TABLAS */
         .table-container { background: rgba(0,0,0,0.6); padding: 30px; border-radius: 20px; border: 1px solid #333; margin-top: 20px; }
         table { width: 100%; border-collapse: collapse; }
-        thead { border-bottom: 2px solid var(--gold-metalic); }
-        th { text-align: left; color: var(--gold-soft); font-size: 11px; text-transform: uppercase; padding: 15px; }
-        td { padding: 15px; border-bottom: 1px solid #222; font-size: 14px; }
+        th { text-align: left; color: var(--gold-soft); font-size: 10px; text-transform: uppercase; padding: 15px; border-bottom: 2px solid var(--gold-metalic); }
+        td { padding: 15px; border-bottom: 1px solid #222; font-size: 13px; }
 
-        /* MODAL */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 1000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 30px 60px; border-radius: 30px; width: 1350px; max-height: 96vh; overflow-y: auto; box-shadow: 0 0 60px rgba(0,0,0,1); }
-        .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 15px 0; opacity: 0.8; }
-        .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 24px; letter-spacing: 3px; margin: 0; }
-
-        /* FORMULARIOS */
-        .form-section { background: rgba(255,255,255,0.02); padding: 25px 35px; border-radius: 20px; border: 1px solid #222; margin-bottom: 20px; }
-        label { display: block; font-size: 12px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
-        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
+        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 40px 60px; border-radius: 30px; width: 1200px; max-height: 90vh; overflow-y: auto; }
+        
+        .form-section { background: rgba(255,255,255,0.02); padding: 25px; border-radius: 20px; border: 1px solid #222; margin-bottom: 20px; }
+        label { display: block; font-size: 11px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
+        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 14px; box-sizing: border-box; text-transform: uppercase; }
         
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .phone-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; align-items: center; }
-
-        .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 10px; text-transform: uppercase; margin-top: 5px; width: 100%; }
-        .btn-cancel { background: transparent; color: #666; border: 1px solid #333; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 20px auto 0; display: block; }
+        .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
+        
+        .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 10px; text-transform: uppercase; width: 100%; margin-bottom: 15px; }
+        .btn-remove { background: none; border: none; color: #d9534f; cursor: pointer; font-weight: bold; font-size: 16px; }
     </style>
 </head>
 <body>
@@ -61,34 +53,27 @@
             <div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px;">BRAIN NETWORK</div>
         </div>
         <button class="nav-btn active" onclick="showView('certificacion', this)">🏛️ Certificaciones</button>
-        <button class="nav-btn" onclick="showView('directorio', this)">👥 Directorio Aliados</button>
+        <button class="nav-btn" onclick="showView('directorio', this)">👥 Directorio Maestro</button>
     </div>
 
     <div id="view-certificacion" class="view-section active">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
-            <h1 style="font-family:'Cinzel'; font-size: 28px;">CERTIFICACIÓN <span style="color:var(--gold-metalic)">GLOBAL</span></h1>
-            <button class="btn-gold">Nueva Orquestación +</button>
-        </div>
+        <h1 style="font-family:'Cinzel'; font-size: 26px;">CERTIFICACIÓN <span style="color:var(--gold-metalic)">SISTÉMICA</span></h1>
         <div class="table-container">
             <table>
-                <thead>
-                    <tr><th>ID</th><th>Aliado</th><th>Detalle</th><th>Total</th><th>Estado</th></tr>
-                </thead>
+                <thead><tr><th>ID</th><th>Aliado</th><th>Monto</th><th>Estado</th></tr></thead>
                 <tbody id="cuerpo-tabla"></tbody>
             </table>
         </div>
     </div>
 
     <div id="view-directorio" class="view-section">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
-            <h1 style="font-family:'Cinzel'; font-size: 28px;">DIRECTORIO <span style="color:var(--gold-metalic)">ALIADOS</span></h1>
-            <button class="btn-gold" onclick="openModal('provModal')">Registrar Proveedor +</button>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+            <h1 style="font-family:'Cinzel'; font-size: 26px;">DIRECTORIO <span style="color:var(--gold-metalic)">GLOBAL</span></h1>
+            <button class="btn-gold" onclick="openModal('provModal')">Cargar Ficha Técnica +</button>
         </div>
         <div class="table-container">
             <table>
-                <thead>
-                    <tr><th>Categoría</th><th>Nombre</th><th>RIF</th><th>Contacto</th><th>Estado</th></tr>
-                </thead>
+                <thead><tr><th>Categoría</th><th>Nombre Legal (Único)</th><th>RIF</th><th>País</th><th>Acción</th></tr></thead>
                 <tbody id="cuerpo-tabla-prov"></tbody>
             </table>
         </div>
@@ -96,72 +81,66 @@
 
     <div id="provModal" class="modal">
         <div class="modal-content">
-            <hr class="gold-divider">
-            <div class="modal-title">FICHA TÉCNICA DE PROVEEDOR / ALIADO</div>
-            <hr class="gold-divider">
-            
+            <div class="warning-box">
+                <span style="font-size: 24px;">⚠️</span>
+                <p style="font-size: 12px; margin: 0; color: #f8d7da;">
+                    <b>POLÍTICA DE INTEGRIDAD:</b> Una vez registrado, el <b>NOMBRE LEGAL</b> y el <b>RIF</b> no podrán ser editados para garantizar la trazabilidad contable. Si requiere cambios, deberá eliminar y re-crear el registro.
+                </p>
+            </div>
+
             <div class="form-section">
                 <div class="grid-3">
-                    <div>
-                        <label>Categoría de Servicio *</label>
+                    <div><label>Categoría *</label>
                         <select id="prov_cat">
-                            <option value="Hotel">🏨 Hotel / Alojamiento</option>
-                            <option value="Agencia">🏢 Agencia de Viajes</option>
-                            <option value="Freelancer">👨‍💻 Freelancer / Guía</option>
-                            <option value="Traslado">🚐 Transporte / Traslado</option>
+                            <option value="HOTEL">🏨 HOTEL</option>
+                            <option value="AGENCIA">🏢 AGENCIA</option>
+                            <option value="FREELANCER">👨‍💻 FREELANCER</option>
                         </select>
                     </div>
-                    <div><label>Nombre Legal / Razón Social *</label><input type="text" id="prov_nombre"></div>
-                    <div><label>RIF / TAX ID / Fiscal ID *</label><input type="text" id="prov_rif"></div>
+                    <div><label>Nombre Legal (MAYÚSCULAS) *</label><input type="text" id="prov_nombre" placeholder="MARGARITA HOTEL C.A" oninput="this.value = this.value.toUpperCase()"></div>
+                    <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="J-00000000-0" oninput="this.value = this.value.toUpperCase()"></div>
                 </div>
-                
-                <div class="grid-3" style="margin-top:20px;">
-                    <div><label>País de Operación *</label><input type="text" id="prov_pais"></div>
-                    <div><label>Moneda Predeterminada *</label>
-                        <select id="prov_moneda">
-                            <option value="$">Dólares ($)</option>
-                            <option value="Bs.">Bolívares (Bs.)</option>
-                        </select>
-                    </div>
-                    <div><label>Correo Electrónico</label><input type="email" id="prov_email"></div>
-                </div>
+            </div>
 
-                <div class="gold-divider" style="margin: 30px 0 20px 0; height: 1px;"></div>
-
-                <div style="display:grid; grid-template-columns: 1.5fr 1fr; gap:30px;">
-                    <div>
-                        <label>Números de Teléfono de Contacto *</label>
-                        <div id="phone-container">
-                            <div class="phone-row">
-                                <input type="text" class="prov-phone" placeholder="+00 000 0000000">
-                                <select class="is-whatsapp">
-                                    <option value="no">📞 Solo Llamada</option>
-                                    <option value="yes">🟢 WhatsApp</option>
-                                </select>
-                                <div></div>
-                            </div>
-                            <div class="phone-row">
-                                <input type="text" class="prov-phone" placeholder="Segundo número (opcional)">
-                                <select class="is-whatsapp">
-                                    <option value="no">📞 Solo Llamada</option>
-                                    <option value="yes" selected>🟢 WhatsApp</option>
-                                </select>
-                                <div></div>
-                            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:20px;">
+                <div class="form-section">
+                    <label>Canales de Telefonía / WhatsApp</label>
+                    <div id="phone-container">
+                        <div class="dynamic-row">
+                            <input type="text" class="prov-phone" placeholder="+58...">
+                            <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select>
+                            <div></div>
                         </div>
-                        <button class="btn-add-small" onclick="addPhoneField()">+ Agregar otro número de contacto</button>
                     </div>
+                    <button class="btn-add-small" onclick="addField('phone-container', 'phone')">+ Agregar otro teléfono</button>
                     
-                    <div style="background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);">
-                        <p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.5;">
-                            💡 <b>Nota de Orquestación:</b> Distinguir los números con WhatsApp permite una comunicación más ágil entre los aliados de la red ORBIS BRAIN.
+                    <label style="margin-top:20px;">Canales de Correo Electrónico</label>
+                    <div id="email-container">
+                        <div class="dynamic-row">
+                            <input type="email" class="prov-email" placeholder="ADMIN@CORREO.COM" oninput="this.value = this.value.toUpperCase()">
+                            <span style="font-size:10px; color:gray; padding-top:10px;">PRINCIPAL</span>
+                            <div></div>
+                        </div>
+                    </div>
+                    <button class="btn-add-small" onclick="addField('email-container', 'email')">+ Agregar otro correo</button>
+                </div>
+
+                <div class="form-section">
+                    <label>Ubicación y Operación</label>
+                    <div class="grid-3" style="grid-template-columns: 1fr 1fr; margin-bottom:15px;">
+                        <div><label>País</label><input type="text" id="prov_pais" oninput="this.value = this.value.toUpperCase()"></div>
+                        <div><label>Moneda Base</label><select id="prov_moneda"><option value="$">USD</option><option value="Bs.">VES</option></select></div>
+                    </div>
+                    <div style="background: rgba(212, 175, 55, 0.05); padding: 20px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);">
+                        <p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.6;">
+                            <b>RED GLOBAL ORBIS:</b> Al registrar este proveedor, estará disponible para todos los aliados de la red, facilitando la orquestación masiva y estandarización de pagos.
                         </p>
                     </div>
                 </div>
             </div>
 
-            <button class="btn-gold" style="width:100%;" onclick="guardarProv()">REGISTRAR EN DIRECTORIO MAESTRO</button>
-            <button class="btn-cancel" onclick="closeModal('provModal')">CANCELAR REGISTRO</button>
+            <button class="btn-gold" style="width:100%; padding: 20px; margin-top:10px;" onclick="guardarProv()">REGISTRAR EN RED MAESTRA</button>
+            <button class="btn-cancel" style="margin-top:15px; background:none; border:none; color:#666; cursor:pointer; width:100%;" onclick="closeModal('provModal')">CANCELAR Y SALIR</button>
         </div>
     </div>
 
@@ -176,46 +155,43 @@
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        function addPhoneField() {
-            const container = document.getElementById('phone-container');
+        function addField(containerId, type) {
+            const container = document.getElementById(containerId);
             const div = document.createElement('div');
-            div.className = 'phone-row';
-            div.innerHTML = `
-                <input type="text" class="prov-phone" placeholder="Número adicional">
-                <select class="is-whatsapp">
-                    <option value="no">📞 Solo Llamada</option>
-                    <option value="yes">🟢 WhatsApp</option>
-                </select>
-                <button onclick="this.parentElement.remove()" style="background:none; border:none; color:#d9534f; cursor:pointer; font-weight:bold;">X</button>
-            `;
+            div.className = 'dynamic-row';
+            if(type === 'phone') {
+                div.innerHTML = `<input type="text" class="prov-phone" placeholder="+..."> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select> <button class="btn-remove" onclick="this.parentElement.remove()">×</button>`;
+            } else {
+                div.innerHTML = `<input type="email" class="prov-email" placeholder="OTRO@CORREO.COM" oninput="this.value = this.value.toUpperCase()"> <span></span> <button class="btn-remove" onclick="this.parentElement.remove()">×</button>`;
+            }
             container.appendChild(div);
         }
 
         function guardarProv() {
             const nombre = document.getElementById('prov_nombre').value;
             const rif = document.getElementById('prov_rif').value;
-            if(!nombre || !rif) return alert("⚠️ Razón Social y RIF son obligatorios.");
+            if(!nombre || !rif) return alert("⚠️ ERROR: NOMBRE LEGAL Y RIF SON REQUISITOS DE INTEGRIDAD.");
             
-            // Lógica de guardado visual
             const tbody = document.getElementById('cuerpo-tabla-prov');
-            const cat = document.getElementById('prov_cat').value;
-            const pais = document.getElementById('prov_pais').value;
-            
-            tbody.innerHTML += `<tr>
-                <td>${cat}</td>
-                <td style="font-weight:bold;">${nombre}</td>
+            tbody.innerHTML += `<tr id="row-${rif}">
+                <td>${document.getElementById('prov_cat').value}</td>
+                <td style="font-weight:bold; letter-spacing:1px;">${nombre}</td>
                 <td>${rif}</td>
-                <td style="font-size:11px;">${pais}</td>
-                <td><span style="color:#d4af37; font-size:10px; border:1px solid #d4af37; padding:2px 5px; border-radius:4px;">CERTIFICADO</span></td>
+                <td>${document.getElementById('prov_pais').value || '---'}</td>
+                <td><button onclick="confirmarEliminar('${rif}')" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td>
             </tr>`;
             
-            alert("✅ Proveedor orquestado exitosamente en el Directorio.");
+            alert("✅ REGISTRO EXITOSO: EL PROVEEDOR AHORA ES PARTE DE LA RED ORBIS BRAIN.");
             closeModal('provModal');
         }
 
-        window.onclick = function(event) {
-            if (event.target.className === 'modal') { event.target.style.display = "none"; }
+        function confirmarEliminar(id) {
+            if(confirm("🏛️ ¿SEGURO QUE DESEA ELIMINAR ESTE PROVEEDOR? ESTA ACCIÓN NO SE PUEDE DESHACER.")) {
+                document.getElementById('row-' + id).remove();
+            }
         }
+
+        window.onclick = function(event) { if (event.target.className === 'modal') { event.target.style.display = "none"; } }
     </script>
 </body>
 </html>
