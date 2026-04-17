@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Blindaje de Datos v6.6</title>
+    <title>ORBIS BRAIN | Blindaje Final v6.7</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -37,8 +37,7 @@
         label { display: block; font-size: 11px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
         input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 14px; box-sizing: border-box; text-transform: uppercase; transition: 0.3s; }
         
-        /* Efecto de error para innegociables */
-        .input-error { border-color: #d9534f !important; background: rgba(217, 83, 79, 0.05); }
+        .input-error { border-color: #d9534f !important; background: rgba(217, 83, 79, 0.05) !important; }
 
         .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
@@ -87,7 +86,7 @@
             <div class="warning-box">
                 <span style="font-size: 24px;">⚠️</span>
                 <p style="font-size: 12px; margin: 0; color: #f8d7da;">
-                    <b>POLÍTICA DE INTEGRIDAD:</b> EL NOMBRE LEGAL, RIF Y PAÍS SON INNEGOCIABLES Y NO PODRÁN SER EDITADOS TRAS EL REGISTRO PARA GARANTIZAR LA TRAZABILIDAD.
+                    <b>POLÍTICA DE INTEGRIDAD:</b> NOMBRE LEGAL, RIF Y PAÍS SON DATOS INNEGOCIABLES. NO PODRÁN SER EDITADOS TRAS EL REGISTRO.
                 </p>
             </div>
 
@@ -101,8 +100,8 @@
                             <option value="TRASLADO">🚐 TRASLADO</option>
                         </select>
                     </div>
-                    <div><label>Nombre Legal *</label><input type="text" id="prov_nombre" placeholder="MARGARITA HOTEL C.A" oninput="this.value = this.value.toUpperCase()"></div>
-                    <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="J-00000000-0" oninput="this.value = this.value.toUpperCase()"></div>
+                    <div><label>Nombre Legal *</label><input type="text" id="prov_nombre" placeholder="ESCRIBA EL NOMBRE LEGAL" oninput="this.value = this.value.toUpperCase()"></div>
+                    <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="ESCRIBA EL RIF / TAX ID" oninput="this.value = this.value.toUpperCase()"></div>
                 </div>
             </div>
 
@@ -148,7 +147,7 @@
                     </div>
                     <div style="background: rgba(212, 175, 55, 0.05); padding: 20px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);">
                         <p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.6;">
-                            <b>RED GLOBAL ORBIS:</b> ESTE PROVEEDOR SERÁ VISIBLE PARA TODA LA RED DE ALIADOS, FACILITANDO LA ORQUESTACIÓN INTERNACIONAL.
+                            <b>RED GLOBAL ORBIS:</b> ESTE PROVEEDOR SERÁ INTEGRADO A LA RED MAESTRA DE ALIADOS PARA ORQUESTACIÓN INTERNACIONAL.
                         </p>
                     </div>
                 </div>
@@ -177,15 +176,18 @@
         }
 
         function resetFicha() {
+            // Limpieza absoluta de inputs
+            const campos = ['prov_nombre', 'prov_rif', 'prov_pais'];
+            campos.forEach(id => {
+                const el = document.getElementById(id);
+                el.value = '';
+                el.classList.remove('input-error');
+            });
+
             document.getElementById('phone-container').innerHTML = `
                 <div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+"> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no">📞 LLAMADA</option></select><div></div></div>
                 <div class="dynamic-row"><input type="text" class="prov-phone" placeholder="+"> <select class="is-whatsapp"><option value="no" selected>📞 LLAMADA</option><option value="yes">🟢 WHATSAPP</option></select><button class="btn-remove" onclick="this.parentElement.remove()">×</button></div>`;
             document.getElementById('email-container').innerHTML = `<div class="dynamic-row"><input type="email" class="prov-email" placeholder="ADMIN@CORREO.COM"> <span style="font-size:10px; color:gray; padding-top:10px;">PRINCIPAL</span><div></div></div>`;
-            document.getElementById('prov_nombre').value = '';
-            document.getElementById('prov_rif').value = '';
-            document.getElementById('prov_pais').value = '';
-            // Limpiar clases de error
-            ['prov_nombre', 'prov_rif', 'prov_pais'].forEach(id => document.getElementById(id).classList.remove('input-error'));
         }
 
         function addField(containerId, type) {
@@ -206,7 +208,6 @@
             const pais = document.getElementById('prov_pais');
             const moneda = document.getElementById('prov_moneda').value;
 
-            // Validación de innegociables
             let error = false;
             [nombre, rif, pais].forEach(el => {
                 if(!el.value.trim()){ el.classList.add('input-error'); error = true; } 
@@ -215,7 +216,6 @@
 
             if(error) return alert("⚠️ BLOQUEO DE SEGURIDAD: NOMBRE LEGAL, RIF Y PAÍS SON DATOS INNEGOCIABLES.");
 
-            // Secuencia de confirmaciones solicitada por el socio
             if(confirm(`¿CONFIRMA QUE LA MONEDA [ ${moneda} ] ES LA CORRESPONDIENTE A ESTE PROVEEDOR?`)) {
                 if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿CONFIRMA EL REGISTRO EN LA RED MAESTRA?")) {
                     ejecutarGuardado(nombre.value, rif.value, pais.value);
@@ -233,7 +233,7 @@
                 <td><button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td>
             </tr>`;
             
-            alert("✅ REGISTRO EXITOSO: EL PROVEEDOR HA SIDO INTEGRADO A LA RED GLOBAL.");
+            alert("✅ REGISTRO EXITOSO: EL PROVEEDOR HA SIDO INTEGRADO.");
             document.getElementById('provModal').style.display = 'none';
             resetFicha();
         }
