@@ -151,8 +151,8 @@
                             <div class="grid-inputs row-fixed">
                                 <div><label>Cobertura</label><select id="tipo_seguro_sel" onchange="calcularTodo()"><option value="interno">🛡️ ORBIS PROTECT</option></select></div>
                                 <div><label>Aseguradora</label><input type="text" value="ORBIS BRAIN NETWORK" readonly></div>
-                                <div><label>Base *</label><input type="number" id="seguro_neto" value="2.00" readonly></div>
-                                <div><label>Comisión *</label><input type="number" id="seguro_com" value="0.00" readonly></div>
+                                <div><label>Base *</label><input type="number" id="seguro_neto" value="2.00" readonly oninput="calcularTodo()"></div>
+                                <div><label>Comisión *</label><input type="number" id="seguro_com" value="0.00" readonly oninput="calcularTodo()"></div>
                                 <div style="display:flex; align-items:center; justify-content:center; color:var(--gold-metalic);">🔒</div>
                             </div>
                             <div id="filas-dinamicas" style="margin-top:10px;">
@@ -251,43 +251,62 @@
             document.getElementById('contenedor-taxes').appendChild(div);
         }
 
-        // --- INICIO DE LA FUNCIÓN CORREGIDA ---
+        // --- INICIO DE LA FUNCIÓN CORREGIDA POR EL AUDITOR ---
         function calcularTodo() {
+            // 1. OBTENER VALORES GLOBALES Y TASA DE CAMBIO
             const sym = document.getElementById('moneda_global').value;
             const tasa = TASAS[sym];
-            let baseSrv = 2.00 * tasa; 
-            let totalCom = 0;
+
+            // 2. CALCULAR TOTALES DE SERVICIOS Y COMISIONES
+            let totalBaseServicios = parseFloat(document.getElementById('seguro_neto').value) || 0;
+            let totalComisiones = parseFloat(document.getElementById('seguro_com').value) || 0;
 
             document.querySelectorAll('.servicio-row').forEach(row => {
-                baseSrv += parseFloat(row.querySelector('.monto-srv').value) || 0;
-                totalCom += parseFloat(row.querySelector('.comision-ind').value) || 0;
+                totalBaseServicios += parseFloat(row.querySelector('.monto-srv').value) || 0;
+                totalComisiones += parseFloat(row.querySelector('.comision-ind').value) || 0;
             });
-
-            document.getElementById('comision_aliado').value = totalCom.toFixed(2);
-
-            let fee = 6.00 * tasa;
-            const taxableBase = baseSrv + totalCom; // Base real para impuestos
-
-            let taxTot = 0; 
-            let taxP = 0;
+            
+            // Actualizar el campo de honorarios (solo visual)
+            document.getElementById('comision_aliado').value = totalComisiones.toFixed(2);
+            
+            // 3. CALCULAR IMPUESTOS
+            let totalImpuestos = 0;
+            // La base para los impuestos es el precio de venta, que es la suma de bases + comisiones.
+            const baseImponibleTotal = totalBaseServicios + totalComisiones;
 
             document.querySelectorAll('.tax-row').forEach(row => {
-                const p = parseFloat(row.querySelector('.tax-val').value) || 0;
-                taxTot += taxableBase * (p/100); // Calcular impuesto sobre la base correcta
-                taxP += p;
+                const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0;
+                if (porcentaje > 0) {
+                    totalImpuestos += baseImponibleTotal * (porcentaje / 100);
+                }
             });
+            
+            // 4. OBTENER FEE FIJO DE ORBIS
+            const feeOrbis = 6.00 * tasa;
 
-            const finalTotal = taxableBase + taxTot + fee; // Sumar el fee DESPUÉS de impuestos
-            const escudoOro = finalTotal * 0.005; // Calcular escudo sobre el subtotal
-            const totalConEscudo = finalTotal + escudoOro; // Añadir el escudo al total final
+            // 5. CALCULAR GANANCIA NETA
+            // La ganancia es la comisión total, menos los impuestos que se aplican sobre esa comisión.
+            let impuestosSobreComision = 0;
+            document.querySelectorAll('.tax-row').forEach(row => {
+                const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0;
+                if (porcentaje > 0) {
+                    impuestosSobreComision += totalComisiones * (porcentaje / 100);
+                }
+            });
+            const gananciaNeta = totalComisiones - impuestosSobreComision;
+            
+            // 6. CALCULAR SUBTOTALES Y TOTALES
+            const subTotal = baseImponibleTotal + totalImpuestos + feeOrbis;
+            const escudoOro = subTotal * 0.005; // 0.5% del subtotal
+            const totalFinal = subTotal + escudoOro;
 
-            // Actualización de la UI con los valores correctos
-            document.getElementById('res-neto').innerText = taxableBase.toFixed(2) + " " + sym;
-            document.getElementById('res-imp').innerText = taxTot.toFixed(2) + " " + sym;
-            document.getElementById('res-fee-fijo').innerText = fee.toFixed(2) + " " + sym;
+            // 7. ACTUALIZAR LA INTERFAZ DE USUARIO (UI)
+            document.getElementById('res-neto').innerText = baseImponibleTotal.toFixed(2) + " " + sym;
+            document.getElementById('res-imp').innerText = totalImpuestos.toFixed(2) + " " + sym;
+            document.getElementById('res-fee-fijo').innerText = feeOrbis.toFixed(2) + " " + sym;
             document.getElementById('res-escudo').innerText = escudoOro.toFixed(2) + " " + sym;
-            document.getElementById('res-ganancia').innerText = (totalCom * (1 - taxP/100)).toFixed(2) + " " + sym;
-            document.getElementById('res-total').innerText = totalConEscudo.toFixed(2) + " " + sym; // Mostrar el total que incluye el escudo
+            document.getElementById('res-ganancia').innerText = gananciaNeta.toFixed(2) + " " + sym;
+            document.getElementById('res-total').innerText = totalFinal.toFixed(2) + " " + sym;
         }
         // --- FIN DE LA FUNCIÓN CORREGIDA ---
 
