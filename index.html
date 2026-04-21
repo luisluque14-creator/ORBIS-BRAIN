@@ -251,30 +251,45 @@
             document.getElementById('contenedor-taxes').appendChild(div);
         }
 
+        // --- INICIO DE LA FUNCIÓN CORREGIDA ---
         function calcularTodo() {
             const sym = document.getElementById('moneda_global').value;
             const tasa = TASAS[sym];
-            let baseSrv = 2.00 * tasa; let totalCom = 0;
+            let baseSrv = 2.00 * tasa; 
+            let totalCom = 0;
+
             document.querySelectorAll('.servicio-row').forEach(row => {
                 baseSrv += parseFloat(row.querySelector('.monto-srv').value) || 0;
                 totalCom += parseFloat(row.querySelector('.comision-ind').value) || 0;
             });
+
             document.getElementById('comision_aliado').value = totalCom.toFixed(2);
+
             let fee = 6.00 * tasa;
-            const baseImp = baseSrv + totalCom + fee;
-            let taxTot = 0; let taxP = 0;
+            const taxableBase = baseSrv + totalCom; // Base real para impuestos
+
+            let taxTot = 0; 
+            let taxP = 0;
+
             document.querySelectorAll('.tax-row').forEach(row => {
                 const p = parseFloat(row.querySelector('.tax-val').value) || 0;
-                taxTot += baseImp * (p/100); taxP += p;
+                taxTot += taxableBase * (p/100); // Calcular impuesto sobre la base correcta
+                taxP += p;
             });
-            const tot = baseImp + taxTot;
-            document.getElementById('res-neto').innerText = baseImp.toFixed(2) + " " + sym;
+
+            const finalTotal = taxableBase + taxTot + fee; // Sumar el fee DESPUÉS de impuestos
+            const escudoOro = finalTotal * 0.005; // Calcular escudo sobre el subtotal
+            const totalConEscudo = finalTotal + escudoOro; // Añadir el escudo al total final
+
+            // Actualización de la UI con los valores correctos
+            document.getElementById('res-neto').innerText = taxableBase.toFixed(2) + " " + sym;
             document.getElementById('res-imp').innerText = taxTot.toFixed(2) + " " + sym;
             document.getElementById('res-fee-fijo').innerText = fee.toFixed(2) + " " + sym;
-            document.getElementById('res-escudo').innerText = (tot * 0.005).toFixed(2) + " " + sym;
+            document.getElementById('res-escudo').innerText = escudoOro.toFixed(2) + " " + sym;
             document.getElementById('res-ganancia').innerText = (totalCom * (1 - taxP/100)).toFixed(2) + " " + sym;
-            document.getElementById('res-total').innerText = tot.toFixed(2) + " " + sym;
+            document.getElementById('res-total').innerText = totalConEscudo.toFixed(2) + " " + sym; // Mostrar el total que incluye el escudo
         }
+        // --- FIN DE LA FUNCIÓN CORREGIDA ---
 
         function confirmarRegistro() { if(confirm("🏛️ ¿Confirma la sincronización?")) location.reload(); }
 
