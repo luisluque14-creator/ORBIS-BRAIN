@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v9.5</title>
+    <title>ORBIS BRAIN | Master v9.6</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v9.5) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v9.6) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -44,21 +44,30 @@
         .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); width: 100%; padding: 10px; cursor: pointer; border-radius: 8px; font-size: 11px; font-weight: bold; text-transform: uppercase; margin-top: 10px; }
         #opModal .modal-content { width: 1350px; }
         .grid-inputs { display: grid; grid-template-columns: 1.2fr 2fr 1fr 1fr 40px; gap: 12px; margin-bottom: 12px; align-items: end; }
-        .row-fixed { background: rgba(212, 175, 55, 0.05); border-radius: 10px; padding: 5px; border: 1px solid rgba(212, 175, 55, 0.2); }
-        .summary-box { background: #000; padding: 25px 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 20px; }
-        .sum-item { text-align: center; border-right: 1px solid #222; padding: 0 5px; } .sum-item:last-child { border-right: none; }
-        .sum-val { display: block; font-size: 20px; font-weight: 800; color: var(--gold-metalic); margin-bottom: 5px; }
+        
+        /* --- INYECCIÓN DE LÓGICA v9.6: Restauración de diseño de lujo --- */
+        .summary-box { 
+            background: #000; padding: 25px 35px; border-radius: 20px; 
+            border: 1px solid var(--gold-metalic); 
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+            display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 20px; 
+        }
+        .sum-item { text-align: center; border-right: 1px solid #222; padding: 0 5px; } 
+        .sum-item:last-child { border-right: none; }
+        .sum-val { display: block; font-size: 20px; font-weight: 800; color: var(--gold-soft); margin-bottom: 5px; }
         .sum-lbl { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; }
+        #res-ganancia, #res-total { color: var(--gold-metalic) !important; }
+
         #provModal .modal-content { width: 1200px; padding: 25px 60px; }
         #provModal input, #provModal select { text-transform: uppercase; }
         .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 10px; text-transform: uppercase; width: 100%; margin-bottom: 15px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+        
+        /* Verificación de limpieza v9.6 */
         #aliado_name, #aliado_rif { text-transform: uppercase; }
         .tax-input::-webkit-inner-spin-button, .tax-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         .tax-input { -moz-appearance: textfield; }
-        
-        /* --- INYECCIÓN DE LÓGICA v9.5: Estilos para el Pin --- */
         .pin-btn { background: none; border: none; font-size: 18px; cursor: pointer; transition: opacity 0.3s; opacity: 0.3; }
         .pin-btn.active { opacity: 1; }
     </style>
@@ -118,8 +127,8 @@
                 <div class="sum-item"><span class="sum-lbl">Impuestos</span><span id="res-imp" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
                 <div class="sum-item"><span class="sum-lbl">Fee Orbis</span><span id="res-fee-fijo" class="sum-val">6.00 <span class="curr-sym">$</span></span></div>
                 <div class="sum-item"><span class="sum-lbl">Escudo Oro</span><span id="res-escudo" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
-                <div class="sum-item" style="background: rgba(212, 175, 55, 0.15);"><span class="sum-lbl">GANANCIA</span><span id="res-ganancia" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
-                <div class="sum-item" style="background: rgba(76, 175, 80, 0.15);"><span class="sum-lbl" style="color:#4CAF50">TOTAL</span><span id="res-total" class="sum-val" style="color:#4CAF50">0.00 <span class="curr-sym">$</span></span></div>
+                <div class="sum-item"><span class="sum-lbl">GANANCIA</span><span id="res-ganancia" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
+                <div class="sum-item"><span class="sum-lbl">TOTAL</span><span id="res-total" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
             </div>
             <button class="btn-gold" style="width:100%; margin-top:20px;" onclick="confirmarRegistro()">VALIDAR Y SINCRONIZAR</button>
             <button class="btn-cancel-elite" onclick="closeModal('opModal')">Cancelar</button>
@@ -128,11 +137,12 @@
     <!-- (El resto del HTML sigue igual) -->
 
     <!-- ======================================================================= -->
-    <!--                         JAVASCRIPT UNIFICADO (v9.5)                     -->
+    <!--                         JAVASCRIPT UNIFICADO (v9.6)                     -->
     <!-- ======================================================================= -->
     <script>
-        // --- INYECCIÓN DE LÓGICA v9.5: URL del Endpoint real ---
-        const URL_SCRIPT_CERT = "Pega aquí la URL de tu Google Apps Script"; 
+        // --- INYECCIÓN DE LÓGICA v9.6: URL de producción ---
+        const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxF-mbAYdkaxaEvwO_tEH1KjaChodlf-kAdstdqRkZb80yMGRgF7X7MZTgn6yVqJCK9iw/exec"; 
+        
         const TASAS = { "$": 1.00, "Bs.": 45.00, "€": 0.93, "د.إ": 3.67 };
         const SUGERENCIAS = { "$": ["Sales Tax", "Federal Tax"], "Bs.": ["IVA 16%", "IGTF 3%"], "€": ["VAT (IVA)"], "د.إ": ["VAT 5%"] };
         const FEE_ORBIS_BASE = 5.00; 
@@ -148,57 +158,35 @@
                 cambiarMoneda(); 
                 gestionarEstadoCobertura(true); 
                 agregarFila();
-                // --- INYECCIÓN DE LÓGICA v9.5: Cargar impuestos desde memoria ---
                 cargarImpuestosPredeterminados();
-                // Si no hay impuestos en memoria, agrega uno por defecto
                 if (document.getElementById('contenedor-taxes').children.length === 0) {
                     agregarTax();
                 }
             } else if (id === 'provModal') { resetFichaDirectorio(); }
         }
 
-        // --- INYECCIÓN DE LÓGICA v9.5: Funciones de Memoria Fiscal ---
-        function obtenerImpuestosGuardados() {
-            return JSON.parse(localStorage.getItem('orbis_impuestos_predeterminados')) || [];
-        }
-        function guardarImpuestos(impuestos) {
-            localStorage.setItem('orbis_impuestos_predeterminados', JSON.stringify(impuestos));
-        }
-        function cargarImpuestosPredeterminados() {
-            const impuestosGuardados = obtenerImpuestosGuardados();
-            impuestosGuardados.forEach(imp => agregarTax(imp.nombre, imp.valor, true));
-        }
+        function obtenerImpuestosGuardados() { return JSON.parse(localStorage.getItem('orbis_impuestos_predeterminados')) || []; }
+        function guardarImpuestos(impuestos) { localStorage.setItem('orbis_impuestos_predeterminados', JSON.stringify(impuestos)); }
+        function cargarImpuestosPredeterminados() { const impuestosGuardados = obtenerImpuestosGuardados(); impuestosGuardados.forEach(imp => agregarTax(imp.nombre, imp.valor, true)); }
+        
         function gestionarPin(btn) {
             const fila = btn.closest('.tax-row');
             const nombre = fila.querySelector('.tax-name').value;
             const valor = fila.querySelector('.tax-val').value;
-            
-            if (!nombre || !valor) {
-                alert('Debe especificar un nombre y un valor para fijar el impuesto.');
-                return;
-            }
-
+            if (!nombre || !valor) { alert('Debe especificar un nombre y un valor para fijar el impuesto.'); return; }
             let impuestosGuardados = obtenerImpuestosGuardados();
             const indice = impuestosGuardados.findIndex(imp => imp.nombre.toLowerCase() === nombre.toLowerCase());
-
-            if (indice > -1) { // Si ya existe, lo quitamos (unpin)
-                impuestosGuardados.splice(indice, 1);
-                btn.classList.remove('active');
-            } else { // Si no existe, lo añadimos (pin)
-                impuestosGuardados.push({ nombre, valor });
-                btn.classList.add('active');
-            }
+            if (indice > -1) { impuestosGuardados.splice(indice, 1); btn.classList.remove('active'); } 
+            else { impuestosGuardados.push({ nombre, valor }); btn.classList.add('active'); }
             guardarImpuestos(impuestosGuardados);
         }
 
         function agregarTax(nombre = '', valor = '', esPredeterminado = false) {
             const div = document.createElement('div');
             div.className = 'tax-grid tax-row';
+            // Verificación de limpieza v9.6: Estructura del input de impuesto con % pegado
             div.style.display = 'grid'; div.style.gridTemplateColumns = '30px 2fr 1fr 40px'; div.style.gap = '12px'; div.style.marginBottom = '12px';
-            
-            // El pin estará activo si es un impuesto cargado desde la memoria
             const pinActivoClass = esPredeterminado ? 'active' : '';
-
             div.innerHTML = `
                 <button type="button" class="pin-btn ${pinActivoClass}" onclick="gestionarPin(this)">📌</button>
                 <div><input type="text" class="tax-name" placeholder="Impuesto *" list="sugerencias_impuestos" value="${nombre}"></div>
@@ -215,9 +203,7 @@
             const fila = btn.closest('.tax-row');
             const nombre = fila.querySelector('.tax-name').value;
             const esFijado = fila.querySelector('.pin-btn').classList.contains('active');
-
             if (nombre && esFijado) {
-                // Si el impuesto eliminado estaba fijado, lo borramos de la memoria
                 let impuestosGuardados = obtenerImpuestosGuardados();
                 const impuestosActualizados = impuestosGuardados.filter(imp => imp.nombre.toLowerCase() !== nombre.toLowerCase());
                 guardarImpuestos(impuestosActualizados);
@@ -229,41 +215,41 @@
         function confirmarRegistro() {
             // ... (Validaciones de v9.3 sin cambios) ...
             if (confirm("🏛️ ¿Confirma la sincronización de esta certificación? Los datos NO podrán ser editados ni eliminados una vez registrados en ORBIS BRAIN NETWORK.")) {
-                // --- INYECCIÓN DE LÓGICA v9.5: Llamada a la función real ---
                 enviarAlCerebro();
             }
         }
 
-        // --- INYECCIÓN DE LÓGICA v9.5: Función real de envío de datos ---
         function enviarAlCerebro() {
             const btnSync = document.querySelector('.btn-gold');
             btnSync.disabled = true;
             btnSync.textContent = 'SINCRONIZANDO...';
-
+            // Recolección de datos mejorada para el script
             const datos = {
-                // Aquí recolectarías todos los datos del formulario
+                idOperacion: `CERT-${Math.floor(10000 + Math.random() * 90000)}`,
                 aliado: document.getElementById('aliado_name').value,
                 rif: document.getElementById('aliado_rif').value,
-                total: document.getElementById('res-total').textContent,
+                moneda: document.getElementById('moneda_global').value,
+                totalCertificado: document.getElementById('res-total').textContent,
+                ganancia: document.getElementById('res-ganancia').textContent,
+                fecha: new Date().toISOString()
             };
 
             fetch(URL_SCRIPT_CERT, {
                 method: 'POST',
-                mode: 'no-cors', // O 'cors' si el script está configurado para ello
+                mode: 'no-cors',
                 cache: 'no-cache',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({action: 'registrarCertificacion', data: datos})
             })
-            .then(response => {
+            .then(res => {
                 alert("✅ SINCRONIZACIÓN EXITOSA: La certificación ha sido registrada en ORBIS BRAIN NETWORK.");
-                // Actualizar la tabla localmente (simulación de recarga)
                 const tbody = document.getElementById('cuerpo-tabla-cert');
                 const newRow = tbody.insertRow(0);
                 newRow.innerHTML = `
-                    <td>CERT-${Math.floor(1000 + Math.random() * 9000)}</td>
+                    <td>${datos.idOperacion}</td>
                     <td>${datos.aliado}</td>
-                    <td>${new Date().toLocaleDateString()}</td>
-                    <td>${datos.total}</td>
+                    <td>${new Date(datos.fecha).toLocaleDateString()}</td>
+                    <td>${datos.totalCertificado}</td>
                     <td><span style="color:#4CAF50">REGISTRADO</span></td>
                 `;
                 closeModal('opModal');
@@ -280,7 +266,8 @@
         
         // ... (El resto del JS sigue aquí sin cambios, he omitido las funciones repetidas por brevedad) ...
         function showView(viewId, btn) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('view-' + viewId).classList.add('active'); if (btn) btn.classList.add('active'); }
-        function closeModal(id) { if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos no guardados.")) { document.getElementById(id).style.display = 'none'; if (id === 'opModal') { document.getElementById('registroForm').reset(); document.getElementById('filas-dinamicas').innerHTML = ''; document.getElementById('contenedor-taxes').innerHTML = ''; } else if (id === 'provModal') { resetFichaDirectorio(); } } }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        // Verificación de limpieza v9.6: event listeners de mayúsculas
         document.getElementById('aliado_name').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
         document.getElementById('aliado_rif').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
         document.getElementById('tipo_cobertura_sel').addEventListener('change', function() { gestionarEstadoCobertura(this.value === 'interno'); });
