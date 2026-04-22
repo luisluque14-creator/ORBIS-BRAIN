@@ -64,6 +64,21 @@
         .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 10px; text-transform: uppercase; width: 100%; margin-bottom: 15px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
+
+        /* --- INYECCIÓN DE CÓDIGO (1/4): MAYÚSCULAS AUTOMÁTICAS --- */
+        #aliado_name, #aliado_rif {
+            text-transform: uppercase;
+        }
+
+        /* --- INYECCIÓN DE CÓDIGO (2/4): AJUSTE INPUT IMPUESTOS --- */
+        .tax-input::-webkit-inner-spin-button, 
+        .tax-input::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+        .tax-input {
+            -moz-appearance: textfield;
+        }
     </style>
 </head>
 <body>
@@ -151,12 +166,13 @@
                     <div class="form-section">
                         <label>Bases Imponibles & Comisiones (<span class="curr-sym">$</span>)</label>
                         <div id="contenedor-servicios">
-                            <div class="grid-inputs row-fixed">
-                                <div><label>Cobertura</label><select id="tipo_seguro_sel" onchange="calcularTodo()"><option value="interno">🛡️ ORBIS PROTECT</option></select></div>
-                                <div><label>Aseguradora</label><input type="text" value="ORBIS BRAIN NETWORK" readonly></div>
-                                <div><label>Base *</label><input type="number" id="seguro_neto" value="2.00" readonly></div>
-                                <div><label>Comisión *</label><input type="number" id="seguro_com" value="0.00" readonly></div>
-                                <div style="display:flex; align-items:center; justify-content:center; color:var(--gold-metalic);">🔒</div>
+                            <!-- --- INYECCIÓN DE CÓDIGO (3/4): RESTAURACIÓN DE SEGURO MANUAL --- -->
+                            <div class="grid-inputs">
+                                <div><label>Cobertura</label><select onchange="calcularTodo()"><option value="externo">🛡️ Seguro Externo / Manual</option></select></div>
+                                <div><label>Aseguradora</label><input type="text" class="prov-name" placeholder="Nombre Aseguradora"></div>
+                                <div><label>Base *</label><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div>
+                                <div><label>Comisión *</label><input type="number" class="comision-ind" oninput="calcularTodo()" placeholder="0.00"></div>
+                                <div style="display:flex; align-items:center; justify-content:center; color:var(--gold-metalic);">✍️</div>
                             </div>
                             <div id="filas-dinamicas" style="margin-top:10px;"></div>
                         </div>
@@ -244,20 +260,25 @@
             const modal = document.getElementById(id);
             modal.style.display = 'flex';
             if (id === 'opModal') {
-                cambiarMoneda(); // Inicia cálculos y UI para el modal de certificación
-                agregarFila(); // Agrega una primera fila por defecto
+                document.getElementById('registroForm').reset();
+                document.getElementById('filas-dinamicas').innerHTML = '';
+                document.getElementById('contenedor-taxes').innerHTML = '';
+                cambiarMoneda(); 
+                agregarFila();
+                // --- INYECCIÓN DE CÓDIGO (2/4): AÑADIR FILA DE IMPUESTO AL ABRIR ---
+                agregarTax(); 
             } else if (id === 'provModal') {
-                resetFichaDirectorio(); // Limpia y prepara el modal de directorio
+                resetFichaDirectorio(); 
             }
         }
 
         function closeModal(id) {
             if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos no guardados.")) {
                 document.getElementById(id).style.display = 'none';
-                // Limpia los formularios al cerrar para evitar datos residuales
                 if (id === 'opModal') {
                     document.getElementById('registroForm').reset();
                     document.getElementById('filas-dinamicas').innerHTML = '';
+                    document.getElementById('contenedor-taxes').innerHTML = '';
                 } else if (id === 'provModal') {
                     resetFichaDirectorio();
                 }
@@ -267,6 +288,10 @@
         // =======================================================================
         //              LÓGICA #1: CERTIFICACIÓN GLOBAL (V1)
         // =======================================================================
+
+        /* --- INYECCIÓN DE CÓDIGO (1/4): MAYÚSCULAS AUTOMÁTICAS --- */
+        document.getElementById('aliado_name').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
+        document.getElementById('aliado_rif').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
 
         function cambiarMoneda() {
             const sym = document.getElementById('moneda_global').value;
@@ -285,26 +310,35 @@
         function agregarFila() {
             const div = document.createElement('div');
             div.className = 'grid-inputs servicio-row';
-            div.innerHTML = `<div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option></select></div><div><input type="text" class="prov-name" placeholder="Proveedor *"></div><div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div><div><input type="number" class="comision-ind" oninput="calcularTodo()" placeholder="0.00"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
+            div.innerHTML = `<div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Otro">➕ Otro</option></select></div><div><input type="text" class="prov-name" placeholder="Proveedor *"></div><div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div><div><input type="number" class="comision-ind" oninput="calcularTodo()" placeholder="0.00"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
             document.getElementById('filas-dinamicas').appendChild(div);
         }
 
         function agregarTax() {
             const div = document.createElement('div');
             div.className = 'tax-grid tax-row';
-            div.style.display = 'grid'; div.style.gridTemplateColumns = '2fr 1.2fr 40px'; div.style.gap = '12px'; div.style.marginBottom = '12px';
-            div.innerHTML = `<div><input type="text" class="tax-name" placeholder="Impuesto *" list="sugerencias_impuestos"></div><div style="position:relative;"><input type="number" class="tax-val" oninput="calcularTodo()" placeholder="0"><span style="position:absolute; right:15px; top: 50%; transform: translateY(-50%); color:var(--gold-soft); font-weight:bold;">%</span></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
+            div.style.display = 'grid'; div.style.gridTemplateColumns = '2fr 1fr 40px'; div.style.gap = '12px'; div.style.marginBottom = '12px';
+            // --- INYECCIÓN DE CÓDIGO (2/4): AJUSTE EN ESTRUCTURA HTML DEL IMPUESTO ---
+            div.innerHTML = `
+                <div><input type="text" class="tax-name" placeholder="Impuesto *" list="sugerencias_impuestos"></div>
+                <div style="position:relative;">
+                    <input type="number" class="tax-val tax-input" oninput="calcularTodo()" placeholder="0.00">
+                    <span style="position:absolute; right:15px; top: 50%; transform: translateY(-50%); color:var(--gold-soft); font-weight:bold;">%</span>
+                </div>
+                <button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
             document.getElementById('contenedor-taxes').appendChild(div);
+            calcularTodo();
         }
 
         function calcularTodo() {
             const sym = document.getElementById('moneda_global').value;
             const tasa = TASAS[sym] || 1.00;
 
-            let totalBaseServicios = parseFloat(document.getElementById('seguro_neto').value) || 0;
-            let totalComisiones = parseFloat(document.getElementById('seguro_com').value) || 0;
+            let totalBaseServicios = 0;
+            let totalComisiones = 0;
 
-            document.querySelectorAll('.servicio-row').forEach(row => {
+            // Se incluyen TODAS las filas con la clase .grid-inputs dentro de #contenedor-servicios
+            document.querySelectorAll('#contenedor-servicios .grid-inputs').forEach(row => {
                 totalBaseServicios += parseFloat(row.querySelector('.monto-srv').value) || 0;
                 totalComisiones += parseFloat(row.querySelector('.comision-ind').value) || 0;
             });
@@ -340,6 +374,15 @@
         }
 
         function confirmarRegistro() {
+            // --- INYECCIÓN DE CÓDIGO (4/4): BLOQUEO DE VALIDACIÓN ---
+            const numTasas = document.querySelectorAll('.tax-row').length;
+            const primeraTasa = document.querySelector('.tax-row .tax-val');
+            
+            if (numTasas === 0 || (primeraTasa && (parseFloat(primeraTasa.value) || 0) === 0)) {
+                alert("🔴 VALIDACIÓN BLOQUEADA: Debe agregar y especificar el valor de al menos una tasa de impuesto para poder certificar.");
+                return; // Detiene la ejecución si no hay impuestos.
+            }
+
             if (confirm("🏛️ ¿Confirma la sincronización de esta certificación?")) {
                 // Aquí iría la lógica de envío (ej: fetch a Google Script)
                 alert("CERTIFICACIÓN SINCRONIZADA (simulación).");
@@ -359,8 +402,8 @@
             });
             document.getElementById('phone-container').innerHTML = '';
             document.getElementById('email-container').innerHTML = '';
-            addDynamicField('phone-container', 'phone'); // Agrega uno por defecto
-            addDynamicField('email-container', 'email'); // Agrega uno por defecto
+            addDynamicField('phone-container', 'phone'); 
+            addDynamicField('email-container', 'email'); 
         }
 
         function addDynamicField(containerId, type) {
@@ -394,7 +437,7 @@
 
         function ejecutarGuardadoProv(nombre, rif, pais) {
             const tbody = document.getElementById('cuerpo-tabla-prov');
-            const newRow = tbody.insertRow(0); // Inserta al principio
+            const newRow = tbody.insertRow(0); 
             newRow.id = `row-${rif}`;
             newRow.innerHTML = `
                 <td>${document.getElementById('prov_cat').value}</td>
@@ -412,7 +455,6 @@
         // =======================================================================
         window.onload = function() {
             showView('certificacion', document.getElementById('nav-certificacion'));
-            // Aquí puedes agregar funciones para cargar datos iniciales en las tablas si es necesario
         };
     </script>
 </body>
