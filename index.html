@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v9.2</title>
+    <title>ORBIS BRAIN | Master v9.3</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v9.2) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v9.3) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
             --gold-gradient: linear-gradient(90deg, transparent, #d4af37, #f1d592, #d4af37, transparent);
+            /* --- INYECCIÓN DE LÓGICA v9.3: Color para borde de error --- */
+            --red-error: #d9534f;
         }
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
@@ -40,16 +42,16 @@
         
         .form-section { background: rgba(255,255,255,0.02); padding: 20px 30px; border-radius: 20px; border: 1px solid #222; margin-bottom: 15px; }
         label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
-        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; }
+        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; transition: border-color 0.3s; }
         input[readonly] { background: #111; color: #777; cursor: not-allowed; }
-        .input-error { border-color: #d9534f !important; }
+        /* --- INYECCIÓN DE LÓGICA v9.3: Estilo para el borde de error --- */
+        .input-error { border-color: var(--red-error) !important; }
 
         .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 20px auto 0; display: block; transition: 0.4s; }
         .btn-cancel-elite:hover { color: #d9534f; border-color: #d9534f; background: rgba(217, 83, 79, 0.05); }
         .btn-remove { background: none; color: #d9534f; border: 1px solid #d9534f; border-radius: 8px; cursor: pointer; height: 46px; width: 100%; display: flex; align-items: center; justify-content: center; }
         .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); width: 100%; padding: 10px; cursor: pointer; border-radius: 8px; font-size: 11px; font-weight: bold; text-transform: uppercase; margin-top: 10px; }
 
-        /* --- ESTILOS ESPECÍFICOS: MODAL CERTIFICACIÓN --- */
         #opModal .modal-content { width: 1350px; }
         .grid-inputs { display: grid; grid-template-columns: 1.2fr 2fr 1fr 1fr 40px; gap: 12px; margin-bottom: 12px; align-items: end; }
         .row-fixed { background: rgba(212, 175, 55, 0.05); border-radius: 10px; padding: 5px; border: 1px solid rgba(212, 175, 55, 0.2); }
@@ -59,7 +61,6 @@
         .sum-val { display: block; font-size: 20px; font-weight: 800; color: var(--gold-metalic); margin-bottom: 5px; }
         .sum-lbl { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; }
 
-        /* --- ESTILOS ESPECÍFICOS: MODAL DIRECTORIO --- */
         #provModal .modal-content { width: 1200px; padding: 25px 60px; }
         #provModal input, #provModal select { text-transform: uppercase; }
         .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
@@ -72,37 +73,20 @@
     </style>
 </head>
 <body>
-    <!-- SIDEBAR, VISTAS, ETC. (SIN CAMBIOS) -->
+    <!-- ESTRUCTURA HTML SIN CAMBIOS (SIDEBAR, VISTAS, MODALES) -->
     <div class="sidebar">
-        <div class="logo-container">
-            <div class="logo-text">ORBIS</div>
-            <div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px;">BRAIN NETWORK</div>
-        </div>
+        <div class="logo-container"><div class="logo-text">ORBIS</div><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px;">BRAIN NETWORK</div></div>
         <button id="nav-certificacion" class="nav-btn active" onclick="showView('certificacion', this)">🏛️ Certificaciones</button>
         <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Directorio Maestro</button>
     </div>
     <div id="view-certificacion" class="view-section active">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
-            <h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">CERTIFICACIÓN <span style="color:var(--gold-metalic)">GLOBAL</span></h1>
-            <button class="btn-gold" onclick="openModal('opModal')">Nueva Orquestación +</button>
-        </div>
-        <div class="table-container">
-            <table><thead><tr><th style="padding:15px;">ID Operación</th><th>Aliado Responsable</th><th>Detalle Fiscal</th><th>Total Certificado</th><th>Estado</th></tr></thead><tbody id="cuerpo-tabla-cert"></tbody></table>
-        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;"><h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">CERTIFICACIÓN <span style="color:var(--gold-metalic)">GLOBAL</span></h1><button class="btn-gold" onclick="openModal('opModal')">Nueva Orquestación +</button></div>
+        <div class="table-container"><table><thead><tr><th style="padding:15px;">ID Operación</th><th>Aliado Responsable</th><th>Detalle Fiscal</th><th>Total Certificado</th><th>Estado</th></tr></thead><tbody id="cuerpo-tabla-cert"></tbody></table></div>
     </div>
     <div id="view-directorio" class="view-section">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-            <h1 style="font-family:'Cinzel'; font-size: 26px; margin:0;">DIRECTORIO <span style="color:var(--gold-metalic)">GLOBAL</span></h1>
-            <button class="btn-gold" style="width:auto;" onclick="openModal('provModal')">Cargar Ficha Técnica +</button>
-        </div>
-        <div class="table-container">
-            <table><thead><tr><th>Categoría</th><th>Nombre Legal</th><th>RIF / Tax ID</th><th>País</th><th>Acción</th></tr></thead><tbody id="cuerpo-tabla-prov"></tbody></table>
-        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;"><h1 style="font-family:'Cinzel'; font-size: 26px; margin:0;">DIRECTORIO <span style="color:var(--gold-metalic)">GLOBAL</span></h1><button class="btn-gold" style="width:auto;" onclick="openModal('provModal')">Cargar Ficha Técnica +</button></div>
+        <div class="table-container"><table><thead><tr><th>Categoría</th><th>Nombre Legal</th><th>RIF / Tax ID</th><th>País</th><th>Acción</th></tr></thead><tbody id="cuerpo-tabla-prov"></tbody></table></div>
     </div>
-
-    <!-- ======================================================================= -->
-    <!--          MODAL #1: NUEVA ORQUESTACIÓN (CON LÓGICA v9.2)                 -->
-    <!-- ======================================================================= -->
     <div id="opModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">REGISTRO DE CERTIFICACIÓN FISCAL</div><hr class="gold-divider">
@@ -111,12 +95,7 @@
                     <div style="display:grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap:15px;">
                         <div><label>Nombre Fiscal del Aliado *</label><input type="text" id="aliado_name" placeholder="Nombre Legal"></div>
                         <div><label>RIF / Tax ID *</label><input type="text" id="aliado_rif" placeholder="ID Tributario"></div>
-                        <div>
-                            <label>Moneda Orquestación *</label>
-                            <select id="moneda_global" onchange="cambiarMoneda()">
-                                <option value="$">USD ($)</option><option value="Bs.">Bs. (VE)</option><option value="€">EUR (€)</option><option value="د.إ">AED (د.إ)</option>
-                            </select>
-                        </div>
+                        <div><label>Moneda Orquestación *</label><select id="moneda_global" onchange="cambiarMoneda()"><option value="$">USD ($)</option><option value="Bs.">Bs. (VE)</option><option value="€">EUR (€)</option><option value="د.إ">AED (د.إ)</option></select></div>
                         <div><label style="color:var(--gold-metalic)">Honorarios Aliado (<span class="curr-sym">$</span>)</label><input type="number" id="comision_aliado" readonly style="background: #111; color: var(--gold-metalic); font-weight: bold;"></div>
                     </div>
                 </div>
@@ -124,15 +103,8 @@
                     <div class="form-section">
                         <label>Bases Imponibles & Comisiones (<span class="curr-sym">$</span>)</label>
                         <div id="contenedor-servicios">
-                            <!-- --- INYECCIÓN DE LÓGICA v9.2: COBERTURA DINÁMICA --- -->
                             <div id="cobertura-row" class="grid-inputs row-fixed">
-                                <div>
-                                    <label>Cobertura</label>
-                                    <select id="tipo_cobertura_sel">
-                                        <option value="interno">🛡️ ORBIS PROTECT</option>
-                                        <option value="externo">✍️ SEGURO EXTERNO / MANUAL</option>
-                                    </select>
-                                </div>
+                                <div><label>Cobertura</label><select id="tipo_cobertura_sel"><option value="interno">🛡️ ORBIS PROTECT</option><option value="externo">✍️ SEGURO EXTERNO / MANUAL</option></select></div>
                                 <div><label>Aseguradora</label><input type="text" id="cobertura_aseguradora" value="ORBIS BRAIN NETWORK" readonly></div>
                                 <div><label>Base *</label><input type="number" id="cobertura_base" value="2.00" readonly></div>
                                 <div><label>Comisión *</label><input type="number" id="cobertura_comision" value="0.00" readonly></div>
@@ -162,8 +134,6 @@
             <button class="btn-cancel-elite" onclick="closeModal('opModal')">Cancelar</button>
         </div>
     </div>
-    
-    <!-- MODAL #2 (DIRECTORIO) SIN CAMBIOS -->
     <div id="provModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div><hr class="gold-divider">
@@ -174,186 +144,68 @@
         </div>
     </div>
 
-
     <!-- ======================================================================= -->
-    <!--                         JAVASCRIPT UNIFICADO (v9.2)                     -->
+    <!--                         JAVASCRIPT UNIFICADO (v9.3)                     -->
     <!-- ======================================================================= -->
     <script>
-        // --- VARIABLES GLOBALES Y CONSTANTES ---
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbwx34Vu9no8Pgp-VS2c5tvoYAPv80xzKPyo7VsDPppq7tm4shv6NxIpIoT9KqM8AcQUXg/exec";
         const TASAS = { "$": 1.00, "Bs.": 45.00, "€": 0.93, "د.إ": 3.67 };
         const SUGERENCIAS = { "$": ["Sales Tax", "Federal Tax"], "Bs.": ["IVA 16%", "IGTF 3%"], "€": ["VAT (IVA)"], "د.إ": ["VAT 5%"] };
-        const FEE_ORBIS_BASE = 5.00; // --- LÓGICA v9.2: Fee base de Orbis ---
-        const FEE_ORBIS_PROTECT = 1.00; // --- LÓGICA v9.2: Ganancia por seguro interno ---
+        const FEE_ORBIS_BASE = 5.00; 
+        const FEE_ORBIS_PROTECT = 1.00;
 
-        // =======================================================================
-        //                  LÓGICA DE NAVEGACIÓN Y MODALES
-        // =======================================================================
-
-        function showView(viewId, btn) {
-            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('view-' + viewId).classList.add('active');
-            if (btn) btn.classList.add('active');
-        }
-
-        function openModal(id) {
-            const modal = document.getElementById(id);
-            modal.style.display = 'flex';
-            if (id === 'opModal') {
-                document.getElementById('registroForm').reset();
-                document.getElementById('filas-dinamicas').innerHTML = '';
-                document.getElementById('contenedor-taxes').innerHTML = '';
-                cambiarMoneda(); 
-                // --- LÓGICA v9.2: Restaurar estado predeterminado de cobertura ---
-                gestionarEstadoCobertura(true); 
-                agregarFila();
-                agregarTax(); 
-            } else if (id === 'provModal') {
-                resetFichaDirectorio(); 
-            }
-        }
-
-        function closeModal(id) {
-            if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos no guardados.")) {
-                document.getElementById(id).style.display = 'none';
-                if (id === 'opModal') {
-                    document.getElementById('registroForm').reset();
-                    document.getElementById('filas-dinamicas').innerHTML = '';
-                    document.getElementById('contenedor-taxes').innerHTML = '';
-                } else if (id === 'provModal') {
-                    resetFichaDirectorio();
-                }
-            }
-        }
+        function showView(viewId, btn) { /* ... sin cambios ... */ }
+        function openModal(id) { /* ... sin cambios ... */ }
+        function closeModal(id) { /* ... sin cambios ... */ }
+        // Lógica de navegación y modales sin cambios...
+        function showView(viewId, btn) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('view-' + viewId).classList.add('active'); if (btn) btn.classList.add('active'); }
+        function openModal(id) { const modal = document.getElementById(id); modal.style.display = 'flex'; if (id === 'opModal') { document.getElementById('registroForm').reset(); document.getElementById('filas-dinamicas').innerHTML = ''; document.getElementById('contenedor-taxes').innerHTML = ''; cambiarMoneda(); gestionarEstadoCobertura(true); agregarFila(); agregarTax(); } else if (id === 'provModal') { resetFichaDirectorio(); } }
+        function closeModal(id) { if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos no guardados.")) { document.getElementById(id).style.display = 'none'; if (id === 'opModal') { document.getElementById('registroForm').reset(); document.getElementById('filas-dinamicas').innerHTML = ''; document.getElementById('contenedor-taxes').innerHTML = ''; } else if (id === 'provModal') { resetFichaDirectorio(); } } }
         
         // =======================================================================
-        //              LÓGICA #1: CERTIFICACIÓN GLOBAL (V2 - CON LÓGICA v9.2)
+        //              LÓGICA #1: CERTIFICACIÓN GLOBAL (V3 - CON LÓGICA v9.3)
         // =======================================================================
-
         document.getElementById('aliado_name').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
         document.getElementById('aliado_rif').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
-
-        // --- INYECCIÓN DE LÓGICA v9.2: EventListener para el switch de cobertura ---
-        document.getElementById('tipo_cobertura_sel').addEventListener('change', function() {
-            gestionarEstadoCobertura(this.value === 'interno');
-        });
+        document.getElementById('tipo_cobertura_sel').addEventListener('change', function() { gestionarEstadoCobertura(this.value === 'interno'); });
         
-        // --- INYECCIÓN DE LÓGICA v9.2: Función para gestionar el estado de la cobertura ---
-        function gestionarEstadoCobertura(esInterno) {
-            const aseguradora = document.getElementById('cobertura_aseguradora');
-            const base = document.getElementById('cobertura_base');
-            const comision = document.getElementById('cobertura_comision');
-            const icon = document.getElementById('cobertura_icon');
+        function gestionarEstadoCobertura(esInterno) { /* ... sin cambios ... */ }
+        function cambiarMoneda() { /* ... sin cambios ... */ }
+        function agregarFila() { /* ... sin cambios ... */ }
+        function agregarTax() { /* ... sin cambios ... */ }
+        function calcularTodo() { /* ... sin cambios ... */ }
+        // Lógica de cálculo y manipulación de filas sin cambios...
+        function gestionarEstadoCobertura(esInterno) { const aseguradora = document.getElementById('cobertura_aseguradora'); const base = document.getElementById('cobertura_base'); const comision = document.getElementById('cobertura_comision'); const icon = document.getElementById('cobertura_icon'); if (esInterno) { aseguradora.value = 'ORBIS BRAIN NETWORK'; base.value = '2.00'; comision.value = '0.00'; icon.innerHTML = '🔒'; [aseguradora, base, comision].forEach(el => el.setAttribute('readonly', true)); } else { aseguradora.value = ''; base.value = '0.00'; comision.value = '0.00'; icon.innerHTML = '✍️'; aseguradora.placeholder = 'Nombre Aseguradora'; [aseguradora, base, comision].forEach(el => el.removeAttribute('readonly')); } calcularTodo(); }
+        function cambiarMoneda() { const sym = document.getElementById('moneda_global').value; document.querySelectorAll('.curr-sym').forEach(el => el.innerText = sym); const dl = document.getElementById('sugerencias_impuestos'); dl.innerHTML = ""; if (SUGERENCIAS[sym]) { SUGERENCIAS[sym].forEach(s => { const opt = document.createElement('option'); opt.value = s; dl.appendChild(opt); }); } calcularTodo(); }
+        function agregarFila() { const div = document.createElement('div'); div.className = 'grid-inputs servicio-row'; div.innerHTML = `<div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Otro">➕ Otro</option></select></div><div><input type="text" class="prov-name" placeholder="Proveedor *"></div><div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div><div><input type="number" class="comision-ind" oninput="calcularTodo()" placeholder="0.00"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`; document.getElementById('filas-dinamicas').appendChild(div); }
+        function agregarTax() { const div = document.createElement('div'); div.className = 'tax-grid tax-row'; div.style.display = 'grid'; div.style.gridTemplateColumns = '2fr 1fr 40px'; div.style.gap = '12px'; div.style.marginBottom = '12px'; div.innerHTML = `<div><input type="text" class="tax-name" placeholder="Impuesto *" list="sugerencias_impuestos"></div><div style="position:relative;"><input type="number" class="tax-val tax-input" oninput="calcularTodo()" placeholder="0.00"><span style="position:absolute; right:15px; top: 50%; transform: translateY(-50%); color:var(--gold-soft); font-weight:bold;">%</span></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`; document.getElementById('contenedor-taxes').appendChild(div); calcularTodo(); }
+        function calcularTodo() { const sym = document.getElementById('moneda_global').value; const tasaCambio = TASAS[sym] || 1.00; const esSeguroInterno = document.getElementById('tipo_cobertura_sel').value === 'interno'; let totalBaseServicios = 0; let totalComisiones = 0; totalBaseServicios += parseFloat(document.getElementById('cobertura_base').value) || 0; totalComisiones += parseFloat(document.getElementById('cobertura_comision').value) || 0; document.querySelectorAll('.servicio-row').forEach(row => { totalBaseServicios += parseFloat(row.querySelector('.monto-srv').value) || 0; totalComisiones += parseFloat(row.querySelector('.comision-ind').value) || 0; }); document.getElementById('comision_aliado').value = totalComisiones.toFixed(2); const baseImponibleTotal = totalBaseServicios + totalComisiones; let totalImpuestos = 0; document.querySelectorAll('.tax-row').forEach(row => { const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0; if (porcentaje > 0) totalImpuestos += baseImponibleTotal * (porcentaje / 100); }); let feeOrbisLocal = FEE_ORBIS_BASE; if (esSeguroInterno) { feeOrbisLocal += FEE_ORBIS_PROTECT; } const feeOrbisFinal = feeOrbisLocal * tasaCambio; let impuestosSobreComision = 0; document.querySelectorAll('.tax-row').forEach(row => { const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0; if (porcentaje > 0) impuestosSobreComision += totalComisiones * (porcentaje / 100); }); const gananciaNeta = totalComisiones - impuestosSobreComision; const subTotal = baseImponibleTotal + totalImpuestos + feeOrbisFinal; const escudoOro = subTotal * 0.005; const totalFinal = subTotal + escudoOro; document.getElementById('res-neto').innerHTML = `${baseImponibleTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-imp').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-fee-fijo').innerHTML = `${feeOrbisFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-escudo').innerHTML = `${escudoOro.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-ganancia').innerHTML = `${gananciaNeta.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-total').innerHTML = `${totalFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`; }
 
-            if (esInterno) {
-                // Estado Predeterminado: ORBIS PROTECT
-                aseguradora.value = 'ORBIS BRAIN NETWORK';
-                base.value = '2.00';
-                comision.value = '0.00';
-                icon.innerHTML = '🔒';
-                
-                [aseguradora, base, comision].forEach(el => el.setAttribute('readonly', true));
-            } else {
-                // Estado Manual: SEGURO EXTERNO
-                aseguradora.value = '';
-                base.value = '0.00';
-                comision.value = '0.00';
-                icon.innerHTML = '✍️';
-                
-                aseguradora.placeholder = 'Nombre Aseguradora';
-
-                [aseguradora, base, comision].forEach(el => el.removeAttribute('readonly'));
-            }
-            // Dispara el recálculo total cada vez que cambia el estado
-            calcularTodo();
-        }
-
-        function cambiarMoneda() {
-            const sym = document.getElementById('moneda_global').value;
-            document.querySelectorAll('.curr-sym').forEach(el => el.innerText = sym);
-            const dl = document.getElementById('sugerencias_impuestos');
-            dl.innerHTML = "";
-            if (SUGERENCIAS[sym]) {
-                SUGERENCIAS[sym].forEach(s => {
-                    const opt = document.createElement('option'); opt.value = s;
-                    dl.appendChild(opt);
-                });
-            }
-            calcularTodo();
-        }
-
-        function agregarFila() {
-            const div = document.createElement('div');
-            div.className = 'grid-inputs servicio-row';
-            div.innerHTML = `<div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Otro">➕ Otro</option></select></div><div><input type="text" class="prov-name" placeholder="Proveedor *"></div><div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div><div><input type="number" class="comision-ind" oninput="calcularTodo()" placeholder="0.00"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
-            document.getElementById('filas-dinamicas').appendChild(div);
-        }
-
-        function agregarTax() {
-            const div = document.createElement('div');
-            div.className = 'tax-grid tax-row';
-            div.style.display = 'grid'; div.style.gridTemplateColumns = '2fr 1fr 40px'; div.style.gap = '12px'; div.style.marginBottom = '12px';
-            div.innerHTML = `<div><input type="text" class="tax-name" placeholder="Impuesto *" list="sugerencias_impuestos"></div><div style="position:relative;"><input type="number" class="tax-val tax-input" oninput="calcularTodo()" placeholder="0.00"><span style="position:absolute; right:15px; top: 50%; transform: translateY(-50%); color:var(--gold-soft); font-weight:bold;">%</span></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
-            document.getElementById('contenedor-taxes').appendChild(div);
-            calcularTodo();
-        }
-
-        // --- INYECCIÓN DE LÓGICA v9.2: Cálculo de Fee dinámico ---
-        function calcularTodo() {
-            const sym = document.getElementById('moneda_global').value;
-            const tasaCambio = TASAS[sym] || 1.00;
-            const esSeguroInterno = document.getElementById('tipo_cobertura_sel').value === 'interno';
-
-            let totalBaseServicios = 0;
-            let totalComisiones = 0;
-            
-            // Suma la fila de cobertura
-            totalBaseServicios += parseFloat(document.getElementById('cobertura_base').value) || 0;
-            totalComisiones += parseFloat(document.getElementById('cobertura_comision').value) || 0;
-            
-            // Suma las filas dinámicas de proveedores
-            document.querySelectorAll('.servicio-row').forEach(row => {
-                totalBaseServicios += parseFloat(row.querySelector('.monto-srv').value) || 0;
-                totalComisiones += parseFloat(row.querySelector('.comision-ind').value) || 0;
-            });
-            
-            document.getElementById('comision_aliado').value = totalComisiones.toFixed(2);
-            
-            const baseImponibleTotal = totalBaseServicios + totalComisiones;
-            let totalImpuestos = 0;
-            document.querySelectorAll('.tax-row').forEach(row => {
-                const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0;
-                if (porcentaje > 0) totalImpuestos += baseImponibleTotal * (porcentaje / 100);
-            });
-            
-            // Lógica de Fee Dinámico v9.2
-            let feeOrbisLocal = FEE_ORBIS_BASE;
-            if (esSeguroInterno) {
-                feeOrbisLocal += FEE_ORBIS_PROTECT; // Suma 1.00 si es ORBIS PROTECT
-            }
-            const feeOrbisFinal = feeOrbisLocal * tasaCambio;
-            
-            let impuestosSobreComision = 0;
-            document.querySelectorAll('.tax-row').forEach(row => {
-                const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0;
-                if (porcentaje > 0) impuestosSobreComision += totalComisiones * (porcentaje / 100);
-            });
-            const gananciaNeta = totalComisiones - impuestosSobreComision;
-            
-            const subTotal = baseImponibleTotal + totalImpuestos + feeOrbisFinal;
-            const escudoOro = subTotal * 0.005;
-            const totalFinal = subTotal + escudoOro;
-
-            document.getElementById('res-neto').innerHTML = `${baseImponibleTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
-            document.getElementById('res-imp').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`;
-            document.getElementById('res-fee-fijo').innerHTML = `${feeOrbisFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
-            document.getElementById('res-escudo').innerHTML = `${escudoOro.toFixed(2)} <span class="curr-sym">${sym}</span>`;
-            document.getElementById('res-ganancia').innerHTML = `${gananciaNeta.toFixed(2)} <span class="curr-sym">${sym}</span>`;
-            document.getElementById('res-total').innerHTML = `${totalFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
-        }
-
+        // --- INYECCIÓN DE LÓGICA v9.3: Función de validación y registro ---
         function confirmarRegistro() {
+            // 1. Definir campos obligatorios y limpiar errores previos
+            const camposRequeridos = [
+                document.getElementById('aliado_name'),
+                document.getElementById('aliado_rif'),
+                document.getElementById('moneda_global')
+            ];
+            let esValido = true;
+            camposRequeridos.forEach(campo => campo.classList.remove('input-error'));
+
+            // 2. Validar Identidad Obligatoria
+            for (const campo of camposRequeridos) {
+                if (!campo.value.trim()) {
+                    campo.classList.add('input-error'); // Feedback visual
+                    esValido = false;
+                }
+            }
+
+            if (!esValido) {
+                alert("⚠️ BLOQUEO DE SEGURIDAD: El Nombre Fiscal, el RIF y la Moneda son campos obligatorios para la certificación.");
+                return; // Detiene el proceso
+            }
+
+            // 3. Validar Impuestos (lógica anterior)
             const numTasas = document.querySelectorAll('.tax-row').length;
             const primeraTasa = document.querySelector('.tax-row .tax-val');
             
@@ -362,7 +214,8 @@
                 return; 
             }
 
-            if (confirm("🏛️ ¿Confirma la sincronización de esta certificación?")) {
+            // 4. Confirmación final (solo si todo es válido)
+            if (confirm("🏛️ ¿Confirma la sincronización de esta certificación? Los datos son correctos.")) {
                 alert("CERTIFICACIÓN SINCRONIZADA (simulación).");
                 location.reload();
             }
@@ -371,17 +224,17 @@
         // =======================================================================
         //                LÓGICA #2: DIRECTORIO MAESTRO (SIN CAMBIOS)
         // =======================================================================
-        function resetFichaDirectorio(){const campos=['prov_nombre','prov_rif','prov_pais'];campos.forEach(id=>{const el=document.getElementById(id);if(el){el.value='';el.classList.remove('input-error');}});document.getElementById('phone-container').innerHTML='';document.getElementById('email-container').innerHTML='';addDynamicField('phone-container','phone');addDynamicField('email-container','email');}
-        function addDynamicField(containerId,type){const container=document.getElementById(containerId);const div=document.createElement('div');div.className='dynamic-row';if(type==='phone'){div.innerHTML=`<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no" selected>📞 LLAMADA</option></select> <button class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`;}else{div.innerHTML=`<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <span></span> <button class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`;}container.appendChild(div);}
-        function iniciarGuardadoProv(){const nombre=document.getElementById('prov_nombre');const rif=document.getElementById('prov_rif');const pais=document.getElementById('prov_pais');let error=false;[nombre,rif,pais].forEach(el=>{if(!el.value.trim()){el.classList.add('input-error');error=true;}else{el.classList.remove('input-error');}});if(error)return alert("⚠️ BLOQUEO: NOMBRE, RIF Y PAÍS SON INNEGOCIABLES.");if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro en la Red Maestra?")){ejecutarGuardadoProv(nombre.value,rif.value,pais.value);}}
-        function ejecutarGuardadoProv(nombre,rif,pais){const tbody=document.getElementById('cuerpo-tabla-prov');const newRow=tbody.insertRow(0);newRow.id=`row-${rif}`;newRow.innerHTML=`<td>${document.getElementById('prov_cat').value}</td><td style="font-weight:bold; letter-spacing:1px;">${nombre}</td><td>${rif}</td><td>${pais}</td><td><button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td>`;alert("✅ REGISTRO EN RED MAESTRA EXITOSO.");closeModal('provModal');}
+        function resetFichaDirectorio() { /* ... sin cambios ... */ }
+        function addDynamicField(containerId, type) { /* ... sin cambios ... */ }
+        function iniciarGuardadoProv() { /* ... sin cambios ... */ }
+        function ejecutarGuardadoProv(nombre, rif, pais) { /* ... sin cambios ... */ }
+        // Lógica de directorio sin cambios...
+        function resetFichaDirectorio(){const c=['prov_nombre','prov_rif','prov_pais'];c.forEach(id=>{const e=document.getElementById(id);if(e){e.value='';e.classList.remove('input-error');}});document.getElementById('phone-container').innerHTML='';document.getElementById('email-container').innerHTML='';addDynamicField('phone-container','phone');addDynamicField('email-container','email');}
+        function addDynamicField(c,t){const n=document.getElementById(c);const d=document.createElement('div');d.className='dynamic-row';if(t==='phone'){d.innerHTML=`<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no" selected>📞 LLAMADA</option></select> <button class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`;}else{d.innerHTML=`<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <span></span> <button class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`;}n.appendChild(d);}
+        function iniciarGuardadoProv(){const n=document.getElementById('prov_nombre');const r=document.getElementById('prov_rif');const p=document.getElementById('prov_pais');let e=false;[n,r,p].forEach(el=>{if(!el.value.trim()){el.classList.add('input-error');e=true;}else{el.classList.remove('input-error');}});if(e)return alert("⚠️ BLOQUEO: NOMBRE, RIF Y PAÍS SON INNEGOCIABLES.");if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro en la Red Maestra?")){ejecutarGuardadoProv(n.value,r.value,p.value);}}
+        function ejecutarGuardadoProv(n,r,p){const t=document.getElementById('cuerpo-tabla-prov');const newRow=t.insertRow(0);newRow.id=`row-${r}`;newRow.innerHTML=`<td>${document.getElementById('prov_cat').value}</td><td style="font-weight:bold; letter-spacing:1px;">${n}</td><td>${r}</td><td>${p}</td><td><button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td>`;alert("✅ REGISTRO EN RED MAESTRA EXITOSO.");closeModal('provModal');}
         
-        // =======================================================================
-        //                     CARGA INICIAL DE DATOS
-        // =======================================================================
-        window.onload = function() {
-            showView('certificacion', document.getElementById('nav-certificacion'));
-        };
+        window.onload = function() { showView('certificacion', document.getElementById('nav-certificacion')); };
     </script>
 </body>
 </html>
