@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v9.7</title>
+    <title>ORBIS BRAIN | Master v9.8</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v9.7) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v9.8) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -44,16 +44,12 @@
         .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); width: 100%; padding: 10px; cursor: pointer; border-radius: 8px; font-size: 11px; font-weight: bold; text-transform: uppercase; margin-top: 10px; }
         #opModal .modal-content { width: 1350px; }
         .grid-inputs { display: grid; grid-template-columns: 1.2fr 2fr 1fr 1fr 40px; gap: 12px; margin-bottom: 12px; align-items: end; }
-        
         .summary-box { background: #000; padding: 25px 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2); display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 20px; }
         .sum-item { text-align: center; border-right: 1px solid #222; padding: 0 5px; } .sum-item:last-child { border-right: none; }
         .sum-val { display: block; font-size: 20px; font-weight: 800; color: var(--gold-soft); margin-bottom: 5px; }
         .sum-lbl { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; }
         #res-ganancia, #res-total { color: var(--gold-metalic) !important; }
-
-        /* --- INYECCIÓN DE LÓGICA v9.7: Ley de Mayúsculas Universal --- */
         input[type="text"], input[type="email"] { text-transform: uppercase; }
-
         .tax-input::-webkit-inner-spin-button, .tax-input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         .tax-input { -moz-appearance: textfield; }
         .pin-btn { background: none; border: none; font-size: 18px; cursor: pointer; transition: opacity 0.3s; opacity: 0.3; }
@@ -88,7 +84,6 @@
                     <div class="form-section">
                         <label>Bases Imponibles & Comisiones (<span class="curr-sym">$</span>)</label>
                         <div id="contenedor-servicios">
-                            <!-- --- INYECCIÓN DE LÓGICA v9.7: Estandarización de Proveedor --- -->
                             <div id="cobertura-row" class="grid-inputs row-fixed">
                                 <div><label>Cobertura</label><select id="tipo_cobertura_sel"><option value="interno">🛡️ ORBIS PROTECT</option><option value="externo">✍️ SEGURO EXTERNO / MANUAL</option></select></div>
                                 <div><label>Proveedor *</label><input type="text" id="cobertura_proveedor" class="prov-name" value="ORBIS BRAIN NETWORK" readonly></div>
@@ -123,7 +118,7 @@
     <!-- (El resto del HTML sigue igual) -->
 
     <!-- ======================================================================= -->
-    <!--                         JAVASCRIPT UNIFICADO (v9.7)                     -->
+    <!--                         JAVASCRIPT UNIFICADO (v9.8)                     -->
     <!-- ======================================================================= -->
     <script>
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxF-mbAYdkaxaEvwO_tEH1KjaChodlf-kAdstdqRkZb80yMGRgF7X7MZTgn6yVqJCK9iw/exec"; 
@@ -132,7 +127,6 @@
         const FEE_ORBIS_BASE = 5.00; 
         const FEE_ORBIS_PROTECT = 1.00;
 
-        // --- INYECCIÓN DE LÓGICA v9.7: Pregunta de Seguridad al Cancelar ---
         function closeModal(id) {
             if (id === 'opModal') {
                 if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán todos los datos actuales.")) {
@@ -143,11 +137,17 @@
             }
         }
         
-        // --- INYECCIÓN DE LÓGICA v9.7: Ley de Mayúsculas Universal ---
         document.addEventListener('input', function(e) {
             if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'text') {
                 e.target.value = e.target.value.toUpperCase();
             }
+        });
+        
+        // --- INYECCIÓN DE LÓGICA v9.8: EventListener movido para garantizar carga ---
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.getElementById('tipo_cobertura_sel').addEventListener('change', function() {
+                gestionarEstadoCobertura(this.value === 'interno');
+            });
         });
 
         function openModal(id) {
@@ -165,50 +165,51 @@
                 if (document.getElementById('contenedor-taxes').children.length === 0) { agregarTax(); }
             } else if (id === 'provModal') { resetFichaDirectorio(); }
         }
-
+        
+        // --- INYECCIÓN DE LÓGICA v9.8: Lógica de Seguros Restaurada ---
         function gestionarEstadoCobertura(esInterno) {
-            // --- INYECCIÓN DE LÓGICA v9.7: Estandarización de Proveedor ---
             const proveedor = document.getElementById('cobertura_proveedor');
             const base = document.getElementById('cobertura_base');
             const comision = document.getElementById('cobertura_comision');
             const icon = document.getElementById('cobertura_icon');
 
             if (esInterno) {
+                // Estado Predeterminado: ORBIS PROTECT
                 proveedor.value = 'ORBIS BRAIN NETWORK';
                 base.value = '2.00';
                 comision.value = '0.00';
                 icon.innerHTML = '🔒';
                 [proveedor, base, comision].forEach(el => el.setAttribute('readonly', true));
             } else {
+                // Estado Manual: SEGURO EXTERNO / MANUAL
                 proveedor.value = '';
                 base.value = '0.00';
                 comision.value = '0.00';
                 icon.innerHTML = '✍️';
                 proveedor.placeholder = 'NOMBRE PROVEEDOR *';
+                // Se elimina el 'readonly' de TODOS los campos para que sean editables
                 [proveedor, base, comision].forEach(el => el.removeAttribute('readonly'));
             }
+            // Dispara el recálculo total cada vez que cambia el estado para ajustar el Fee
             calcularTodo();
         }
 
         function agregarFila() {
             const div = document.createElement('div');
             div.className = 'grid-inputs servicio-row';
-            // --- INYECCIÓN DE LÓGICA v9.7: Aplicar clase 'prov-name' a nuevas filas ---
             div.innerHTML = `<div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Otro">➕ Otro</option></select></div><div><input type="text" class="prov-name" placeholder="NOMBRE PROVEEDOR *"></div><div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div><div><input type="number" class="comision-ind" oninput="calcularTodo()" placeholder="0.00"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
             document.getElementById('filas-dinamicas').appendChild(div);
         }
 
         function confirmarRegistro() {
-            // --- INYECCIÓN DE LÓGICA v9.7: Validación de todos los campos obligatorios ---
             let esValido = true;
             document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
             
-            // 1. Validar Identidad Obligatoria + Proveedores
             const camposRequeridos = [
                 document.getElementById('aliado_name'),
                 document.getElementById('aliado_rif'),
                 document.getElementById('moneda_global'),
-                ...document.querySelectorAll('.prov-name') // Incluye todos los campos de proveedor
+                ...document.querySelectorAll('.prov-name')
             ];
             
             for (const campo of camposRequeridos) {
@@ -223,7 +224,6 @@
                 return;
             }
 
-            // 2. Validar Impuestos
             const numTasas = document.querySelectorAll('.tax-row').length;
             const primeraTasa = document.querySelector('.tax-row .tax-val');
             if (numTasas === 0 || (primeraTasa && (parseFloat(primeraTasa.value) || 0) === 0)) {
@@ -231,23 +231,73 @@
                 return; 
             }
 
-            // 3. Confirmación final con advertencia de inmutabilidad
             if (confirm("🏛️ ¿Confirma la sincronización de esta certificación? Los datos NO podrán ser editados ni eliminados una vez registrados en ORBIS BRAIN NETWORK.")) {
                 enviarAlCerebro();
             }
         }
         
-        // ... (El resto de funciones JS (enviarAlCerebro, calcularTodo, etc.) permanecen igual que en v9.6) ...
+        // --- INYECCIÓN DE LÓGICA v9.8: Lógica de Fee Dinámico Restaurada ---
+        function calcularTodo() {
+            const sym = document.getElementById('moneda_global').value;
+            const tasaCambio = TASAS[sym] || 1.00;
+            const esSeguroInterno = document.getElementById('tipo_cobertura_sel').value === 'interno';
+
+            let totalBaseServicios = 0;
+            let totalComisiones = 0;
+            
+            totalBaseServicios += parseFloat(document.getElementById('cobertura_base').value) || 0;
+            totalComisiones += parseFloat(document.getElementById('cobertura_comision').value) || 0;
+            
+            document.querySelectorAll('.servicio-row').forEach(row => {
+                totalBaseServicios += parseFloat(row.querySelector('.monto-srv').value) || 0;
+                totalComisiones += parseFloat(row.querySelector('.comision-ind').value) || 0;
+            });
+            
+            document.getElementById('comision_aliado').value = totalComisiones.toFixed(2);
+            
+            const baseImponibleTotal = totalBaseServicios + totalComisiones;
+            let totalImpuestos = 0;
+            document.querySelectorAll('.tax-row').forEach(row => {
+                const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0;
+                if (porcentaje > 0) totalImpuestos += baseImponibleTotal * (porcentaje / 100);
+            });
+            
+            // Lógica de Fee Dinámico v9.8 (Restaurada)
+            let feeOrbisLocal = FEE_ORBIS_BASE;
+            if (esSeguroInterno) {
+                feeOrbisLocal += FEE_ORBIS_PROTECT; // Suma 1.00 si es ORBIS PROTECT
+            }
+            const feeOrbisFinal = feeOrbisLocal * tasaCambio;
+            
+            let impuestosSobreComision = 0;
+            document.querySelectorAll('.tax-row').forEach(row => {
+                const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0;
+                if (porcentaje > 0) impuestosSobreComision += totalComisiones * (porcentaje / 100);
+            });
+            const gananciaNeta = totalComisiones - impuestosSobreComision;
+            
+            const subTotal = baseImponibleTotal + totalImpuestos + feeOrbisFinal;
+            const escudoOro = subTotal * 0.005;
+            const totalFinal = subTotal + escudoOro;
+
+            document.getElementById('res-neto').innerHTML = `${baseImponibleTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
+            document.getElementById('res-imp').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`;
+            document.getElementById('res-fee-fijo').innerHTML = `${feeOrbisFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
+            document.getElementById('res-escudo').innerHTML = `${escudoOro.toFixed(2)} <span class="curr-sym">${sym}</span>`;
+            document.getElementById('res-ganancia').innerHTML = `${gananciaNeta.toFixed(2)} <span class="curr-sym">${sym}</span>`;
+            document.getElementById('res-total').innerHTML = `${totalFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
+        }
+
+        // ... (El resto de funciones JS (enviarAlCerebro, gestión de pines, etc.) permanecen igual que en v9.7) ...
         function obtenerImpuestosGuardados() { return JSON.parse(localStorage.getItem('orbis_impuestos_predeterminados')) || []; }
         function guardarImpuestos(impuestos) { localStorage.setItem('orbis_impuestos_predeterminados', JSON.stringify(impuestos)); }
         function cargarImpuestosPredeterminados() { const impuestosGuardados = obtenerImpuestosGuardados(); impuestosGuardados.forEach(imp => agregarTax(imp.nombre, imp.valor, true)); }
         function gestionarPin(btn) { const fila = btn.closest('.tax-row'); const nombre = fila.querySelector('.tax-name').value; const valor = fila.querySelector('.tax-val').value; if (!nombre || !valor) { alert('Debe especificar un nombre y un valor para fijar el impuesto.'); return; } let impuestosGuardados = obtenerImpuestosGuardados(); const indice = impuestosGuardados.findIndex(imp => imp.nombre.toLowerCase() === nombre.toLowerCase()); if (indice > -1) { impuestosGuardados.splice(indice, 1); btn.classList.remove('active'); } else { impuestosGuardados.push({ nombre, valor }); btn.classList.add('active'); } guardarImpuestos(impuestosGuardados); }
         function agregarTax(nombre = '', valor = '', esPredeterminado = false) { const div = document.createElement('div'); div.className = 'tax-grid tax-row'; div.style.display = 'grid'; div.style.gridTemplateColumns = '30px 2fr 1fr 40px'; div.style.gap = '12px'; div.style.marginBottom = '12px'; const pinActivoClass = esPredeterminado ? 'active' : ''; div.innerHTML = `<button type="button" class="pin-btn ${pinActivoClass}" onclick="gestionarPin(this)">📌</button><div><input type="text" class="tax-name" placeholder="NOMBRE IMPUESTO *" list="sugerencias_impuestos" value="${nombre}"></div><div style="position:relative;"><input type="number" class="tax-val tax-input" oninput="calcularTodo()" placeholder="0.00" value="${valor}"><span style="position:absolute; right:15px; top: 50%; transform: translateY(-50%); color:var(--gold-soft); font-weight:bold;">%</span></div><button type="button" class="btn-remove" onclick="eliminarFilaImpuesto(this)">X</button>`; document.getElementById('contenedor-taxes').appendChild(div); calcularTodo(); }
         function eliminarFilaImpuesto(btn) { const fila = btn.closest('.tax-row'); const nombre = fila.querySelector('.tax-name').value; const esFijado = fila.querySelector('.pin-btn').classList.contains('active'); if (nombre && esFijado) { let impuestosGuardados = obtenerImpuestosGuardados(); const impuestosActualizados = impuestosGuardados.filter(imp => imp.nombre.toLowerCase() !== nombre.toLowerCase()); guardarImpuestos(impuestosActualizados); } fila.remove(); calcularTodo(); }
-        function enviarAlCerebro() { const btnSync = document.querySelector('button[onclick="confirmarRegistro()"]'); btnSync.disabled = true; btnSync.textContent = 'SINCRONIZANDO...'; const datos = { idOperacion: `CERT-${Math.floor(10000 + Math.random() * 90000)}`, aliado: document.getElementById('aliado_name').value, rif: document.getElementById('aliado_rif').value, moneda: document.getElementById('moneda_global').value, totalCertificado: document.getElementById('res-total').textContent, ganancia: document.getElementById('res-ganancia').textContent, fecha: new Date().toISOString() }; fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', cache: 'no-cache', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({action: 'registrarCertificacion', data: datos}) }).then(res => { alert("✅ SINCRONIZACIÓN EXITOSA: La certificación ha sido registrada en ORBIS BRAIN NETWORK."); const tbody = document.getElementById('cuerpo-tabla-cert'); const newRow = tbody.insertRow(0); newRow.innerHTML = `<td>${datos.idOperacion}</td><td>${datos.aliado}</td><td>${new Date(datos.fecha).toLocaleDateString()}</td><td>${datos.totalCertificado}</td><td><span style="color:#4CAF50">REGISTRADO</span></td>`; closeModal('opModal'); }).catch(error => { console.error('Error de sincronización:', error); alert("🔴 ERROR CRÍTICO: No se pudo sincronizar con ORBIS BRAIN NETWORK. Verifique la conexión y la URL del script."); }).finally(() => { btnSync.disabled = false; btnSync.textContent = 'VALIDAR Y SINCRONIZAR'; }); }
+        function enviarAlCerebro() { const btnSync = document.querySelector('button[onclick="confirmarRegistro()"]'); btnSync.disabled = true; btnSync.textContent = 'SINCRONIZANDO...'; const datos = { idOperacion: `CERT-${Math.floor(10000 + Math.random() * 90000)}`, aliado: document.getElementById('aliado_name').value, rif: document.getElementById('aliado_rif').value, moneda: document.getElementById('moneda_global').value, totalCertificado: document.getElementById('res-total').textContent, ganancia: document.getElementById('res-ganancia').textContent, fecha: new Date().toISOString() }; fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', cache: 'no-cache', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({action: 'registrarCertificacion', data: datos}) }).then(res => { alert("✅ SINCRONIZACIÓN EXITOSA: La certificación ha sido registrada en ORBIS BRAIN NETWORK."); const tbody = document.getElementById('cuerpo-tabla-cert'); const newRow = tbody.insertRow(0); newRow.innerHTML = `<td>${datos.idOperacion}</td><td>${datos.aliado}</td><td>${new Date(datos.fecha).toLocaleDateString()}</td><td>${datos.totalCertificado}</td><td><span style="color:#4CAF50">REGISTRADO</span></td>`; closeModal('opModal'); }).catch(error => { console.error('Error de sincronización:', error); alert("🔴 ERROR CRÍTICO: No se pudo sincronizar con ORBIS BRAIN NETWORK. Verifique la conexión y la URL del script."); }).finally(() => { btnSync.disabled = false; btnSync.textContent = 'VALIDAR Y SINCRONIZA'; }); }
         function showView(viewId, btn) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('view-' + viewId).classList.add('active'); if (btn) btn.classList.add('active'); }
         function cambiarMoneda() { const sym = document.getElementById('moneda_global').value; document.querySelectorAll('.curr-sym').forEach(el => el.innerText = sym); const dl = document.getElementById('sugerencias_impuestos'); dl.innerHTML = ""; if (SUGERENCIAS[sym]) { SUGERENCIAS[sym].forEach(s => { const opt = document.createElement('option'); opt.value = s; dl.appendChild(opt); }); } calcularTodo(); }
-        function calcularTodo() { const sym = document.getElementById('moneda_global').value; const tasaCambio = TASAS[sym] || 1.00; const esSeguroInterno = document.getElementById('tipo_cobertura_sel').value === 'interno'; let totalBaseServicios = 0; let totalComisiones = 0; totalBaseServicios += parseFloat(document.getElementById('cobertura_base').value) || 0; totalComisiones += parseFloat(document.getElementById('cobertura_comision').value) || 0; document.querySelectorAll('.servicio-row').forEach(row => { totalBaseServicios += parseFloat(row.querySelector('.monto-srv').value) || 0; totalComisiones += parseFloat(row.querySelector('.comision-ind').value) || 0; }); document.getElementById('comision_aliado').value = totalComisiones.toFixed(2); const baseImponibleTotal = totalBaseServicios + totalComisiones; let totalImpuestos = 0; document.querySelectorAll('.tax-row').forEach(row => { const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0; if (porcentaje > 0) totalImpuestos += baseImponibleTotal * (porcentaje / 100); }); let feeOrbisLocal = FEE_ORBIS_BASE; if (esSeguroInterno) { feeOrbisLocal += FEE_ORBIS_PROTECT; } const feeOrbisFinal = feeOrbisLocal * tasaCambio; let impuestosSobreComision = 0; document.querySelectorAll('.tax-row').forEach(row => { const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0; if (porcentaje > 0) impuestosSobreComision += totalComisiones * (porcentaje / 100); }); const gananciaNeta = totalComisiones - impuestosSobreComision; const subTotal = baseImponibleTotal + totalImpuestos + feeOrbisFinal; const escudoOro = subTotal * 0.005; const totalFinal = subTotal + escudoOro; document.getElementById('res-neto').innerHTML = `${baseImponibleTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-imp').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-fee-fijo').innerHTML = `${feeOrbisFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-escudo').innerHTML = `${escudoOro.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-ganancia').innerHTML = `${gananciaNeta.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-total').innerHTML = `${totalFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`; }
     </script>
 </body>
 </html>
