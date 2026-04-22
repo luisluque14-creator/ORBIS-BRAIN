@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v9.3</title>
+    <title>ORBIS BRAIN | Master v9.4</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v9.3) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v9.4) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
             --gold-gradient: linear-gradient(90deg, transparent, #d4af37, #f1d592, #d4af37, transparent);
-            /* --- INYECCIÓN DE LÓGICA v9.3: Color para borde de error --- */
             --red-error: #d9534f;
         }
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
@@ -44,7 +43,6 @@
         label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
         input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; transition: border-color 0.3s; }
         input[readonly] { background: #111; color: #777; cursor: not-allowed; }
-        /* --- INYECCIÓN DE LÓGICA v9.3: Estilo para el borde de error --- */
         .input-error { border-color: var(--red-error) !important; }
 
         .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 20px auto 0; display: block; transition: 0.4s; }
@@ -145,7 +143,7 @@
     </div>
 
     <!-- ======================================================================= -->
-    <!--                         JAVASCRIPT UNIFICADO (v9.3)                     -->
+    <!--                         JAVASCRIPT UNIFICADO (v9.4)                     -->
     <!-- ======================================================================= -->
     <script>
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbwx34Vu9no8Pgp-VS2c5tvoYAPv80xzKPyo7VsDPppq7tm4shv6NxIpIoT9KqM8AcQUXg/exec";
@@ -154,26 +152,18 @@
         const FEE_ORBIS_BASE = 5.00; 
         const FEE_ORBIS_PROTECT = 1.00;
 
-        function showView(viewId, btn) { /* ... sin cambios ... */ }
-        function openModal(id) { /* ... sin cambios ... */ }
-        function closeModal(id) { /* ... sin cambios ... */ }
         // Lógica de navegación y modales sin cambios...
         function showView(viewId, btn) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('view-' + viewId).classList.add('active'); if (btn) btn.classList.add('active'); }
         function openModal(id) { const modal = document.getElementById(id); modal.style.display = 'flex'; if (id === 'opModal') { document.getElementById('registroForm').reset(); document.getElementById('filas-dinamicas').innerHTML = ''; document.getElementById('contenedor-taxes').innerHTML = ''; cambiarMoneda(); gestionarEstadoCobertura(true); agregarFila(); agregarTax(); } else if (id === 'provModal') { resetFichaDirectorio(); } }
         function closeModal(id) { if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos no guardados.")) { document.getElementById(id).style.display = 'none'; if (id === 'opModal') { document.getElementById('registroForm').reset(); document.getElementById('filas-dinamicas').innerHTML = ''; document.getElementById('contenedor-taxes').innerHTML = ''; } else if (id === 'provModal') { resetFichaDirectorio(); } } }
         
         // =======================================================================
-        //              LÓGICA #1: CERTIFICACIÓN GLOBAL (V3 - CON LÓGICA v9.3)
+        //              LÓGICA #1: CERTIFICACIÓN GLOBAL (V4 - CON LÓGICA v9.4)
         // =======================================================================
         document.getElementById('aliado_name').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
         document.getElementById('aliado_rif').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
         document.getElementById('tipo_cobertura_sel').addEventListener('change', function() { gestionarEstadoCobertura(this.value === 'interno'); });
         
-        function gestionarEstadoCobertura(esInterno) { /* ... sin cambios ... */ }
-        function cambiarMoneda() { /* ... sin cambios ... */ }
-        function agregarFila() { /* ... sin cambios ... */ }
-        function agregarTax() { /* ... sin cambios ... */ }
-        function calcularTodo() { /* ... sin cambios ... */ }
         // Lógica de cálculo y manipulación de filas sin cambios...
         function gestionarEstadoCobertura(esInterno) { const aseguradora = document.getElementById('cobertura_aseguradora'); const base = document.getElementById('cobertura_base'); const comision = document.getElementById('cobertura_comision'); const icon = document.getElementById('cobertura_icon'); if (esInterno) { aseguradora.value = 'ORBIS BRAIN NETWORK'; base.value = '2.00'; comision.value = '0.00'; icon.innerHTML = '🔒'; [aseguradora, base, comision].forEach(el => el.setAttribute('readonly', true)); } else { aseguradora.value = ''; base.value = '0.00'; comision.value = '0.00'; icon.innerHTML = '✍️'; aseguradora.placeholder = 'Nombre Aseguradora'; [aseguradora, base, comision].forEach(el => el.removeAttribute('readonly')); } calcularTodo(); }
         function cambiarMoneda() { const sym = document.getElementById('moneda_global').value; document.querySelectorAll('.curr-sym').forEach(el => el.innerText = sym); const dl = document.getElementById('sugerencias_impuestos'); dl.innerHTML = ""; if (SUGERENCIAS[sym]) { SUGERENCIAS[sym].forEach(s => { const opt = document.createElement('option'); opt.value = s; dl.appendChild(opt); }); } calcularTodo(); }
@@ -181,41 +171,33 @@
         function agregarTax() { const div = document.createElement('div'); div.className = 'tax-grid tax-row'; div.style.display = 'grid'; div.style.gridTemplateColumns = '2fr 1fr 40px'; div.style.gap = '12px'; div.style.marginBottom = '12px'; div.innerHTML = `<div><input type="text" class="tax-name" placeholder="Impuesto *" list="sugerencias_impuestos"></div><div style="position:relative;"><input type="number" class="tax-val tax-input" oninput="calcularTodo()" placeholder="0.00"><span style="position:absolute; right:15px; top: 50%; transform: translateY(-50%); color:var(--gold-soft); font-weight:bold;">%</span></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`; document.getElementById('contenedor-taxes').appendChild(div); calcularTodo(); }
         function calcularTodo() { const sym = document.getElementById('moneda_global').value; const tasaCambio = TASAS[sym] || 1.00; const esSeguroInterno = document.getElementById('tipo_cobertura_sel').value === 'interno'; let totalBaseServicios = 0; let totalComisiones = 0; totalBaseServicios += parseFloat(document.getElementById('cobertura_base').value) || 0; totalComisiones += parseFloat(document.getElementById('cobertura_comision').value) || 0; document.querySelectorAll('.servicio-row').forEach(row => { totalBaseServicios += parseFloat(row.querySelector('.monto-srv').value) || 0; totalComisiones += parseFloat(row.querySelector('.comision-ind').value) || 0; }); document.getElementById('comision_aliado').value = totalComisiones.toFixed(2); const baseImponibleTotal = totalBaseServicios + totalComisiones; let totalImpuestos = 0; document.querySelectorAll('.tax-row').forEach(row => { const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0; if (porcentaje > 0) totalImpuestos += baseImponibleTotal * (porcentaje / 100); }); let feeOrbisLocal = FEE_ORBIS_BASE; if (esSeguroInterno) { feeOrbisLocal += FEE_ORBIS_PROTECT; } const feeOrbisFinal = feeOrbisLocal * tasaCambio; let impuestosSobreComision = 0; document.querySelectorAll('.tax-row').forEach(row => { const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0; if (porcentaje > 0) impuestosSobreComision += totalComisiones * (porcentaje / 100); }); const gananciaNeta = totalComisiones - impuestosSobreComision; const subTotal = baseImponibleTotal + totalImpuestos + feeOrbisFinal; const escudoOro = subTotal * 0.005; const totalFinal = subTotal + escudoOro; document.getElementById('res-neto').innerHTML = `${baseImponibleTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-imp').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-fee-fijo').innerHTML = `${feeOrbisFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-escudo').innerHTML = `${escudoOro.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-ganancia').innerHTML = `${gananciaNeta.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-total').innerHTML = `${totalFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`; }
 
-        // --- INYECCIÓN DE LÓGICA v9.3: Función de validación y registro ---
         function confirmarRegistro() {
-            // 1. Definir campos obligatorios y limpiar errores previos
-            const camposRequeridos = [
-                document.getElementById('aliado_name'),
-                document.getElementById('aliado_rif'),
-                document.getElementById('moneda_global')
-            ];
+            // 1. Validar Identidad Obligatoria
+            const camposRequeridos = [document.getElementById('aliado_name'), document.getElementById('aliado_rif'), document.getElementById('moneda_global')];
             let esValido = true;
             camposRequeridos.forEach(campo => campo.classList.remove('input-error'));
-
-            // 2. Validar Identidad Obligatoria
             for (const campo of camposRequeridos) {
                 if (!campo.value.trim()) {
-                    campo.classList.add('input-error'); // Feedback visual
+                    campo.classList.add('input-error');
                     esValido = false;
                 }
             }
-
             if (!esValido) {
                 alert("⚠️ BLOQUEO DE SEGURIDAD: El Nombre Fiscal, el RIF y la Moneda son campos obligatorios para la certificación.");
-                return; // Detiene el proceso
+                return;
             }
 
-            // 3. Validar Impuestos (lógica anterior)
+            // 2. Validar Impuestos
             const numTasas = document.querySelectorAll('.tax-row').length;
             const primeraTasa = document.querySelector('.tax-row .tax-val');
-            
             if (numTasas === 0 || (primeraTasa && (parseFloat(primeraTasa.value) || 0) === 0)) {
                 alert("🔴 VALIDACIÓN BLOQUEADA: Debe agregar y especificar el valor de al menos una tasa de impuesto para poder certificar.");
                 return; 
             }
 
-            // 4. Confirmación final (solo si todo es válido)
-            if (confirm("🏛️ ¿Confirma la sincronización de esta certificación? Los datos son correctos.")) {
+            // --- INYECCIÓN DE LÓGICA v9.4: Mensaje de Advertencia Crítica ---
+            // 3. Confirmación final con advertencia de inmutabilidad
+            if (confirm("🏛️ ¿Confirma la sincronización de esta certificación? Los datos NO podrán ser editados ni eliminados una vez registrados en ORBIS BRAIN NETWORK.")) {
                 alert("CERTIFICACIÓN SINCRONIZADA (simulación).");
                 location.reload();
             }
@@ -224,11 +206,6 @@
         // =======================================================================
         //                LÓGICA #2: DIRECTORIO MAESTRO (SIN CAMBIOS)
         // =======================================================================
-        function resetFichaDirectorio() { /* ... sin cambios ... */ }
-        function addDynamicField(containerId, type) { /* ... sin cambios ... */ }
-        function iniciarGuardadoProv() { /* ... sin cambios ... */ }
-        function ejecutarGuardadoProv(nombre, rif, pais) { /* ... sin cambios ... */ }
-        // Lógica de directorio sin cambios...
         function resetFichaDirectorio(){const c=['prov_nombre','prov_rif','prov_pais'];c.forEach(id=>{const e=document.getElementById(id);if(e){e.value='';e.classList.remove('input-error');}});document.getElementById('phone-container').innerHTML='';document.getElementById('email-container').innerHTML='';addDynamicField('phone-container','phone');addDynamicField('email-container','email');}
         function addDynamicField(c,t){const n=document.getElementById(c);const d=document.createElement('div');d.className='dynamic-row';if(t==='phone'){d.innerHTML=`<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="yes">🟢 WHATSAPP</option><option value="no" selected>📞 LLAMADA</option></select> <button class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`;}else{d.innerHTML=`<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <span></span> <button class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`;}n.appendChild(d);}
         function iniciarGuardadoProv(){const n=document.getElementById('prov_nombre');const r=document.getElementById('prov_rif');const p=document.getElementById('prov_pais');let e=false;[n,r,p].forEach(el=>{if(!el.value.trim()){el.classList.add('input-error');e=true;}else{el.classList.remove('input-error');}});if(e)return alert("⚠️ BLOQUEO: NOMBRE, RIF Y PAÍS SON INNEGOCIABLES.");if(confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro en la Red Maestra?")){ejecutarGuardadoProv(n.value,r.value,p.value);}}
