@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v10.0</title>
+    <title>ORBIS BRAIN | Master v10.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v10.0) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v10.1) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -46,7 +46,6 @@
         .btn-add:disabled { border-color: #444; color: #444; cursor: not-allowed; }
         .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 10px; text-transform: uppercase; width: 100%; margin-bottom: 15px; }
         .btn-add-small:disabled { border-color: #444; color: #444; cursor: not-allowed; }
-        
         #opModal .modal-content { width: 1350px; }
         .grid-inputs { display: grid; grid-template-columns: 1.2fr 2fr 1fr 1fr 40px; gap: 12px; margin-bottom: 12px; align-items: end; }
         .summary-box { background: #000; padding: 25px 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2); display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 20px; }
@@ -59,7 +58,6 @@
         .tax-input { -moz-appearance: textfield; }
         .pin-btn { background: none; border: none; font-size: 18px; cursor: pointer; transition: opacity 0.3s; opacity: 0.3; }
         .pin-btn.active { opacity: 1; }
-        
         #provModal .modal-content { width: 1200px; padding: 25px 60px; }
         .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
@@ -95,14 +93,43 @@
     </div>
     
     <!-- ======================================================================= -->
-    <!--          MODAL #2: DIRECTORIO MAESTRO (CON LÓGICA v10.0)                -->
+    <!--          MODAL #2: DIRECTORIO MAESTRO (CON LÓGICA v10.1)                -->
     <!-- ======================================================================= -->
     <div id="provModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div><hr class="gold-divider">
             <div class="warning-box" style="margin-top:20px;"><span style="font-size: 20px;">⚠️</span><p style="font-size: 11px; margin: 0; color: #f8d7da;"><b>POLÍTICA DE INTEGRIDAD:</b> NOMBRE, RIF Y PAÍS SON DATOS INNEGOCIABLES.</p></div>
-            <div class="form-section"><div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;"><div><label>Categoría *</label><select id="prov_cat"><option value="HOTEL">🏨 HOTEL</option><option value="AGENCIA">🏢 AGENCIA</option><option value="FREELANCER">👨‍💻 FREELANCER</option><option value="TRASLADO">🚐 TRASLADO</option></select></div><div><label>Nombre Legal *</label><input type="text" id="prov_nombre" placeholder="NOMBRE LEGAL"></div><div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="RIF / TAX ID"></div></div></div>
-            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:20px;"><div class="form-section"><label>Canales de Telefonía / WhatsApp</label><div id="phone-container"></div><button type="button" class="btn-add-small" onclick="addDynamicField('phone-container', 'phone')">+ Agregar Teléfono</button><label style="margin-top:15px;">Canales de Correo Electrónico</label><div id="email-container"></div><button type="button" class="btn-add-small" onclick="addDynamicField('email-container', 'email')">+ Agregar Correo</button></div><div class="form-section"><label>Ubicación y Operación</label><div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom:15px;"><div><label>País *</label><input type="text" id="prov_pais" placeholder="PAÍS"></div><div><label>Moneda Base *</label><select id="prov_moneda"><option value="USD ($)">USD ($)</option><option value="VES (Bs.)">VES (Bs.)</option><option value="EUR (€)">EUR (€)</option></select></div></div><div style="background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);"><p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.5;"><b>RED GLOBAL ORBIS:</b> Este proveedor será integrado a la red maestra para orquestación internacional.</p></div></div></div>
+            <div class="form-section"><div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;">
+                <div><label>Categoría *</label><select id="prov_cat">
+                    <option value="HOTEL">🏨 HOTEL</option>
+                    <option value="AGENCIA">🏢 AGENCIA</option>
+                    <option value="FREELANCER">👨‍💻 FREELANCER</option>
+                    <option value="TRASLADO">🚐 TRASLADO</option>
+                    <!-- --- INYECCIÓN DE LÓGICA v10.1: Categoría Faltante --- -->
+                    <option value="SEGURO">🛡️ SEGURO</option>
+                </select></div>
+                <div><label>Nombre Legal *</label><input type="text" id="prov_nombre" placeholder="NOMBRE LEGAL"></div>
+                <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="RIF / TAX ID"></div>
+            </div></div>
+            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:20px;">
+                <div class="form-section">
+                    <label>Canales de Telefonía / WhatsApp</label>
+                    <div id="phone-container"></div>
+                    <button type="button" class="btn-add-small" onclick="addDynamicField('phone-container', 'phone')">+ Agregar Teléfono</button>
+                    <!-- --- INYECCIÓN DE LÓGICA v10.1: Consistencia Visual --- -->
+                    <label style="margin-top:15px;">Canales de Correo Electrónico *</label>
+                    <div id="email-container"></div>
+                    <button type="button" class="btn-add-small" onclick="addDynamicField('email-container', 'email')">+ Agregar Correo</button>
+                </div>
+                <div class="form-section">
+                    <label>Ubicación y Operación</label>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom:15px;">
+                        <div><label>País *</label><input type="text" id="prov_pais" placeholder="PAÍS"></div>
+                        <div><label>Moneda Base *</label><select id="prov_moneda"><option value="USD ($)">USD ($)</option><option value="VES (Bs.)">VES (Bs.)</option><option value="EUR (€)">EUR (€)</option></select></div>
+                    </div>
+                    <div style="background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);"><p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.5;"><b>RED GLOBAL ORBIS:</b> Este proveedor será integrado a la red maestra para orquestación internacional.</p></div>
+                </div>
+            </div>
             <button id="btn-sync-prov" class="btn-gold" style="padding: 22px; width:100%;" onclick="iniciarGuardadoProv()">REGISTRAR EN RED MAESTRA</button>
             <button id="btn-cancel-prov" class="btn-cancel-elite" onclick="closeModal('provModal')">Cancelar y Salir</button>
         </div>
@@ -110,7 +137,7 @@
 
 
     <!-- ======================================================================= -->
-    <!--                         JAVASCRIPT UNIFICADO (v10.0)                    -->
+    <!--                         JAVASCRIPT UNIFICADO (v10.1)                    -->
     <!-- ======================================================================= -->
     <script>
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxF-mbAYdkaxaEvwO_tEH1KjaChodlf-kAdstdqRkZb80yMGRgF7X7MZTgn6yVqJCK9iw/exec"; 
@@ -119,17 +146,15 @@
         const FEE_ORBIS_BASE = 5.00; 
         const FEE_ORBIS_PROTECT = 1.00;
 
-        // --- FUNCIONES GLOBALES Y DE NAVEGACIÓN (v10.0) ---
-        function closeModal(id) { if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán todos los datos actuales.")) { document.getElementById(id).style.display = 'none'; } }
+        // --- FUNCIONES GLOBALES Y DE NAVEGACIÓN (SIN CAMBIOS) ---
+        function closeModal(id) { if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos actuales.")) { document.getElementById(id).style.display = 'none'; } }
         function cerrarModalDirecto(id) { document.getElementById(id).style.display = 'none'; }
-        document.addEventListener('input', function(e) { if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'text') { e.target.value = e.target.value.toUpperCase(); } });
+        document.addEventListener('input', function(e) { if (e.target.tagName.toLowerCase() === 'input' && (e.target.type === 'text' || e.target.type === 'email')) { e.target.value = e.target.value.toUpperCase(); } });
         document.addEventListener('DOMContentLoaded', (event) => { document.getElementById('tipo_cobertura_sel').addEventListener('change', function() { gestionarEstadoCobertura(this.value === 'interno'); }); });
         function showView(viewId, btn) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('view-' + viewId).classList.add('active'); if (btn) btn.classList.add('active'); }
         function openModal(id) { const modal = document.getElementById(id); modal.style.display = 'flex'; if (id === 'opModal') { document.getElementById('registroForm').reset(); document.querySelectorAll('#opModal .input-error').forEach(el => el.classList.remove('input-error')); document.getElementById('filas-dinamicas').innerHTML = ''; document.getElementById('contenedor-taxes').innerHTML = ''; cambiarMoneda(); gestionarEstadoCobertura(true); agregarFila(); cargarImpuestosPredeterminados(); if (document.getElementById('contenedor-taxes').children.length === 0) { agregarTax(); } } else if (id === 'provModal') { resetFichaDirectorio(); } }
         
-        // =======================================================================
-        //              LÓGICA #1: CERTIFICACIÓN GLOBAL (SIN CAMBIOS)
-        // =======================================================================
+        // --- LÓGICA #1: CERTIFICACIÓN GLOBAL (SIN CAMBIOS) ---
         function gestionarEstadoCobertura(esInterno) { const proveedor = document.getElementById('cobertura_proveedor'); const base = document.getElementById('cobertura_base'); const comision = document.getElementById('cobertura_comision'); const icon = document.getElementById('cobertura_icon'); if (esInterno) { proveedor.value = 'ORBIS BRAIN NETWORK'; base.value = '2.00'; comision.value = '0.00'; icon.innerHTML = '🔒'; [proveedor, base, comision].forEach(el => el.setAttribute('readonly', true)); } else { proveedor.value = ''; base.value = '0.00'; comision.value = '0.00'; icon.innerHTML = '✍️'; proveedor.placeholder = 'NOMBRE PROVEEDOR *'; [proveedor, base, comision].forEach(el => el.removeAttribute('readonly')); } calcularTodo(); }
         function agregarFila() { const div = document.createElement('div'); div.className = 'grid-inputs servicio-row'; div.innerHTML = `<div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Otro">➕ Otro</option></select></div><div><input type="text" class="prov-name" placeholder="NOMBRE PROVEEDOR *"></div><div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div><div><input type="number" class="comision-ind" oninput="calcularTodo()" placeholder="0.00"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`; document.getElementById('filas-dinamicas').appendChild(div); }
         function confirmarRegistro() { let esValido = true; document.querySelectorAll('#opModal .input-error').forEach(el => el.classList.remove('input-error')); const camposRequeridos = [ document.getElementById('aliado_name'), document.getElementById('aliado_rif'), document.getElementById('moneda_global'), ...document.querySelectorAll('#opModal .prov-name') ]; for (const campo of camposRequeridos) { if (!campo.value.trim()) { campo.classList.add('input-error'); esValido = false; } } if (!esValido) { alert("⚠️ BLOQUEO DE SEGURIDAD: Los campos marcados en rojo son obligatorios (Nombre Fiscal, RIF, Moneda y todos los Proveedores)."); return; } const numTasas = document.querySelectorAll('.tax-row').length; const primeraTasa = document.querySelector('.tax-row .tax-val'); if (numTasas === 0 || (primeraTasa && (parseFloat(primeraTasa.value) || 0) === 0)) { alert("🔴 VALIDACIÓN BLOQUEADA: Debe agregar y especificar el valor de al menos una tasa de impuesto para poder certificar."); return; } if (confirm("🏛️ ¿Confirma la sincronización de esta certificación? Los datos NO podrán ser editados ni eliminados una vez registrados en ORBIS BRAIN NETWORK.")) { enviarCertificacion(); } }
@@ -144,7 +169,7 @@
         function calcularTodo() { const sym = document.getElementById('moneda_global').value; const tasaCambio = TASAS[sym] || 1.00; const esSeguroInterno = document.getElementById('tipo_cobertura_sel').value === 'interno'; let totalBaseServicios = 0; let totalComisiones = 0; totalBaseServicios += parseFloat(document.getElementById('cobertura_base').value) || 0; totalComisiones += parseFloat(document.getElementById('cobertura_comision').value) || 0; document.querySelectorAll('.servicio-row').forEach(row => { totalBaseServicios += parseFloat(row.querySelector('.monto-srv').value) || 0; totalComisiones += parseFloat(row.querySelector('.comision-ind').value) || 0; }); document.getElementById('comision_aliado').value = totalComisiones.toFixed(2); const baseImponibleTotal = totalBaseServicios + totalComisiones; let totalImpuestos = 0; document.querySelectorAll('.tax-row').forEach(row => { const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0; if (porcentaje > 0) totalImpuestos += baseImponibleTotal * (porcentaje / 100); }); let feeOrbisLocal = FEE_ORBIS_BASE; if (esSeguroInterno) { feeOrbisLocal += FEE_ORBIS_PROTECT; } const feeOrbisFinal = feeOrbisLocal * tasaCambio; let impuestosSobreComision = 0; document.querySelectorAll('.tax-row').forEach(row => { const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0; if (porcentaje > 0) impuestosSobreComision += totalComisiones * (porcentaje / 100); }); const gananciaNeta = totalComisiones - impuestosSobreComision; const subTotal = baseImponibleTotal + totalImpuestos + feeOrbisFinal; const escudoOro = subTotal * 0.005; const totalFinal = subTotal + escudoOro; document.getElementById('res-neto').innerHTML = `${baseImponibleTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-imp').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-fee-fijo').innerHTML = `${feeOrbisFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-escudo').innerHTML = `${escudoOro.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-ganancia').innerHTML = `${gananciaNeta.toFixed(2)} <span class="curr-sym">${sym}</span>`; document.getElementById('res-total').innerHTML = `${totalFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`; }
         
         // =======================================================================
-        //                LÓGICA #2: DIRECTORIO MAESTRO (CON LÓGICA v10.0)
+        //                LÓGICA #2: DIRECTORIO MAESTRO (CON LÓGICA v10.1)
         // =======================================================================
 
         function resetFichaDirectorio() {
@@ -164,9 +189,9 @@
             const div = document.createElement('div');
             div.className = 'dynamic-row';
             if (type === 'phone') {
-                div.innerHTML = `<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="SI">🟢 WHATSAPP</option><option value="NO" selected>📞 LLAMADA</option></select> <button class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`;
+                div.innerHTML = `<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="SI">🟢 WHATSAPP</option><option value="NO" selected>📞 LLAMADA</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`;
             } else { // email
-                div.innerHTML = `<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <select class="is-validated" style="visibility:hidden;"><option value="SI">VERIFICADO</option></select> <button class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`;
+                div.innerHTML = `<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <select class="is-validated" style="visibility:hidden;"><option value="SI">VERIFICADO</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`;
             }
             container.appendChild(div);
         }
@@ -174,9 +199,10 @@
         function iniciarGuardadoProv() {
             let esValido = true;
             document.querySelectorAll('#provModal .input-error').forEach(el => el.classList.remove('input-error'));
-            const camposRequeridos = [document.getElementById('prov_nombre'), document.getElementById('prov_rif'), document.getElementById('prov_pais')];
             
-            for (const campo of camposRequeridos) {
+            // 1. Validar campos de texto principales
+            const camposTextoRequeridos = [document.getElementById('prov_nombre'), document.getElementById('prov_rif'), document.getElementById('prov_pais')];
+            for (const campo of camposTextoRequeridos) {
                 if (!campo.value.trim()) {
                     campo.classList.add('input-error');
                     esValido = false;
@@ -184,71 +210,43 @@
             }
             if (!esValido) { return alert("⚠️ BLOQUEO: NOMBRE, RIF Y PAÍS SON INNEGOCIABLES."); }
 
+            // --- INYECCIÓN DE LÓGICA v10.1: Validación de Contacto Obligatoria ---
+            // 2. Validar que exista al menos un correo y no esté vacío
+            const primerCorreoInput = document.querySelector('#email-container .prov-email');
+            if (!primerCorreoInput || !primerCorreoInput.value.trim()) {
+                if(primerCorreoInput) primerCorreoInput.classList.add('input-error');
+                esValido = false;
+            }
+            if (!esValido) { return alert("⚠️ BLOQUEO: Para integrar un aliado a la Red Maestra es obligatorio registrar al menos un Canal de Correo Electrónico."); }
+
+            // Si todas las validaciones pasan, proceder a confirmar y guardar
             if (confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro del nuevo aliado en la Red Maestra?")) {
                 ejecutarGuardadoProv();
             }
         }
 
         async function ejecutarGuardadoProv() {
-            // 1. Feedback de Red y Bloqueo Anti-Duplicados
             const modalButtons = document.querySelectorAll('#provModal button');
             const btnSync = document.getElementById('btn-sync-prov');
             modalButtons.forEach(btn => btn.disabled = true);
             btnSync.textContent = '🚀 REGISTRANDO EN ORBIS BRAIN NETWORK...';
             alert("🏛️ ORBIS BRAIN NETWORK está procesando el registro del nuevo aliado. Por favor, espere un momento...");
 
-            // 2. Recolección de Datos
-            const telefonos = Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => {
-                const esWhatsapp = document.querySelectorAll('.is-whatsapp')[i].value;
-                return `${input.value} (WHATSAPP: ${esWhatsapp})`;
-            }).join('; ');
-            
+            const telefonos = Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => { const esWhatsapp = document.querySelectorAll('.is-whatsapp')[i].value; return `${input.value} (WHATSAPP: ${esWhatsapp})`; }).join('; ');
             const correos = Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; ');
-
-            const datos = {
-                ID_ALIADO: `ORB-${String(document.getElementById('cuerpo-tabla-prov').rows.length + 1).padStart(3, '0')}`,
-                CATEGORIA: document.getElementById('prov_cat').value,
-                NOMBRE_LEGAL: document.getElementById('prov_nombre').value,
-                RIF_TAX_ID: document.getElementById('prov_rif').value,
-                PAIS: document.getElementById('prov_pais').value,
-                MONEDA_BASE: document.getElementById('prov_moneda').value,
-                TELEFONOS: telefonos,
-                CORREOS: correos,
-                FECHA_REGISTRO: new Date().toISOString()
-            };
+            const datos = { ID_ALIADO: `ORB-${String(document.getElementById('cuerpo-tabla-prov').rows.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: telefonos, CORREOS: correos, FECHA_REGISTRO: new Date().toISOString() };
 
             try {
-                // 3. Sincronización Real
-                const response = await fetch(URL_SCRIPT_CERT, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    cache: 'no-cache',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ action: 'registrarProveedor', data: datos })
-                });
-
-                // 4. Cierre y Actualización en Éxito
+                const response = await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', cache: 'no-cache', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'registrarProveedor', data: datos }) });
                 alert("✅ REGISTRO EN RED MAESTRA EXITOSO.");
-                
                 const tbody = document.getElementById('cuerpo-tabla-prov');
                 const newRow = tbody.insertRow(0);
-                newRow.innerHTML = `
-                    <td>${datos.ID_ALIADO}</td>
-                    <td>${datos.CATEGORIA}</td>
-                    <td style="font-weight:bold; letter-spacing:1px;">${datos.NOMBRE_LEGAL}</td>
-                    <td>${datos.RIF_TAX_ID}</td>
-                    <td>${datos.PAIS}</td>
-                    <td><button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td>
-                `;
-                
+                newRow.innerHTML = `<td>${datos.ID_ALIADO}</td><td>${datos.CATEGORIA}</td><td style="font-weight:bold; letter-spacing:1px;">${datos.NOMBRE_LEGAL}</td><td>${datos.RIF_TAX_ID}</td><td>${datos.PAIS}</td><td><button onclick="this.parentElement.parentElement.remove()" style="background:none; border:none; color:#d9534f; cursor:pointer; font-size:10px;">ELIMINAR</button></td>`;
                 cerrarModalDirecto('provModal');
-
             } catch (error) {
                 console.error('Error de sincronización de proveedor:', error);
                 alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado en la Red Maestra. Verifique la conexión y la URL del script.");
-            
             } finally {
-                // 5. Reactivación de botones
                 modalButtons.forEach(btn => btn.disabled = false);
                 btnSync.textContent = 'REGISTRAR EN RED MAESTRA';
             }
