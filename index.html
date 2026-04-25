@@ -349,7 +349,7 @@
         async function ejecutarGuardadoProv() { const modalButtons = document.querySelectorAll('#provModal button'); const btnSync = document.getElementById('btn-sync-prov'); modalButtons.forEach(btn => btn.disabled = true); btnSync.textContent = '🚀 REGISTRANDO EN ORBIS BRAIN NETWORK...'; alert("🏛️ ORBIS BRAIN NETWORK está procesando el registro del nuevo aliado. Por favor, espere un momento..."); const telefonos = Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => { const esWhatsapp = document.querySelectorAll('.is-whatsapp')[i].value; return `${input.value} (WHATSAPP: ${esWhatsapp})`; }).join('; '); const correos = Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; '); const datos = { ID_ALIADO: `ORB-${String(document.getElementById('cuerpo-tabla-prov').rows.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: telefonos, CORREOS: correos }; try { const response = await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', cache: 'no-cache', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'registrarProveedor', data: datos }) }); alert("✅ REGISTRO EN RED MAESTRA EXITOSO."); const tbody = document.getElementById('cuerpo-tabla-prov'); const newRow = tbody.insertRow(0); newRow.innerHTML = `<td>${datos.ID_ALIADO}</td><td>${datos.CATEGORIA}</td><td style="font-weight:bold; letter-spacing:1px;">${datos.NOMBRE_LEGAL}</td><td>${datos.RIF_TAX_ID}</td><td>${datos.PAIS}</td><td><button onclick="alert('⚠️ ACCESO DENEGADO: Solo el Administrador de la Red Maestra o el autor original pueden dar de baja a un aliado.')" style="background:none; border:none; color:#666; cursor:not-allowed; font-size:10px; opacity: 0.5;">ELIMINAR</button></td>`; cerrarModalDirecto('provModal'); } catch (error) { console.error('Error de sincronización de proveedor:', error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado en la Red Maestra."); } finally { modalButtons.forEach(btn => btn.disabled = false); btnSync.textContent = 'REGISTRAR EN RED MAESTRA'; } }
         
         // --- LÓGICA #3: PRE-FACTURACIÓN (ACTUALIZADO v12.4) ---
-        let isSyncing = false; // Flag para evitar bucles infinitos
+        let isSyncing = false;
 
         function handlePaxRemoval(button) {
             button.closest('.pax-grid').remove();
@@ -370,6 +370,7 @@
                 <button type="button" class="btn-remove" onclick="handlePaxRemoval(this)">X</button>`;
             container.appendChild(div);
             sincronizarDeArribaHaciaAbajo();
+            return div;
         }
         
         function handlePkgRemoval(button) {
@@ -419,7 +420,6 @@
                     nuevaFila.querySelector('.pax-servicio').value = paquete.tipo;
                     nuevaFila.querySelector('.pax-costo').value = (paquete.costo / numPax).toFixed(2);
                     nuevaFila.querySelector('.pax-comision').value = (paquete.comision / numPax).toFixed(2);
-                    calcularTotalPax(nuevaFila);
                 });
             });
 
@@ -435,13 +435,19 @@
             calcularTotalPax(filaPax);
 
             const paquetesAgrupados = new Map();
-            document.querySelectorAll('#pax-container .pax-grid').forEach(fila => {
-                const tipo = fila.querySelector('.pax-servicio').value;
+            document.querySelectorAll('#paquetes-container .pkg-grid').forEach(filaPkg => {
+                const tipo = filaPkg.querySelector('.pkg-tipo').value;
                 if (!paquetesAgrupados.has(tipo)) {
                     paquetesAgrupados.set(tipo, { costo: 0, comision: 0 });
                 }
-                paquetesAgrupados.get(tipo).costo += parseFloat(fila.querySelector('.pax-costo').value) || 0;
-                paquetesAgrupados.get(tipo).comision += parseFloat(fila.querySelector('.pax-comision').value) || 0;
+            });
+
+            document.querySelectorAll('#pax-container .pax-grid').forEach(fila => {
+                const tipo = fila.querySelector('.pax-servicio').value;
+                if (paquetesAgrupados.has(tipo)) {
+                    paquetesAgrupados.get(tipo).costo += parseFloat(fila.querySelector('.pax-costo').value) || 0;
+                    paquetesAgrupados.get(tipo).comision += parseFloat(fila.querySelector('.pax-comision').value) || 0;
+                }
             });
             
             document.querySelectorAll('#paquetes-container .pkg-grid').forEach(filaPkg => {
@@ -466,6 +472,7 @@
                 sumaCostosActual += parseFloat(fila.querySelector('.pax-costo').value);
                 sumaComisionesActual += parseFloat(fila.querySelector('.pax-comision').value);
             });
+
             const diffCosto = totalCostoOrquestado - sumaCostosActual;
             const diffComision = totalComisionOrquestada - sumaComisionesActual;
 
@@ -475,8 +482,8 @@
                 const ultimaComisionInput = ultimaFila.querySelector('.pax-comision');
                 ultimoCostoInput.value = (parseFloat(ultimoCostoInput.value) + diffCosto).toFixed(2);
                 ultimaComisionInput.value = (parseFloat(ultimaComisionInput.value) + diffComision).toFixed(2);
-                calcularTotalPax(ultimaFila);
             }
+            filasPax.forEach(fila => calcularTotalPax(fila));
             actualizarTotalOrquestado();
             actualizarResumenPrefactura();
         }
