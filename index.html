@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v12.0</title>
+    <title>ORBIS BRAIN | Master v12.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v12.0) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v12.1) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -61,9 +61,7 @@
         .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS ADICIONALES v12.0 --- */
-        .dist-link { color: var(--gold-metalic); text-decoration: none; font-weight: bold; cursor: pointer; font-size: 13px; margin-top: 10px; display: inline-block; }
-        .dist-link:hover { text-decoration: underline; }
+        /* --- ESTILOS ADICIONALES v12.1 --- */
         .pax-grid { display: grid; grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr 1fr 40px; gap: 10px; align-items: center; margin-bottom: 10px;}
         .pax-grid > div { position: relative; }
         .pax-grid label { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; margin-bottom: 4px; }
@@ -101,7 +99,7 @@
         <div class="table-container"><table><thead><tr><th>ID Aliado</th><th>Categoría</th><th>Nombre Legal</th><th>RIF / Tax ID</th><th>País</th><th>Acción</th></tr></thead><tbody id="cuerpo-tabla-prov"></tbody></table></div>
     </div>
 
-    <!-- VISTA #3: PRE-FACTURACIÓN (EVOLUCIÓN v12.0) -->
+    <!-- VISTA #3: PRE-FACTURACIÓN (EVOLUCIÓN v12.1) -->
     <div id="view-facturacion" class="view-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;"><h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">ORQUESTACIÓN DE <span style="color:var(--gold-metalic)">PRE-FACTURACIÓN</span></h1><button class="btn-gold" onclick="openModal('prefacturaModal')">Nueva Cotización +</button></div>
         <div class="table-container"><table><thead><tr><th>ID Pre-Factura</th><th>Cliente / Pagador</th><th>Fecha Emisión</th><th>Monto Total</th><th>Estatus</th></tr></thead><tbody id="cuerpo-tabla-factura"></tbody></table></div>
@@ -132,7 +130,7 @@
         </div>
     </div>
 
-    <!-- MODAL #3: PRE-FACTURACIÓN (NUEVO v12.0) -->
+    <!-- MODAL #3: PRE-FACTURACIÓN (NUEVO v12.1) -->
     <div id="prefacturaModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">COTIZADOR ESTRATÉGICO / PRE-FACTURA</div><hr class="gold-divider">
@@ -151,14 +149,13 @@
                     <div id="total-orquestado-container">
                         TOTAL ORQUESTADO: <span id="total-orquestado-val">0.00 $</span>
                     </div>
-                    <a onclick="aplicarDistribucionPaquetes()" class="dist-link">Aplicar Distribución ⚖️</a>
                 </div>
                 <div class="form-section">
                     <h3 style="font-family:'Cinzel'; color:var(--gold-soft); margin-top:0; letter-spacing: 1.5px; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px;">DESGLOSE DETALLADO POR PASAJERO (PAX)</h3>
                     <div id="pax-container-header" class="pax-grid" style="padding: 0 10px; margin-bottom: 10px;">
                         <label>Nombre del PAX</label><label>ID / DNI</label><label>Tipo de Servicio</label><label>Costo Proveedor</label><label>Comisión Aliado</label><label>Total</label><span></span>
                     </div>
-                    <div id="pax-container" oninput="handlePaxInput(event)"></div>
+                    <div id="pax-container"></div>
                     <button type="button" class="btn-add" onclick="agregarPax()">+ Agregar Pasajero</button>
                 </div>
                 <div class="prefactura-summary">
@@ -177,7 +174,7 @@
 
 
     <!-- ======================================================================= -->
-    <!--                         JAVASCRIPT UNIFICADO (v12.0)                    -->
+    <!--                         JAVASCRIPT UNIFICADO (v12.1)                    -->
     <!-- ======================================================================= -->
     <script>
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
@@ -353,10 +350,10 @@
         function iniciarGuardadoProv() { let esValido = true; document.querySelectorAll('#provModal .input-error').forEach(el => el.classList.remove('input-error')); const camposTextoRequeridos = [document.getElementById('prov_nombre'), document.getElementById('prov_rif'), document.getElementById('prov_pais')]; for (const campo of camposTextoRequeridos) { if (!campo.value.trim()) { campo.classList.add('input-error'); esValido = false; } } if (!esValido) { return alert("⚠️ BLOQUEO: NOMBRE, RIF Y PAÍS SON OBLIGATORIOS."); } const primerCorreoInput = document.querySelector('#email-container .prov-email'); if (!primerCorreoInput || !primerCorreoInput.value.trim()) { if(primerCorreoInput) primerCorreoInput.classList.add('input-error'); esValido = false; } if (!esValido) { return alert("⚠️ BLOQUEO: Para integrar un aliado a la Red Maestra es obligatorio registrar al menos un Canal de Correo Electrónico."); } if (confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro del nuevo aliado en la Red Maestra?")) { ejecutarGuardadoProv(); } }
         async function ejecutarGuardadoProv() { const modalButtons = document.querySelectorAll('#provModal button'); const btnSync = document.getElementById('btn-sync-prov'); modalButtons.forEach(btn => btn.disabled = true); btnSync.textContent = '🚀 REGISTRANDO EN ORBIS BRAIN NETWORK...'; alert("🏛️ ORBIS BRAIN NETWORK está procesando el registro del nuevo aliado. Por favor, espere un momento..."); const telefonos = Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => { const esWhatsapp = document.querySelectorAll('.is-whatsapp')[i].value; return `${input.value} (WHATSAPP: ${esWhatsapp})`; }).join('; '); const correos = Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; '); const datos = { ID_ALIADO: `ORB-${String(document.getElementById('cuerpo-tabla-prov').rows.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: telefonos, CORREOS: correos }; try { const response = await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', cache: 'no-cache', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'registrarProveedor', data: datos }) }); alert("✅ REGISTRO EN RED MAESTRA EXITOSO."); const tbody = document.getElementById('cuerpo-tabla-prov'); const newRow = tbody.insertRow(0); newRow.innerHTML = `<td>${datos.ID_ALIADO}</td><td>${datos.CATEGORIA}</td><td style="font-weight:bold; letter-spacing:1px;">${datos.NOMBRE_LEGAL}</td><td>${datos.RIF_TAX_ID}</td><td>${datos.PAIS}</td><td><button onclick="alert('⚠️ ACCESO DENEGADO: Solo el Administrador de la Red Maestra o el autor original pueden dar de baja a un aliado.')" style="background:none; border:none; color:#666; cursor:not-allowed; font-size:10px; opacity: 0.5;">ELIMINAR</button></td>`; cerrarModalDirecto('provModal'); } catch (error) { console.error('Error de sincronización de proveedor:', error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado en la Red Maestra."); } finally { modalButtons.forEach(btn => btn.disabled = false); btnSync.textContent = 'REGISTRAR EN RED MAESTRA'; } }
         
-        // --- LÓGICA #3: PRE-FACTURACIÓN (ACTUALIZADO v12.0) ---
+        // --- LÓGICA #3: PRE-FACTURACIÓN (ACTUALIZADO v12.1) ---
         function handlePaxRemoval(button) {
             button.closest('.pax-grid').remove();
-            actualizarResumenPrefactura();
+            sincronizarDeArribaHaciaAbajo(false);
         }
 
         function agregarPax() {
@@ -365,33 +362,20 @@
             div.className = 'pax-grid';
             div.innerHTML = `
                 <div><input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"></div>
-                <div><input type="text" class="pax-id" placeholder="ID / DNI"></div>
-                <div><select class="pax-servicio">
-                    <option value="Seguro">🛡️ Seguro</option><option value="Hotel">🏨 Hotel</option>
-                    <option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option>
-                    <option value="Otros" selected>➕ Otros</option>
-                </select></div>
-                <div><input type="number" class="pax-costo" placeholder="0.00"></div>
-                <div><input type="number" class="pax-comision" placeholder="0.00"></div>
+                <div><input type="text" class="pax-id" placeholder="ID / DNI" oninput="sincronizarDeArribaHaciaAbajo(false)"></div>
+                <div><select class="pax-servicio"><option value="Seguro">🛡️ Seguro</option><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Otros" selected>➕ Otros</option></select></div>
+                <div><input type="number" class="pax-costo" placeholder="0.00"></div><div><input type="number" class="pax-comision" placeholder="0.00"></div>
                 <div><input type="number" class="pax-total" placeholder="0.00" readonly></div>
                 <button type="button" class="btn-remove" onclick="handlePaxRemoval(this)">X</button>
             `;
             container.appendChild(div);
+            sincronizarDeArribaHaciaAbajo(false);
             return div;
         }
         
-        function handlePaxInput(event) {
-            const target = event.target;
-            if (target.classList.contains('pax-costo') || target.classList.contains('pax-comision')) {
-                const fila = target.closest('.pax-grid');
-                calcularTotalPax(fila);
-                actualizarResumenPrefactura();
-            }
-        }
-
         function handlePkgRemoval(button) {
             button.closest('.pkg-grid').remove();
-            actualizarTotalOrquestado();
+            sincronizarDeArribaHaciaAbajo(false);
         }
 
         function agregarPaquete() {
@@ -399,34 +383,104 @@
             const div = document.createElement('div');
             div.className = 'pkg-grid';
             div.innerHTML = `
-                <select class="pkg-tipo">
-                    <option value="Seguro">🛡️ Seguro</option><option value="Hotel">🏨 Hotel</option>
-                    <option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option>
-                    <option value="Otros" selected>➕ Otros</option>
-                </select>
-                <input type="number" class="pkg-costo" placeholder="COSTO TOTAL" oninput="calcularTotalPaquete(this)">
-                <input type="number" class="pkg-comision" placeholder="COMISIÓN TOTAL" oninput="calcularTotalPaquete(this)">
-                <input type="number" class="pkg-total" placeholder="0.00" readonly>
-                <button type="button" class="btn-remove" onclick="handlePkgRemoval(this)">X</button>
+                <select class="pkg-tipo" oninput="sincronizarDeArribaHaciaAbajo(false)"><option value="Seguro">🛡️ Seguro</option><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Otros" selected>➕ Otros</option></select>
+                <input type="number" class="pkg-costo" placeholder="COSTO TOTAL" oninput="sincronizarDeArribaHaciaAbajo(false)">
+                <input type="number" class="pkg-comision" placeholder="COMISIÓN TOTAL" oninput="sincronizarDeArribaHaciaAbajo(false)">
+                <input type="number" class="pkg-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="handlePkgRemoval(this)">X</button>
             `;
             container.appendChild(div);
         }
-        
-        function actualizarTotalOrquestado() {
-            let total = 0;
-            document.querySelectorAll('#paquetes-container .pkg-grid').forEach(fila => {
-                total += parseFloat(fila.querySelector('.pkg-total').value) || 0;
+
+        function sincronizarDeArribaHaciaAbajo() {
+            const paquetes = Array.from(document.querySelectorAll('#paquetes-container .pkg-grid')).map(fila => ({
+                tipo: fila.querySelector('.pkg-tipo').value,
+                costo: parseFloat(fila.querySelector('.pkg-costo').value) || 0,
+                comision: parseFloat(fila.querySelector('.pkg-comision').value) || 0
+            }));
+            const totalCostoOrquestado = paquetes.reduce((sum, p) => sum + p.costo, 0);
+            const totalComisionOrquestada = paquetes.reduce((sum, p) => sum + p.comision, 0);
+            document.getElementById('total-orquestado-val').textContent = `${(totalCostoOrquestado + totalComisionOrquestada).toFixed(2)} ${document.getElementById('fact_moneda').value || '$'}`;
+
+            const paxUnicos = new Map();
+            document.querySelectorAll('#pax-container .pax-grid').forEach(fila => {
+                const id = fila.querySelector('.pax-id').value.trim();
+                const nombre = fila.querySelector('.pax-nombre').value.trim();
+                const key = id || nombre;
+                if (key && !paxUnicos.has(key)) paxUnicos.set(key, { nombre, id });
             });
-            const moneda = document.getElementById('fact_moneda').value || '$';
-            document.getElementById('total-orquestado-val').textContent = `${total.toFixed(2)} ${moneda}`;
+            const numPax = paxUnicos.size > 0 ? paxUnicos.size : 1;
+
+            const paxFilas = document.querySelectorAll('#pax-container .pax-grid');
+            paxFilas.forEach(fila => {
+                const tipoServicio = paquetes.length > 0 ? paquetes[0].tipo : 'Otros';
+                fila.querySelector('.pax-servicio').value = tipoServicio;
+                const costoProrrateado = totalCostoOrquestado / numPax;
+                const comisionProrrateada = totalComisionOrquestada / numPax;
+                fila.querySelector('.pax-costo').value = costoProrrateado.toFixed(2);
+                fila.querySelector('.pax-comision').value = comisionProrrateada.toFixed(2);
+                calcularTotalPax(fila);
+            });
+            
+            ajustarCentimosYTotal();
+        }
+
+        function sincronizarDeAbajoHaciaArriba() {
+            let totalCostos = 0;
+            let totalComisiones = 0;
+            document.querySelectorAll('#pax-container .pax-grid').forEach(fila => {
+                totalCostos += parseFloat(fila.querySelector('.pax-costo').value) || 0;
+                totalComisiones += parseFloat(fila.querySelector('.pax-comision').value) || 0;
+            });
+
+            const pkgCostoInput = document.querySelector('#paquetes-container .pkg-costo');
+            const pkgComisionInput = document.querySelector('#paquetes-container .pkg-comision');
+            if (pkgCostoInput) pkgCostoInput.value = totalCostos.toFixed(2);
+            if (pkgComisionInput) pkgComisionInput.value = totalComisiones.toFixed(2);
+
+            document.querySelectorAll('#paquetes-container .pkg-grid').forEach(fila => calcularTotalPaquete(fila));
+            actualizarTotalOrquestado();
+            actualizarResumenPrefactura();
+        }
+
+        function ajustarCentimosYTotal() {
+             const paquetes = Array.from(document.querySelectorAll('#paquetes-container .pkg-grid')).map(fila => ({ costo: parseFloat(fila.querySelector('.pkg-costo').value) || 0, comision: parseFloat(fila.querySelector('.pkg-comision').value) || 0 }));
+             const totalCostoOrquestado = paquetes.reduce((sum, p) => sum + p.costo, 0);
+             const totalComisionOrquestada = paquetes.reduce((sum, p) => sum + p.comision, 0);
+
+            let sumaCostosActual = 0;
+            let sumaComisionesActual = 0;
+            const filasPax = document.querySelectorAll('#pax-container .pax-grid');
+            filasPax.forEach(fila => {
+                sumaCostosActual += parseFloat(fila.querySelector('.pax-costo').value);
+                sumaComisionesActual += parseFloat(fila.querySelector('.pax-comision').value);
+            });
+            const diffCosto = totalCostoOrquestado - sumaCostosActual;
+            const diffComision = totalComisionOrquestada - sumaComisionesActual;
+
+            if (filasPax.length > 0) {
+                const ultimaFila = filasPax[filasPax.length - 1];
+                const ultimoCostoInput = ultimaFila.querySelector('.pax-costo');
+                const ultimaComisionInput = ultimaFila.querySelector('.pax-comision');
+                ultimoCostoInput.value = (parseFloat(ultimoCostoInput.value) + diffCosto).toFixed(2);
+                ultimaComisionInput.value = (parseFloat(ultimaComisionInput.value) + diffComision).toFixed(2);
+                calcularTotalPax(ultimaFila);
+            }
+            actualizarResumenPrefactura();
+        }
+
+        function handlePaxInput(event) {
+            const target = event.target;
+            const fila = target.closest('.pax-grid');
+            if (target.classList.contains('pax-costo') || target.classList.contains('pax-comision')) {
+                calcularTotalPax(fila);
+                sincronizarDeAbajoHaciaArriba();
+            }
         }
         
-        function calcularTotalPaquete(element) {
-            const fila = element.closest('.pkg-grid');
+        function calcularTotalPaquete(fila) {
             const costo = parseFloat(fila.querySelector('.pkg-costo').value) || 0;
             const comision = parseFloat(fila.querySelector('.pkg-comision').value) || 0;
             fila.querySelector('.pkg-total').value = (costo + comision).toFixed(2);
-            actualizarTotalOrquestado();
         }
 
         function calcularTotalPax(fila) {
@@ -434,7 +488,7 @@
             const comision = parseFloat(fila.querySelector('.pax-comision').value) || 0;
             fila.querySelector('.pax-total').value = (costo + comision).toFixed(2);
         }
-        
+
         function actualizarResumenPrefactura() {
             let totalCostos = 0;
             let totalComisiones = 0;
@@ -444,168 +498,52 @@
             });
             const granTotal = totalCostos + totalComisiones;
             const moneda = document.getElementById('fact_moneda').value || '$';
-
             document.getElementById('prefactura-total-costos').textContent = `${totalCostos.toFixed(2)} ${moneda}`;
             document.getElementById('prefactura-total-comisiones').textContent = `${totalComisiones.toFixed(2)} ${moneda}`;
             document.getElementById('prefactura-gran-total').textContent = `${granTotal.toFixed(2)} ${moneda}`;
         }
-
-        function aplicarDistribucionPaquetes() {
-            const paxUnicos = new Map();
-            document.querySelectorAll('#pax-container .pax-grid').forEach(fila => {
-                const nombre = fila.querySelector('.pax-nombre').value.trim();
-                const id = fila.querySelector('.pax-id').value.trim();
-                const key = id || nombre;
-                if (key && !paxUnicos.has(key)) {
-                    paxUnicos.set(key, { nombre, id });
-                }
-            });
-
-            const listaPaxUnicos = Array.from(paxUnicos.values());
-            const numPax = listaPaxUnicos.length;
-
-            if (numPax === 0) {
-                alert("⚖️ DISTRIBUCIÓN BLOQUEADA: No hay pasajeros con ID o Nombre para distribuir.");
-                return;
-            }
-
-            const paquetes = Array.from(document.querySelectorAll('#paquetes-container .pkg-grid')).map(fila => ({
-                tipo: fila.querySelector('.pkg-tipo').value,
-                costo: parseFloat(fila.querySelector('.pkg-costo').value) || 0,
-                comision: parseFloat(fila.querySelector('.pkg-comision').value) || 0
-            }));
-            
-            const totalCostoOrquestado = paquetes.reduce((sum, p) => sum + p.costo, 0);
-            const totalComisionOrquestada = paquetes.reduce((sum, p) => sum + p.comision, 0);
-
-            if (totalCostoOrquestado === 0 && totalComisionOrquestada === 0) {
-                 alert("⚖️ No hay montos en los paquetes para distribuir.");
-                 return;
-            }
-
-            const paxContainer = document.getElementById('pax-container');
-            paxContainer.innerHTML = '';
-            
-            const filasGeneradas = [];
-
-            listaPaxUnicos.forEach(pax => {
-                paquetes.forEach(paquete => {
-                    const nuevaFila = agregarPax(pax.nombre, pax.id);
-                    filasGeneradas.push(nuevaFila);
-                    
-                    const costoProrrateado = paquete.costo / numPax;
-                    const comisionProrrateada = paquete.comision / numPax;
-
-                    nuevaFila.querySelector('.pax-servicio').value = paquete.tipo;
-                    nuevaFila.querySelector('.pax-costo').value = costoProrrateado.toFixed(2);
-                    nuevaFila.querySelector('.pax-comision').value = comisionProrrateada.toFixed(2);
-                });
-            });
-
-            let sumaCostosActual = 0;
-            let sumaComisionesActual = 0;
-            filasGeneradas.forEach(fila => {
-                sumaCostosActual += parseFloat(fila.querySelector('.pax-costo').value);
-                sumaComisionesActual += parseFloat(fila.querySelector('.pax-comision').value);
-            });
-            const diffCosto = totalCostoOrquestado - sumaCostosActual;
-            const diffComision = totalComisionOrquestada - sumaComisionesActual;
-
-            const ultimaFila = filasGeneradas[filasGeneradas.length - 1];
-            if (ultimaFila) {
-                const ultimoCostoInput = ultimaFila.querySelector('.pax-costo');
-                const ultimaComisionInput = ultimaFila.querySelector('.pax-comision');
-                ultimoCostoInput.value = (parseFloat(ultimoCostoInput.value) + diffCosto).toFixed(2);
-                ultimaComisionInput.value = (parseFloat(ultimaComisionInput.value) + diffComision).toFixed(2);
-            }
-            
-            filasGeneradas.forEach(fila => calcularTotalPax(fila));
-            actualizarResumenPrefactura();
-            
-            alert(`⚖️ DISTRIBUCIÓN APLICADA: ${totalCostoOrquestado + totalComisionOrquestada} repartido entre ${numPax} pasajero(s) único(s).`);
-        }
-
-        function generarPDFCotizacion() {
-            alert("Construyendo documento PDF con logos compartidos y desglose detallado...");
-            console.log("Generando cotización en PDF para el cliente:", document.getElementById('fact_cli_nombre').value);
-        }
+        
+        function generarPDFCotizacion() { alert("Construyendo documento PDF con logos compartidos y desglose detallado..."); }
 
         function puenteHaciaCertificacion() {
             const clienteNombre = document.getElementById('fact_cli_nombre').value;
             const clienteRif = document.getElementById('fact_cli_rif').value;
-
-            if (!clienteNombre.trim() || !clienteRif.trim()) {
-                alert("🔴 BLOQUEO DE INTEGRIDAD: El Nombre del Cliente y su RIF / ID Fiscal son obligatorios para proceder a la certificación.");
-                return;
-            }
-
+            if (!clienteNombre.trim() || !clienteRif.trim()) { alert("🔴 BLOQUEO DE INTEGRIDAD: El Nombre del Cliente y su RIF / ID Fiscal son obligatorios para proceder a la certificación."); return; }
             const filasPax = document.querySelectorAll('#pax-container .pax-grid');
-            if (filasPax.length === 0) {
-                alert("🔴 BLOQUEO DE INTEGRIDAD: Debe haber al menos un pasajero (PAX) con un desglose para certificar la operación.");
-                return;
-            }
-
-            let totalBases = 0;
-            let totalComisiones = 0;
-            const servicios = [];
-
+            if (filasPax.length === 0) { alert("🔴 BLOQUEO DE INTEGRIDAD: Debe haber al menos un pasajero (PAX) con un desglose para certificar la operación."); return; }
+            let totalBases = 0; let totalComisiones = 0; const servicios = [];
             filasPax.forEach(fila => {
-                const nombrePax = fila.querySelector('.pax-nombre').value;
-                const tipo = fila.querySelector('.pax-servicio').value;
                 const costo = parseFloat(fila.querySelector('.pax-costo').value) || 0;
                 const comision = parseFloat(fila.querySelector('.pax-comision').value) || 0;
-
                 if (costo > 0 || comision > 0) {
-                    totalBases += costo;
-                    totalComisiones += comision;
-                    servicios.push({ nombrePax, tipo, costo, comision });
+                    totalBases += costo; totalComisiones += comision;
+                    servicios.push({ nombrePax: fila.querySelector('.pax-nombre').value, tipo: fila.querySelector('.pax-servicio').value, costo, comision });
                 }
             });
-
-            if (totalBases + totalComisiones <= 0) {
-                alert("🔴 BLOQUEO DE INTEGRIDAD: El monto total de la operación no puede ser cero. Verifique los costos y comisiones.");
-                return;
-            }
-
+            if (totalBases + totalComisiones <= 0) { alert("🔴 BLOQUEO DE INTEGRIDAD: El monto total de la operación no puede ser cero."); return; }
             openModal('opModal');
             document.getElementById('aliado_name').value = clienteNombre;
             document.getElementById('aliado_rif').value = clienteRif;
-            
             document.getElementById('filas-dinamicas').innerHTML = '';
-            
             servicios.forEach((srv) => {
                 const nuevaFila = document.createElement('div');
                 nuevaFila.className = 'grid-inputs servicio-row';
                 const nombreProveedor = `${srv.tipo.toUpperCase()} - ${clienteNombre}`;
-
                 nuevaFila.innerHTML = `
-                    <div><select class="tipo-srv" onchange="calcularTodo()"></select></div>
-                    <div><input type="text" class="prov-name" value="${nombreProveedor}"></div>
+                    <div><select class="tipo-srv" onchange="calcularTodo()"></select></div><div><input type="text" class="prov-name" value="${nombreProveedor}"></div>
                     <div><input type="number" class="monto-srv" value="${srv.costo.toFixed(2)}" oninput="calcularTodo()"></div>
                     <div><input type="number" class="comision-ind" value="${srv.comision.toFixed(2)}" oninput="calcularTodo()"></div>
-                    <button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>
-                `;
+                    <button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
                 const select = nuevaFila.querySelector('.tipo-srv');
-                select.innerHTML = `
-                    <option value="Seguro" ${srv.tipo === 'Seguro' ? 'selected' : ''}>🛡️ Seguro</option>
-                    <option value="Hotel" ${srv.tipo === 'Hotel' ? 'selected' : ''}>🏨 Hotel</option>
-                    <option value="Vuelo" ${srv.tipo === 'Vuelo' ? 'selected' : ''}>✈️ Vuelo</option>
-                    <option value="Traslado" ${srv.tipo === 'Traslado' ? 'selected' : ''}>🚐 Traslado</option>
-                    <option value="Otros" ${srv.tipo === 'Otros' ? 'selected' : ''}>➕ Otros</option>
-                `;
+                select.innerHTML = `<option value="Seguro" ${srv.tipo==='Seguro'?'selected':''}>🛡️ Seguro</option><option value="Hotel" ${srv.tipo==='Hotel'?'selected':''}>🏨 Hotel</option><option value="Vuelo" ${srv.tipo==='Vuelo'?'selected':''}>✈️ Vuelo</option><option value="Traslado" ${srv.tipo==='Traslado'?'selected':''}>🚐 Traslado</option><option value="Otros" ${srv.tipo==='Otros'?'selected':''}>➕ Otros</option>`;
                 document.getElementById('filas-dinamicas').appendChild(nuevaFila);
             });
-
             const monedaPrefactura = document.getElementById('fact_moneda').value;
-            const monedaCertSelect = document.getElementById('moneda_global');
-            monedaCertSelect.value = monedaPrefactura;
+            document.getElementById('moneda_global').value = monedaPrefactura;
             cambiarMoneda(); 
-
             cerrarModalDirecto('prefacturaModal');
-            
-            alert("🏛️ PUENTE DE DATOS ACTIVADO: Se ha transferido el desglose detallado a la Certificación Fiscal. Por favor, complete los detalles restantes y valide.");
+            alert("🏛️ PUENTE DE DATOS ACTIVADO: Se ha transferido el desglose detallado a la Certificación Fiscal.");
         }
-
     </script>
 </body>
 </html>
