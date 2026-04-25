@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v11.8</title>
+    <title>ORBIS BRAIN | Master v11.9</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v11.8) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v11.9) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -61,7 +61,7 @@
         .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS ADICIONALES v11.8 --- */
+        /* --- ESTILOS ADICIONALES v11.9 --- */
         .dist-link { color: var(--gold-metalic); text-decoration: none; font-weight: bold; cursor: pointer; font-size: 13px; margin-top: 10px; display: inline-block; }
         .dist-link:hover { text-decoration: underline; }
         .pax-grid { display: grid; grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr 1fr 40px; gap: 10px; align-items: center; margin-bottom: 10px;}
@@ -101,7 +101,7 @@
         <div class="table-container"><table><thead><tr><th>ID Aliado</th><th>Categoría</th><th>Nombre Legal</th><th>RIF / Tax ID</th><th>País</th><th>Acción</th></tr></thead><tbody id="cuerpo-tabla-prov"></tbody></table></div>
     </div>
 
-    <!-- VISTA #3: PRE-FACTURACIÓN (EVOLUCIÓN v11.8) -->
+    <!-- VISTA #3: PRE-FACTURACIÓN (EVOLUCIÓN v11.9) -->
     <div id="view-facturacion" class="view-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;"><h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">ORQUESTACIÓN DE <span style="color:var(--gold-metalic)">PRE-FACTURACIÓN</span></h1><button class="btn-gold" onclick="openModal('prefacturaModal')">Nueva Cotización +</button></div>
         <div class="table-container"><table><thead><tr><th>ID Pre-Factura</th><th>Cliente / Pagador</th><th>Fecha Emisión</th><th>Monto Total</th><th>Estatus</th></tr></thead><tbody id="cuerpo-tabla-factura"></tbody></table></div>
@@ -132,7 +132,7 @@
         </div>
     </div>
 
-    <!-- MODAL #3: PRE-FACTURACIÓN (NUEVO v11.8) -->
+    <!-- MODAL #3: PRE-FACTURACIÓN (NUEVO v11.9) -->
     <div id="prefacturaModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">COTIZADOR ESTRATÉGICO / PRE-FACTURA</div><hr class="gold-divider">
@@ -158,7 +158,7 @@
                     <div id="pax-container-header" class="pax-grid" style="padding: 0 10px; margin-bottom: 10px;">
                         <label>Nombre del PAX</label><label>ID / DNI</label><label>Tipo de Servicio</label><label>Costo Proveedor</label><label>Comisión Aliado</label><label>Total</label><span></span>
                     </div>
-                    <div id="pax-container"></div>
+                    <div id="pax-container" oninput="handlePaxInput(event)"></div>
                     <button type="button" class="btn-add" onclick="agregarPax()">+ Agregar Pasajero</button>
                 </div>
                 <div class="prefactura-summary">
@@ -177,7 +177,7 @@
 
 
     <!-- ======================================================================= -->
-    <!--                         JAVASCRIPT UNIFICADO (v11.8)                    -->
+    <!--                         JAVASCRIPT UNIFICADO (v11.9)                    -->
     <!-- ======================================================================= -->
     <script>
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
@@ -191,7 +191,14 @@
         document.addEventListener('input', function(e) { if (e.target.tagName.toLowerCase() === 'input' && (e.target.type === 'text' || e.target.type === 'email')) { e.target.value = e.target.value.toUpperCase(); } });
         document.addEventListener('DOMContentLoaded', (event) => { 
             if(document.getElementById('tipo_cobertura_sel')) document.getElementById('tipo_cobertura_sel').addEventListener('change', function() { gestionarEstadoCobertura(this.value === 'interno'); }); 
-            if(document.getElementById('orquestacion-section')) document.getElementById('orquestacion-section').addEventListener('input', function(e) { if(e.target.classList.contains('pkg-costo') || e.target.classList.contains('pkg-comision')) { calcularTotalPaquete(e.target); } });
+            if(document.getElementById('orquestacion-section')) {
+                document.getElementById('orquestacion-section').addEventListener('input', function(e) { 
+                    if(e.target.classList.contains('pkg-costo') || e.target.classList.contains('pkg-comision')) { 
+                        calcularTotalPaquete(e.target);
+                        aplicarDistribucionPaquetes(false); 
+                    }
+                });
+            }
         });
         
         function showView(viewId, btn) { 
@@ -354,37 +361,40 @@
         function iniciarGuardadoProv() { let esValido = true; document.querySelectorAll('#provModal .input-error').forEach(el => el.classList.remove('input-error')); const camposTextoRequeridos = [document.getElementById('prov_nombre'), document.getElementById('prov_rif'), document.getElementById('prov_pais')]; for (const campo of camposTextoRequeridos) { if (!campo.value.trim()) { campo.classList.add('input-error'); esValido = false; } } if (!esValido) { return alert("⚠️ BLOQUEO: NOMBRE, RIF Y PAÍS SON OBLIGATORIOS."); } const primerCorreoInput = document.querySelector('#email-container .prov-email'); if (!primerCorreoInput || !primerCorreoInput.value.trim()) { if(primerCorreoInput) primerCorreoInput.classList.add('input-error'); esValido = false; } if (!esValido) { return alert("⚠️ BLOQUEO: Para integrar un aliado a la Red Maestra es obligatorio registrar al menos un Canal de Correo Electrónico."); } if (confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro del nuevo aliado en la Red Maestra?")) { ejecutarGuardadoProv(); } }
         async function ejecutarGuardadoProv() { const modalButtons = document.querySelectorAll('#provModal button'); const btnSync = document.getElementById('btn-sync-prov'); modalButtons.forEach(btn => btn.disabled = true); btnSync.textContent = '🚀 REGISTRANDO EN ORBIS BRAIN NETWORK...'; alert("🏛️ ORBIS BRAIN NETWORK está procesando el registro del nuevo aliado. Por favor, espere un momento..."); const telefonos = Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => { const esWhatsapp = document.querySelectorAll('.is-whatsapp')[i].value; return `${input.value} (WHATSAPP: ${esWhatsapp})`; }).join('; '); const correos = Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; '); const datos = { ID_ALIADO: `ORB-${String(document.getElementById('cuerpo-tabla-prov').rows.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: telefonos, CORREOS: correos }; try { const response = await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', cache: 'no-cache', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'registrarProveedor', data: datos }) }); alert("✅ REGISTRO EN RED MAESTRA EXITOSO."); const tbody = document.getElementById('cuerpo-tabla-prov'); const newRow = tbody.insertRow(0); newRow.innerHTML = `<td>${datos.ID_ALIADO}</td><td>${datos.CATEGORIA}</td><td style="font-weight:bold; letter-spacing:1px;">${datos.NOMBRE_LEGAL}</td><td>${datos.RIF_TAX_ID}</td><td>${datos.PAIS}</td><td><button onclick="alert('⚠️ ACCESO DENEGADO: Solo el Administrador de la Red Maestra o el autor original pueden dar de baja a un aliado.')" style="background:none; border:none; color:#666; cursor:not-allowed; font-size:10px; opacity: 0.5;">ELIMINAR</button></td>`; cerrarModalDirecto('provModal'); } catch (error) { console.error('Error de sincronización de proveedor:', error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado en la Red Maestra."); } finally { modalButtons.forEach(btn => btn.disabled = false); btnSync.textContent = 'REGISTRAR EN RED MAESTRA'; } }
         
-        // --- LÓGICA #3: PRE-FACTURACIÓN (ACTUALIZADO v11.8) ---
+        // --- LÓGICA #3: PRE-FACTURACIÓN (ACTUALIZADO v11.9) ---
         function handlePaxRemoval(button) {
             button.closest('.pax-grid').remove();
-            const totalOrquestado = parseFloat(document.getElementById('total-orquestado-val').textContent) || 0;
-            if (document.querySelectorAll('#pax-container .pax-grid').length > 0 && totalOrquestado > 0) {
-                 aplicarDistribucionPaquetes(false);
-            } else {
-                document.getElementById('pax-container').innerHTML = ''; // Limpia por si acaso.
-                actualizarResumenPrefactura();
-            }
+            aplicarDistribucionPaquetes(false);
         }
 
-        function agregarPax(nombre = '', id = '') {
+        function agregarPax() {
             const container = document.getElementById('pax-container');
             const div = document.createElement('div');
             div.className = 'pax-grid';
             div.innerHTML = `
-                <div><input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO" value="${nombre}"></div>
-                <div><input type="text" class="pax-id" placeholder="ID / DNI" value="${id}"></div>
-                <div><select class="pax-servicio" disabled>
+                <div><input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"></div>
+                <div><input type="text" class="pax-id" placeholder="ID / DNI"></div>
+                <div><select class="pax-servicio">
                     <option value="Seguro">🛡️ Seguro</option><option value="Hotel">🏨 Hotel</option>
                     <option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option>
                     <option value="Otros" selected>➕ Otros</option>
                 </select></div>
-                <div><input type="number" class="pax-costo" placeholder="0.00" readonly></div>
-                <div><input type="number" class="pax-comision" placeholder="0.00" readonly></div>
+                <div><input type="number" class="pax-costo" placeholder="0.00"></div>
+                <div><input type="number" class="pax-comision" placeholder="0.00"></div>
                 <div><input type="number" class="pax-total" placeholder="0.00" readonly></div>
                 <button type="button" class="btn-remove" onclick="handlePaxRemoval(this)">X</button>
             `;
             container.appendChild(div);
+            aplicarDistribucionPaquetes(false);
             return div;
+        }
+        
+        function handlePaxInput(event) {
+            if (event.target.classList.contains('pax-costo') || event.target.classList.contains('pax-comision')) {
+                const fila = event.target.closest('.pax-grid');
+                calcularTotalPax(fila);
+                actualizarResumenPrefactura();
+            }
         }
 
         function handlePkgRemoval(button) {
@@ -409,6 +419,7 @@
                 <button type="button" class="btn-remove" onclick="handlePkgRemoval(this)">X</button>
             `;
             container.appendChild(div);
+            aplicarDistribucionPaquetes(false);
         }
         
         function actualizarTotalOrquestado() {
@@ -458,6 +469,10 @@
                     if (!paxUnicos.has(id)) {
                         paxUnicos.set(id, { nombre, id });
                     }
+                } else if(nombre) { // Fallback para pasajeros sin ID pero con nombre
+                     if (!paxUnicos.has(nombre)) {
+                        paxUnicos.set(nombre, { nombre, id });
+                    }
                 }
             });
 
@@ -477,7 +492,7 @@
             paxContainer.innerHTML = '';
 
             if (numPax === 0) {
-                if(mostrarAlerta) alert("⚖️ DISTRIBUCIÓN BLOQUEADA: No hay pasajeros con ID único para distribuir.");
+                if(mostrarAlerta) alert("⚖️ No hay pasajeros con ID/Nombre para realizar la distribución.");
                 actualizarResumenPrefactura();
                 return;
             }
@@ -493,7 +508,7 @@
                     const costoProrrateado = paquete.costo / numPax;
                     const comisionProrrateada = paquete.comision / numPax;
                     
-                    const nuevaFila = agregarPax(pax.nombre, pax.id);
+                    const nuevaFila = agregarPax(pax.nombre, pax.id); // Esta función ya no llama a aplicarDistribucion
                     filasGeneradas.push(nuevaFila);
                     
                     const tipoServicioSelect = nuevaFila.querySelector('.pax-servicio');
@@ -526,7 +541,7 @@
             
             filasGeneradas.forEach(fila => calcularTotalPax(fila));
             
-            if(mostrarAlerta) alert(`⚖️ DISTRIBUCIÓN INTELIGENTE APLICADA: ${totalCostoOrquestado + totalComisionOrquestada} repartido entre ${numPax} pasajero(s) único(s).`);
+            if(mostrarAlerta) alert(`⚖️ DISTRIBUCIÓN AUTOMÁTICA APLICADA: ${totalCostoOrquestado + totalComisionOrquestada} repartido entre ${numPax} pasajero(s) único(s).`);
             actualizarResumenPrefactura();
         }
 
