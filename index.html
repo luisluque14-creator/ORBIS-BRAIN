@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v13.8</title>
+    <title>ORBIS BRAIN | Master v13.9</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v13.8) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v13.9) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -30,8 +30,8 @@
         th { text-align: left; color: var(--gold-soft); font-size: 11px; text-transform: uppercase; padding: 15px; letter-spacing: 1px; }
         td { padding: 15px; border-bottom: 1px solid #222; font-size: 13px; }
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
-        .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 30px 60px; border-radius: 30px; max-height: 96vh; overflow-y: auto; }
-        .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 15px 0; opacity: 0.8; }
+        .modal-content { background: var(--black-deep); border: 1px solid #333; border-top: 3px solid var(--gold-metalic); padding: 30px 60px; border-radius: 15px; overflow-y: auto; }
+        .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 20px 0; opacity: 0.9; }
         .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 24px; letter-spacing: 3px; margin: 0; }
         
         #opModal .form-section, #provModal .form-section { background: rgba(255,255,255,0.02); padding: 20px 30px; border-radius: 20px; border: 1px solid #222; margin-bottom: 15px; }
@@ -45,7 +45,7 @@
         .input-error { border-color: var(--red-error) !important; }
         .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 20px auto 0; display: block; transition: 0.4s; }
         .btn-cancel-elite:disabled { background: transparent; color: #444; border-color: #222; cursor: not-allowed; }
-        #opModal .modal-content, #provModal .modal-content { width: 90%; max-width: 1600px; }
+        #opModal .modal-content, #provModal .modal-content { width: 90%; max-width: 1600px; max-height: 96vh; border-radius: 30px; } /* Mantener el radio original para estos modales */
         .grid-inputs { display: grid; grid-template-columns: 1.2fr 2fr 1fr 1fr 40px; gap: 12px; margin-bottom: 12px; align-items: end; }
         .summary-box { background: #000; padding: 25px 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2); display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 20px; }
         .sum-item { text-align: center; border-right: 1px solid #222; padding: 0 5px; } .sum-item:last-child { border-right: none; }
@@ -60,18 +60,17 @@
         #provModal .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS ESPECÍFICOS PRE-FACTURACIÓN (v13.8) --- */
-        #prefacturaModal .modal-content { width: 95%; max-height: 95vh; }
-        #prefacturaModal .gold-divider { height: 4px; }
+        /* --- ESTILOS ESPECÍFICOS PRE-FACTURACIÓN (v13.9) --- */
+        #prefacturaModal .modal-content { width: 90%; max-height: 92vh; }
         #prefacturaModal .modal-title-container { display: flex; justify-content: space-between; align-items: center; }
         #prefacturaModal #fact_moneda_container { width: 200px; }
         #prefacturaModal #fact_moneda { padding: 12px; font-size: 14px; background: #111; }
         #prefacturaModal .form-section { background: rgba(255,255,255,0.02); padding: 25px 35px; border-radius: 20px; border: 1px solid #222; margin-bottom: 20px; }
         #prefacturaModal .form-section-header { font-family:'Cinzel', serif; color:var(--gold-soft); margin-top:0; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 25px; font-size: 18px; }
         #prefacturaModal .grid-header label { font-size: 11px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; margin-bottom: 4px; }
-        #prefacturaModal input, #prefacturaModal select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 16px; border-radius: 10px; font-size: 16px; box-sizing: border-box; transition: border-color 0.3s; }
+        #prefacturaModal input, #prefacturaModal select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 15px; box-sizing: border-box; transition: border-color 0.3s; }
         #prefacturaModal .btn-add { padding: 12px; font-size: 13px; }
-        #prefacturaModal .btn-remove { background: none; color: #d9534f; border: 1px solid #d9534f; border-radius: 8px; cursor: pointer; height: 53px; width: 100%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        #prefacturaModal .btn-remove { background: none; color: #d9534f; border: 1px solid #d9534f; border-radius: 8px; cursor: pointer; height: 49px; width: 100%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         
         .pkg-grid { display: grid; grid-template-columns: 0.5fr 1.8fr 1.2fr 1fr 0.5fr 0.5fr 0.8fr 0.8fr 0.8fr 1fr 50px; gap: 12px; align-items: end; margin-bottom: 15px; }
         .single-grid { display: grid; grid-template-columns: 2fr 1.2fr 0.8fr 0.5fr 0.8fr 0.8fr 0.8fr 1fr 50px; gap: 12px; align-items: end; margin-bottom: 15px; }
@@ -137,7 +136,7 @@
         </div>
     </div>
 
-    <!-- MODAL #3: PRE-FACTURACIÓN (v13.8 - FINAL) -->
+    <!-- MODAL #3: PRE-FACTURACIÓN (v13.9 - FINAL) -->
     <div id="prefacturaModal" class="modal">
         <div class="modal-content">
             <div class="modal-title-container">
@@ -194,7 +193,7 @@
     </div>
 
     <!-- ======================================================================= -->
-    <!--                         JAVASCRIPT UNIFICADO (v13.8)                    -->
+    <!--                         JAVASCRIPT UNIFICADO (v13.9)                    -->
     <!-- ======================================================================= -->
     <script>
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
@@ -337,7 +336,7 @@
         function iniciarGuardadoProv() { let esValido = true; document.querySelectorAll('#provModal .input-error').forEach(el => el.classList.remove('input-error')); const camposTextoRequeridos = [document.getElementById('prov_nombre'), document.getElementById('prov_rif'), document.getElementById('prov_pais')]; for (const campo of camposTextoRequeridos) { if (!campo.value.trim()) { campo.classList.add('input-error'); esValido = false; } } if (!esValido) { return alert("⚠️ BLOQUEO: NOMBRE, RIF Y PAÍS SON OBLIGATORIOS."); } const primerCorreoInput = document.querySelector('#email-container .prov-email'); if (!primerCorreoInput || !primerCorreoInput.value.trim()) { if(primerCorreoInput) primerCorreoInput.classList.add('input-error'); esValido = false; } if (!esValido) { return alert("⚠️ BLOQUEO: Para integrar un aliado a la Red Maestra es obligatorio registrar al menos un Canal de Correo Electrónico."); } if (confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro del nuevo aliado en la Red Maestra?")) { ejecutarGuardadoProv(); } }
         async function ejecutarGuardadoProv() { const modalButtons = document.querySelectorAll('#provModal button'); const btnSync = document.getElementById('btn-sync-prov'); modalButtons.forEach(btn => btn.disabled = true); btnSync.textContent = '🚀 REGISTRANDO EN ORBIS BRAIN NETWORK...'; alert("🏛️ ORBIS BRAIN NETWORK está procesando el registro del nuevo aliado. Por favor, espere un momento..."); const telefonos = Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => { const esWhatsapp = document.querySelectorAll('.is-whatsapp')[i].value; return `${input.value} (WHATSAPP: ${esWhatsapp})`; }).join('; '); const correos = Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; '); const datos = { ID_ALIADO: `ORB-${String(document.getElementById('cuerpo-tabla-prov').rows.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: telefonos, CORREOS: correos }; try { const response = await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', cache: 'no-cache', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'registrarProveedor', data: datos }) }); alert("✅ REGISTRO EN RED MAESTRA EXITOSO."); const tbody = document.getElementById('cuerpo-tabla-prov'); const newRow = tbody.insertRow(0); newRow.innerHTML = `<td>${datos.ID_ALIADO}</td><td>${datos.CATEGORIA}</td><td style="font-weight:bold; letter-spacing:1px;">${datos.NOMBRE_LEGAL}</td><td>${datos.RIF_TAX_ID}</td><td>${datos.PAIS}</td><td><button onclick="alert('⚠️ ACCESO DENEGADO: Solo el Administrador de la Red Maestra o el autor original pueden dar de baja a un aliado.')" style="background:none; border:none; color:#666; cursor:not-allowed; font-size:10px; opacity: 0.5;">ELIMINAR</button></td>`; cerrarModalDirecto('provModal'); } catch (error) { console.error('Error de sincronización de proveedor:', error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado en la Red Maestra."); } finally { modalButtons.forEach(btn => btn.disabled = false); btnSync.textContent = 'REGISTRAR EN RED MAESTRA'; } }
         
-        // --- LÓGICA #3: PRE-FACTURACIÓN (REINGENIERÍA v13.8) ---
+        // --- LÓGICA #3: PRE-FACTURACIÓN (REINGENIERÍA v13.9) ---
         function agregarPaquete() {
             const container = document.getElementById('paquetes-container');
             const div = document.createElement('div');
