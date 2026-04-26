@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v14.3</title>
+    <title>ORBIS BRAIN | Master v14.4</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v14.3) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v14.4) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -60,13 +60,12 @@
         #provModal .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS ESPECÍFICOS PRE-FACTURACIÓN (v14.3) --- */
+        /* --- ESTILOS ESPECÍFICOS PRE-FACTURACIÓN (v14.4) --- */
         #prefacturaModal .modal-content { 
             margin: 5vh auto;
             border: 1px solid #333;
             outline: 2px solid var(--gold-metalic);
-            outline-offset: -1px;
-            padding-top: 0; /* Padding se maneja con el contenedor del título */
+            outline-offset: -2px;
         }
         #prefacturaModal .modal-title-wrapper { padding-top: 20px; }
         #prefacturaModal .form-section { background: rgba(255,255,255,0.02); padding: 25px 35px; border-radius: 20px; border: 1px solid #222; margin-bottom: 20px; }
@@ -82,8 +81,10 @@
 
         #prefacturaModal .summary-box { grid-template-columns: 1.5fr repeat(3, 1fr); max-width: 1100px; margin-left: auto; margin-right: auto; margin-bottom: 30px; align-items: center;}
         #prefacturaModal .summary-box #fact_moneda { background: transparent; border: 1px solid var(--gold-metalic); color: var(--gold-soft); padding: 12px; height: auto; }
+        #prefacturaModal .summary-box #fact_moneda:focus { outline: 1px solid var(--gold-soft); }
+        #prefacturaModal .summary-box #fact_moneda option { background: var(--black-deep); color: var(--gold-soft); }
         #prefacturaModal .action-buttons-grid { max-width: 700px; margin-left: auto; margin-right: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
-        #prefacturaModal .btn-secondary, #prefacturaModal .btn-gold { width: 100%; height: 100%; }
+        #prefacturaModal .btn-secondary, #prefacturaModal .btn-gold { width: 100%; height: 100%; padding: 16px 28px; }
     </style>
 </head>
 <body>
@@ -144,7 +145,7 @@
         </div>
     </div>
 
-    <!-- MODAL #3: PRE-FACTURACIÓN (v14.3 - FINAL) -->
+    <!-- MODAL #3: PRE-FACTURACIÓN (v14.4 - FINAL) -->
     <div id="prefacturaModal" class="modal">
         <div class="modal-content">
             <div class="modal-title-wrapper">
@@ -201,7 +202,7 @@
     </div>
 
     <!-- ======================================================================= -->
-    <!--                         JAVASCRIPT UNIFICADO (v14.3)                    -->
+    <!--                         JAVASCRIPT UNIFICADO (v14.4)                    -->
     <!-- ======================================================================= -->
     <script>
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
@@ -344,7 +345,7 @@
         function iniciarGuardadoProv() { let esValido = true; document.querySelectorAll('#provModal .input-error').forEach(el => el.classList.remove('input-error')); const camposTextoRequeridos = [document.getElementById('prov_nombre'), document.getElementById('prov_rif'), document.getElementById('prov_pais')]; for (const campo of camposTextoRequeridos) { if (!campo.value.trim()) { campo.classList.add('input-error'); esValido = false; } } if (!esValido) { return alert("⚠️ BLOQUEO: NOMBRE, RIF Y PAÍS SON OBLIGATORIOS."); } const primerCorreoInput = document.querySelector('#email-container .prov-email'); if (!primerCorreoInput || !primerCorreoInput.value.trim()) { if(primerCorreoInput) primerCorreoInput.classList.add('input-error'); esValido = false; } if (!esValido) { return alert("⚠️ BLOQUEO: Para integrar un aliado a la Red Maestra es obligatorio registrar al menos un Canal de Correo Electrónico."); } if (confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro del nuevo aliado en la Red Maestra?")) { ejecutarGuardadoProv(); } }
         async function ejecutarGuardadoProv() { const modalButtons = document.querySelectorAll('#provModal button'); const btnSync = document.getElementById('btn-sync-prov'); modalButtons.forEach(btn => btn.disabled = true); btnSync.textContent = '🚀 REGISTRANDO EN ORBIS BRAIN NETWORK...'; alert("🏛️ ORBIS BRAIN NETWORK está procesando el registro del nuevo aliado. Por favor, espere un momento..."); const telefonos = Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => { const esWhatsapp = document.querySelectorAll('.is-whatsapp')[i].value; return `${input.value} (WHATSAPP: ${esWhatsapp})`; }).join('; '); const correos = Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; '); const datos = { ID_ALIADO: `ORB-${String(document.getElementById('cuerpo-tabla-prov').rows.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: telefonos, CORREOS: correos }; try { const response = await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', cache: 'no-cache', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'registrarProveedor', data: datos }) }); alert("✅ REGISTRO EN RED MAESTRA EXITOSO."); const tbody = document.getElementById('cuerpo-tabla-prov'); const newRow = tbody.insertRow(0); newRow.innerHTML = `<td>${datos.ID_ALIADO}</td><td>${datos.CATEGORIA}</td><td style="font-weight:bold; letter-spacing:1px;">${datos.NOMBRE_LEGAL}</td><td>${datos.RIF_TAX_ID}</td><td>${datos.PAIS}</td><td><button onclick="alert('⚠️ ACCESO DENEGADO: Solo el Administrador de la Red Maestra o el autor original pueden dar de baja a un aliado.')" style="background:none; border:none; color:#666; cursor:not-allowed; font-size:10px; opacity: 0.5;">ELIMINAR</button></td>`; cerrarModalDirecto('provModal'); } catch (error) { console.error('Error de sincronización de proveedor:', error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado en la Red Maestra."); } finally { modalButtons.forEach(btn => btn.disabled = false); btnSync.textContent = 'REGISTRAR EN RED MAESTRA'; } }
         
-        // --- LÓGICA #3: PRE-FACTURACIÓN (REINGENIERÍA v14.3) ---
+        // --- LÓGICA #3: PRE-FACTURACIÓN (REINGENIERÍA v14.4) ---
         function agregarPaquete() {
             const container = document.getElementById('paquetes-container');
             const div = document.createElement('div');
@@ -460,10 +461,10 @@
             const monedaSelect = document.getElementById('fact_moneda');
             const moneda = monedaSelect ? monedaSelect.options[monedaSelect.selectedIndex].text : '$';
             
-            document.querySelectorAll('.curr-sym').forEach(span => span.textContent = moneda.split(' ')[1] || '$');
-            document.getElementById('prefactura-total-costos').innerHTML = `${granTotalCostos.toFixed(2)} <span class="curr-sym">${moneda.split(' ')[1] || '$'}</span>`;
-            document.getElementById('prefactura-total-comisiones').innerHTML = `${granTotalComisiones.toFixed(2)} <span class="curr-sym">${moneda.split(' ')[1] || '$'}</span>`;
-            document.getElementById('prefactura-gran-total').innerHTML = `${granTotal.toFixed(2)} <span class="curr-sym">${moneda.split(' ')[1] || '$'}</span>`;
+            const simboloMoneda = `<span class="curr-sym">${moneda.split(' ')[1] || '$'}</span>`;
+            document.getElementById('prefactura-total-costos').innerHTML = `${granTotalCostos.toFixed(2)} ${simboloMoneda}`;
+            document.getElementById('prefactura-total-comisiones').innerHTML = `${granTotalComisiones.toFixed(2)} ${simboloMoneda}`;
+            document.getElementById('prefactura-gran-total').innerHTML = `${granTotal.toFixed(2)} ${simboloMoneda}`;
         }
         
         function generarPDFCotizacion() { alert("Construyendo documento PDF con logos compartidos y desglose detallado..."); }
