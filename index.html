@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v13.7</title>
+    <title>ORBIS BRAIN | Master v13.8</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v13.7) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v13.8) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -45,7 +45,7 @@
         .input-error { border-color: var(--red-error) !important; }
         .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 20px auto 0; display: block; transition: 0.4s; }
         .btn-cancel-elite:disabled { background: transparent; color: #444; border-color: #222; cursor: not-allowed; }
-        #opModal .modal-content, #prefacturaModal .modal-content, #provModal .modal-content { width: 90%; max-width: 1600px; }
+        #opModal .modal-content, #provModal .modal-content { width: 90%; max-width: 1600px; }
         .grid-inputs { display: grid; grid-template-columns: 1.2fr 2fr 1fr 1fr 40px; gap: 12px; margin-bottom: 12px; align-items: end; }
         .summary-box { background: #000; padding: 25px 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2); display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 20px; }
         .sum-item { text-align: center; border-right: 1px solid #222; padding: 0 5px; } .sum-item:last-child { border-right: none; }
@@ -60,7 +60,9 @@
         #provModal .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS ESPECÍFICOS PRE-FACTURACIÓN (v13.7) --- */
+        /* --- ESTILOS ESPECÍFICOS PRE-FACTURACIÓN (v13.8) --- */
+        #prefacturaModal .modal-content { width: 95%; max-height: 95vh; }
+        #prefacturaModal .gold-divider { height: 4px; }
         #prefacturaModal .modal-title-container { display: flex; justify-content: space-between; align-items: center; }
         #prefacturaModal #fact_moneda_container { width: 200px; }
         #prefacturaModal #fact_moneda { padding: 12px; font-size: 14px; background: #111; }
@@ -71,8 +73,8 @@
         #prefacturaModal .btn-add { padding: 12px; font-size: 13px; }
         #prefacturaModal .btn-remove { background: none; color: #d9534f; border: 1px solid #d9534f; border-radius: 8px; cursor: pointer; height: 53px; width: 100%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
         
-        .pkg-grid { display: grid; grid-template-columns: 0.5fr 2fr 1.5fr 1fr 0.6fr 0.6fr 1fr 1fr 1.2fr 50px; gap: 15px; align-items: end; margin-bottom: 15px; }
-        .single-grid { display: grid; grid-template-columns: 2fr 1.5fr 1fr 0.8fr 1fr 1fr 1.2fr 50px; gap: 15px; align-items: end; margin-bottom: 15px; } /* Corregido a 7 columnas + botón */
+        .pkg-grid { display: grid; grid-template-columns: 0.5fr 1.8fr 1.2fr 1fr 0.5fr 0.5fr 0.8fr 0.8fr 0.8fr 1fr 50px; gap: 12px; align-items: end; margin-bottom: 15px; }
+        .single-grid { display: grid; grid-template-columns: 2fr 1.2fr 0.8fr 0.5fr 0.8fr 0.8fr 0.8fr 1fr 50px; gap: 12px; align-items: end; margin-bottom: 15px; }
         .pax-grid { display: grid; grid-template-columns: 3fr 1.5fr 1.5fr 1.5fr 50px; gap: 15px; align-items: center; margin-bottom: 15px; }
 
         #prefacturaModal .prefactura-summary { background: #000; padding: 25px; border-radius: 15px; border-top: 2px solid var(--gold-metalic); margin-top: 30px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; }
@@ -135,7 +137,7 @@
         </div>
     </div>
 
-    <!-- MODAL #3: PRE-FACTURACIÓN (v13.7 - FINAL) -->
+    <!-- MODAL #3: PRE-FACTURACIÓN (v13.8 - FINAL) -->
     <div id="prefacturaModal" class="modal">
         <div class="modal-content">
             <div class="modal-title-container">
@@ -151,20 +153,20 @@
                 <div class="form-section" id="paquetes-section">
                     <h3 class="form-section-header">ZONA A: PAQUETES / HOTELES</h3>
                     <div id="paquetes-container-header" class="grid-header pkg-grid" style="padding: 0 10px; margin-bottom: 10px;">
-                        <label>Cant.</label><label>Concepto</label><label>Servicio</label><label>Tipo Hab.</label><label>Días</label><label>Noches</label><label>Precio Base</label><label>Comisión</label><label>Total Línea</label><span></span>
+                        <label>Cant.</label><label>Concepto</label><label>Servicio</label><label>Tipo Hab.</label><label>Días</label><label>Noches</label><label>Precio Base</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span>
                     </div>
                     <div id="paquetes-container"></div>
-                    <button type="button" class="btn-add" onclick="agregarPaquete()">+ Agregar Paquete de Hotel</button>
+                    <button type="button" class="btn-add" onclick="agregarPaquete()">+ Agregar Paquete</button>
                 </div>
 
                 <!-- ZONA B: CARGA INDIVIDUAL -->
                 <div class="form-section" id="singles-section">
                     <h3 class="form-section-header">ZONA B: SERVICIOS INDIVIDUALES</h3>
                      <div id="singles-container-header" class="grid-header single-grid" style="padding: 0 10px; margin-bottom: 10px;">
-                        <label>Proveedor</label><label>Servicio</label><label>Tipo</label><label>Cant.</label><label>Costo</label><label>Comisión</label><label>Total Línea</label><span></span>
+                        <label>Proveedor</label><label>Servicio</label><label>Tipo</label><label>Cant.</label><label>Costo</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span>
                     </div>
                     <div id="singles-container"></div>
-                    <button type="button" class="btn-add" onclick="agregarServicioIndividual()">+ Agregar Servicio Individual</button>
+                    <button type="button" class="btn-add" onclick="agregarServicioIndividual()">+ Agregar Servicio</button>
                 </div>
 
                 <!-- ZONA C: DESGLOSE PAX / MODO ESPEJO -->
@@ -192,7 +194,7 @@
     </div>
 
     <!-- ======================================================================= -->
-    <!--                         JAVASCRIPT UNIFICADO (v13.7)                    -->
+    <!--                         JAVASCRIPT UNIFICADO (v13.8)                    -->
     <!-- ======================================================================= -->
     <script>
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
@@ -335,7 +337,7 @@
         function iniciarGuardadoProv() { let esValido = true; document.querySelectorAll('#provModal .input-error').forEach(el => el.classList.remove('input-error')); const camposTextoRequeridos = [document.getElementById('prov_nombre'), document.getElementById('prov_rif'), document.getElementById('prov_pais')]; for (const campo of camposTextoRequeridos) { if (!campo.value.trim()) { campo.classList.add('input-error'); esValido = false; } } if (!esValido) { return alert("⚠️ BLOQUEO: NOMBRE, RIF Y PAÍS SON OBLIGATORIOS."); } const primerCorreoInput = document.querySelector('#email-container .prov-email'); if (!primerCorreoInput || !primerCorreoInput.value.trim()) { if(primerCorreoInput) primerCorreoInput.classList.add('input-error'); esValido = false; } if (!esValido) { return alert("⚠️ BLOQUEO: Para integrar un aliado a la Red Maestra es obligatorio registrar al menos un Canal de Correo Electrónico."); } if (confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro del nuevo aliado en la Red Maestra?")) { ejecutarGuardadoProv(); } }
         async function ejecutarGuardadoProv() { const modalButtons = document.querySelectorAll('#provModal button'); const btnSync = document.getElementById('btn-sync-prov'); modalButtons.forEach(btn => btn.disabled = true); btnSync.textContent = '🚀 REGISTRANDO EN ORBIS BRAIN NETWORK...'; alert("🏛️ ORBIS BRAIN NETWORK está procesando el registro del nuevo aliado. Por favor, espere un momento..."); const telefonos = Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => { const esWhatsapp = document.querySelectorAll('.is-whatsapp')[i].value; return `${input.value} (WHATSAPP: ${esWhatsapp})`; }).join('; '); const correos = Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; '); const datos = { ID_ALIADO: `ORB-${String(document.getElementById('cuerpo-tabla-prov').rows.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: telefonos, CORREOS: correos }; try { const response = await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', cache: 'no-cache', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'registrarProveedor', data: datos }) }); alert("✅ REGISTRO EN RED MAESTRA EXITOSO."); const tbody = document.getElementById('cuerpo-tabla-prov'); const newRow = tbody.insertRow(0); newRow.innerHTML = `<td>${datos.ID_ALIADO}</td><td>${datos.CATEGORIA}</td><td style="font-weight:bold; letter-spacing:1px;">${datos.NOMBRE_LEGAL}</td><td>${datos.RIF_TAX_ID}</td><td>${datos.PAIS}</td><td><button onclick="alert('⚠️ ACCESO DENEGADO: Solo el Administrador de la Red Maestra o el autor original pueden dar de baja a un aliado.')" style="background:none; border:none; color:#666; cursor:not-allowed; font-size:10px; opacity: 0.5;">ELIMINAR</button></td>`; cerrarModalDirecto('provModal'); } catch (error) { console.error('Error de sincronización de proveedor:', error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado en la Red Maestra."); } finally { modalButtons.forEach(btn => btn.disabled = false); btnSync.textContent = 'REGISTRAR EN RED MAESTRA'; } }
         
-        // --- LÓGICA #3: PRE-FACTURACIÓN (REINGENIERÍA v13.7) ---
+        // --- LÓGICA #3: PRE-FACTURACIÓN (REINGENIERÍA v13.8) ---
         function agregarPaquete() {
             const container = document.getElementById('paquetes-container');
             const div = document.createElement('div');
@@ -348,7 +350,8 @@
                 <input type="number" class="pkg-dias" value="0" onfocus="this.select()">
                 <input type="number" class="pkg-noches" value="0" onfocus="this.select()">
                 <input type="number" class="pkg-precio" placeholder="0.00" oninput="sincronizarEspejo()" onfocus="this.select()">
-                <input type="number" class="pkg-comision" placeholder="0.00" oninput="sincronizarEspejo()" onfocus="this.select()">
+                <input type="number" class="pkg-comision-unit" placeholder="0.00" oninput="sincronizarEspejo()" onfocus="this.select()">
+                <input type="number" class="pkg-comision-total" placeholder="0.00" readonly onfocus="this.select()">
                 <input type="number" class="pkg-total" placeholder="0.00" readonly onfocus="this.select()">
                 <button type="button" class="btn-remove" onclick="this.closest('.pkg-grid').remove(); sincronizarEspejo();">X</button>`;
             container.appendChild(div);
@@ -360,18 +363,15 @@
             div.className = 'single-grid';
             div.innerHTML = `
                 <input type="text" class="single-proveedor" placeholder="EJ: DELTA AIRLINES">
-                <select class="single-servicio" onchange="toggleHotelFields(this)"><option value="Vuelo">✈️ Vuelo</option><option value="Hotel">🏨 Hotel</option><option value="Traslado">🚐 Traslado</option><option value="Seguro">🛡️ Seguro</option><option value="Otro">➕ Otro</option></select>
+                <select class="single-servicio"><option value="Vuelo">✈️ Vuelo</option><option value="Hotel">🏨 Hotel</option><option value="Traslado">🚐 Traslado</option><option value="Seguro">🛡️ Seguro</option><option value="Otro">➕ Otro</option></select>
                 <select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select>
                 <input type="number" class="single-cant" value="0" oninput="sincronizarEspejo()" onfocus="this.select()">
                 <input type="number" class="single-costo" placeholder="0.00" oninput="sincronizarEspejo()" onfocus="this.select()">
-                <input type="number" class="single-comision" placeholder="0.00" oninput="sincronizarEspejo()" onfocus="this.select()">
+                <input type="number" class="single-comision-unit" placeholder="0.00" oninput="sincronizarEspejo()" onfocus="this.select()">
+                <input type="number" class="single-comision-total" placeholder="0.00" readonly onfocus="this.select()">
                 <input type="number" class="single-total" placeholder="0.00" readonly onfocus="this.select()">
                 <button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove(); sincronizarEspejo();">X</button>`;
             container.appendChild(div);
-        }
-
-        function toggleHotelFields(selectElement) {
-            // This function is kept for potential future use but currently does not hide/show fields.
         }
 
         function agregarPax() {
@@ -395,29 +395,35 @@
             document.querySelectorAll('#paquetes-container .pkg-grid').forEach(fila => {
                 const cant = parseFloat(fila.querySelector('.pkg-cant').value) || 0;
                 const precio = parseFloat(fila.querySelector('.pkg-precio').value) || 0;
-                const comision = parseFloat(fila.querySelector('.pkg-comision').value) || 0;
+                const comisionUnit = parseFloat(fila.querySelector('.pkg-comision-unit').value) || 0;
                 
                 const cantCalculo = cant === 0 ? 1 : cant;
                 const costoTotalFila = cantCalculo * precio;
-                const totalFila = costoTotalFila + comision;
+                const comisionTotalFila = cantCalculo * comisionUnit;
+                const totalFila = costoTotalFila + comisionTotalFila;
+
+                fila.querySelector('.pkg-comision-total').value = comisionTotalFila.toFixed(2);
                 fila.querySelector('.pkg-total').value = totalFila.toFixed(2);
                 
                 totalCostoGlobal += costoTotalFila;
-                totalComisionGlobal += comision;
+                totalComisionGlobal += comisionTotalFila;
             });
 
             document.querySelectorAll('#singles-container .single-grid').forEach(fila => {
                 const cant = parseFloat(fila.querySelector('.single-cant').value) || 0;
                 const costo = parseFloat(fila.querySelector('.single-costo').value) || 0;
-                const comision = parseFloat(fila.querySelector('.single-comision').value) || 0;
+                const comisionUnit = parseFloat(fila.querySelector('.single-comision-unit').value) || 0;
 
                 const cantCalculo = cant === 0 ? 1 : cant;
                 const costoTotalFila = cantCalculo * costo;
-                const totalFila = costoTotalFila + comision;
+                const comisionTotalFila = cantCalculo * comisionUnit;
+                const totalFila = costoTotalFila + comisionTotalFila;
+
+                fila.querySelector('.single-comision-total').value = comisionTotalFila.toFixed(2);
                 fila.querySelector('.single-total').value = totalFila.toFixed(2);
 
                 totalCostoGlobal += costoTotalFila;
-                totalComisionGlobal += comision;
+                totalComisionGlobal += comisionTotalFila;
             });
 
             const filasPax = document.querySelectorAll('#pax-container .pax-grid');
