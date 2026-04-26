@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v13.0</title>
+    <title>ORBIS BRAIN | Master v13.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v13.0) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v13.1) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -33,19 +33,17 @@
         .modal-content { background: var(--black-deep); border: 2px solid var(--gold-metalic); padding: 30px 60px; border-radius: 30px; max-height: 96vh; overflow-y: auto; }
         .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 15px 0; opacity: 0.8; }
         .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 24px; letter-spacing: 3px; margin: 0; }
-        .form-section { background: rgba(255,255,255,0.02); padding: 20px 30px; border-radius: 20px; border: 1px solid #222; margin-bottom: 15px; }
-        label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
-        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; transition: border-color 0.3s; }
+        .form-section { background: rgba(255,255,255,0.02); padding: 25px 35px; border-radius: 20px; border: 1px solid #222; margin-bottom: 20px; }
+        label { display: block; font-size: 13px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
+        input, select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 16px; border-radius: 10px; font-size: 16px; box-sizing: border-box; transition: border-color 0.3s; }
         input[readonly] { background: #111; color: #777; cursor: not-allowed; }
         .input-error { border-color: var(--red-error) !important; }
         .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 20px auto 0; display: block; transition: 0.4s; }
         .btn-cancel-elite:disabled { background: transparent; color: #444; border-color: #222; cursor: not-allowed; }
-        .btn-remove { background: none; color: #d9534f; border: 1px solid #d9534f; border-radius: 8px; cursor: pointer; height: 46px; width: 100%; display: flex; align-items: center; justify-content: center; }
-        .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); width: 100%; padding: 10px; cursor: pointer; border-radius: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-top: 10px; }
+        .btn-remove { background: none; color: #d9534f; border: 1px solid #d9534f; border-radius: 8px; cursor: pointer; height: 53px; width: 100%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); width: 100%; padding: 12px; cursor: pointer; border-radius: 8px; font-size: 13px; font-weight: 700; text-transform: uppercase; margin-top: 10px; }
         .btn-add:disabled { border-color: #444; color: #444; cursor: not-allowed; }
-        .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 12px; text-transform: uppercase; width: 100%; margin-bottom: 15px; font-weight: 700; }
-        .btn-add-small:disabled { border-color: #444; color: #444; cursor: not-allowed; }
-        #opModal .modal-content, #prefacturaModal .modal-content { width: 1350px; }
+        #opModal .modal-content, #prefacturaModal .modal-content { width: 90%; max-width: 1600px; }
         .grid-inputs { display: grid; grid-template-columns: 1.2fr 2fr 1fr 1fr 40px; gap: 12px; margin-bottom: 12px; align-items: end; }
         .summary-box { background: #000; padding: 25px 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2); display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 20px; }
         .sum-item { text-align: center; border-right: 1px solid #222; padding: 0 5px; } .sum-item:last-child { border-right: none; }
@@ -61,24 +59,25 @@
         .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS ADICIONALES v13.0 --- */
-        .pax-grid { display: grid; grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr 1fr 40px; gap: 10px; align-items: center; margin-bottom: 10px;}
-        .pax-grid > div { position: relative; }
-        .pax-grid label, .pkg-grid label, .single-grid label { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; margin-bottom: 4px; }
-        .pax-grid input, .pax-grid select { padding: 10px; font-size: 13px; border-radius: 6px;}
+        /* --- ESTILOS ADICIONALES v13.1 --- */
+        .form-section-header { font-family:'Cinzel', serif; color:var(--gold-soft); margin-top:0; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 25px; font-size: 18px; }
+        .grid-header label { font-size: 11px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; margin-bottom: 4px; }
         
-        .pkg-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr 40px; gap: 10px; align-items: center; margin-bottom: 10px; }
-        .single-grid { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 40px; gap: 10px; align-items: center; margin-bottom: 10px; }
-        
-        .prefactura-summary { background: #000; padding: 20px; border-radius: 15px; border-top: 2px solid var(--gold-metalic); margin-top: 25px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; }
+        .pkg-grid { display: grid; grid-template-columns: 2.5fr 1fr 0.8fr 0.8fr 1fr 1.2fr 50px; gap: 15px; align-items: end; margin-bottom: 15px; }
+        .single-grid { display: grid; grid-template-columns: 2.5fr 1.5fr 1fr 1fr 50px; gap: 15px; align-items: end; margin-bottom: 15px; }
+        .pax-grid { display: grid; grid-template-columns: 3fr 1.5fr 1.5fr 1fr 1fr 50px; gap: 15px; align-items: center; margin-bottom: 15px; }
+
+        .prefactura-summary { background: #000; padding: 25px; border-radius: 15px; border-top: 2px solid var(--gold-metalic); margin-top: 30px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; }
         .prefactura-summary > div { border-right: 1px solid #333; }
         .prefactura-summary > div:last-child { border-right: none; }
         #prefactura-gran-total { color: var(--gold-metalic); font-weight: bold; }
         .btn-secondary { background: transparent; color: var(--gold-metalic); border: 1px solid var(--gold-metalic); padding: 14px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; transition: 0.3s; }
         .btn-secondary:hover { background: rgba(212, 175, 55, 0.1); }
         .action-buttons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
-        .form-section-header { font-family:'Cinzel'; color:var(--gold-soft); margin-top:0; letter-spacing: 1.5px; border-bottom: 1px solid #333; padding-bottom: 10px; margin-bottom: 20px; font-size: 16px; }
-        .btn-sync { background: transparent; border: 1px solid var(--gold-metalic); color: var(--gold-metalic); width: 100%; padding: 12px; cursor: pointer; border-radius: 8px; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-top: 10px; }
+
+        .pax-grid input:focus { border-color: var(--gold-metalic); }
+        .pax-grid.active-pax { background: rgba(212, 175, 55, 0.05); border-radius: 10px; padding: 5px; margin-left: -5px; margin-right: -5px; }
+
     </style>
 </head>
 <body>
@@ -101,7 +100,7 @@
         <div class="table-container"><table><thead><tr><th>ID Aliado</th><th>Categoría</th><th>Nombre Legal</th><th>RIF / Tax ID</th><th>País</th><th>Acción</th></tr></thead><tbody id="cuerpo-tabla-prov"></tbody></table></div>
     </div>
 
-    <!-- VISTA #3: PRE-FACTURACIÓN (EVOLUCIÓN v13.0) -->
+    <!-- VISTA #3: PRE-FACTURACIÓN -->
     <div id="view-facturacion" class="view-section">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;"><h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">ORQUESTACIÓN DE <span style="color:var(--gold-metalic)">PRE-FACTURACIÓN</span></h1><button class="btn-gold" onclick="openModal('prefacturaModal')">Nueva Cotización +</button></div>
         <div class="table-container"><table><thead><tr><th>ID Pre-Factura</th><th>Cliente / Pagador</th><th>Fecha Emisión</th><th>Monto Total</th><th>Estatus</th></tr></thead><tbody id="cuerpo-tabla-factura"></tbody></table></div>
@@ -126,56 +125,53 @@
             <hr class="gold-divider"><div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div><hr class="gold-divider">
             <div class="warning-box" style="margin-top:20px;"><span style="font-size: 20px;">⚠️</span><p style="font-size: 11px; margin: 0; color: #f8d7da;"><b>POLÍTICA DE INTEGRIDAD:</b> NOMBRE, RIF Y PAÍS SON OBLIGATORIOS.</p></div>
             <div class="form-section"><div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;"><div><label>Categoría *</label><select id="prov_cat"><option value="HOTEL">🏨 HOTEL</option><option value="AGENCIA">🏢 AGENCIA</option><option value="FREELANCER">👨‍💻 FREELANCER</option><option value="TRASLADO">🚐 TRASLADO</option><option value="SEGURO">🛡️ SEGURO</option></select></div><div><label>Nombre Legal *</label><input type="text" id="prov_nombre" placeholder="NOMBRE LEGAL"></div><div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="RIF / TAX ID"></div></div></div>
-            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:20px;"><div class="form-section"><label>Canales de Telefonía / WhatsApp</label><div id="phone-container"></div><button type="button" class="btn-add-small" onclick="addDynamicField('phone-container', 'phone')">+ Agregar Teléfono</button><label style="margin-top:15px;">Canales de Correo Electrónico *</label><div id="email-container"></div><button type="button" class="btn-add-small" onclick="addDynamicField('email-container', 'email')">+ Agregar Correo</button></div><div class="form-section"><label>Ubicación y Operación</label><div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom:15px;"><div><label>País *</label><input type="text" id="prov_pais" placeholder="PAÍS"></div><div><label>Moneda Base *</label><select id="prov_moneda"><option value="USD ($)">USD ($)</option><option value="VES (Bs.)">VES (Bs.)</option><option value="EUR (€)">EUR (€)</option></select></div></div><div style="background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);"><p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.5;"><b>RED GLOBAL ORBIS:</b> Este proveedor será integrado a la red maestra para orquestación internacional.</p></div></div></div>
+            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:20px;"><div class="form-section"><label>Canales de Telefonía / WhatsApp</label><div id="phone-container"></div><button type="button" class="btn-add" onclick="addDynamicField('phone-container', 'phone')">+ Agregar Teléfono</button><label style="margin-top:15px;">Canales de Correo Electrónico *</label><div id="email-container"></div><button type="button" class="btn-add" onclick="addDynamicField('email-container', 'email')">+ Agregar Correo</button></div><div class="form-section"><label>Ubicación y Operación</label><div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom:15px;"><div><label>País *</label><input type="text" id="prov_pais" placeholder="PAÍS"></div><div><label>Moneda Base *</label><select id="prov_moneda"><option value="USD ($)">USD ($)</option><option value="VES (Bs.)">VES (Bs.)</option><option value="EUR (€)">EUR (€)</option></select></div></div><div style="background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);"><p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.5;"><b>RED GLOBAL ORBIS:</b> Este proveedor será integrado a la red maestra para orquestación internacional.</p></div></div></div>
             <button id="btn-sync-prov" class="btn-gold" style="padding: 22px; width:100%;" onclick="iniciarGuardadoProv()">REGISTRAR EN RED MAESTRA</button>
             <button id="btn-cancel-prov" class="btn-cancel-elite" onclick="closeModal('provModal')">Cancelar</button>
         </div>
     </div>
 
-    <!-- MODAL #3: PRE-FACTURACIÓN (NUEVO v13.0 - MODO ESPEJO) -->
+    <!-- MODAL #3: PRE-FACTURACIÓN (v13.1 - TABLERO PANORÁMICO) -->
     <div id="prefacturaModal" class="modal">
         <div class="modal-content">
-            <hr class="gold-divider"><div class="modal-title">COTIZADOR ESTRATÉGICO / PRE-FACTURA</div><hr class="gold-divider">
-            <form id="facturaForm">
+            <hr class="gold-divider"><div class="modal-title">TABLERO DE COTIZACIÓN PANORÁMICO</div><hr class="gold-divider">
+            <form id="facturaForm" oninput="sincronizarEspejo()">
                 <div class="form-section">
-                    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
                         <div><label>Cliente / Razón Social *</label><input type="text" id="fact_cli_nombre" placeholder="NOMBRE DEL CLIENTE"></div>
                         <div><label>RIF / ID Fiscal *</label><input type="text" id="fact_cli_rif" placeholder="ID FISCAL"></div>
                         <div><label>Moneda *</label><select id="fact_moneda"><option value="$">USD ($)</option><option value="€">EUR (€)</option><option value="Bs.">Bs. (VE)</option></select></div>
                     </div>
                 </div>
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <!-- ZONA A Y B: CARGA DE PAQUETES Y SERVICIOS -->
-                    <div>
-                        <div class="form-section" id="paquetes-section">
-                            <h3 class="form-section-header">ZONA A: PAQUETES / HOTELES</h3>
-                            <div id="paquetes-container-header" class="pkg-grid" style="padding: 0 10px; margin-bottom: 10px;">
-                                <label>Concepto</label><label>Noches *</label><label>Precio Base</label><label>Comisión</label><label>Total</label><span></span>
-                            </div>
-                            <div id="paquetes-container"></div>
-                            <button type="button" class="btn-add-small" onclick="agregarPaquete()">+ Agregar Paquete</button>
-                        </div>
-                        <div class="form-section" id="singles-section">
-                            <h3 class="form-section-header">ZONA B: CARGA INDIVIDUAL</h3>
-                             <div id="singles-container-header" class="single-grid" style="padding: 0 10px; margin-bottom: 10px;">
-                                <label>Proveedor</label><label>Servicio</label><label>Costo</label><label>Comisión</label><span></span>
-                            </div>
-                            <div id="singles-container"></div>
-                            <button type="button" class="btn-add-small" onclick="agregarServicioIndividual()">+ Agregar Servicio</button>
-                        </div>
-                        <button type="button" class="btn-sync" onclick="sincronizarACotizador()">SINCRONIZAR A DESGLOSE DE PASAJEROS  зеркало</button>
+                <!-- ZONA A: PAQUETES / HOTELES -->
+                <div class="form-section" id="paquetes-section">
+                    <h3 class="form-section-header">ZONA A: PAQUETES / HOTELES</h3>
+                    <div id="paquetes-container-header" class="grid-header pkg-grid" style="padding: 0 10px; margin-bottom: 10px;">
+                        <label>Concepto / Hotel</label><label>Servicio</label><label>Días</label><label>Noches *</label><label>Precio Base</label><label>Comisión</label><span></span>
                     </div>
+                    <div id="paquetes-container"></div>
+                    <button type="button" class="btn-add" onclick="agregarPaquete()">+ Agregar Paquete de Hotel</button>
+                </div>
 
-                    <!-- ZONA C: DESGLOSE PAX / MODO ESPEJO -->
-                    <div class="form-section">
-                        <h3 class="form-section-header">ZONA C: DESGLOSE PAX (MODO ESPEJO)</h3>
-                        <div id="pax-container-header" class="pax-grid" style="padding: 0 10px; margin-bottom: 10px;">
-                            <label>Nombre del PAX</label><label>ID / DNI</label><label>Tipo de Servicio</label><label>Costo Proveedor</label><label>Comisión Aliado</label><label>Total</label><span></span>
-                        </div>
-                        <div id="pax-container"></div>
-                        <button type="button" class="btn-add" onclick="agregarPax()">+ Agregar Pasajero Manual</button>
+                <!-- ZONA B: CARGA INDIVIDUAL -->
+                <div class="form-section" id="singles-section">
+                    <h3 class="form-section-header">ZONA B: SERVICIOS INDIVIDUALES (VUELOS, TRASLADOS, ETC)</h3>
+                     <div id="singles-container-header" class="grid-header single-grid" style="padding: 0 10px; margin-bottom: 10px;">
+                        <label>Proveedor</label><label>Servicio</label><label>Costo</label><label>Comisión</label><span></span>
                     </div>
+                    <div id="singles-container"></div>
+                    <button type="button" class="btn-add" onclick="agregarServicioIndividual()">+ Agregar Servicio Individual</button>
+                </div>
+
+                <!-- ZONA C: DESGLOSE PAX / MODO ESPEJO -->
+                <div class="form-section">
+                    <h3 class="form-section-header">ZONA C: DESGLOSE FINAL POR PASAJERO (MODO ESPEJO)</h3>
+                    <div id="pax-container-header" class="grid-header pax-grid" style="padding: 0 10px; margin-bottom: 10px;">
+                        <label>Nombre del Pasajero (Editable)</label><label>ID / DNI (Editable)</label><label>Inventario (Automático)</label><label>Costo Total (Automático)</label><label>Comisión Total (Automático)</label><span></span>
+                    </div>
+                    <div id="pax-container"></div>
+                    <button type="button" class="btn-add" onclick="agregarPax()">+ Agregar Pasajero</button>
                 </div>
 
                 <div class="prefactura-summary">
@@ -194,7 +190,7 @@
 
 
     <!-- ======================================================================= -->
-    <!--                         JAVASCRIPT UNIFICADO (v13.0)                    -->
+    <!--                         JAVASCRIPT UNIFICADO (v13.1)                    -->
     <!-- ======================================================================= -->
     <script>
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
@@ -241,16 +237,15 @@
                 agregarPaquete();
                 agregarServicioIndividual();
                 agregarPax();
-                actualizarResumenPrefactura();
+                sincronizarEspejo();
             }
         }
         
         // =======================================================================
-        //              LÓGICA #1: CERTIFICACIÓN GLOBAL (CÁLCULO CORREGIDO)
+        //              LÓGICA #1: CERTIFICACIÓN GLOBAL (CÓDIGO ÍNTEGRO)
         // =======================================================================
         function gestionarEstadoCobertura(esInterno) { const p = document.getElementById('cobertura_proveedor'), b = document.getElementById('cobertura_base'), c = document.getElementById('cobertura_comision'), i = document.getElementById('cobertura_icon'); if (esInterno) { p.value = 'ORBIS BRAIN NETWORK'; b.value = '2.00'; c.value = '0.00'; i.innerHTML = '🔒'; [p, b, c].forEach(el => el.setAttribute('readonly', true)); } else { p.value = ''; b.value = '0.00'; c.value = '0.00'; i.innerHTML = '✍️'; p.placeholder = 'NOMBRE PROVEEDOR *'; [p, b, c].forEach(el => el.removeAttribute('readonly')); } calcularTodo(); }
         function agregarFila() { const div = document.createElement('div'); div.className = 'grid-inputs servicio-row'; div.innerHTML = `<div><select class="tipo-srv" onchange="calcularTodo()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Otro">➕ Otro</option></select></div><div><input type="text" class="prov-name" placeholder="NOMBRE PROVEEDOR *"></div><div><input type="number" class="monto-srv" oninput="calcularTodo()" placeholder="0.00"></div><div><input type="number" class="comision-ind" oninput="calcularTodo()" placeholder="0.00"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`; document.getElementById('filas-dinamicas').appendChild(div); }
-        
         function confirmarRegistro() {
             let esValido = true;
             document.querySelectorAll('#opModal .input-error').forEach(el => el.classList.remove('input-error'));
@@ -264,7 +259,6 @@
             if (numTasas === 0 || (primeraTasa && (parseFloat(primeraTasa.value) || 0) === 0)) { alert("🔴 VALIDACIÓN BLOQUEADA: Debe agregar y especificar el valor de al menos una tasa de impuesto para poder certificar."); return; } 
             if (confirm("🏛️ ¿Confirma la sincronización de esta certificación? Los datos NO podrán ser editados ni eliminados una vez registrados en ORBIS BRAIN NETWORK.")) { enviarCertificacion(); }
         }
-        
         async function enviarCertificacion() {
             const modalButtons = document.querySelectorAll('#opModal button');
             const btnSync = document.getElementById('btn-sync-cert');
@@ -273,14 +267,7 @@
             alert("🏛️ ORBIS BRAIN está procesando su certificación. Por favor, espere un momento...");
             const parseVal = (selector) => parseFloat(document.getElementById(selector).textContent.split(' ')[0]) || 0;
             const moneda = document.getElementById('moneda_global').value;
-            const datos = {
-                idOperacion: `CERT-${Math.floor(10000 + Math.random() * 90000)}`,
-                aliado: document.getElementById('aliado_name').value,
-                moneda: moneda,
-                montoImpuestos: parseVal('res-imp'),
-                estatus: 'PENDIENTE',
-                totalCertificado: parseVal('res-total')
-            };
+            const datos = { idOperacion: `CERT-${Math.floor(10000 + Math.random() * 90000)}`, aliado: document.getElementById('aliado_name').value, moneda: moneda, montoImpuestos: parseVal('res-imp'), estatus: 'PENDIENTE', totalCertificado: parseVal('res-total') };
             try { 
                 const response = await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', cache: 'no-cache', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({action: 'registrarCertificacion', data: datos}) }); 
                 alert("✅ SINCRONIZACIÓN EXITOSA: La certificación ha sido registrada en ORBIS BRAIN NETWORK.");
@@ -297,7 +284,6 @@
         function agregarTax(nombre = '', valor = '', esPredeterminado = false) { const div = document.createElement('div'); div.className = 'tax-grid tax-row'; div.style.display = 'grid'; div.style.gridTemplateColumns = '30px 2fr 1fr 40px'; div.style.gap = '12px'; div.style.marginBottom = '12px'; const pinActivoClass = esPredeterminado ? 'active' : ''; div.innerHTML = `<button type="button" class="pin-btn ${pinActivoClass}" onclick="gestionarPin(this)">📌</button><div><input type="text" class="tax-name" placeholder="NOMBRE IMPUESTO *" list="sugerencias_impuestos" value="${nombre}"></div><div style="position:relative;"><input type="number" class="tax-val tax-input" oninput="calcularTodo()" placeholder="0.00" value="${valor}"><span style="position:absolute; right:15px; top: 50%; transform: translateY(-50%); color:var(--gold-soft); font-weight:bold;">%</span></div><button type="button" class="btn-remove" onclick="eliminarFilaImpuesto(this)">X</button>`; document.getElementById('contenedor-taxes').appendChild(div); calcularTodo(); }
         function eliminarFilaImpuesto(btn) { const fila = btn.closest('.tax-row'); const nombre = fila.querySelector('.tax-name').value; const esFijado = fila.querySelector('.pin-btn').classList.contains('active'); if (nombre && esFijado) { let impuestosGuardados = obtenerImpuestosGuardados(); const impuestosActualizados = impuestosGuardados.filter(imp => imp.nombre.toLowerCase() !== nombre.toLowerCase()); guardarImpuestos(impuestosActualizados); } fila.remove(); calcularTodo(); }
         function cambiarMoneda() { const sym = document.getElementById('moneda_global').value; document.querySelectorAll('.curr-sym').forEach(el => el.innerText = sym); const dl = document.getElementById('sugerencias_impuestos'); dl.innerHTML = ""; if (SUGERENCIAS[sym]) { SUGERENCIAS[sym].forEach(s => { const opt = document.createElement('option'); opt.value = s; dl.appendChild(opt); }); } calcularTodo(); }
-        
         function calcularTodo() {
             const sym = document.getElementById('moneda_global').value;
             const tasaCambio = TASAS[sym] || 1.00;
@@ -313,8 +299,6 @@
             document.getElementById('comision_aliado').value = totalComisiones.toFixed(2);
             
             const baseImponibleTotal = totalBaseServicios + totalComisiones;
-            
-            // --- CÁLCULO EN CASCADA CORREGIDO ---
             let subtotalConImpuestos = baseImponibleTotal;
             let totalImpuestos = 0;
             document.querySelectorAll('.tax-row').forEach(row => {
@@ -348,19 +332,19 @@
         function iniciarGuardadoProv() { let esValido = true; document.querySelectorAll('#provModal .input-error').forEach(el => el.classList.remove('input-error')); const camposTextoRequeridos = [document.getElementById('prov_nombre'), document.getElementById('prov_rif'), document.getElementById('prov_pais')]; for (const campo of camposTextoRequeridos) { if (!campo.value.trim()) { campo.classList.add('input-error'); esValido = false; } } if (!esValido) { return alert("⚠️ BLOQUEO: NOMBRE, RIF Y PAÍS SON OBLIGATORIOS."); } const primerCorreoInput = document.querySelector('#email-container .prov-email'); if (!primerCorreoInput || !primerCorreoInput.value.trim()) { if(primerCorreoInput) primerCorreoInput.classList.add('input-error'); esValido = false; } if (!esValido) { return alert("⚠️ BLOQUEO: Para integrar un aliado a la Red Maestra es obligatorio registrar al menos un Canal de Correo Electrónico."); } if (confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro del nuevo aliado en la Red Maestra?")) { ejecutarGuardadoProv(); } }
         async function ejecutarGuardadoProv() { const modalButtons = document.querySelectorAll('#provModal button'); const btnSync = document.getElementById('btn-sync-prov'); modalButtons.forEach(btn => btn.disabled = true); btnSync.textContent = '🚀 REGISTRANDO EN ORBIS BRAIN NETWORK...'; alert("🏛️ ORBIS BRAIN NETWORK está procesando el registro del nuevo aliado. Por favor, espere un momento..."); const telefonos = Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => { const esWhatsapp = document.querySelectorAll('.is-whatsapp')[i].value; return `${input.value} (WHATSAPP: ${esWhatsapp})`; }).join('; '); const correos = Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; '); const datos = { ID_ALIADO: `ORB-${String(document.getElementById('cuerpo-tabla-prov').rows.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: telefonos, CORREOS: correos }; try { const response = await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', cache: 'no-cache', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'registrarProveedor', data: datos }) }); alert("✅ REGISTRO EN RED MAESTRA EXITOSO."); const tbody = document.getElementById('cuerpo-tabla-prov'); const newRow = tbody.insertRow(0); newRow.innerHTML = `<td>${datos.ID_ALIADO}</td><td>${datos.CATEGORIA}</td><td style="font-weight:bold; letter-spacing:1px;">${datos.NOMBRE_LEGAL}</td><td>${datos.RIF_TAX_ID}</td><td>${datos.PAIS}</td><td><button onclick="alert('⚠️ ACCESO DENEGADO: Solo el Administrador de la Red Maestra o el autor original pueden dar de baja a un aliado.')" style="background:none; border:none; color:#666; cursor:not-allowed; font-size:10px; opacity: 0.5;">ELIMINAR</button></td>`; cerrarModalDirecto('provModal'); } catch (error) { console.error('Error de sincronización de proveedor:', error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado en la Red Maestra."); } finally { modalButtons.forEach(btn => btn.disabled = false); btnSync.textContent = 'REGISTRAR EN RED MAESTRA'; } }
         
-        // --- LÓGICA #3: PRE-FACTURACIÓN (REINGENIERÍA v13.0) ---
-        
+        // --- LÓGICA #3: PRE-FACTURACIÓN (REINGENIERÍA v13.1) ---
         function agregarPaquete() {
             const container = document.getElementById('paquetes-container');
             const div = document.createElement('div');
             div.className = 'pkg-grid';
             div.innerHTML = `
-                <input type="text" class="pkg-concepto" placeholder="EJ: HOTEL JW MARRIOTT" value="HOTEL">
-                <input type="number" class="pkg-noches" placeholder="NOCHES" value="1" oninput="calcularTotalPaquete(this.closest('.pkg-grid'))">
-                <input type="number" class="pkg-precio" placeholder="0.00" oninput="calcularTotalPaquete(this.closest('.pkg-grid'))">
-                <input type="number" class="pkg-comision" placeholder="0.00" oninput="calcularTotalPaquete(this.closest('.pkg-grid'))">
-                <input type="number" class="pkg-total" placeholder="0.00" readonly>
-                <button type="button" class="btn-remove" onclick="this.closest('.pkg-grid').remove()">X</button>`;
+                <input type="text" class="pkg-concepto" placeholder="EJ: HOTEL JW MARRIOTT">
+                <select class="pkg-servicio"><option value="Hotel" selected>🏨 HOTEL</option><option value="Tour">🏞️ TOUR</option></select>
+                <input type="number" class="pkg-dias" placeholder="DÍAS" value="2">
+                <input type="number" class="pkg-noches" placeholder="NOCHES" value="1">
+                <input type="number" class="pkg-precio" placeholder="0.00">
+                <input type="number" class="pkg-comision" placeholder="0.00">
+                <button type="button" class="btn-remove" onclick="this.closest('.pkg-grid').remove(); sincronizarEspejo();">X</button>`;
             container.appendChild(div);
         }
 
@@ -373,7 +357,7 @@
                 <select class="single-servicio"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Seguro">🛡️ Seguro</option><option value="Otro">➕ Otro</option></select>
                 <input type="number" class="single-costo" placeholder="0.00">
                 <input type="number" class="single-comision" placeholder="0.00">
-                <button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove()">X</button>`;
+                <button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove(); sincronizarEspejo();">X</button>`;
             container.appendChild(div);
         }
 
@@ -382,95 +366,73 @@
             const div = document.createElement('div');
             div.className = 'pax-grid';
             div.innerHTML = `
-                <div><input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"></div>
-                <div><input type="text" class="pax-id" placeholder="ID / DNI"></div>
-                <div><input type="text" class="pax-servicio-desc" placeholder="SERVICIO" oninput="actualizarResumenPrefactura()"></div>
-                <div><input type="number" class="pax-costo" placeholder="0.00" oninput="calcularTotalPax(this.closest('.pax-grid'))"></div>
-                <div><input type="number" class="pax-comision" placeholder="0.00" oninput="calcularTotalPax(this.closest('.pax-grid'))"></div>
-                <div><input type="number" class="pax-total" placeholder="0.00" readonly></div>
-                <button type="button" class="btn-remove" onclick="this.closest('.pax-grid').remove(); actualizarResumenPrefactura();">X</button>`;
+                <input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO">
+                <input type="text" class="pax-id" placeholder="ID / DNI">
+                <input type="text" class="pax-inventario" placeholder="INVENTARIO" readonly>
+                <input type="number" class="pax-costo" placeholder="0.00" readonly>
+                <input type="number" class="pax-comision" placeholder="0.00" readonly>
+                <button type="button" class="btn-remove" onclick="if(document.querySelectorAll('#pax-container .pax-grid').length > 1) { this.closest('.pax-grid').remove(); sincronizarEspejo(); } else { alert('Debe existir al menos un pasajero.'); }">X</button>`;
             container.appendChild(div);
+            // Listener para marcar como activo al hacer clic en los campos editables
+            div.querySelectorAll('.pax-nombre, .pax-id').forEach(input => {
+                input.addEventListener('focus', () => {
+                    document.querySelectorAll('.pax-grid').forEach(row => row.classList.remove('active-pax'));
+                    div.classList.add('active-pax');
+                });
+            });
+            if(container.children.length === 1) div.classList.add('active-pax'); // Marcar el primero como activo
         }
+        
+        function sincronizarEspejo() {
+            let totalCosto = 0, totalComision = 0;
+            const inventario = [];
 
-        function calcularTotalPaquete(fila) {
-            const noches = parseFloat(fila.querySelector('.pkg-noches').value) || 0;
-            const precio = parseFloat(fila.querySelector('.pkg-precio').value) || 0;
-            const comision = parseFloat(fila.querySelector('.pkg-comision').value) || 0;
-            if(noches <= 0) { fila.querySelector('.pkg-noches').value = 1; }
-            fila.querySelector('.pkg-total').value = ((precio * noches) + comision).toFixed(2);
-        }
-
-        function calcularTotalPax(fila) {
-            const costo = parseFloat(fila.querySelector('.pax-costo').value) || 0;
-            const comision = parseFloat(fila.querySelector('.pax-comision').value) || 0;
-            fila.querySelector('.pax-total').value = (costo + comision).toFixed(2);
-            actualizarResumenPrefactura();
-        }
-
-        function sincronizarACotizador() {
-            const servicios = [];
-            
             // Recolectar de ZONA A (Paquetes)
             document.querySelectorAll('#paquetes-container .pkg-grid').forEach(fila => {
-                const concepto = fila.querySelector('.pkg-concepto').value;
-                const noches = parseFloat(fila.querySelector('.pkg-noches').value) || 1;
+                const concepto = fila.querySelector('.pkg-concepto').value.trim();
+                const noches = parseFloat(fila.querySelector('.pkg-noches').value) || 0;
                 const precio = parseFloat(fila.querySelector('.pkg-precio').value) || 0;
                 const comision = parseFloat(fila.querySelector('.pkg-comision').value) || 0;
                 if(precio > 0 || comision > 0) {
-                    servicios.push({ concepto: concepto, costo: precio * noches, comision: comision });
+                    totalCosto += precio * (noches > 0 ? noches : 1);
+                    totalComision += comision;
+                    if(concepto) inventario.push(concepto);
                 }
             });
 
             // Recolectar de ZONA B (Individual)
             document.querySelectorAll('#singles-container .single-grid').forEach(fila => {
-                const proveedor = fila.querySelector('.single-proveedor').value;
-                const servicio = fila.querySelector('.single-servicio').value;
+                const proveedor = fila.querySelector('.single-proveedor').value.trim();
                 const costo = parseFloat(fila.querySelector('.single-costo').value) || 0;
                 const comision = parseFloat(fila.querySelector('.single-comision').value) || 0;
                 if (costo > 0 || comision > 0) {
-                    servicios.push({ concepto: proveedor || servicio, costo: costo, comision: comision });
+                    totalCosto += costo;
+                    totalComision += comision;
+                    if(proveedor) inventario.push(proveedor);
                 }
             });
 
-            if (servicios.length === 0) {
-                alert("⚠️ No hay servicios con montos en la Zona A o B para sincronizar.");
-                return;
+            const inventarioStr = inventario.join(' + ') || 'N/A';
+            const paxActivo = document.querySelector('.pax-grid.active-pax');
+
+            if (paxActivo) {
+                paxActivo.querySelector('.pax-inventario').value = inventarioStr;
+                paxActivo.querySelector('.pax-costo').value = totalCosto.toFixed(2);
+                paxActivo.querySelector('.pax-comision').value = totalComision.toFixed(2);
             }
-
-            // Buscar primera fila PAX vacía
-            let filaVacia = Array.from(document.querySelectorAll('#pax-container .pax-grid')).find(fila => {
-                const costo = fila.querySelector('.pax-costo').value;
-                const comision = fila.querySelector('.pax-comision').value;
-                return (!costo || parseFloat(costo) === 0) && (!comision || parseFloat(comision) === 0);
-            });
-
-            // Si no hay fila vacía, se agrega una nueva
-            if (!filaVacia) {
-                agregarPax();
-                filaVacia = document.querySelector('#pax-container .pax-grid:last-child');
-            }
-
-            // Combinar todos los servicios en la fila vacía encontrada
-            const totalCostoSync = servicios.reduce((acc, srv) => acc + srv.costo, 0);
-            const totalComisionSync = servicios.reduce((acc, srv) => acc + srv.comision, 0);
-            const conceptos = servicios.map(s => s.concepto).join(' + ');
-
-            filaVacia.querySelector('.pax-servicio-desc').value = conceptos;
-            filaVacia.querySelector('.pax-costo').value = totalCostoSync.toFixed(2);
-            filaVacia.querySelector('.pax-comision').value = totalComisionSync.toFixed(2);
-            calcularTotalPax(filaVacia);
+            actualizarResumenPrefactura();
         }
 
         function actualizarResumenPrefactura() {
-            let totalCostos = 0, totalComisiones = 0;
+            let granTotalCostos = 0, granTotalComisiones = 0;
             document.querySelectorAll('#pax-container .pax-grid').forEach(fila => {
-                totalCostos += parseFloat(fila.querySelector('.pax-costo').value) || 0;
-                totalComisiones += parseFloat(fila.querySelector('.pax-comision').value) || 0;
+                granTotalCostos += parseFloat(fila.querySelector('.pax-costo').value) || 0;
+                granTotalComisiones += parseFloat(fila.querySelector('.pax-comision').value) || 0;
             });
-            const granTotal = totalCostos + totalComisiones;
+            const granTotal = granTotalCostos + granTotalComisiones;
             const moneda = document.getElementById('fact_moneda').value || '$';
-            document.getElementById('prefactura-total-costos').textContent = `${totalCostos.toFixed(2)} ${moneda}`;
-            document.getElementById('prefactura-total-comisiones').textContent = `${totalComisiones.toFixed(2)} ${moneda}`;
+            document.getElementById('prefactura-total-costos').textContent = `${granTotalCostos.toFixed(2)} ${moneda}`;
+            document.getElementById('prefactura-total-comisiones').textContent = `${granTotalComisiones.toFixed(2)} ${moneda}`;
             document.getElementById('prefactura-gran-total').textContent = `${granTotal.toFixed(2)} ${moneda}`;
         }
         
@@ -480,27 +442,27 @@
             const clienteNombre = document.getElementById('fact_cli_nombre').value;
             const clienteRif = document.getElementById('fact_cli_rif').value;
             if (!clienteNombre.trim() || !clienteRif.trim()) { alert("🔴 BLOQUEO DE INTEGRIDAD: El Nombre del Cliente y su RIF / ID Fiscal son obligatorios."); return; }
-            const filasPax = document.querySelectorAll('#pax-container .pax-grid');
-            if (filasPax.length === 0) { alert("🔴 BLOQUEO DE INTEGRIDAD: Debe haber al menos un pasajero."); return; }
             
             const granTotal = parseFloat(document.getElementById('prefactura-gran-total').textContent.split(' ')[0]);
-            if (granTotal <= 0) { alert("🔴 BLOQUEO DE INTEGRIDAD: El monto total no puede ser cero. Verifique el desglose en la Zona C."); return; }
+            if (granTotal <= 0) { alert("🔴 BLOQUEO DE INTEGRIDAD: El monto total no puede ser cero. Verifique las Zonas A, B y C."); return; }
             
             openModal('opModal');
             document.getElementById('aliado_name').value = clienteNombre;
             document.getElementById('aliado_rif').value = clienteRif;
             document.getElementById('filas-dinamicas').innerHTML = '';
             
-            filasPax.forEach((fila) => {
+            document.querySelectorAll('#pax-container .pax-grid').forEach((fila) => {
                 const costo = parseFloat(fila.querySelector('.pax-costo').value) || 0;
                 const comision = parseFloat(fila.querySelector('.pax-comision').value) || 0;
                 if (costo > 0 || comision > 0) {
-                     const desc = fila.querySelector('.pax-servicio-desc').value || 'SERVICIO GENERAL';
+                     const desc = fila.querySelector('.pax-inventario').value || 'SERVICIO GENERAL';
+                     const nombrePax = fila.querySelector('.pax-nombre').value || 'PAX S/N';
+                     const proveedorNombre = `${desc} (${nombrePax})`;
                      const nuevaFila = document.createElement('div');
                      nuevaFila.className = 'grid-inputs servicio-row';
                      nuevaFila.innerHTML = `
                          <div><select class="tipo-srv"><option>➕ OTRO</option></select></div>
-                         <div><input type="text" class="prov-name" value="${desc}"></div>
+                         <div><input type="text" class="prov-name" value="${proveedorNombre}"></div>
                          <div><input type="number" class="monto-srv" value="${costo.toFixed(2)}"></div>
                          <div><input type="number" class="comision-ind" value="${comision.toFixed(2)}"></div>
                          <button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodo();">X</button>`;
