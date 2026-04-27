@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v15.1</title>
+    <title>ORBIS BRAIN | Master v15.3</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v15.1) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v15.3) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -16,37 +16,33 @@
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; height: 100vh; overflow: hidden; }
         .hidden { display: none !important; }
 
-        /* --- V15.1: SPLASH SCREEN REFORJADO --- */
+        /* --- V15.3: SPLASH SCREEN --- */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--black-deep);
             z-index: 9999;
-            display: flex; justify-content: center; align-items: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: opacity 0.5s ease-out;
+            cursor: pointer;
         }
         #splash-screen.fade-out { opacity: 0; }
         .splash-block {
-            padding: 40px 80px;
-            text-align: center;
-            outline: 2px solid var(--gold-metalic);
-            outline-offset: -2px;
+            padding: 60px; text-align: center;
+            outline: 2px solid var(--gold-metalic); outline-offset: -2px;
             background-color: var(--black-deep);
+            animation: pulse-border 2.5s infinite;
         }
-        .splash-logo-main {
-            font-family: 'Cinzel', serif; color: var(--gold-metalic);
-            font-size: 50px; letter-spacing: 8px; font-weight: 700;
-            animation: pulse 2.5s infinite;
-            margin-bottom: 10px;
-        }
-        .splash-logo-sub {
+        .splash-logo { width: 400px; height: auto; }
+        .splash-prompt {
             font-family: 'Inter', sans-serif; color: var(--gold-soft);
-            font-size: 14px; letter-spacing: 12px; font-weight: 300;
-            text-transform: uppercase;
-            padding-left: 12px; /* Compensación por el espaciado de la última letra */
+            margin-top: 30px; font-size: 12px; letter-spacing: 2px;
+            text-transform: uppercase; animation: blink 2s linear infinite;
         }
-        @keyframes pulse { 0%, 100% { text-shadow: 0 0 10px #d4af37, 0 0 20px #d4af37; } 50% { text-shadow: 0 0 20px #f1d592, 0 0 40px #f1d592; } }
-        
-        #auth-modal { display: none; /* Inicia oculto */ position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 9998; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
+        @keyframes pulse-border { 0%, 100% { box-shadow: 0 0 10px var(--gold-metalic), 0 0 20px var(--gold-metalic); } 50% { box-shadow: 0 0 20px var(--gold-soft), 0 0 40px var(--gold-soft); } }
+        @keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; } }
+
+        /* --- V15.3: AUTH MODAL --- */
+        #auth-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 9998; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         .auth-content { background: var(--black-deep); padding: 40px 60px; border-radius: 30px; border: 2px solid var(--gold-metalic); text-align: center; width: 100%; max-width: 500px; }
         .auth-content label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; text-align: left; }
         .auth-content input, .auth-content select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; transition: border-color 0.3s; margin-bottom: 20px; }
@@ -54,7 +50,7 @@
         .main-container { display: flex; height: 100vh; }
         .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; z-index: 1000; }
         .logo-container { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 20px; }
-        .logo-text { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 26px; letter-spacing: 4px; font-weight: 700; margin-top: 10px; }
+        .sidebar-logo { width: 120px; height: auto; }
         .nav-btn { background: transparent; border: 1px solid transparent; color: #888; padding: 15px; text-align: left; font-family: 'Cinzel'; font-size: 12px; letter-spacing: 2px; cursor: pointer; transition: 0.3s; margin-bottom: 10px; border-radius: 8px; width: 100%; }
         .nav-btn.active { color: var(--gold-metalic); border: 1px solid var(--gold-metalic); background: rgba(212, 175, 55, 0.1); }
         .view-section { display: none; flex: 1; height: 100vh; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); padding: 50px; }
@@ -66,99 +62,82 @@
         thead { border-bottom: 2px solid var(--gold-metalic); }
         th { text-align: left; color: var(--gold-soft); font-size: 11px; text-transform: uppercase; padding: 15px; letter-spacing: 1px; }
         td { padding: 15px; border-bottom: 1px solid #222; font-size: 13px; }
+        
+        /* --- V15.3: MODAL GENÉRICO --- */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 2000; justify-content: center; align-items: flex-start; backdrop-filter: blur(10px); overflow-y: auto; }
         .modal-content { background: var(--black-deep); padding: 30px 60px; border-radius: 30px; max-height: 96vh; border: 2px solid var(--gold-metalic); }
+        .modal-logo-container { text-align: center; padding: 10px 0 20px; }
+        .modal-logo { width: 80px; height: auto; }
         .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 20px 0; opacity: 0.9; }
         .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 24px; letter-spacing: 3px; margin: 0; }
         
-        #provModal .form-section { background: rgba(255,255,255,0.02); padding: 20px 30px; border-radius: 20px; border: 1px solid #222; margin-bottom: 15px; }
-        #provModal label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
-        #provModal input, #provModal select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; transition: border-color 0.3s; }
+        #opModal .form-section, #provModal .form-section, #cotizadorModal .form-section { background: rgba(255,255,255,0.02); padding: 20px 30px; border-radius: 20px; border: 1px solid #222; margin-bottom: 15px; }
+        #opModal label, #provModal label, #cotizadorModal label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
+        #opModal input, #opModal select, #provModal input, #provModal select, #cotizadorModal input, #cotizadorModal select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; transition: border-color 0.3s; }
+        
         .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); width: 100%; padding: 10px; cursor: pointer; border-radius: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-top: 10px; }
         .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 12px; text-transform: uppercase; width: 100%; margin-bottom: 15px; font-weight: 700; }
-        #provModal .btn-remove { background: none; color: #d9534f; border: 1px solid #d9534f; border-radius: 8px; cursor: pointer; height: 46px; width: 100%; display: flex; align-items: center; justify-content: center; }
+        #opModal .btn-remove, #provModal .btn-remove, #cotizadorModal .btn-remove { background: none; color: #d9534f; border: 1px solid #d9534f; border-radius: 8px; cursor: pointer; height: 46px; width: 100%; display: flex; align-items: center; justify-content: center; }
 
         input[readonly] { background: #111; color: #777; cursor: not-allowed; }
         .input-error { border-color: var(--red-error) !important; }
         .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 20px auto 0; display: block; transition: 0.4s; }
-        .btn-cancel-elite:disabled { background: transparent; color: #444; border-color: #222; cursor: not-allowed; }
-        #provModal .modal-content, #cotizadorModal .modal-content { width: 90%; max-width: 1600px; }
-        .grid-inputs { display: grid; grid-template-columns: 1.2fr 2fr 1fr 1fr 40px; gap: 12px; margin-bottom: 12px; align-items: end; }
         
+        #opModal .modal-content, #provModal .modal-content, #cotizadorModal .modal-content { width: 90%; max-width: 1600px; }
+        .grid-inputs { display: grid; grid-template-columns: 1.2fr 2fr 1fr 1fr 40px; gap: 12px; margin-bottom: 12px; align-items: end; }
         .summary-box { background: #000; padding: 25px 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2); display: grid; gap: 10px; margin-top: 20px; }
         .sum-item { text-align: center; border-right: 1px solid #222; padding: 0 5px; } .sum-item:last-child { border-right: none; }
         .sum-val { display: block; font-size: 20px; font-weight: 800; color: var(--gold-soft); margin-bottom: 5px; }
         .sum-lbl { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; }
-        #cot-gran-total, #cert-total { color: var(--gold-metalic) !important; }
+        
+        #res-ganancia, #res-total, #cot-gran-total { color: var(--gold-metalic) !important; }
         input[type="text"], input[type="email"] { text-transform: uppercase; }
         input[type="number"] { -moz-appearance: textfield; }
         input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0;}
+        .pin-btn { background: none; border: none; font-size: 18px; cursor: pointer; transition: opacity 0.3s; opacity: 0.3; }
+        .pin-btn.active { opacity: 1; }
         #provModal .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS COTIZADOR ESTRATÉGICO --- */
-        #cotizadorModal .modal-content { 
-            margin: 5vh auto;
-            border: 1px solid #333;
-            outline: 2px solid var(--gold-metalic);
-            outline-offset: -2px;
-        }
-        #cotizadorModal .modal-title-wrapper { padding-top: 20px; }
-        #cotizadorModal .form-section { background: rgba(255,255,255,0.02); padding: 25px 35px; border-radius: 20px; border: 1px solid #222; margin-bottom: 20px; }
-        #cotizadorModal .form-section-header { font-family:'Cinzel', serif; color:var(--gold-soft); margin-top:0; letter-spacing: 2px; border-bottom: 1px solid #333; padding-bottom: 15px; margin-bottom: 25px; font-size: 18px; }
-        #cotizadorModal .grid-header label { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; margin-bottom: 4px; }
-        #cotizadorModal input, #cotizadorModal select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 12px; border-radius: 8px; font-size: 14px; box-sizing: border-box; transition: border-color 0.3s; }
-        #cotizadorModal .btn-add { padding: 12px; font-size: 13px; }
-        #cotizadorModal .btn-remove { background: none; color: #d9534f; border: 1px solid #d9534f; border-radius: 8px; cursor: pointer; height: 49px; width: 100%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        /* --- ESTILOS ESPECÍFICOS COTIZADOR ESTRATÉGICO --- */
+        #cotizadorModal .modal-content, #opModal .modal-content { outline: 2px solid var(--gold-metalic); outline-offset: -2px; }
         .tax-grid { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 12px; margin-bottom: 12px; }
-        
         .pkg-grid { display: grid; grid-template-columns: 0.4fr 2fr 1.5fr 1fr 0.4fr 0.4fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: end; margin-bottom: 15px; }
         .single-grid { display: grid; grid-template-columns: 2fr 1.2fr 0.8fr 0.5fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: end; margin-bottom: 15px; }
         .pax-grid { display: grid; grid-template-columns: 3fr 1.5fr 1.2fr 1.2fr 50px; gap: 15px; align-items: center; margin-bottom: 15px; }
 
-        #cotizadorModal .summary-box { grid-template-columns: repeat(6, 1fr); max-width: 1400px; margin-left: auto; margin-right: auto; margin-bottom: 30px; align-items: center;}
+        #cotizadorModal .summary-box { grid-template-columns: 1.2fr repeat(5, 1fr); max-width: 1400px; margin-left: auto; margin-right: auto; margin-bottom: 30px; align-items: center;}
         #cotizadorModal #cot_moneda { background: transparent; border: 1px solid var(--gold-metalic); color: var(--gold-soft); padding: 12px; height: auto; }
-        #cotizadorModal #cot_moneda:focus { outline: 1px solid var(--gold-soft); }
-        #cotizadorModal #cot_moneda option { background: var(--black-deep); color: var(--gold-soft); }
         #cotizadorModal .action-buttons-grid { max-width: 700px; margin-left: auto; margin-right: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
-        #cotizadorModal .btn-secondary, #cotizadorModal .btn-gold { width: 100%; height: 100%; padding: 16px 28px; }
     </style>
 </head>
 <body>
-    <!-- V15.1: SPLASH SCREEN REFORJADO -->
+    <!-- V15.3: SPLASH SCREEN -->
     <div id="splash-screen">
         <div class="splash-block">
-            <div class="splash-logo-main">ORBIS</div>
-            <div class="splash-logo-sub">Brain</div>
+            <img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN Logo" class="splash-logo">
         </div>
+        <div class="splash-prompt">Click o presiona una tecla para ingresar</div>
     </div>
 
-    <!-- V15.1: AUTH MODAL (INICIA OCULTO) -->
+    <!-- V15.3: AUTH MODAL -->
     <div id="auth-modal">
         <div class="auth-content">
+            <div class="modal-logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="modal-logo"></div>
             <hr class="gold-divider"><div class="modal-title">REGISTRO DE IDENTIDAD</div><hr class="gold-divider" style="margin-bottom: 30px;">
             <form id="authForm">
-                <label for="auth_nombre">Nombre Legal / Empresa *</label>
-                <input type="text" id="auth_nombre" placeholder="NOMBRE FISCAL" required>
-                <label for="auth_rif">RIF / Tax ID *</label>
-                <input type="text" id="auth_rif" placeholder="ID TRIBUTARIO" required>
-                <label for="auth_pais">País de Operación *</label>
-                <select id="auth_pais" required>
-                    <option value="" disabled selected>SELECCIONE UN PAÍS</option>
-                    <option value="VE">VENEZUELA</option>
-                    <option value="US">USA</option>
-                    <option value="ES">ESPAÑA / EUROPA</option>
-                    <option value="OTHER">OTRO</option>
-                </select>
+                <label for="auth_nombre">Nombre Legal / Empresa *</label><input type="text" id="auth_nombre" placeholder="NOMBRE FISCAL" required>
+                <label for="auth_rif">RIF / Tax ID *</label><input type="text" id="auth_rif" placeholder="ID TRIBUTARIO" required>
+                <label for="auth_pais">País de Operación *</label><select id="auth_pais" required><option value="" disabled selected>SELECCIONE UN PAÍS</option><option value="VE">VENEZUELA</option><option value="US">USA</option><option value="ES">ESPAÑA / EUROPA</option><option value="OTHER">OTRO</option></select>
                 <button type="button" id="auth_submit" class="btn-gold" style="width: 100%; margin-top: 10px;">ACCEDER AL IMPERIO</button>
             </form>
         </div>
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- SIDEBAR REORDENADO -->
+        <!-- V15.3: SIDEBAR -->
         <div class="sidebar">
-            <div class="logo-container"><div class="logo-text">ORBIS</div><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px;">BRAIN V15.1</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V15.3</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Certificación de Pagos</button>
@@ -178,14 +157,36 @@
         
         <!-- VISTA #3: CERTIFICACIÓN DE PAGOS -->
         <div id="view-certificacion" class="view-section">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;"><h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">CERTIFICACIÓN DE <span style="color:var(--gold-metalic)">PAGOS</span></h1></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;"><h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">CERTIFICACIÓN DE <span style="color:var(--gold-metalic)">PAGOS</span></h1><button class="btn-gold" onclick="openModal('opModal')">Nueva Orquestación +</button></div>
             <div class="table-container"><table><thead><tr><th style="padding:15px;">ID Operación</th><th>Aliado Responsable</th><th>Fecha</th><th>Total Certificado</th><th>Estatus</th></tr></thead><tbody id="cuerpo-tabla-cert"></tbody></table></div>
         </div>
     </div>
     
-    <!-- MODAL #1: DIRECTORIO MAESTRO -->
+    <!-- MODAL #1: CERTIFICACIÓN (FUNCIONALIDAD RESTAURADA) -->
+    <div id="opModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="modal-logo"></div>
+            <hr class="gold-divider"><div class="modal-title">REGISTRO DE CERTIFICACIÓN FISCAL</div><hr class="gold-divider">
+            <form id="registroForm">
+                <div class="form-section"><div style="display:grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap:15px;"><div><label>Nombre Fiscal del Aliado *</label><input type="text" id="aliado_name" placeholder="NOMBRE LEGAL"></div><div><label>RIF / Tax ID *</label><input type="text" id="aliado_rif" placeholder="ID TRIBUTARIO"></div><div><label>Moneda Orquestación *</label><select id="moneda_global" onchange="cambiarMoneda()"><option value="$">USD ($)</option><option value="Bs.">Bs. (VE)</option><option value="€">EUR (€)</option></select></div><div><label style="color:var(--gold-metalic)">Honorarios Aliado *</label><input type="number" id="comision_aliado" readonly style="background: #111; color: var(--gold-metalic); font-weight: bold;"></div></div></div>
+                <div style="display: grid; grid-template-columns: 1.8fr 1fr; gap: 20px; margin-top: 15px;"><div class="form-section"><label>Bases Imponibles & Comisiones (<span class="curr-sym">$</span>)</label><div id="contenedor-servicios"><div id="cobertura-row" class="grid-inputs row-fixed"><div><label>Cobertura</label><select id="tipo_cobertura_sel"><option value="interno">🛡️ ORBIS PROTECT</option><option value="externo">✍️ SEGURO EXTERNO / MANUAL</option></select></div><div><label>Proveedor *</label><input type="text" id="cobertura_proveedor" class="prov-name" value="ORBIS BRAIN NETWORK" readonly></div><div><label>Base *</label><input type="number" id="cobertura_base" value="2.00" readonly onfocus="this.select()"></div><div><label>Comisión *</label><input type="number" id="cobertura_comision" value="0.00" readonly onfocus="this.select()"></div><div id="cobertura_icon" style="display:flex; align-items:center; justify-content:center; color:var(--gold-metalic);">🔒</div></div><div id="filas-dinamicas" style="margin-top:10px;"></div></div><button type="button" class="btn-add" onclick="agregarFila()">+ AGREGAR PROVEEDOR</button></div><div class="form-section"><label style="color:var(--gold-metalic)">Tasas e Impuestos (%)</label><div id="contenedor-taxes-cert"></div><datalist id="sugerencias_impuestos"></datalist><button type="button" class="btn-add" onclick="agregarTaxCert()">+ AGREGAR TASA</button></div></div>
+            </form>
+            <div class="summary-box" style="grid-template-columns: repeat(6, 1fr);">
+                <div class="sum-item"><span class="sum-lbl">Base Imponible</span><span id="res-neto" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
+                <div class="sum-item"><span class="sum-lbl">Impuestos</span><span id="res-imp" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
+                <div class="sum-item"><span class="sum-lbl">Fee Orbis</span><span id="res-fee-fijo" class="sum-val">6.00 <span class="curr-sym">$</span></span></div>
+                <div class="sum-item"><span class="sum-lbl">Escudo Oro</span><span id="res-escudo" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
+                <div class="sum-item"><span class="sum-lbl">HONORARIOS</span><span id="res-ganancia" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
+                <div class="sum-item"><span class="sum-lbl">TOTAL</span><span id="res-total" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
+            </div>
+            <button id="btn-sync-cert" class="btn-gold" style="width:100%; margin-top:20px;" onclick="confirmarRegistro()">VALIDAR Y SINCRONIZAR</button><button id="btn-cancel-cert" class="btn-cancel-elite" onclick="closeModal('opModal')">Cancelar</button>
+        </div>
+    </div>
+    
+    <!-- MODAL #2: RED MAESTRA (FUNCIONALIDAD RESTAURADA) -->
     <div id="provModal" class="modal">
         <div class="modal-content">
+            <div class="modal-logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="modal-logo"></div>
             <hr class="gold-divider"><div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div><hr class="gold-divider">
             <div class="warning-box" style="margin-top:20px;"><span style="font-size: 20px;">⚠️</span><p style="font-size: 11px; margin: 0; color: #f8d7da;"><b>POLÍTICA DE INTEGRIDAD:</b> NOMBRE, RIF Y PAÍS SON OBLIGATORIOS.</p></div>
             <div class="form-section"><div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;"><div><label>Categoría *</label><select id="prov_cat"><option value="HOTEL">🏨 HOTEL</option><option value="AGENCIA">🏢 AGENCIA</option><option value="FREELANCER">👨‍💻 FREELANCER</option><option value="TRASLADO">🚐 TRASLADO</option><option value="SEGURO">🛡️ SEGURO</option></select></div><div><label>Nombre Legal *</label><input type="text" id="prov_nombre" placeholder="NOMBRE LEGAL"></div><div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="RIF / TAX ID"></div></div></div>
@@ -195,69 +196,28 @@
         </div>
     </div>
 
-    <!-- MODAL #2: COTIZADOR ESTRATÉGICO -->
+    <!-- MODAL #3: COTIZADOR ESTRATÉGICO -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
-            <div class="modal-title-wrapper">
-                <hr class="gold-divider"><div class="modal-title">COTIZADOR ESTRATÉGICO PANORÁMICO</div><hr class="gold-divider">
-            </div>
+            <div class="modal-logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="modal-logo"></div>
+            <hr class="gold-divider"><div class="modal-title">COTIZADOR ESTRATÉGICO PANORÁMICO</div><hr class="gold-divider">
             <form id="cotizadorForm" oninput="actualizarCalculosCotizador()">
-                <!-- ZONA A: PAQUETES / HOTELES -->
-                <div class="form-section" id="paquetes-section">
-                    <h3 class="form-section-header">ZONA A: PAQUETES / HOTELES</h3>
-                    <div id="paquetes-container-header" class="grid-header pkg-grid" style="padding: 0 10px; margin-bottom: 10px;">
-                        <label>Cant.</label><label>Concepto</label><label>Servicio</label><label>Tipo Hab.</label><label>Días</label><label>Noches</label><label>Precio Base</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span>
-                    </div>
-                    <div id="paquetes-container"></div>
-                    <button type="button" class="btn-add" onclick="agregarPaquete()">+ Agregar Paquete</button>
-                </div>
-
-                <!-- ZONA B: CARGA INDIVIDUAL -->
-                <div class="form-section" id="singles-section">
-                    <h3 class="form-section-header">ZONA B: SERVICIOS INDIVIDUALES</h3>
-                     <div id="singles-container-header" class="grid-header single-grid" style="padding: 0 10px; margin-bottom: 10px;">
-                        <label>Proveedor</label><label>Servicio</label><label>Tipo</label><label>Cant.</label><label>Costo</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span>
-                    </div>
-                    <div id="singles-container"></div>
-                    <button type="button" class="btn-add" onclick="agregarServicioIndividual()">+ Agregar Servicio</button>
-                </div>
-
-                <!-- ZONA C: DESGLOSE PAX / MODO ESPEJO -->
-                <div class="form-section">
-                    <h3 class="form-section-header">ZONA C: DESGLOSE FINAL POR PASAJERO (DIVISOR POR ID)</h3>
-                    <div id="pax-container-header" class="grid-header pax-grid" style="padding: 0 10px; margin-bottom: 10px;">
-                        <label>Nombre del Pasajero</label><label>ID / DNI</label><label>Costo por PAX</label><label>Comisión por PAX</label><span></span>
-                    </div>
-                    <div id="pax-container"></div>
-                    <button type="button" class="btn-add" onclick="agregarPax()">+ Agregar Pasajero</button>
-                </div>
-                
-                 <!-- ZONA D: IMPUESTOS -->
+                <div class="form-section" id="paquetes-section"><h3 class="form-section-header">ZONA A: PAQUETES / HOTELES</h3><div id="paquetes-container-header" class="grid-header pkg-grid" style="padding:0 10px;margin-bottom:10px"><label>Cant.</label><label>Concepto</label><label>Servicio</label><label>Tipo Hab.</label><label>Días</label><label>Noches</label><label>Precio Base</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span></div><div id="paquetes-container"></div><button type="button" class="btn-add" onclick="agregarPaquete()">+ Agregar Paquete</button></div>
+                <div class="form-section" id="singles-section"><h3 class="form-section-header">ZONA B: SERVICIOS INDIVIDUALES</h3><div id="singles-container-header" class="grid-header single-grid" style="padding:0 10px;margin-bottom:10px"><label>Proveedor</label><label>Servicio</label><label>Tipo</label><label>Cant.</label><label>Costo</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span></div><div id="singles-container"></div><button type="button" class="btn-add" onclick="agregarServicioIndividual()">+ Agregar Servicio</button></div>
+                <div class="form-section"><h3 class="form-section-header">ZONA C: DESGLOSE FINAL POR PASAJERO</h3><div id="pax-container-header" class="grid-header pax-grid" style="padding:0 10px;margin-bottom:10px"><label>Nombre del Pasajero</label><label>ID / DNI</label><label>Costo por PAX</label><label>Comisión por PAX</label><span></span></div><div id="pax-container"></div><button type="button" class="btn-add" onclick="agregarPax()">+ Agregar Pasajero</button></div>
                 <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px;">
-                    <div class="form-section"><h3 class="form-section-header">ZONA D: IMPUESTOS AUTOMÁTICOS Y MANUALES</h3><div id="contenedor-taxes"></div><button type="button" class="btn-add" onclick="agregarTax()">+ Agregar Tasa Manual</button></div>
-                    <div class="form-section"><h3 class="form-section-header">CLIENTE / PAGADOR</h3>
-                        <div><label>Nombre Fiscal del Cliente *</label><input type="text" id="cot_cliente_nombre" placeholder="NOMBRE LEGAL DEL PAGADOR"></div>
-                        <div style="margin-top: 15px;"><label>RIF / Tax ID del Cliente *</label><input type="text" id="cot_cliente_rif" placeholder="ID TRIBUTARIO DEL PAGADOR"></div>
-                    </div>
+                    <div class="form-section"><h3 class="form-section-header">ZONA D: IMPUESTOS AUTOMÁTICOS Y MANUALES</h3><div id="contenedor-taxes-cot"></div><button type="button" class="btn-add" onclick="agregarTaxCot()">+ Agregar Tasa Manual</button></div>
+                    <div class="form-section"><h3 class="form-section-header">CLIENTE / PAGADOR</h3><div><label>Nombre Fiscal del Cliente *</label><input type="text" id="cot_cliente_nombre" placeholder="NOMBRE LEGAL DEL PAGADOR"></div><div style="margin-top:15px"><label>RIF / Tax ID del Cliente *</label><input type="text" id="cot_cliente_rif" placeholder="ID TRIBUTARIO DEL PAGADOR"></div></div>
                 </div>
-
-                <!-- SUMMARY BOX CON CARGOS TRANSNACIONALES -->
                 <div class="summary-box" style="grid-template-columns: 1.2fr repeat(5, 1fr);">
-                    <div class="sum-item" style="border-right: 1px solid #333;">
-                        <label for="cot_moneda" class="sum-lbl" style="color:var(--gold-metalic);">MONEDA</label>
-                        <select id="cot_moneda" onchange="actualizarCalculosCotizador()"><option value="$">USD ($)</option><option value="€">EUR (€)</option><option value="Bs.">Bs. (VE)</option></select>
-                    </div>
+                    <div class="sum-item" style="border-right:1px solid #333"><label for="cot_moneda" class="sum-lbl" style="color:var(--gold-metalic)">MONEDA</label><select id="cot_moneda" onchange="actualizarCalculosCotizador()"><option value="$">USD ($)</option><option value="€">EUR (€)</option><option value="Bs.">Bs. (VE)</option></select></div>
                     <div class="sum-item"><span class="sum-lbl">SUBTOTAL</span><span id="cot-subtotal" class="sum-val">0.00</span></div>
                     <div class="sum-item"><span class="sum-lbl">IMPUESTOS</span><span id="cot-impuestos" class="sum-val">0.00</span></div>
                     <div class="sum-item"><span class="sum-lbl">FEE ORBIS</span><span id="cot-fee-orbis" class="sum-val">0.00</span></div>
                     <div class="sum-item"><span class="sum-lbl">ESCUDO ORO</span><span id="cot-escudo-oro" class="sum-val">0.00</span></div>
                     <div class="sum-item"><span class="sum-lbl">GRAN TOTAL</span><span id="cot-gran-total" class="sum-val">0.00</span></div>
                 </div>
-
-                <div class="action-buttons-grid">
-                    <button type="button" class="btn-secondary" onclick="generarPDFCotizacion()">GENERAR PDF 📄</button>
-                    <button type="button" class="btn-gold" onclick="guardarCotizacion()">GUARDAR Y CERTIFICAR 🏛️</button>
-                </div>
+                <div class="action-buttons-grid"><button type="button" class="btn-secondary" onclick="generarPDFCotizacion()">GENERAR PDF 📄</button><button type="button" class="btn-gold" onclick="puenteHaciaCertificacion()">PASAR A CERTIFICACIÓN 🏛️</button></div>
             </form>
             <button type="button" class="btn-cancel-elite" onclick="closeModal('cotizadorModal')">Cancelar</button>
         </div>
@@ -265,56 +225,38 @@
 
     <script>
         // =======================================================================
-        //                         JAVASCRIPT UNIFICADO (v15.1)
+        //                      JAVASCRIPT UNIFICADO (v15.3)
         // =======================================================================
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
+        const SUGERENCIAS_IMPUESTOS_CERT = { "$": ["Sales Tax", "Federal Tax"], "Bs.": ["IVA 16%", "IGTF 3%"], "€": ["VAT (IVA)"] };
         const FEE_ORBIS_BASE = 5.00;
-        const FEE_ORBIS_PROTECT = 1.00; 
-        const ESCUDO_ORO_PORC = 0.005; 
+        const FEE_ORBIS_PROTECT = 1.00;
+        const ESCUDO_ORO_PORC = 0.005;
 
-        // Matriz de impuestos por país
-        const TAX_MATRIX = {
-            "VE": [ { nombre: "IVA", valor: 16 }, { nombre: "IGTF", valor: 3 } ],
-            "US": [ { nombre: "Sales Tax", valor: 7 } ],
-            "ES": [ { nombre: "IVA (VAT)", valor: 21 } ]
-        };
+        const TAX_MATRIX = { "VE": [{ nombre: "IVA", valor: 16 }, { nombre: "IGTF", valor: 3 }], "US": [{ nombre: "Sales Tax", valor: 7 }], "ES": [{ nombre: "IVA (VAT)", valor: 21 }] };
+        let orbisSession = { nombre: "", rif: "", pais: "" };
 
-        // Objeto para almacenar perfil de sesión
-        let orbisSession = {
-            nombre: "",
-            rif: "",
-            pais: ""
-        };
-        
-        // --- LÓGICA DE INICIALIZACIÓN Y NAVEGACIÓN (V15.1) ---
+        // --- LÓGICA DE INICIALIZACIÓN Y NAVEGACIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
+            // Flujo de Autenticación
             const splash = document.getElementById('splash-screen');
             const authModal = document.getElementById('auth-modal');
-
             function proceedToAuth() {
                 splash.classList.add('fade-out');
-                
                 setTimeout(() => {
                     splash.style.display = 'none';
                     authModal.style.display = 'flex';
-                }, 500); // 500ms para que la transición de fade-out termine
+                }, 500);
             }
-
-            // Escuchas de eventos para quitar el splash screen
             splash.addEventListener('click', proceedToAuth, { once: true });
             window.addEventListener('keydown', proceedToAuth, { once: true });
-
             document.getElementById('auth_submit').addEventListener('click', () => {
                 const nombre = document.getElementById('auth_nombre').value;
                 const rif = document.getElementById('auth_rif').value;
                 const pais = document.getElementById('auth_pais').value;
-
                 if (nombre.trim() && rif.trim() && pais) {
-                    orbisSession.nombre = nombre.toUpperCase();
-                    orbisSession.rif = rif.toUpperCase();
-                    orbisSession.pais = pais;
-                    
+                    orbisSession = { nombre: nombre.toUpperCase(), rif: rif.toUpperCase(), pais };
                     document.getElementById('auth-modal').style.display = 'none';
                     document.getElementById('main-app').classList.remove('hidden');
                     showView('directorio', document.getElementById('nav-directorio'));
@@ -323,35 +265,32 @@
                 }
             });
 
-            // Helpers globales
+            // Listeners globales
             document.addEventListener('input', (e) => { if (e.target.tagName.toLowerCase() === 'input' && (e.target.type === 'text' || e.target.type === 'email')) { e.target.value = e.target.value.toUpperCase(); } });
             document.addEventListener('focusin', (e) => { if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'number') { e.target.select(); } });
+            if(document.getElementById('tipo_cobertura_sel')) document.getElementById('tipo_cobertura_sel').addEventListener('change', function() { gestionarEstadoCobertura(this.value === 'interno'); }); 
         });
 
-        function showView(viewId, btn) { 
-            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); 
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); 
-            document.getElementById('view-' + viewId).classList.add('active'); 
-            if (btn) btn.classList.add('active'); 
-        }
-
-        function openModal(id) { 
-            const modal = document.getElementById(id); 
-            modal.style.display = 'flex'; 
-            if (id === 'provModal') { 
-                resetFichaDirectorio(); 
+        function showView(viewId, btn) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('view-' + viewId).classList.add('active'); if (btn) btn.classList.add('active'); }
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.style.display = 'flex';
+            if (id === 'opModal') {
+                document.getElementById('registroForm').reset();
+                document.getElementById('filas-dinamicas').innerHTML = '';
+                document.getElementById('contenedor-taxes-cert').innerHTML = '';
+                cambiarMoneda();
+                gestionarEstadoCobertura(true);
+                agregarFila();
+                cargarImpuestosPredeterminados();
+                if (document.getElementById('contenedor-taxes-cert').children.length === 0) { agregarTaxCert(); }
+            } else if (id === 'provModal') {
+                resetFichaDirectorio();
             } else if (id === 'cotizadorModal') {
                 document.getElementById('cotizadorForm').reset();
-                document.querySelectorAll('#cotizadorModal .input-error').forEach(el => el.classList.remove('input-error'));
-                document.getElementById('pax-container').innerHTML = '';
-                document.getElementById('paquetes-container').innerHTML = '';
-                document.getElementById('singles-container').innerHTML = '';
-                document.getElementById('contenedor-taxes').innerHTML = '';
-
-                // Cargar impuestos automáticos
+                ['#pax-container', '#paquetes-container', '#singles-container', '#contenedor-taxes-cot'].forEach(sel => document.querySelector(sel).innerHTML = '');
                 const impuestos = TAX_MATRIX[orbisSession.pais] || [];
-                impuestos.forEach(tax => agregarTax(tax.nombre, tax.valor, true));
-                
+                impuestos.forEach(tax => agregarTaxCot(tax.nombre, tax.valor, true));
                 agregarPaquete();
                 agregarServicioIndividual();
                 agregarPax();
@@ -359,115 +298,96 @@
             }
         }
         function closeModal(id) { if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos no guardados.")) { document.getElementById(id).style.display = 'none'; } }
-        function cerrarModalDirecto(id) { document.getElementById(id).style.display = 'none'; }
 
-        // --- LÓGICA #1: RED MAESTRA (SIN CAMBIOS) ---
-        function resetFichaDirectorio() { document.getElementById('provModal').querySelectorAll('input, select').forEach(el => { if(el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = ''; el.classList.remove('input-error'); }); document.getElementById('phone-container').innerHTML = ''; document.getElementById('email-container').innerHTML = ''; addDynamicField('phone-container', 'phone'); addDynamicField('email-container', 'email'); }
-        function addDynamicField(containerId, type) { const container = document.getElementById(containerId); const div = document.createElement('div'); div.className = 'dynamic-row'; if (type === 'phone') { div.innerHTML = `<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="SI">🟢 WHATSAPP</option><option value="NO" selected>📞 LLAMADA</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`; } else { div.innerHTML = `<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <select class="is-validated" style="visibility:hidden;"><option value="SI">VERIFICADO</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`; } container.appendChild(div); }
-        function iniciarGuardadoProv() { let esValido = true; document.querySelectorAll('#provModal .input-error').forEach(el => el.classList.remove('input-error')); const camposTextoRequeridos = [document.getElementById('prov_nombre'), document.getElementById('prov_rif'), document.getElementById('prov_pais')]; for (const campo of camposTextoRequeridos) { if (!campo.value.trim()) { campo.classList.add('input-error'); esValido = false; } } if (!esValido) { return alert("⚠️ BLOQUEO: NOMBRE, RIF Y PAÍS SON OBLIGATORIOS."); } const primerCorreoInput = document.querySelector('#email-container .prov-email'); if (!primerCorreoInput || !primerCorreoInput.value.trim()) { if(primerCorreoInput) primerCorreoInput.classList.add('input-error'); esValido = false; } if (!esValido) { return alert("⚠️ BLOQUEO: Para integrar un aliado a la Red Maestra es obligatorio registrar al menos un Canal de Correo Electrónico."); } if (confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro del nuevo aliado en la Red Maestra?")) { ejecutarGuardadoProv(); } }
-        async function ejecutarGuardadoProv() { const modalButtons = document.querySelectorAll('#provModal button'); const btnSync = document.getElementById('btn-sync-prov'); modalButtons.forEach(btn => btn.disabled = true); btnSync.textContent = '🚀 REGISTRANDO...'; alert("🏛️ ORBIS BRAIN NETWORK está procesando el registro del nuevo aliado."); const telefonos = Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => { const esWhatsapp = document.querySelectorAll('.is-whatsapp')[i].value; return `${input.value} (WHATSAPP: ${esWhatsapp})`; }).join('; '); const correos = Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; '); const datos = { ID_ALIADO: `ORB-${String(document.getElementById('cuerpo-tabla-prov').rows.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: telefonos, CORREOS: correos }; try { const response = await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', cache: 'no-cache', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'registrarProveedor', data: datos }) }); alert("✅ REGISTRO EN RED MAESTRA EXITOSO."); const tbody = document.getElementById('cuerpo-tabla-prov'); const newRow = tbody.insertRow(0); newRow.innerHTML = `<td>${datos.ID_ALIADO}</td><td>${datos.CATEGORIA}</td><td style="font-weight:bold; letter-spacing:1px;">${datos.NOMBRE_LEGAL}</td><td>${datos.RIF_TAX_ID}</td><td>${datos.PAIS}</td><td><button onclick="alert('⚠️ ACCESO DENEGADO')" style="background:none; border:none; color:#666; cursor:not-allowed; font-size:10px; opacity: 0.5;">ELIMINAR</button></td>`; cerrarModalDirecto('provModal'); } catch (error) { console.error('Error de sincronización de proveedor:', error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado."); } finally { modalButtons.forEach(btn => btn.disabled = false); btnSync.textContent = 'REGISTRAR EN RED MAESTRA'; } }
-        
-        // --- LÓGICA #2: COTIZADOR ESTRATÉGICO (SIN CAMBIOS) ---
-        function agregarPaquete() {
-            const container = document.getElementById('paquetes-container');
-            const div = document.createElement('div');
-            div.className = 'pkg-grid';
-            div.innerHTML = `<input type="number" class="pkg-cant" value="0" onfocus="this.select()"><input type="text" class="pkg-concepto" placeholder="EJ: HOTEL JW MARRIOTT"><select class="pkg-servicio"><option value="Hotel" selected>🏨 HOTEL</option><option value="Tour">🏞️ TOUR</option></select><select class="pkg-tipo-hab"><option>SENCILLA</option><option>DOBLE</option><option>TRIPLE</option></select><input type="number" class="pkg-dias" value="0" onfocus="this.select()"><input type="number" class="pkg-noches" value="0" onfocus="this.select()"><input type="number" class="pkg-precio" placeholder="0.00" onfocus="this.select()"><input type="number" class="pkg-comision-unit" placeholder="0.00" onfocus="this.select()"><input type="number" class="pkg-comision-total" placeholder="0.00" readonly><input type="number" class="pkg-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.pkg-grid').remove(); actualizarCalculosCotizador();">X</button>`;
-            container.appendChild(div);
-        }
-
-        function agregarServicioIndividual() {
-            const container = document.getElementById('singles-container');
-            const div = document.createElement('div');
-            div.className = 'single-grid';
-            div.innerHTML = `<input type="text" class="single-proveedor" placeholder="EJ: DELTA AIRLINES"><select class="single-servicio"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Seguro">🛡️ Seguro</option><option value="Otro">➕ Otro</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="0" onfocus="this.select()"><input type="number" class="single-costo" placeholder="0.00" onfocus="this.select()"><input type="number" class="single-comision-unit" placeholder="0.00" onfocus="this.select()"><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove(); actualizarCalculosCotizador();">X</button>`;
-            container.appendChild(div);
-        }
-        
-        function agregarPax() {
-            const container = document.getElementById('pax-container');
-            const div = document.createElement('div');
-            div.className = 'pax-grid';
-            div.innerHTML = `<input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"><input type="text" class="pax-id" placeholder="ID / DNI"><input type="number" class="pax-costo" placeholder="0.00" readonly><input type="number" class="pax-comision" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.pax-grid').remove(); actualizarCalculosCotizador();">X</button>`;
-            container.appendChild(div);
-            actualizarCalculosCotizador();
-        }
-
-        function agregarTax(nombre = '', valor = '', esAutomatico = false) {
-            const div = document.createElement('div');
-            div.className = 'tax-grid tax-row';
-            div.innerHTML = `
-                <input type="text" class="tax-name" placeholder="NOMBRE IMPUESTO" value="${nombre}" ${esAutomatico ? 'readonly' : ''}>
-                <div style="position:relative;">
-                    <input type="number" class="tax-val" placeholder="0.00" value="${valor}" onfocus="this.select()">
-                    <span style="position:absolute; right:15px; top: 50%; transform: translateY(-50%); color:var(--gold-soft); font-weight:bold;">%</span>
-                </div>
-                <button type="button" class="btn-remove" ${esAutomatico ? 'style="visibility:hidden;"' : ''} onclick="this.parentElement.remove(); actualizarCalculosCotizador();">X</button>`;
-            document.getElementById('contenedor-taxes').appendChild(div);
-            actualizarCalculosCotizador();
-        }
-
-        function actualizarCalculosCotizador() {
-            let totalCostoGlobal = 0;
-            let totalComisionGlobal = 0;
-
-            document.querySelectorAll('#paquetes-container .pkg-grid').forEach(fila => {
-                const cant = parseFloat(fila.querySelector('.pkg-cant').value) || 0;
-                const precio = parseFloat(fila.querySelector('.pkg-precio').value) || 0;
-                const comisionUnit = parseFloat(fila.querySelector('.pkg-comision-unit').value) || 0;
-                const cantCalculo = cant === 0 ? 1 : cant;
-                const costoTotalFila = cantCalculo * precio;
-                const comisionTotalFila = cantCalculo * comisionUnit;
-                fila.querySelector('.pkg-comision-total').value = comisionTotalFila.toFixed(2);
-                fila.querySelector('.pkg-total').value = (costoTotalFila + comisionTotalFila).toFixed(2);
-                totalCostoGlobal += costoTotalFila;
-                totalComisionGlobal += comisionTotalFila;
+        // --- LÓGICA #1: CERTIFICACIÓN (RESTAURADA) ---
+        function gestionarEstadoCobertura(esInterno) { const p = document.getElementById('cobertura_proveedor'), b = document.getElementById('cobertura_base'), c = document.getElementById('cobertura_comision'), i = document.getElementById('cobertura_icon'); if (esInterno) { p.value = 'ORBIS BRAIN NETWORK'; b.value = '2.00'; c.value = '0.00'; i.innerHTML = '🔒'; [p, b, c].forEach(el => el.setAttribute('readonly', true)); } else { p.value = ''; b.value = '0.00'; c.value = '0.00'; i.innerHTML = '✍️'; p.placeholder = 'NOMBRE PROVEEDOR *';[p, b, c].forEach(el => el.removeAttribute('readonly')); } calcularTodoCert(); }
+        function agregarFila() { const div = document.createElement('div'); div.className = 'grid-inputs servicio-row'; div.innerHTML = `<div><select class="tipo-srv" onchange="calcularTodoCert()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Otro">➕ Otro</option></select></div><div><input type="text" class="prov-name" placeholder="NOMBRE PROVEEDOR *"></div><div><input type="number" class="monto-srv" oninput="calcularTodoCert()" placeholder="0.00"></div><div><input type="number" class="comision-ind" oninput="calcularTodoCert()" placeholder="0.00"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodoCert();">X</button>`; document.getElementById('filas-dinamicas').appendChild(div); }
+        function confirmarRegistro() {
+            let esValido = true;
+            ['#aliado_name', '#aliado_rif', '#moneda_global', ...Array.from(document.querySelectorAll('#opModal .prov-name'))].forEach(sel => {
+                const campo = typeof sel === 'string' ? document.querySelector(sel) : sel;
+                if (!campo.value.trim()) { campo.classList.add('input-error'); esValido = false; } else { campo.classList.remove('input-error'); }
             });
-
-            document.querySelectorAll('#singles-container .single-grid').forEach(fila => {
-                const cant = parseFloat(fila.querySelector('.single-cant').value) || 0;
-                const costo = parseFloat(fila.querySelector('.single-costo').value) || 0;
-                const comisionUnit = parseFloat(fila.querySelector('.single-comision-unit').value) || 0;
-                const cantCalculo = cant === 0 ? 1 : cant;
-                const costoTotalFila = cantCalculo * costo;
-                const comisionTotalFila = cantCalculo * comisionUnit;
-                fila.querySelector('.single-total-com').value = comisionTotalFila.toFixed(2);
-                fila.querySelector('.single-total').value = (costoTotalFila + comisionTotalFila).toFixed(2);
-                totalCostoGlobal += costoTotalFila;
-                totalComisionGlobal += comisionTotalFila;
-            });
-
-            const filasPax = document.querySelectorAll('#pax-container .pax-grid');
-            const paxConId = Array.from(filasPax).filter(fila => fila.querySelector('.pax-id').value.trim() !== '');
-            const divisor = paxConId.length > 0 ? paxConId.length : 1;
-            const costoPorPax = totalCostoGlobal / divisor;
-            const comisionPorPax = totalComisionGlobal / divisor;
-            
-            filasPax.forEach(fila => {
-                const tieneId = fila.querySelector('.pax-id').value.trim() !== '';
-                fila.querySelector('.pax-costo').value = tieneId ? costoPorPax.toFixed(2) : '0.00';
-                fila.querySelector('.pax-comision').value = tieneId ? comisionPorPax.toFixed(2) : '0.00';
-            });
-            
-            actualizarResumenCotizador();
+            if (!esValido) { alert("⚠️ BLOQUEO DE SEGURIDAD: Los campos marcados en rojo son obligatorios."); return; }
+            if (parseFloat(document.getElementById('comision_aliado').value) <= 0) { alert("⚠️ BLOQUEO DE INTEGRIDAD: Los Honorarios del Aliado no pueden ser cero."); return; }
+            if (document.querySelectorAll('#contenedor-taxes-cert .tax-row').length === 0) { alert("🔴 VALIDACIÓN BLOQUEADA: Debe agregar al menos una tasa de impuesto."); return; }
+            if (confirm("🏛️ ¿Confirma la sincronización de esta certificación?")) { enviarCertificacion(); }
         }
-
-        function actualizarResumenCotizador() {
-            let granTotalCostos = 0;
-            let granTotalComisiones = 0;
-            document.querySelectorAll('#pax-container .pax-grid').forEach(fila => {
-                granTotalCostos += parseFloat(fila.querySelector('.pax-costo').value) || 0;
-                granTotalComisiones += parseFloat(fila.querySelector('.pax-comision').value) || 0;
-            });
-            
-            const subtotal = granTotalCostos + granTotalComisiones;
+        async function enviarCertificacion() {
+            const btnSync = document.getElementById('btn-sync-cert'); btnSync.disabled = true; btnSync.textContent = '🚀 REGISTRANDO...';
+            const parseVal = (s) => parseFloat(document.getElementById(s).textContent.split(' ')[0]) || 0;
+            const datos = { idOperacion: `CERT-${Math.floor(10000 + Math.random() * 90000)}`, aliado: document.getElementById('aliado_name').value, moneda: document.getElementById('moneda_global').value, montoImpuestos: parseVal('res-imp'), estatus: 'PENDIENTE', totalCertificado: parseVal('res-total') };
+            try {
+                await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'registrarCertificacion', data: datos }) });
+                alert("✅ SINCRONIZACIÓN EXITOSA");
+                const newRow = document.getElementById('cuerpo-tabla-cert').insertRow(0);
+                newRow.innerHTML = `<td>${datos.idOperacion}</td><td>${datos.aliado}</td><td>${new Date().toLocaleDateString()}</td><td>${datos.totalCertificado.toFixed(2)} ${datos.moneda}</td><td><span style="color:var(--gold-soft)">⏳ PENDIENTE</span></td>`;
+                closeModal('opModal');
+            } catch (error) { console.error(error); alert("🔴 ERROR CRÍTICO: No se pudo sincronizar."); } finally { btnSync.disabled = false; btnSync.textContent = 'VALIDAR Y SINCRONIZAR'; }
+        }
+        function obtenerImpuestosGuardados() { return JSON.parse(localStorage.getItem('orbis_impuestos_predeterminados')) || []; }
+        function guardarImpuestos(impuestos) { localStorage.setItem('orbis_impuestos_predeterminados', JSON.stringify(impuestos)); }
+        function cargarImpuestosPredeterminados() { obtenerImpuestosGuardados().forEach(imp => agregarTaxCert(imp.nombre, imp.valor, true)); }
+        function gestionarPin(btn) { const fila = btn.closest('.tax-row'); const nombre = fila.querySelector('.tax-name').value; const valor = fila.querySelector('.tax-val').value; if (!nombre || !valor) { alert('Debe especificar un nombre y un valor para fijar el impuesto.'); return; } let impuestos = obtenerImpuestosGuardados(); const idx = impuestos.findIndex(i => i.nombre.toLowerCase() === nombre.toLowerCase()); if (idx > -1) { impuestos.splice(idx, 1); btn.classList.remove('active'); } else { impuestos.push({ nombre, valor }); btn.classList.add('active'); } guardarImpuestos(impuestos); }
+        function agregarTaxCert(nombre = '', valor = '', esPredeterminado = false) { const div = document.createElement('div'); div.className = 'tax-grid tax-row'; div.style = 'display:grid;grid-template-columns:30px 2fr 1fr 40px;gap:12px;margin-bottom:12px;'; const pinActivoClass = esPredeterminado ? 'active' : ''; div.innerHTML = `<button type="button" class="pin-btn ${pinActivoClass}" onclick="gestionarPin(this)">📌</button><div><input type="text" class="tax-name" list="sugerencias_impuestos" value="${nombre}"></div><div style="position:relative"><input type="number" class="tax-val tax-input" oninput="calcularTodoCert()" value="${valor}"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" onclick="eliminarFilaImpuesto(this)">X</button>`; document.getElementById('contenedor-taxes-cert').appendChild(div); calcularTodoCert(); }
+        function eliminarFilaImpuesto(btn) { const fila = btn.closest('.tax-row'); const nombre = fila.querySelector('.tax-name').value; if (nombre && fila.querySelector('.pin-btn').classList.contains('active')) { guardarImpuestos(obtenerImpuestosGuardados().filter(i => i.nombre.toLowerCase() !== nombre.toLowerCase())); } fila.remove(); calcularTodoCert(); }
+        function cambiarMoneda() { const sym = document.getElementById('moneda_global').value; document.querySelectorAll('.curr-sym').forEach(el => el.innerText = sym); const dl = document.getElementById('sugerencias_impuestos'); dl.innerHTML = ""; if (SUGERENCIAS_IMPUESTOS_CERT[sym]) { SUGERENCIAS_IMPUESTOS_CERT[sym].forEach(s => { const opt = document.createElement('option'); opt.value = s; dl.appendChild(opt); }); } calcularTodoCert(); }
+        function calcularTodoCert() {
+            const sym = document.getElementById('moneda_global').value;
+            const tasaCambio = TASAS_CAMBIO[sym] || 1.00;
+            let totalBase = 0, totalComisiones = 0;
+            totalBase += parseFloat(document.getElementById('cobertura_base').value) || 0;
+            totalComisiones += parseFloat(document.getElementById('cobertura_comision').value) || 0;
+            document.querySelectorAll('.servicio-row').forEach(row => { totalBase += parseFloat(row.querySelector('.monto-srv').value) || 0; totalComisiones += parseFloat(row.querySelector('.comision-ind').value) || 0; });
+            document.getElementById('comision_aliado').value = totalComisiones.toFixed(2);
+            const baseImponibleTotal = totalBase + totalComisiones;
             let totalImpuestos = 0;
-            const baseImponible = subtotal;
-            document.querySelectorAll('.tax-row').forEach(row => {
-                const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0;
-                if (porcentaje > 0) { totalImpuestos += baseImponible * (porcentaje / 100); }
-            });
+            document.querySelectorAll('#contenedor-taxes-cert .tax-row').forEach(row => { const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0; if (porcentaje > 0) { totalImpuestos += baseImponibleTotal * (porcentaje / 100); } });
+            let feeOrbisFinal = (FEE_ORBIS_BASE + (document.getElementById('tipo_cobertura_sel').value === 'interno' ? FEE_ORBIS_PROTECT : 0)) * tasaCambio;
+            const subTotal = baseImponibleTotal + totalImpuestos + feeOrbisFinal;
+            const escudoOro = subTotal * ESCUDO_ORO_PORC;
+            document.getElementById('res-neto').innerHTML = `${baseImponibleTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
+            document.getElementById('res-imp').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`;
+            document.getElementById('res-fee-fijo').innerHTML = `${feeOrbisFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
+            document.getElementById('res-escudo').innerHTML = `${escudoOro.toFixed(2)} <span class="curr-sym">${sym}</span>`;
+            document.getElementById('res-ganancia').innerHTML = `${totalComisiones.toFixed(2)} <span class="curr-sym">${sym}</span>`;
+            document.getElementById('res-total').innerHTML = `${(subTotal + escudoOro).toFixed(2)} <span class="curr-sym">${sym}</span>`;
+        }
 
+        // --- LÓGICA #2: RED MAESTRA (RESTAURADA) ---
+        function resetFichaDirectorio() { document.getElementById('provModal').querySelectorAll('input, select').forEach(el => { if(el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = ''; el.classList.remove('input-error'); }); document.getElementById('phone-container').innerHTML = ''; document.getElementById('email-container').innerHTML = ''; addDynamicField('phone-container', 'phone'); addDynamicField('email-container', 'email'); }
+        function addDynamicField(containerId, type) { const c = document.getElementById(containerId), d = document.createElement('div'); d.className = 'dynamic-row'; d.innerHTML = type === 'phone' ? `<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="SI">🟢 WHATSAPP</option><option value="NO" selected>📞 LLAMADA</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>` : `<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <select class="is-validated" style="visibility:hidden;"><option value="SI">VERIFICADO</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>`; c.appendChild(d); }
+        function iniciarGuardadoProv() { let esValido = true; ['prov_nombre', 'prov_rif', 'prov_pais'].forEach(id => { const el = document.getElementById(id); if (!el.value.trim()) { el.classList.add('input-error'); esValido = false; } else { el.classList.remove('input-error'); } }); const correo = document.querySelector('#email-container .prov-email'); if (!correo || !correo.value.trim()) { if(correo) correo.classList.add('input-error'); esValido = false; alert("⚠️ BLOQUEO: Se requiere al menos un correo electrónico."); } if (esValido && confirm("🏛️ ¿Confirma el registro del nuevo aliado en la Red Maestra?")) { ejecutarGuardadoProv(); } }
+        async function ejecutarGuardadoProv() {
+            const btn = document.getElementById('btn-sync-prov'); btn.disabled = true; btn.textContent = '🚀 REGISTRANDO...';
+            const telefonos = Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => `${input.value} (WHATSAPP: ${document.querySelectorAll('.is-whatsapp')[i].value})`).join('; ');
+            const correos = Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; ');
+            const datos = { ID_ALIADO: `ORB-${String(document.getElementById('cuerpo-tabla-prov').rows.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: telefonos, CORREOS: correos };
+            try {
+                await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'registrarProveedor', data: datos }) });
+                alert("✅ REGISTRO EN RED MAESTRA EXITOSO.");
+                const newRow = document.getElementById('cuerpo-tabla-prov').insertRow(0);
+                newRow.innerHTML = `<td>${datos.ID_ALIADO}</td><td>${datos.CATEGORIA}</td><td>${datos.NOMBRE_LEGAL}</td><td>${datos.RIF_TAX_ID}</td><td>${datos.PAIS}</td><td><button style="background:none;border:none;color:#666;cursor:not-allowed;opacity:0.5">ELIMINAR</button></td>`;
+                closeModal('provModal');
+            } catch (error) { console.error(error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado."); } finally { btn.disabled = false; btn.textContent = 'REGISTRAR EN RED MAESTRA'; }
+        }
+
+        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO ---
+        function agregarPaquete(){const c=document.getElementById("paquetes-container"),d=document.createElement("div");d.className="pkg-grid",d.innerHTML='<input type="number" class="pkg-cant" value="0" onfocus="this.select()"><input type="text" class="pkg-concepto" placeholder="EJ: HOTEL"><select class="pkg-servicio"><option value="Hotel" selected>🏨 HOTEL</option><option value="Tour">🏞️ TOUR</option></select><select class="pkg-tipo-hab"><option>SENCILLA</option><option>DOBLE</option></select><input type="number" class="pkg-dias" value="0"><input type="number" class="pkg-noches" value="0"><input type="number" class="pkg-precio" placeholder="0.00"><input type="number" class="pkg-comision-unit" placeholder="0.00"><input type="number" class="pkg-comision-total" placeholder="0.00" readonly><input type="number" class="pkg-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest(\'.pkg-grid\').remove();actualizarCalculosCotizador();">X</button>',c.appendChild(d)}
+        function agregarServicioIndividual(){const c=document.getElementById("singles-container"),d=document.createElement("div");d.className="single-grid",d.innerHTML='<input type="text" class="single-proveedor" placeholder="EJ: DELTA"><select class="single-servicio"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="0"><input type="number" class="single-costo" placeholder="0.00"><input type="number" class="single-comision-unit" placeholder="0.00"><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest(\'.single-grid\').remove();actualizarCalculosCotizador();">X</button>',c.appendChild(d)}
+        function agregarPax(){const c=document.getElementById("pax-container"),d=document.createElement("div");d.className="pax-grid",d.innerHTML='<input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"><input type="text" class="pax-id" placeholder="ID / DNI"><input type="number" class="pax-costo" placeholder="0.00" readonly><input type="number" class="pax-comision" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest(\'.pax-grid\').remove();actualizarCalculosCotizador();">X</button>',c.appendChild(d),actualizarCalculosCotizador()}
+        function agregarTaxCot(n="",v="",e=!1){const t=document.createElement("div");t.className="tax-grid tax-row",t.innerHTML=`<input type="text" class="tax-name" value="${n}" ${e?"readonly":""}><div style="position:relative"><input type="number" class="tax-val" value="${v}"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" ${e?'style="visibility:hidden"':""} onclick="this.parentElement.remove();actualizarCalculosCotizador()">X</button>`,document.getElementById("contenedor-taxes-cot").appendChild(t),actualizarCalculosCotizador()}
+        function actualizarCalculosCotizador() {
+            let totalCostoGlobal = 0, totalComisionGlobal = 0;
+            document.querySelectorAll('#paquetes-container .pkg-grid').forEach(f => { const c=parseFloat(f.querySelector('.pkg-cant').value)||0,p=parseFloat(f.querySelector('.pkg-precio').value)||0,u=parseFloat(f.querySelector('.pkg-comision-unit').value)||0,calc=c||1; f.querySelector('.pkg-comision-total').value=(calc*u).toFixed(2); f.querySelector('.pkg-total').value=(calc*p+calc*u).toFixed(2); totalCostoGlobal+=calc*p; totalComisionGlobal+=calc*u; });
+            document.querySelectorAll('#singles-container .single-grid').forEach(f => { const c=parseFloat(f.querySelector('.single-cant').value)||0,p=parseFloat(f.querySelector('.single-costo').value)||0,u=parseFloat(f.querySelector('.single-comision-unit').value)||0,calc=c||1; f.querySelector('.single-total-com').value=(calc*u).toFixed(2); f.querySelector('.single-total').value=(calc*p+calc*u).toFixed(2); totalCostoGlobal+=calc*p; totalComisionGlobal+=calc*u; });
+            const filasPax = document.querySelectorAll('#pax-container .pax-grid'), paxConId = Array.from(filasPax).filter(f=>f.querySelector('.pax-id').value.trim()!==''), divisor=paxConId.length||1;
+            filasPax.forEach(f => { const hasId=f.querySelector('.pax-id').value.trim()!==''; f.querySelector('.pax-costo').value=(hasId?totalCostoGlobal/divisor:0).toFixed(2); f.querySelector('.pax-comision').value=(hasId?totalComisionGlobal/divisor:0).toFixed(2); });
+            
+            let subtotal = totalCostoGlobal + totalComisionGlobal;
+            let totalImpuestos = 0;
+            document.querySelectorAll('#contenedor-taxes-cot .tax-row').forEach(r => totalImpuestos += subtotal * (parseFloat(r.querySelector('.tax-val').value) / 100 || 0));
+            
             const sym = document.getElementById('cot_moneda').value;
             const tasaCambio = TASAS_CAMBIO[sym] || 1.00;
             const feeOrbis = (FEE_ORBIS_BASE + FEE_ORBIS_PROTECT) * tasaCambio;
@@ -481,45 +401,40 @@
             document.getElementById('cot-escudo-oro').innerHTML = `${escudoOro.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-gran-total').innerHTML = `${granTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
         }
-        
-        function generarPDFCotizacion() { alert("Construyendo documento PDF con logos compartidos y desglose detallado..."); }
-
-        function guardarCotizacion() {
-            const clienteNombre = document.getElementById('cot_cliente_nombre');
-            const clienteRif = document.getElementById('cot_cliente_rif');
-            if (!clienteNombre.value.trim() || !clienteRif.value.trim()) {
-                alert("🔴 BLOQUEO DE INTEGRIDAD: El Nombre y RIF del Cliente son obligatorios para guardar y certificar.");
-                clienteNombre.classList.add('input-error');
-                clienteRif.classList.add('input-error');
-                return;
-            }
-            clienteNombre.classList.remove('input-error');
-            clienteRif.classList.remove('input-error');
-
-            const granTotal = parseFloat(document.getElementById('cot-gran-total').textContent.split(' ')[0]);
-            if (granTotal <= 0) {
-                alert("🔴 BLOQUEO DE INTEGRIDAD: El monto total no puede ser cero. Verifique los costos y comisiones.");
-                return;
-            }
-
-            if (!confirm("🏛️ ¿Confirma guardar esta cotización y pasarla a Certificación de Pagos? Los datos serán registrados en ORBIS BRAIN.")) {
-                return;
-            }
+        function generarPDFCotizacion() { alert("Construyendo documento PDF..."); }
+        function puenteHaciaCertificacion() {
+            const clienteNombre = document.getElementById('cot_cliente_nombre').value, clienteRif = document.getElementById('cot_cliente_rif').value;
+            if (!clienteNombre || !clienteRif) { alert("🔴 BLOQUEO: Nombre y RIF del Cliente son obligatorios."); return; }
+            if (parseFloat(document.getElementById('cot-gran-total').textContent) <= 0) { alert("🔴 BLOQUEO: El monto total no puede ser cero."); return; }
             
-            const moneda = document.getElementById('cot_moneda').value;
-            const idCotizacion = `COT-${Math.floor(10000 + Math.random() * 90000)}`;
-
-            const tbodyCot = document.getElementById('cuerpo-tabla-cotizacion');
+            const tbodyCot = document.getElementById('cuerpo-tabla-cotizacion'), idCot = `COT-${Math.floor(1e4 + Math.random() * 9e4)}`;
             const newRowCot = tbodyCot.insertRow(0);
-            newRowCot.innerHTML = `<td>${idCotizacion}</td><td>${clienteNombre.value}</td><td>${new Date().toLocaleDateString()}</td><td>${granTotal.toFixed(2)} ${moneda}</td><td><span style="color:var(--gold-soft)">⏳ PENDIENTE DE PAGO</span></td>`;
+            newRowCot.innerHTML = `<td>${idCot}</td><td>${clienteNombre}</td><td>${new Date().toLocaleDateString()}</td><td>${document.getElementById('cot-gran-total').textContent}</td><td><span style="color:var(--gold-soft)">TRANSFERIDO</span></td>`;
+
+            openModal('opModal');
+            document.getElementById('aliado_name').value = clienteNombre;
+            document.getElementById('aliado_rif').value = clienteRif;
+            document.getElementById('filas-dinamicas').innerHTML = '';
             
-            const tbodyCert = document.getElementById('cuerpo-tabla-cert');
-            const newRowCert = tbodyCert.insertRow(0);
-            newRowCert.innerHTML = `<td>${idCotizacion}</td><td>${clienteNombre.value}</td><td>${new Date().toLocaleDateString()}</td><td>${granTotal.toFixed(2)} ${moneda}</td><td><span style="color:var(--gold-soft)">⏳ PENDIENTE DE PAGO</span></td>`;
+            let costoTotal = 0, comisionTotal = 0;
+            document.querySelectorAll('#pax-container .pax-grid').forEach(f => { costoTotal += parseFloat(f.querySelector('.pax-costo').value) || 0; comisionTotal += parseFloat(f.querySelector('.pax-comision').value) || 0; });
             
-            cerrarModalDirecto('cotizadorModal');
+            const nuevaFila = document.createElement('div');
+            nuevaFila.className = 'grid-inputs servicio-row';
+            nuevaFila.innerHTML = `<div><select class="tipo-srv"><option>➕ OTRO</option></select></div><div><input type="text" class="prov-name" value="SERVICIOS GENERALES COTIZACIÓN"></div><div><input type="number" class="monto-srv" value="${costoTotal.toFixed(2)}"></div><div><input type="number" class="comision-ind" value="${comisionTotal.toFixed(2)}"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove();calcularTodoCert();">X</button>`;
+            document.getElementById('filas-dinamicas').appendChild(nuevaFila);
+
+            document.getElementById('contenedor-taxes-cert').innerHTML = document.getElementById('contenedor-taxes-cot').innerHTML;
+            document.querySelectorAll('#contenedor-taxes-cert .tax-row').forEach(row => {
+                row.querySelector('.tax-val').setAttribute('oninput', 'calcularTodoCert()');
+                row.querySelector('.btn-remove').setAttribute('onclick', 'this.parentElement.remove();calcularTodoCert()');
+            });
+
+            document.getElementById('moneda_global').value = document.getElementById('cot_moneda').value;
+            cambiarMoneda(); 
+            closeModal('cotizadorModal');
             showView('certificacion', document.getElementById('nav-certificacion'));
-            alert(`✅ COTIZACIÓN ${idCotizacion} GUARDADA. Se ha creado una entrada en "Certificación de Pagos".`);
+            alert("🏛️ PUENTE DE DATOS ACTIVADO: Se ha transferido el desglose a la Certificación Fiscal.");
         }
     </script>
 </body>
