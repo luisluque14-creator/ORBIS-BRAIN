@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v15.0</title>
+    <title>ORBIS BRAIN | Master v15.1</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v15.0) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v15.1) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -16,11 +16,37 @@
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; height: 100vh; overflow: hidden; }
         .hidden { display: none !important; }
 
-        /* --- V15.0: SPLASH SCREEN & AUTH --- */
-        #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--black-deep); z-index: 9999; display: flex; justify-content: center; align-items: center; }
-        .splash-logo { font-family: 'Cinzel', serif; color: var(--gold-metalic); font-size: 50px; letter-spacing: 8px; font-weight: 700; animation: pulse 2.5s infinite; }
+        /* --- V15.1: SPLASH SCREEN REFORJADO --- */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--black-deep);
+            z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease-out;
+        }
+        #splash-screen.fade-out { opacity: 0; }
+        .splash-block {
+            padding: 40px 80px;
+            text-align: center;
+            outline: 2px solid var(--gold-metalic);
+            outline-offset: -2px;
+            background-color: var(--black-deep);
+        }
+        .splash-logo-main {
+            font-family: 'Cinzel', serif; color: var(--gold-metalic);
+            font-size: 50px; letter-spacing: 8px; font-weight: 700;
+            animation: pulse 2.5s infinite;
+            margin-bottom: 10px;
+        }
+        .splash-logo-sub {
+            font-family: 'Inter', sans-serif; color: var(--gold-soft);
+            font-size: 14px; letter-spacing: 12px; font-weight: 300;
+            text-transform: uppercase;
+            padding-left: 12px; /* Compensación por el espaciado de la última letra */
+        }
         @keyframes pulse { 0%, 100% { text-shadow: 0 0 10px #d4af37, 0 0 20px #d4af37; } 50% { text-shadow: 0 0 20px #f1d592, 0 0 40px #f1d592; } }
-        #auth-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 9998; display: flex; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
+        
+        #auth-modal { display: none; /* Inicia oculto */ position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 9998; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         .auth-content { background: var(--black-deep); padding: 40px 60px; border-radius: 30px; border: 2px solid var(--gold-metalic); text-align: center; width: 100%; max-width: 500px; }
         .auth-content label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; text-align: left; }
         .auth-content input, .auth-content select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; transition: border-color 0.3s; margin-bottom: 20px; }
@@ -70,7 +96,7 @@
         #provModal .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- V15.0: ESTILOS COTIZADOR ESTRATÉGICO --- */
+        /* --- ESTILOS COTIZADOR ESTRATÉGICO --- */
         #cotizadorModal .modal-content { 
             margin: 5vh auto;
             border: 1px solid #333;
@@ -99,10 +125,15 @@
     </style>
 </head>
 <body>
-    <!-- V15.0: SPLASH SCREEN -->
-    <div id="splash-screen"><div class="splash-logo">ORBIS</div></div>
+    <!-- V15.1: SPLASH SCREEN REFORJADO -->
+    <div id="splash-screen">
+        <div class="splash-block">
+            <div class="splash-logo-main">ORBIS</div>
+            <div class="splash-logo-sub">Brain</div>
+        </div>
+    </div>
 
-    <!-- V15.0: AUTH MODAL -->
+    <!-- V15.1: AUTH MODAL (INICIA OCULTO) -->
     <div id="auth-modal">
         <div class="auth-content">
             <hr class="gold-divider"><div class="modal-title">REGISTRO DE IDENTIDAD</div><hr class="gold-divider" style="margin-bottom: 30px;">
@@ -125,34 +156,34 @@
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V15.0: SIDEBAR REORDENADO -->
+        <!-- SIDEBAR REORDENADO -->
         <div class="sidebar">
-            <div class="logo-container"><div class="logo-text">ORBIS</div><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px;">BRAIN V15.0</div></div>
+            <div class="logo-container"><div class="logo-text">ORBIS</div><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px;">BRAIN V15.1</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Certificación de Pagos</button>
         </div>
 
-        <!-- VISTA #1: RED MAESTRA (ANTIGUO DIRECTORIO) -->
+        <!-- VISTA #1: RED MAESTRA -->
         <div id="view-directorio" class="view-section">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;"><h1 style="font-family:'Cinzel'; font-size: 26px; margin:0;">RED <span style="color:var(--gold-metalic)">MAESTRA</span></h1><button class="btn-gold" style="width:auto;" onclick="openModal('provModal')">Cargar Ficha Técnica +</button></div>
             <div class="table-container"><table><thead><tr><th>ID Aliado</th><th>Categoría</th><th>Nombre Legal</th><th>RIF / Tax ID</th><th>País</th><th>Acción</th></tr></thead><tbody id="cuerpo-tabla-prov"></tbody></table></div>
         </div>
 
-        <!-- VISTA #2: COTIZADOR ESTRATÉGICO (ANTIGUA PRE-FACTURACIÓN) -->
+        <!-- VISTA #2: COTIZADOR ESTRATÉGICO -->
         <div id="view-cotizador" class="view-section">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;"><h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">COTIZADOR <span style="color:var(--gold-metalic)">ESTRATÉGICO</span></h1><button class="btn-gold" onclick="openModal('cotizadorModal')">Nueva Cotización +</button></div>
             <div class="table-container"><table><thead><tr><th>ID Cotización</th><th>Cliente / Pagador</th><th>Fecha Emisión</th><th>Monto Total</th><th>Estatus</th></tr></thead><tbody id="cuerpo-tabla-cotizacion"></tbody></table></div>
         </div>
         
-        <!-- VISTA #3: CERTIFICACIÓN DE PAGOS (ANTIGUA CERTIFICACIÓN) -->
+        <!-- VISTA #3: CERTIFICACIÓN DE PAGOS -->
         <div id="view-certificacion" class="view-section">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;"><h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">CERTIFICACIÓN DE <span style="color:var(--gold-metalic)">PAGOS</span></h1><!-- <button class="btn-gold" onclick="openModal('opModal')">Nueva Orquestación +</button> --></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;"><h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">CERTIFICACIÓN DE <span style="color:var(--gold-metalic)">PAGOS</span></h1></div>
             <div class="table-container"><table><thead><tr><th style="padding:15px;">ID Operación</th><th>Aliado Responsable</th><th>Fecha</th><th>Total Certificado</th><th>Estatus</th></tr></thead><tbody id="cuerpo-tabla-cert"></tbody></table></div>
         </div>
     </div>
     
-    <!-- MODAL #1: DIRECTORIO MAESTRO (SIN CAMBIOS) -->
+    <!-- MODAL #1: DIRECTORIO MAESTRO -->
     <div id="provModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div><hr class="gold-divider">
@@ -164,7 +195,7 @@
         </div>
     </div>
 
-    <!-- MODAL #2: COTIZADOR ESTRATÉGICO (REINGENIERÍA v15.0) -->
+    <!-- MODAL #2: COTIZADOR ESTRATÉGICO -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
             <div class="modal-title-wrapper">
@@ -201,7 +232,7 @@
                     <button type="button" class="btn-add" onclick="agregarPax()">+ Agregar Pasajero</button>
                 </div>
                 
-                 <!-- V15.0: ZONA D: IMPUESTOS -->
+                 <!-- ZONA D: IMPUESTOS -->
                 <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px;">
                     <div class="form-section"><h3 class="form-section-header">ZONA D: IMPUESTOS AUTOMÁTICOS Y MANUALES</h3><div id="contenedor-taxes"></div><button type="button" class="btn-add" onclick="agregarTax()">+ Agregar Tasa Manual</button></div>
                     <div class="form-section"><h3 class="form-section-header">CLIENTE / PAGADOR</h3>
@@ -210,7 +241,7 @@
                     </div>
                 </div>
 
-                <!-- V15.0: SUMMARY BOX CON CARGOS TRANSNACIONALES -->
+                <!-- SUMMARY BOX CON CARGOS TRANSNACIONALES -->
                 <div class="summary-box" style="grid-template-columns: 1.2fr repeat(5, 1fr);">
                     <div class="sum-item" style="border-right: 1px solid #333;">
                         <label for="cot_moneda" class="sum-lbl" style="color:var(--gold-metalic);">MONEDA</label>
@@ -234,33 +265,45 @@
 
     <script>
         // =======================================================================
-        //                         JAVASCRIPT UNIFICADO (v15.0)
+        //                         JAVASCRIPT UNIFICADO (v15.1)
         // =======================================================================
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
         const FEE_ORBIS_BASE = 5.00;
-        const FEE_ORBIS_PROTECT = 1.00; // Simulado, ya que la lógica de cobertura se eliminó del UI principal
-        const ESCUDO_ORO_PORC = 0.005; // 0.5%
+        const FEE_ORBIS_PROTECT = 1.00; 
+        const ESCUDO_ORO_PORC = 0.005; 
 
-        // V15.0: Matriz de impuestos por país
+        // Matriz de impuestos por país
         const TAX_MATRIX = {
             "VE": [ { nombre: "IVA", valor: 16 }, { nombre: "IGTF", valor: 3 } ],
             "US": [ { nombre: "Sales Tax", valor: 7 } ],
             "ES": [ { nombre: "IVA (VAT)", valor: 21 } ]
         };
 
-        // V15.0: Objeto para almacenar perfil de sesión
+        // Objeto para almacenar perfil de sesión
         let orbisSession = {
             nombre: "",
             rif: "",
             pais: ""
         };
         
-        // --- LÓGICA DE INICIALIZACIÓN Y NAVEGACIÓN ---
+        // --- LÓGICA DE INICIALIZACIÓN Y NAVEGACIÓN (V15.1) ---
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.display = 'none';
-            }, 2000);
+            const splash = document.getElementById('splash-screen');
+            const authModal = document.getElementById('auth-modal');
+
+            function proceedToAuth() {
+                splash.classList.add('fade-out');
+                
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                    authModal.style.display = 'flex';
+                }, 500); // 500ms para que la transición de fade-out termine
+            }
+
+            // Escuchas de eventos para quitar el splash screen
+            splash.addEventListener('click', proceedToAuth, { once: true });
+            window.addEventListener('keydown', proceedToAuth, { once: true });
 
             document.getElementById('auth_submit').addEventListener('click', () => {
                 const nombre = document.getElementById('auth_nombre').value;
@@ -274,16 +317,15 @@
                     
                     document.getElementById('auth-modal').style.display = 'none';
                     document.getElementById('main-app').classList.remove('hidden');
-                    showView('directorio', document.getElementById('nav-directorio')); // Vista por defecto
+                    showView('directorio', document.getElementById('nav-directorio'));
                 } else {
                     alert("Por favor, complete todos los campos para continuar.");
                 }
             });
 
-            // Convertir inputs a mayúsculas
-            document.addEventListener('input', function(e) { if (e.target.tagName.toLowerCase() === 'input' && (e.target.type === 'text' || e.target.type === 'email')) { e.target.value = e.target.value.toUpperCase(); } });
-            // Seleccionar contenido de input numérico al hacer foco
-            document.addEventListener('focusin', function(e) { if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'number') { e.target.select(); } });
+            // Helpers globales
+            document.addEventListener('input', (e) => { if (e.target.tagName.toLowerCase() === 'input' && (e.target.type === 'text' || e.target.type === 'email')) { e.target.value = e.target.value.toUpperCase(); } });
+            document.addEventListener('focusin', (e) => { if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'number') { e.target.select(); } });
         });
 
         function showView(viewId, btn) { 
@@ -306,7 +348,7 @@
                 document.getElementById('singles-container').innerHTML = '';
                 document.getElementById('contenedor-taxes').innerHTML = '';
 
-                // V15.0: Cargar impuestos automáticos
+                // Cargar impuestos automáticos
                 const impuestos = TAX_MATRIX[orbisSession.pais] || [];
                 impuestos.forEach(tax => agregarTax(tax.nombre, tax.valor, true));
                 
@@ -319,13 +361,13 @@
         function closeModal(id) { if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos no guardados.")) { document.getElementById(id).style.display = 'none'; } }
         function cerrarModalDirecto(id) { document.getElementById(id).style.display = 'none'; }
 
-        // --- LÓGICA #1: RED MAESTRA (SIN CAMBIOS FUNCIONALES) ---
+        // --- LÓGICA #1: RED MAESTRA (SIN CAMBIOS) ---
         function resetFichaDirectorio() { document.getElementById('provModal').querySelectorAll('input, select').forEach(el => { if(el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = ''; el.classList.remove('input-error'); }); document.getElementById('phone-container').innerHTML = ''; document.getElementById('email-container').innerHTML = ''; addDynamicField('phone-container', 'phone'); addDynamicField('email-container', 'email'); }
         function addDynamicField(containerId, type) { const container = document.getElementById(containerId); const div = document.createElement('div'); div.className = 'dynamic-row'; if (type === 'phone') { div.innerHTML = `<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="SI">🟢 WHATSAPP</option><option value="NO" selected>📞 LLAMADA</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`; } else { div.innerHTML = `<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <select class="is-validated" style="visibility:hidden;"><option value="SI">VERIFICADO</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none; background:transparent; font-size:18px;">×</button>`; } container.appendChild(div); }
         function iniciarGuardadoProv() { let esValido = true; document.querySelectorAll('#provModal .input-error').forEach(el => el.classList.remove('input-error')); const camposTextoRequeridos = [document.getElementById('prov_nombre'), document.getElementById('prov_rif'), document.getElementById('prov_pais')]; for (const campo of camposTextoRequeridos) { if (!campo.value.trim()) { campo.classList.add('input-error'); esValido = false; } } if (!esValido) { return alert("⚠️ BLOQUEO: NOMBRE, RIF Y PAÍS SON OBLIGATORIOS."); } const primerCorreoInput = document.querySelector('#email-container .prov-email'); if (!primerCorreoInput || !primerCorreoInput.value.trim()) { if(primerCorreoInput) primerCorreoInput.classList.add('input-error'); esValido = false; } if (!esValido) { return alert("⚠️ BLOQUEO: Para integrar un aliado a la Red Maestra es obligatorio registrar al menos un Canal de Correo Electrónico."); } if (confirm("🏛️ ORBIS BRAIN SECURITY: ¿Confirma el registro del nuevo aliado en la Red Maestra?")) { ejecutarGuardadoProv(); } }
         async function ejecutarGuardadoProv() { const modalButtons = document.querySelectorAll('#provModal button'); const btnSync = document.getElementById('btn-sync-prov'); modalButtons.forEach(btn => btn.disabled = true); btnSync.textContent = '🚀 REGISTRANDO...'; alert("🏛️ ORBIS BRAIN NETWORK está procesando el registro del nuevo aliado."); const telefonos = Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => { const esWhatsapp = document.querySelectorAll('.is-whatsapp')[i].value; return `${input.value} (WHATSAPP: ${esWhatsapp})`; }).join('; '); const correos = Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; '); const datos = { ID_ALIADO: `ORB-${String(document.getElementById('cuerpo-tabla-prov').rows.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: telefonos, CORREOS: correos }; try { const response = await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', cache: 'no-cache', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'registrarProveedor', data: datos }) }); alert("✅ REGISTRO EN RED MAESTRA EXITOSO."); const tbody = document.getElementById('cuerpo-tabla-prov'); const newRow = tbody.insertRow(0); newRow.innerHTML = `<td>${datos.ID_ALIADO}</td><td>${datos.CATEGORIA}</td><td style="font-weight:bold; letter-spacing:1px;">${datos.NOMBRE_LEGAL}</td><td>${datos.RIF_TAX_ID}</td><td>${datos.PAIS}</td><td><button onclick="alert('⚠️ ACCESO DENEGADO')" style="background:none; border:none; color:#666; cursor:not-allowed; font-size:10px; opacity: 0.5;">ELIMINAR</button></td>`; cerrarModalDirecto('provModal'); } catch (error) { console.error('Error de sincronización de proveedor:', error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado."); } finally { modalButtons.forEach(btn => btn.disabled = false); btnSync.textContent = 'REGISTRAR EN RED MAESTRA'; } }
         
-        // --- LÓGICA #2: COTIZADOR ESTRATÉGICO (REINGENIERÍA v15.0) ---
+        // --- LÓGICA #2: COTIZADOR ESTRATÉGICO (SIN CAMBIOS) ---
         function agregarPaquete() {
             const container = document.getElementById('paquetes-container');
             const div = document.createElement('div');
@@ -373,11 +415,9 @@
                 const cant = parseFloat(fila.querySelector('.pkg-cant').value) || 0;
                 const precio = parseFloat(fila.querySelector('.pkg-precio').value) || 0;
                 const comisionUnit = parseFloat(fila.querySelector('.pkg-comision-unit').value) || 0;
-                
                 const cantCalculo = cant === 0 ? 1 : cant;
                 const costoTotalFila = cantCalculo * precio;
                 const comisionTotalFila = cantCalculo * comisionUnit;
-
                 fila.querySelector('.pkg-comision-total').value = comisionTotalFila.toFixed(2);
                 fila.querySelector('.pkg-total').value = (costoTotalFila + comisionTotalFila).toFixed(2);
                 totalCostoGlobal += costoTotalFila;
@@ -388,11 +428,9 @@
                 const cant = parseFloat(fila.querySelector('.single-cant').value) || 0;
                 const costo = parseFloat(fila.querySelector('.single-costo').value) || 0;
                 const comisionUnit = parseFloat(fila.querySelector('.single-comision-unit').value) || 0;
-
                 const cantCalculo = cant === 0 ? 1 : cant;
                 const costoTotalFila = cantCalculo * costo;
                 const comisionTotalFila = cantCalculo * comisionUnit;
-
                 fila.querySelector('.single-total-com').value = comisionTotalFila.toFixed(2);
                 fila.querySelector('.single-total').value = (costoTotalFila + comisionTotalFila).toFixed(2);
                 totalCostoGlobal += costoTotalFila;
@@ -402,7 +440,6 @@
             const filasPax = document.querySelectorAll('#pax-container .pax-grid');
             const paxConId = Array.from(filasPax).filter(fila => fila.querySelector('.pax-id').value.trim() !== '');
             const divisor = paxConId.length > 0 ? paxConId.length : 1;
-            
             const costoPorPax = totalCostoGlobal / divisor;
             const comisionPorPax = totalComisionGlobal / divisor;
             
@@ -424,20 +461,15 @@
             });
             
             const subtotal = granTotalCostos + granTotalComisiones;
-            
-            // --- V15.0: CORRECCIÓN EN CÁLCULO DE IMPUESTOS ---
             let totalImpuestos = 0;
-            const baseImponible = subtotal; // La base para TODOS los impuestos es el subtotal
+            const baseImponible = subtotal;
             document.querySelectorAll('.tax-row').forEach(row => {
                 const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0;
-                if (porcentaje > 0) {
-                    totalImpuestos += baseImponible * (porcentaje / 100);
-                }
+                if (porcentaje > 0) { totalImpuestos += baseImponible * (porcentaje / 100); }
             });
 
             const sym = document.getElementById('cot_moneda').value;
             const tasaCambio = TASAS_CAMBIO[sym] || 1.00;
-            
             const feeOrbis = (FEE_ORBIS_BASE + FEE_ORBIS_PROTECT) * tasaCambio;
             const subtotalConFees = subtotal + totalImpuestos + feeOrbis;
             const escudoOro = subtotalConFees * ESCUDO_ORO_PORC;
@@ -477,12 +509,10 @@
             const moneda = document.getElementById('cot_moneda').value;
             const idCotizacion = `COT-${Math.floor(10000 + Math.random() * 90000)}`;
 
-            // Guardar en tabla de cotizaciones
             const tbodyCot = document.getElementById('cuerpo-tabla-cotizacion');
             const newRowCot = tbodyCot.insertRow(0);
             newRowCot.innerHTML = `<td>${idCotizacion}</td><td>${clienteNombre.value}</td><td>${new Date().toLocaleDateString()}</td><td>${granTotal.toFixed(2)} ${moneda}</td><td><span style="color:var(--gold-soft)">⏳ PENDIENTE DE PAGO</span></td>`;
             
-            // Pasar a Certificación
             const tbodyCert = document.getElementById('cuerpo-tabla-cert');
             const newRowCert = tbodyCert.insertRow(0);
             newRowCert.innerHTML = `<td>${idCotizacion}</td><td>${clienteNombre.value}</td><td>${new Date().toLocaleDateString()}</td><td>${granTotal.toFixed(2)} ${moneda}</td><td><span style="color:var(--gold-soft)">⏳ PENDIENTE DE PAGO</span></td>`;
