@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v15.3</title>
+    <title>ORBIS BRAIN | Master v15.6</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v15.3) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v15.6) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -16,7 +16,7 @@
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; height: 100vh; overflow: hidden; }
         .hidden { display: none !important; }
 
-        /* --- V15.3: SPLASH SCREEN --- */
+        /* --- V15.6: SPLASH SCREEN --- */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--black-deep);
@@ -30,18 +30,18 @@
             padding: 60px; text-align: center;
             outline: 2px solid var(--gold-metalic); outline-offset: -2px;
             background-color: var(--black-deep);
-            animation: pulse-border 2.5s infinite;
+            animation: pulse-border-metallic 2.5s infinite;
         }
-        .splash-logo { width: 400px; height: auto; }
+        .splash-logo { width: 650px; height: auto; }
         .splash-prompt {
             font-family: 'Inter', sans-serif; color: var(--gold-soft);
             margin-top: 30px; font-size: 12px; letter-spacing: 2px;
-            text-transform: uppercase; animation: blink 2s linear infinite;
+            text-transform: uppercase; animation: blink-slow 3s linear infinite;
         }
-        @keyframes pulse-border { 0%, 100% { box-shadow: 0 0 10px var(--gold-metalic), 0 0 20px var(--gold-metalic); } 50% { box-shadow: 0 0 20px var(--gold-soft), 0 0 40px var(--gold-soft); } }
-        @keyframes blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 0.8; } }
+        @keyframes pulse-border-metallic { 0%, 100% { box-shadow: 0 0 15px #ffcc00, 0 0 30px #d4af37; } 50% { box-shadow: 0 0 30px #ffcc00, 0 0 60px #f1d592; } }
+        @keyframes blink-slow { 0%, 100% { opacity: 0.4; } 50% { opacity: 1.0; } }
 
-        /* --- V15.3: AUTH MODAL --- */
+        /* --- V15.6: AUTH MODAL --- */
         #auth-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 9998; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         .auth-content { background: var(--black-deep); padding: 40px 60px; border-radius: 30px; border: 2px solid var(--gold-metalic); text-align: center; width: 100%; max-width: 500px; }
         .auth-content label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; text-align: left; }
@@ -50,7 +50,7 @@
         .main-container { display: flex; height: 100vh; }
         .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; z-index: 1000; }
         .logo-container { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 20px; }
-        .sidebar-logo { width: 120px; height: auto; }
+        .sidebar-logo { width: 220px; height: auto; }
         .nav-btn { background: transparent; border: 1px solid transparent; color: #888; padding: 15px; text-align: left; font-family: 'Cinzel'; font-size: 12px; letter-spacing: 2px; cursor: pointer; transition: 0.3s; margin-bottom: 10px; border-radius: 8px; width: 100%; }
         .nav-btn.active { color: var(--gold-metalic); border: 1px solid var(--gold-metalic); background: rgba(212, 175, 55, 0.1); }
         .view-section { display: none; flex: 1; height: 100vh; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); padding: 50px; }
@@ -63,7 +63,7 @@
         th { text-align: left; color: var(--gold-soft); font-size: 11px; text-transform: uppercase; padding: 15px; letter-spacing: 1px; }
         td { padding: 15px; border-bottom: 1px solid #222; font-size: 13px; }
         
-        /* --- V15.3: MODAL GENÉRICO --- */
+        /* --- V15.6: MODAL GENÉRICO --- */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 2000; justify-content: center; align-items: flex-start; backdrop-filter: blur(10px); overflow-y: auto; }
         .modal-content { background: var(--black-deep); padding: 30px 60px; border-radius: 30px; max-height: 96vh; border: 2px solid var(--gold-metalic); }
         .modal-logo-container { text-align: center; padding: 10px 0 20px; }
@@ -112,18 +112,18 @@
     </style>
 </head>
 <body>
-    <!-- V15.3: SPLASH SCREEN -->
+    <!-- V15.6: SPLASH SCREEN -->
     <div id="splash-screen">
         <div class="splash-block">
             <img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN Logo" class="splash-logo">
         </div>
-        <div class="splash-prompt">Click o presiona una tecla para ingresar</div>
+        <div class="splash-prompt">HAGA CLICK PARA CONTINUAR</div>
     </div>
 
-    <!-- V15.3: AUTH MODAL -->
+    <!-- V15.6: AUTH MODAL -->
     <div id="auth-modal">
         <div class="auth-content">
-            <div class="modal-logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="modal-logo"></div>
+            <div class="modal-logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="modal-logo" style="width: 280px;"></div>
             <hr class="gold-divider"><div class="modal-title">REGISTRO DE IDENTIDAD</div><hr class="gold-divider" style="margin-bottom: 30px;">
             <form id="authForm">
                 <label for="auth_nombre">Nombre Legal / Empresa *</label><input type="text" id="auth_nombre" placeholder="NOMBRE FISCAL" required>
@@ -135,9 +135,9 @@
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V15.3: SIDEBAR -->
+        <!-- V15.6: SIDEBAR -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V15.3</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V15.6</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Certificación de Pagos</button>
@@ -225,7 +225,7 @@
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v15.3)
+        //                      JAVASCRIPT UNIFICADO (v15.6)
         // =======================================================================
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
@@ -299,7 +299,7 @@
         }
         function closeModal(id) { if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos no guardados.")) { document.getElementById(id).style.display = 'none'; } }
 
-        // --- LÓGICA #1: CERTIFICACIÓN (RESTAURADA) ---
+        // --- LÓGICA #1: CERTIFICACIÓN (RESTAURADA Y CORREGIDA) ---
         function gestionarEstadoCobertura(esInterno) { const p = document.getElementById('cobertura_proveedor'), b = document.getElementById('cobertura_base'), c = document.getElementById('cobertura_comision'), i = document.getElementById('cobertura_icon'); if (esInterno) { p.value = 'ORBIS BRAIN NETWORK'; b.value = '2.00'; c.value = '0.00'; i.innerHTML = '🔒'; [p, b, c].forEach(el => el.setAttribute('readonly', true)); } else { p.value = ''; b.value = '0.00'; c.value = '0.00'; i.innerHTML = '✍️'; p.placeholder = 'NOMBRE PROVEEDOR *';[p, b, c].forEach(el => el.removeAttribute('readonly')); } calcularTodoCert(); }
         function agregarFila() { const div = document.createElement('div'); div.className = 'grid-inputs servicio-row'; div.innerHTML = `<div><select class="tipo-srv" onchange="calcularTodoCert()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Otro">➕ Otro</option></select></div><div><input type="text" class="prov-name" placeholder="NOMBRE PROVEEDOR *"></div><div><input type="number" class="monto-srv" oninput="calcularTodoCert()" placeholder="0.00"></div><div><input type="number" class="comision-ind" oninput="calcularTodoCert()" placeholder="0.00"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodoCert();">X</button>`; document.getElementById('filas-dinamicas').appendChild(div); }
         function confirmarRegistro() {
@@ -340,11 +340,11 @@
             totalComisiones += parseFloat(document.getElementById('cobertura_comision').value) || 0;
             document.querySelectorAll('.servicio-row').forEach(row => { totalBase += parseFloat(row.querySelector('.monto-srv').value) || 0; totalComisiones += parseFloat(row.querySelector('.comision-ind').value) || 0; });
             document.getElementById('comision_aliado').value = totalComisiones.toFixed(2);
-            const baseImponibleTotal = totalBase + totalComisiones;
+            const baseImponibleTotal = totalBase; // CORRECCIÓN CLAVE: La base imponible no debe incluir las comisiones.
             let totalImpuestos = 0;
             document.querySelectorAll('#contenedor-taxes-cert .tax-row').forEach(row => { const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0; if (porcentaje > 0) { totalImpuestos += baseImponibleTotal * (porcentaje / 100); } });
             let feeOrbisFinal = (FEE_ORBIS_BASE + (document.getElementById('tipo_cobertura_sel').value === 'interno' ? FEE_ORBIS_PROTECT : 0)) * tasaCambio;
-            const subTotal = baseImponibleTotal + totalImpuestos + feeOrbisFinal;
+            const subTotal = baseImponibleTotal + totalImpuestos + feeOrbisFinal + totalComisiones; // CORRECCIÓN: Los honorarios se suman aquí al subtotal
             const escudoOro = subTotal * ESCUDO_ORO_PORC;
             document.getElementById('res-neto').innerHTML = `${baseImponibleTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('res-imp').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`;
@@ -372,15 +372,31 @@
             } catch (error) { console.error(error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado."); } finally { btn.disabled = false; btn.textContent = 'REGISTRAR EN RED MAESTRA'; }
         }
 
-        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO ---
+        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (CON FÓRMULA CORREGIDA) ---
         function agregarPaquete(){const c=document.getElementById("paquetes-container"),d=document.createElement("div");d.className="pkg-grid",d.innerHTML='<input type="number" class="pkg-cant" value="0" onfocus="this.select()"><input type="text" class="pkg-concepto" placeholder="EJ: HOTEL"><select class="pkg-servicio"><option value="Hotel" selected>🏨 HOTEL</option><option value="Tour">🏞️ TOUR</option></select><select class="pkg-tipo-hab"><option>SENCILLA</option><option>DOBLE</option></select><input type="number" class="pkg-dias" value="0"><input type="number" class="pkg-noches" value="0"><input type="number" class="pkg-precio" placeholder="0.00"><input type="number" class="pkg-comision-unit" placeholder="0.00"><input type="number" class="pkg-comision-total" placeholder="0.00" readonly><input type="number" class="pkg-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest(\'.pkg-grid\').remove();actualizarCalculosCotizador();">X</button>',c.appendChild(d)}
         function agregarServicioIndividual(){const c=document.getElementById("singles-container"),d=document.createElement("div");d.className="single-grid",d.innerHTML='<input type="text" class="single-proveedor" placeholder="EJ: DELTA"><select class="single-servicio"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="0"><input type="number" class="single-costo" placeholder="0.00"><input type="number" class="single-comision-unit" placeholder="0.00"><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest(\'.single-grid\').remove();actualizarCalculosCotizador();">X</button>',c.appendChild(d)}
         function agregarPax(){const c=document.getElementById("pax-container"),d=document.createElement("div");d.className="pax-grid",d.innerHTML='<input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"><input type="text" class="pax-id" placeholder="ID / DNI"><input type="number" class="pax-costo" placeholder="0.00" readonly><input type="number" class="pax-comision" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest(\'.pax-grid\').remove();actualizarCalculosCotizador();">X</button>',c.appendChild(d),actualizarCalculosCotizador()}
         function agregarTaxCot(n="",v="",e=!1){const t=document.createElement("div");t.className="tax-grid tax-row",t.innerHTML=`<input type="text" class="tax-name" value="${n}" ${e?"readonly":""}><div style="position:relative"><input type="number" class="tax-val" value="${v}"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" ${e?'style="visibility:hidden"':""} onclick="this.parentElement.remove();actualizarCalculosCotizador()">X</button>`,document.getElementById("contenedor-taxes-cot").appendChild(t),actualizarCalculosCotizador()}
         function actualizarCalculosCotizador() {
             let totalCostoGlobal = 0, totalComisionGlobal = 0;
-            document.querySelectorAll('#paquetes-container .pkg-grid').forEach(f => { const c=parseFloat(f.querySelector('.pkg-cant').value)||0,p=parseFloat(f.querySelector('.pkg-precio').value)||0,u=parseFloat(f.querySelector('.pkg-comision-unit').value)||0,calc=c||1; f.querySelector('.pkg-comision-total').value=(calc*u).toFixed(2); f.querySelector('.pkg-total').value=(calc*p+calc*u).toFixed(2); totalCostoGlobal+=calc*p; totalComisionGlobal+=calc*u; });
-            document.querySelectorAll('#singles-container .single-grid').forEach(f => { const c=parseFloat(f.querySelector('.single-cant').value)||0,p=parseFloat(f.querySelector('.single-costo').value)||0,u=parseFloat(f.querySelector('.single-comision-unit').value)||0,calc=c||1; f.querySelector('.single-total-com').value=(calc*u).toFixed(2); f.querySelector('.single-total').value=(calc*p+calc*u).toFixed(2); totalCostoGlobal+=calc*p; totalComisionGlobal+=calc*u; });
+            document.querySelectorAll('#paquetes-container .pkg-grid').forEach(f => {
+                const c = parseFloat(f.querySelector('.pkg-cant').value) || 0;
+                const p = parseFloat(f.querySelector('.pkg-precio').value) || 0;
+                const u = parseFloat(f.querySelector('.pkg-comision-unit').value) || 0;
+                f.querySelector('.pkg-comision-total').value = (c * u).toFixed(2);
+                f.querySelector('.pkg-total').value = (c * p).toFixed(2); // CORRECCIÓN: Total de línea es (cant * precio base)
+                totalCostoGlobal += c * p;
+                totalComisionGlobal += c * u;
+            });
+            document.querySelectorAll('#singles-container .single-grid').forEach(f => {
+                const c = parseFloat(f.querySelector('.single-cant').value) || 0;
+                const p = parseFloat(f.querySelector('.single-costo').value) || 0;
+                const u = parseFloat(f.querySelector('.single-comision-unit').value) || 0;
+                f.querySelector('.single-total-com').value = (c * u).toFixed(2);
+                f.querySelector('.single-total').value = (c * p).toFixed(2); // CORRECCIÓN: Total de línea es (cant * costo base)
+                totalCostoGlobal += c * p;
+                totalComisionGlobal += c * u;
+            });
             const filasPax = document.querySelectorAll('#pax-container .pax-grid'), paxConId = Array.from(filasPax).filter(f=>f.querySelector('.pax-id').value.trim()!==''), divisor=paxConId.length||1;
             filasPax.forEach(f => { const hasId=f.querySelector('.pax-id').value.trim()!==''; f.querySelector('.pax-costo').value=(hasId?totalCostoGlobal/divisor:0).toFixed(2); f.querySelector('.pax-comision').value=(hasId?totalComisionGlobal/divisor:0).toFixed(2); });
             
