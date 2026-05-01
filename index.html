@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v15.9</title>
+    <title>ORBIS BRAIN | Master v16.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v15.9) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v16.0) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -16,7 +16,7 @@
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; height: 100vh; overflow: hidden; }
         .hidden { display: none !important; }
 
-        /* --- V15.9: SPLASH SCREEN --- */
+        /* --- V16.0: SPLASH SCREEN --- */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--black-deep);
@@ -41,7 +41,7 @@
         @keyframes pulse-border-metallic { 0%, 100% { box-shadow: 0 0 15px #ffcc00, 0 0 30px #d4af37; } 50% { box-shadow: 0 0 30px #ffcc00, 0 0 60px #f1d592; } }
         @keyframes blink-slow { 0%, 100% { opacity: 0.4; } 50% { opacity: 1.0; } }
 
-        /* --- V15.9: AUTH MODAL --- */
+        /* --- V16.0: AUTH MODAL --- */
         #auth-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 9998; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         .auth-content { background: var(--black-deep); padding: 40px 60px; border-radius: 30px; border: 2px solid var(--gold-metalic); text-align: center; width: 100%; max-width: 500px; }
         .auth-content label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; text-align: left; }
@@ -63,7 +63,7 @@
         th { text-align: left; color: var(--gold-soft); font-size: 11px; text-transform: uppercase; padding: 15px; letter-spacing: 1px; }
         td { padding: 15px; border-bottom: 1px solid #222; font-size: 13px; }
         
-        /* --- V15.9: MODAL GENÉRICO --- */
+        /* --- V16.0: MODAL GENÉRICO --- */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 2000; justify-content: center; align-items: flex-start; backdrop-filter: blur(10px); overflow-y: auto; padding-top: 2vh; padding-bottom: 2vh; }
         .modal-content { background: var(--black-deep); padding: 40px 60px; border-radius: 30px; border: 2px solid var(--gold-metalic); }
         .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 20px 0; opacity: 0.9; }
@@ -97,7 +97,7 @@
         #provModal .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS ESPECÍFICOS COTIZADOR Y CERTIFICACIÓN v15.9 --- */
+        /* --- ESTILOS ESPECÍFICOS COTIZADOR Y CERTIFICACIÓN v16.0 --- */
         .tax-container-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
         .tax-grid { display: grid; grid-template-columns: 30px 1fr 100px 40px; gap: 10px; align-items: stretch; }
         .pkg-grid { display: grid; grid-template-columns: 0.4fr 2fr 1.5fr 1fr 0.4fr 0.4fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
@@ -110,7 +110,7 @@
     </style>
 </head>
 <body>
-    <!-- V15.9: SPLASH SCREEN -->
+    <!-- V16.0: SPLASH SCREEN -->
     <div id="splash-screen">
         <div class="splash-block">
             <img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN Logo" class="splash-logo">
@@ -118,7 +118,7 @@
         <div class="splash-prompt">HAGA CLICK PARA CONTINUAR</div>
     </div>
 
-    <!-- V15.9: AUTH MODAL -->
+    <!-- V16.0: AUTH MODAL -->
     <div id="auth-modal">
         <div class="auth-content">
             <div class="modal-logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="modal-logo" style="width: 280px;"></div>
@@ -133,9 +133,9 @@
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V15.9: SIDEBAR -->
+        <!-- V16.0: SIDEBAR -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V15.9</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.0</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Certificación de Pagos</button>
@@ -160,7 +160,7 @@
         </div>
     </div>
     
-    <!-- MODAL #1: CERTIFICACIÓN DE RECAUDO MAESTRO (DISEÑO v15.9) -->
+    <!-- MODAL #1: CERTIFICACIÓN DE RECAUDO MAESTRO (DISEÑO v16.0) -->
     <div id="opModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">CERTIFICACIÓN DE RECAUDO MAESTRO</div><hr class="gold-divider">
@@ -213,19 +213,19 @@
         </div>
     </div>
     
-    <!-- MODAL #2: RED MAESTRA (DISEÑO v15.9) -->
+    <!-- MODAL #2: RED MAESTRA (DISEÑO v16.0) -->
     <div id="provModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div><hr class="gold-divider">
             <div class="warning-box" style="margin-top:20px;"><span style="font-size: 20px;">⚠️</span><p style="font-size: 11px; margin: 0; color: #f8d7da;"><b>POLÍTICA DE INTEGRIDAD:</b> NOMBRE, RIF Y PAÍS SON OBLIGATORIOS.</p></div>
             <div class="form-section"><div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;"><div><label>Categoría *</label><select id="prov_cat"><option value="HOTEL">🏨 HOTEL</option><option value="AGENCIA">🏢 AGENCIA</option><option value="FREELANCER">👨‍💻 FREELANCER</option><option value="TRASLADO">🚐 TRASLADO</option><option value="SEGURO">🛡️ SEGURO</option></select></div><div><label>Nombre Legal *</label><input type="text" id="prov_nombre" placeholder="NOMBRE LEGAL"></div><div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="RIF / TAX ID"></div></div></div>
             <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:20px;"><div class="form-section"><label>Canales de Telefonía / WhatsApp</label><div id="phone-container"></div><button type="button" class="btn-add-small" onclick="addDynamicField('phone-container', 'phone')">+ Agregar Teléfono</button><label style="margin-top:15px;">Canales de Correo Electrónico *</label><div id="email-container"></div><button type="button" class="btn-add-small" onclick="addDynamicField('email-container', 'email')">+ Agregar Correo</button></div><div class="form-section"><label>Ubicación y Operación</label><div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom:15px;"><div><label>País *</label><input type="text" id="prov_pais" placeholder="PAÍS"></div><div><label>Moneda Base *</label><select id="prov_moneda"><option value="USD ($)">USD ($)</option><option value="VES (Bs.)">VES (Bs.)</option><option value="EUR (€)">EUR (€)</option></select></div></div><div style="background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);"><p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.5;"><b>RED GLOBAL ORBIS:</b> Este proveedor será integrado a la red maestra para orquestación internacional.</p></div></div></div>
-            <button id="btn-sync-prov" class="btn-gold" style="padding: 22px; width:100%;" onclick="iniciarGuardadoProv()">REGISTRAR EN RED MAESTRA</button>
+            <button id="btn-sync-prov" class="btn-gold" style="padding: 22px; width:100%; margin-top:20px;" onclick="iniciarGuardadoProv()">REGISTRAR EN RED MAESTRA</button>
             <button id="btn-cancel-prov" class="btn-cancel-elite" onclick="closeModal('provModal')">Cancelar</button>
         </div>
     </div>
 
-    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (DISEÑO v15.9) -->
+    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (DISEÑO v16.0) -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
             <form id="cotizadorForm" oninput="actualizarCalculosCotizador()">
@@ -233,7 +233,13 @@
                 <div class="form-section" id="paquetes-section"><h3 class="form-section-header">ZONA A: PAQUETES / HOTELES</h3><div id="paquetes-container-header" class="grid-header pkg-grid" style="padding:0 10px;margin-bottom:10px"><label>Cant.</label><label>Concepto</label><label>Servicio</label><label>Tipo Hab.</label><label>Días</label><label>Noches</label><label>Precio Base</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span></div><div id="paquetes-container"></div><button type="button" class="btn-add" onclick="agregarPaquete()">+ Agregar Paquete</button></div>
                 <div class="form-section" id="singles-section"><h3 class="form-section-header">ZONA B: SERVICIOS INDIVIDUALES</h3><div id="singles-container-header" class="grid-header single-grid" style="padding:0 10px;margin-bottom:10px"><label>Proveedor</label><label>Servicio</label><label>Tipo</label><label>Cant.</label><label>Costo</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span></div><div id="singles-container"></div><button type="button" class="btn-add" onclick="agregarServicioIndividual()">+ Agregar Servicio</button></div>
                 <div class="form-section"><h3 class="form-section-header">ZONA C: DESGLOSE FINAL POR PASAJERO</h3><div id="pax-container-header" class="grid-header pax-grid" style="padding:0 10px;margin-bottom:10px"><label>Nombre del Pasajero</label><label>ID / DNI</label><label>Costo por PAX</label><label>Comisión por PAX</label><span></span></div><div id="pax-container"></div><button type="button" class="btn-add" onclick="agregarPax()">+ Agregar Pasajero</button></div>
-                <div class="form-section"><h3 class="form-section-header">ZONA D: IMPUESTOS AUTOMÁTICOS Y MANUALES</h3><div id="contenedor-taxes-cot" class="tax-container-grid"></div><button type="button" class="btn-add" onclick="agregarTaxCot()">+ Agregar Tasa Manual</button></div>
+                <div class="form-section">
+                    <div style="width: 50%;">
+                        <h3 class="form-section-header">ZONA D: IMPUESTOS AUTOMÁTICOS Y MANUALES</h3>
+                        <div id="contenedor-taxes-cot" class="tax-container-grid"></div>
+                        <button type="button" class="btn-add" onclick="agregarTaxCot()">+ Agregar Tasa Manual</button>
+                    </div>
+                </div>
                 <div class="summary-box" style="grid-template-columns: 1.2fr repeat(5, 1fr);">
                     <div class="sum-item" style="border-right:1px solid #333"><label for="cot_moneda" class="sum-lbl" style="color:var(--gold-metalic)">MONEDA</label><select id="cot_moneda" onchange="actualizarCalculosCotizador()"><option value="$">USD ($)</option><option value="€">EUR (€)</option><option value="Bs.">Bs. (VE)</option></select></div>
                     <div class="sum-item"><span class="sum-lbl">SUBTOTAL</span><span id="cot-subtotal" class="sum-val">0.00</span></div>
@@ -250,7 +256,7 @@
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v15.9)
+        //                      JAVASCRIPT UNIFICADO (v16.0)
         // =======================================================================
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
@@ -335,7 +341,7 @@
             });
             if (!esValido) { alert("⚠️ BLOQUEO DE SEGURIDAD: Los campos marcados en rojo son obligatorios."); return; }
             if (parseFloat(document.getElementById('comision_aliado').value) <= 0) { alert("⚠️ BLOQUEO DE INTEGRIDAD: Los Honorarios del Aliado no pueden ser cero."); return; }
-            if (document.querySelectorAll('#contenedor-taxes-cert .tax-row').length === 0) { alert("🔴 VALIDACIÓN BLOQUEADA: Debe agregar al menos una tasa de impuesto."); return; }
+            if (document.querySelectorAll('#contenedor-taxes-cert .tax-grid').length === 0) { alert("🔴 VALIDACIÓN BLOQUEADA: Debe agregar al menos una tasa de impuesto."); return; }
             if (confirm("🏛️ ¿Confirma la sincronización de esta certificación?")) { enviarCertificacion(); }
         }
         async function enviarCertificacion() {
