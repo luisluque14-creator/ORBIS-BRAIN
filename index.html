@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v16.0</title>
+    <title>ORBIS BRAIN | Master v16.1</title>
+    <!-- V16.1: INSTALACIÓN DE LIBRERÍA QRCODE.JS VÍA CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v16.0) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v16.1) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -97,7 +99,7 @@
         #provModal .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS ESPECÍFICOS COTIZADOR Y CERTIFICACIÓN v16.0 --- */
+        /* --- ESTILOS ESPECÍFICOS COTIZADOR Y CERTIFICACIÓN v16.1 --- */
         .tax-container-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
         .tax-grid { display: grid; grid-template-columns: 30px 1fr 100px 40px; gap: 10px; align-items: stretch; }
         .pkg-grid { display: grid; grid-template-columns: 0.4fr 2fr 1.5fr 1fr 0.4fr 0.4fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
@@ -107,6 +109,29 @@
         #cotizadorModal .summary-box { grid-template-columns: 1.2fr repeat(5, 1fr); max-width: 1400px; margin-left: auto; margin-right: auto; margin-bottom: 20px; align-items: center;}
         #cotizadorModal #cot_moneda { background: transparent; border: 1px solid var(--gold-metalic); color: var(--gold-soft); padding: 12px; height: auto; }
         .action-buttons-grid { max-width: 700px; margin: 20px auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
+        
+        /* V16.1: ESTILOS PARA SELLO QR */
+        #qr-verification-seal {
+            margin: 30px auto 0;
+            padding: 20px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid #222;
+            border-radius: 15px;
+            max-width: 200px;
+            text-align: center;
+        }
+        #qr-verification-seal p {
+            font-size: 10px;
+            color: var(--gold-soft);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+        #qr-code-container {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -133,9 +158,9 @@
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V16.0: SIDEBAR -->
+        <!-- V16.1: SIDEBAR (sin cambios) -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.0</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.1</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Certificación de Pagos</button>
@@ -160,7 +185,7 @@
         </div>
     </div>
     
-    <!-- MODAL #1: CERTIFICACIÓN DE RECAUDO MAESTRO (DISEÑO v16.0) -->
+    <!-- MODAL #1: CERTIFICACIÓN DE RECAUDO MAESTRO (DISEÑO v16.1 - sin cambios funcionales) -->
     <div id="opModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">CERTIFICACIÓN DE RECAUDO MAESTRO</div><hr class="gold-divider">
@@ -213,7 +238,7 @@
         </div>
     </div>
     
-    <!-- MODAL #2: RED MAESTRA (DISEÑO v16.0) -->
+    <!-- MODAL #2: RED MAESTRA (DISEÑO v16.1 - sin cambios) -->
     <div id="provModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div><hr class="gold-divider">
@@ -225,7 +250,7 @@
         </div>
     </div>
 
-    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (DISEÑO v16.0) -->
+    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (DISEÑO v16.1) -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
             <form id="cotizadorForm" oninput="actualizarCalculosCotizador()">
@@ -234,6 +259,7 @@
                 <div class="form-section" id="singles-section"><h3 class="form-section-header">ZONA B: SERVICIOS INDIVIDUALES</h3><div id="singles-container-header" class="grid-header single-grid" style="padding:0 10px;margin-bottom:10px"><label>Proveedor</label><label>Servicio</label><label>Tipo</label><label>Cant.</label><label>Costo</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span></div><div id="singles-container"></div><button type="button" class="btn-add" onclick="agregarServicioIndividual()">+ Agregar Servicio</button></div>
                 <div class="form-section"><h3 class="form-section-header">ZONA C: DESGLOSE FINAL POR PASAJERO</h3><div id="pax-container-header" class="grid-header pax-grid" style="padding:0 10px;margin-bottom:10px"><label>Nombre del Pasajero</label><label>ID / DNI</label><label>Costo por PAX</label><label>Comisión por PAX</label><span></span></div><div id="pax-container"></div><button type="button" class="btn-add" onclick="agregarPax()">+ Agregar Pasajero</button></div>
                 <div class="form-section">
+                    <!-- V16.1: OPTIMIZACIÓN DE ANCHO PARA ZONA D -->
                     <div style="width: 50%;">
                         <h3 class="form-section-header">ZONA D: IMPUESTOS AUTOMÁTICOS Y MANUALES</h3>
                         <div id="contenedor-taxes-cot" class="tax-container-grid"></div>
@@ -249,6 +275,12 @@
                     <div class="sum-item"><span class="sum-lbl">GRAN TOTAL</span><span id="cot-gran-total" class="sum-val">0.00</span></div>
                 </div>
                 <div class="action-buttons-grid"><button type="button" class="btn-secondary" onclick="generarPDFCotizacion()">GENERAR PDF 📄</button><button type="button" class="btn-gold" onclick="puenteHaciaCertificacion()">PASAR A CERTIFICACIÓN 🏛️</button></div>
+                
+                <!-- V16.1: CONTENEDOR PARA SELLO DE VERIFICACIÓN QR -->
+                <div id="qr-verification-seal" class="hidden">
+                    <p>SELLO DE VERIFICACIÓN ORBIS</p>
+                    <div id="qr-code-container"></div>
+                </div>
             </form>
             <button type="button" class="btn-cancel-elite" onclick="closeModal('cotizadorModal')">Cancelar</button>
         </div>
@@ -256,7 +288,7 @@
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v16.0)
+        //                      JAVASCRIPT UNIFICADO (v16.1)
         // =======================================================================
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
@@ -320,6 +352,8 @@
             } else if (id === 'cotizadorModal') {
                 document.getElementById('cotizadorForm').reset();
                 ['#pax-container', '#paquetes-container', '#singles-container', '#contenedor-taxes-cot'].forEach(sel => document.querySelector(sel).innerHTML = '');
+                document.getElementById('qr-verification-seal').classList.add('hidden'); // Ocultar QR al abrir
+                document.getElementById('qr-code-container').innerHTML = ''; // Limpiar QR
                 const impuestos = TAX_MATRIX[orbisSession.pais] || [];
                 impuestos.forEach(tax => agregarTaxCot(tax.nombre, tax.valor, true));
                 agregarPaquete();
@@ -375,14 +409,14 @@
             let totalImpuestos = 0;
             document.querySelectorAll('#contenedor-taxes-cert .tax-grid').forEach(row => { const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0; if (porcentaje > 0) { totalImpuestos += baseImponibleTotal * (porcentaje / 100); } });
             let feeOrbisFinal = (FEE_ORBIS_BASE + (document.getElementById('tipo_cobertura_sel').value === 'interno' ? FEE_ORBIS_PROTECT : 0)) * tasaCambio;
-            const subTotal = baseImponibleTotal + totalImpuestos + feeOrbisFinal + totalComisiones;
-            const escudoOro = subTotal * ESCUDO_ORO_PORC;
+            const subTotal = baseImponibleTotal + totalImpuestos;
+            const escudoOro = (subTotal + feeOrbisFinal + totalComisiones) * ESCUDO_ORO_PORC;
             document.getElementById('res-neto').innerHTML = `${baseImponibleTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('res-imp').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('res-fee-fijo').innerHTML = `${feeOrbisFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('res-escudo').innerHTML = `${escudoOro.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('res-ganancia').innerHTML = `${totalComisiones.toFixed(2)} <span class="curr-sym">${sym}</span>`;
-            document.getElementById('res-total').innerHTML = `${(subTotal + escudoOro).toFixed(2)} <span class="curr-sym">${sym}</span>`;
+            document.getElementById('res-total').innerHTML = `${(subTotal + feeOrbisFinal + escudoOro + totalComisiones).toFixed(2)} <span class="curr-sym">${sym}</span>`;
         }
 
         // --- LÓGICA #2: RED MAESTRA (SIN ALTERACIONES) ---
@@ -403,11 +437,41 @@
             } catch (error) { console.error(error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado."); } finally { btn.disabled = false; btn.textContent = 'REGISTRAR EN RED MAESTRA'; }
         }
 
-        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (SIN ALTERACIONES) ---
+        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (CON MODIFICACIONES v16.1) ---
         function agregarPaquete(){const c=document.getElementById("paquetes-container"),d=document.createElement("div");d.className="pkg-grid",d.innerHTML='<input type="number" class="pkg-cant" value="0" onfocus="this.select()"><input type="text" class="pkg-concepto" placeholder="EJ: HOTEL"><select class="pkg-servicio"><option value="Hotel" selected>🏨 HOTEL</option><option value="Tour">🏞️ TOUR</option></select><select class="pkg-tipo-hab"><option>SENCILLA</option><option>DOBLE</option></select><input type="number" class="pkg-dias" value="0"><input type="number" class="pkg-noches" value="0"><input type="number" class="pkg-precio" placeholder="0.00"><input type="number" class="pkg-comision-unit" placeholder="0.00"><input type="number" class="pkg-comision-total" placeholder="0.00" readonly><input type="number" class="pkg-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest(\'.pkg-grid\').remove();actualizarCalculosCotizador();">X</button>',c.appendChild(d)}
-        function agregarServicioIndividual(){const c=document.getElementById("singles-container"),d=document.createElement("div");d.className="single-grid",d.innerHTML='<input type="text" class="single-proveedor" placeholder="EJ: DELTA"><select class="single-servicio"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="0"><input type="number" class="single-costo" placeholder="0.00"><input type="number" class="single-comision-unit" placeholder="0.00"><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest(\'.single-grid\').remove();actualizarCalculosCotizador();">X</button>',c.appendChild(d)}
+        
+        // V16.1: MODIFICACIÓN para integrar ASSIST CARD
+        function agregarServicioIndividual(){
+            const c=document.getElementById("singles-container");
+            const d=document.createElement("div");
+            d.className="single-grid";
+            
+            // Al cambiar el servicio, se actualiza el proveedor si es 'Seguro'
+            const handleServiceChange = (selectElement) => {
+                const fila = selectElement.closest('.single-grid');
+                const proveedorInput = fila.querySelector('.single-proveedor');
+                if (selectElement.value === 'Seguro') {
+                    proveedorInput.value = 'ASSIST CARD';
+                    proveedorInput.readOnly = true;
+                } else {
+                    if (proveedorInput.value === 'ASSIST CARD') {
+                        proveedorInput.value = '';
+                    }
+                    proveedorInput.readOnly = false;
+                }
+            };
+            
+            d.innerHTML=`<input type="text" class="single-proveedor" placeholder="EJ: DELTA"><select class="single-servicio" onchange="this.handleServiceChange(this)"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Seguro">🛡️ Seguro</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="0"><input type="number" class="single-costo" placeholder="0.00"><input type="number" class="single-comision-unit" placeholder="0.00"><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove();actualizarCalculosCotizador();">X</button>`;
+            
+            c.appendChild(d);
+            // Adjuntar la función al elemento select recién creado
+            d.querySelector('.single-servicio').handleServiceChange = handleServiceChange;
+        }
+
         function agregarPax(){const c=document.getElementById("pax-container"),d=document.createElement("div");d.className="pax-grid",d.innerHTML='<input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"><input type="text" class="pax-id" placeholder="ID / DNI"><input type="number" class="pax-costo" placeholder="0.00" readonly><input type="number" class="pax-comision" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest(\'.pax-grid\').remove();actualizarCalculosCotizador();">X</button>',c.appendChild(d),actualizarCalculosCotizador()}
         function agregarTaxCot(n="",v="",e=!1){const t=document.getElementById("contenedor-taxes-cot"),d=document.createElement("div");d.className="tax-grid tax-row";const l=e?"readonly":"",s=e?'style="visibility:hidden"':"";d.innerHTML=`<button type="button" class="pin-btn" style="visibility:hidden">📌</button><input type="text" class="tax-name" value="${n}" ${l}><div style="position:relative"><input type="number" class="tax-val" value="${v}"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" ${s} onclick="this.parentElement.remove();actualizarCalculosCotizador()">X</button>`,t.appendChild(d),actualizarCalculosCotizador()}
+        
+        // V16.1: LÓGICA DE CÁLCULO SIN ALTERACIONES
         function actualizarCalculosCotizador() {
             let totalCostoGlobal = 0, totalComisionGlobal = 0;
             document.querySelectorAll('#paquetes-container .pkg-grid').forEach(f => {
@@ -448,7 +512,44 @@
             document.getElementById('cot-escudo-oro').innerHTML = `${escudoOro.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-gran-total').innerHTML = `${granTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
         }
-        function generarPDFCotizacion() { alert("Construyendo documento PDF..."); }
+
+        // V16.1: MODIFICACIÓN para generar QR.
+        function generarPDFCotizacion() {
+            alert("Construyendo documento PDF...");
+            
+            const qrContainer = document.getElementById('qr-code-container');
+            const qrSeal = document.getElementById('qr-verification-seal');
+            qrContainer.innerHTML = ''; // Limpiar QR anterior
+            
+            const idCot = `COT-${Math.floor(10000 + Math.random() * 90000)}`;
+            const fecha = new Date().toISOString();
+            const total = document.getElementById('cot-gran-total').textContent;
+            
+            const qrData = JSON.stringify({
+                id: idCot,
+                timestamp: fecha,
+                total: total,
+                verificado_por: "ORBIS BRAIN v16.1"
+            });
+
+            try {
+                new QRCode(qrContainer, {
+                    text: qrData,
+                    width: 128,
+                    height: 128,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.H
+                });
+                qrSeal.classList.remove('hidden');
+                console.log("Sello de Verificación QR generado con éxito.");
+            } catch (error) {
+                console.error("Error al generar el código QR:", error);
+                alert("Error crítico: No se pudo generar el Sello de Verificación.");
+            }
+        }
+        
+        // V16.1: PUENTE DE DATOS SIN ALTERACIONES
         function puenteHaciaCertificacion() {
             if (parseFloat(document.getElementById('cot-gran-total').textContent) <= 0) { alert("🔴 BLOQUEO: El monto total no puede ser cero."); return; }
             
