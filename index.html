@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v16.1</title>
+    <title>ORBIS BRAIN | Master v16.2</title>
     <!-- V16.1: INSTALACIÓN DE LIBRERÍA QRCODE.JS VÍA CDN -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v16.1) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v16.2) --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -99,7 +99,28 @@
         #provModal .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS ESPECÍFICOS COTIZADOR Y CERTIFICACIÓN v16.1 --- */
+        /* --- ESTILOS ESPECÍFICOS COTIZADOR Y CERTIFICACIÓN v16.2 --- */
+        /* V16.2: AJUSTE DE CONTENEDOR DE IMPUESTOS ZONA D */
+        #cotizador-zona-d-container {
+            max-width: 800px; /* Ancho fijo para el contenedor */
+            width: 100%; 
+        }
+        /* V16.2: BOTÓN DE AGREGAR TASA COMPACTO */
+        .btn-add-compacto {
+            background: none;
+            border: 1px dashed var(--gold-metalic);
+            color: var(--gold-metalic);
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 10px;
+            display: inline-block; /* Para que no ocupe todo el ancho */
+            width: auto;
+        }
+
         .tax-container-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
         .tax-grid { display: grid; grid-template-columns: 30px 1fr 100px 40px; gap: 10px; align-items: stretch; }
         .pkg-grid { display: grid; grid-template-columns: 0.4fr 2fr 1.5fr 1fr 0.4fr 0.4fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
@@ -158,9 +179,9 @@
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V16.1: SIDEBAR (sin cambios) -->
+        <!-- V16.2: SIDEBAR (sin cambios) -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.1</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.2</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Certificación de Pagos</button>
@@ -185,7 +206,7 @@
         </div>
     </div>
     
-    <!-- MODAL #1: CERTIFICACIÓN DE RECAUDO MAESTRO (DISEÑO v16.1 - sin cambios funcionales) -->
+    <!-- MODAL #1: CERTIFICACIÓN DE RECAUDO MAESTRO (DISEÑO v16.2 - sin cambios funcionales) -->
     <div id="opModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">CERTIFICACIÓN DE RECAUDO MAESTRO</div><hr class="gold-divider">
@@ -238,7 +259,7 @@
         </div>
     </div>
     
-    <!-- MODAL #2: RED MAESTRA (DISEÑO v16.1 - sin cambios) -->
+    <!-- MODAL #2: RED MAESTRA (DISEÑO v16.2 - sin cambios) -->
     <div id="provModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div><hr class="gold-divider">
@@ -250,7 +271,7 @@
         </div>
     </div>
 
-    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (DISEÑO v16.1) -->
+    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (DISEÑO v16.2) -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
             <form id="cotizadorForm" oninput="actualizarCalculosCotizador()">
@@ -258,14 +279,14 @@
                 <div class="form-section" id="paquetes-section"><h3 class="form-section-header">ZONA A: PAQUETES / HOTELES</h3><div id="paquetes-container-header" class="grid-header pkg-grid" style="padding:0 10px;margin-bottom:10px"><label>Cant.</label><label>Concepto</label><label>Servicio</label><label>Tipo Hab.</label><label>Días</label><label>Noches</label><label>Precio Base</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span></div><div id="paquetes-container"></div><button type="button" class="btn-add" onclick="agregarPaquete()">+ Agregar Paquete</button></div>
                 <div class="form-section" id="singles-section"><h3 class="form-section-header">ZONA B: SERVICIOS INDIVIDUALES</h3><div id="singles-container-header" class="grid-header single-grid" style="padding:0 10px;margin-bottom:10px"><label>Proveedor</label><label>Servicio</label><label>Tipo</label><label>Cant.</label><label>Costo</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span></div><div id="singles-container"></div><button type="button" class="btn-add" onclick="agregarServicioIndividual()">+ Agregar Servicio</button></div>
                 <div class="form-section"><h3 class="form-section-header">ZONA C: DESGLOSE FINAL POR PASAJERO</h3><div id="pax-container-header" class="grid-header pax-grid" style="padding:0 10px;margin-bottom:10px"><label>Nombre del Pasajero</label><label>ID / DNI</label><label>Costo por PAX</label><label>Comisión por PAX</label><span></span></div><div id="pax-container"></div><button type="button" class="btn-add" onclick="agregarPax()">+ Agregar Pasajero</button></div>
-                <div class="form-section">
-                    <!-- V16.1: OPTIMIZACIÓN DE ANCHO PARA ZONA D -->
-                    <div style="width: 50%;">
-                        <h3 class="form-section-header">ZONA D: IMPUESTOS AUTOMÁTICOS Y MANUALES</h3>
-                        <div id="contenedor-taxes-cot" class="tax-container-grid"></div>
-                        <button type="button" class="btn-add" onclick="agregarTaxCot()">+ Agregar Tasa Manual</button>
-                    </div>
+                
+                <!-- V16.2: AJUSTE DE MAQUETACIÓN PARA ZONA D -->
+                <div class="form-section" id="cotizador-zona-d-container">
+                    <h3 class="form-section-header">ZONA D: IMPUESTOS AUTOMÁTICOS Y MANUALES</h3>
+                    <div id="contenedor-taxes-cot" class="tax-container-grid"></div>
+                    <button type="button" class="btn-add-compacto" onclick="agregarTaxCot()">+ Agregar Tasa Manual</button>
                 </div>
+
                 <div class="summary-box" style="grid-template-columns: 1.2fr repeat(5, 1fr);">
                     <div class="sum-item" style="border-right:1px solid #333"><label for="cot_moneda" class="sum-lbl" style="color:var(--gold-metalic)">MONEDA</label><select id="cot_moneda" onchange="actualizarCalculosCotizador()"><option value="$">USD ($)</option><option value="€">EUR (€)</option><option value="Bs.">Bs. (VE)</option></select></div>
                     <div class="sum-item"><span class="sum-lbl">SUBTOTAL</span><span id="cot-subtotal" class="sum-val">0.00</span></div>
@@ -288,7 +309,7 @@
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v16.1)
+        //                      JAVASCRIPT UNIFICADO (v16.2)
         // =======================================================================
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
@@ -364,7 +385,7 @@
         }
         function closeModal(id) { if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos no guardados.")) { document.getElementById(id).style.display = 'none'; } }
 
-        // --- LÓGICA #1: CERTIFICACIÓN DE RECAUDO MAESTRO (SIN ALTERACIONES) ---
+        // --- LÓGICA #1: CERTIFICACIÓN DE RECAUDO MAESTRO (BLINDADO) ---
         function gestionarEstadoCobertura(esInterno) { const p = document.getElementById('cobertura_proveedor'), b = document.getElementById('cobertura_base'), c = document.getElementById('cobertura_comision'), i = document.getElementById('cobertura_icon'); if (esInterno) { p.value = 'ORBIS BRAIN NETWORK'; b.value = '2.00'; c.value = '0.00'; i.innerHTML = '🔒'; [p, b, c].forEach(el => el.setAttribute('readonly', true)); } else { p.value = ''; b.value = '0.00'; c.value = '0.00'; i.innerHTML = '✍️'; p.placeholder = 'NOMBRE PROVEEDOR *';[p, b, c].forEach(el => el.removeAttribute('readonly')); } calcularTodoCert(); }
         function agregarFila() { const div = document.createElement('div'); div.className = 'grid-inputs servicio-row'; div.innerHTML = `<div><select class="tipo-srv" onchange="calcularTodoCert()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Otro">➕ Otro</option></select></div><div><input type="text" class="prov-name" placeholder="NOMBRE PROVEEDOR *"></div><div><input type="number" class="monto-srv" oninput="calcularTodoCert()" placeholder="0.00"></div><div><input type="number" class="comision-ind" oninput="calcularTodoCert()" placeholder="0.00"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodoCert();">X</button>`; document.getElementById('filas-dinamicas').appendChild(div); }
         function confirmarRegistro() {
@@ -419,7 +440,7 @@
             document.getElementById('res-total').innerHTML = `${(subTotal + feeOrbisFinal + escudoOro + totalComisiones).toFixed(2)} <span class="curr-sym">${sym}</span>`;
         }
 
-        // --- LÓGICA #2: RED MAESTRA (SIN ALTERACIONES) ---
+        // --- LÓGICA #2: RED MAESTRA (BLINDADO) ---
         function resetFichaDirectorio() { document.getElementById('provModal').querySelectorAll('input, select').forEach(el => { if(el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = ''; el.classList.remove('input-error'); }); document.getElementById('phone-container').innerHTML = ''; document.getElementById('email-container').innerHTML = ''; addDynamicField('phone-container', 'phone'); addDynamicField('email-container', 'email'); }
         function addDynamicField(containerId, type) { const c = document.getElementById(containerId), d = document.createElement('div'); d.className = 'dynamic-row'; d.innerHTML = type === 'phone' ? `<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="SI">🟢 WHATSAPP</option><option value="NO" selected>📞 LLAMADA</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>` : `<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <select class="is-validated" style="visibility:hidden;"><option value="SI">VERIFICADO</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>`; c.appendChild(d); }
         function iniciarGuardadoProv() { let esValido = true; ['prov_nombre', 'prov_rif', 'prov_pais'].forEach(id => { const el = document.getElementById(id); if (!el.value.trim()) { el.classList.add('input-error'); esValido = false; } else { el.classList.remove('input-error'); } }); const correo = document.querySelector('#email-container .prov-email'); if (!correo || !correo.value.trim()) { if(correo) correo.classList.add('input-error'); esValido = false; alert("⚠️ BLOQUEO: Se requiere al menos un correo electrónico."); } if (esValido && confirm("🏛️ ¿Confirma el registro del nuevo aliado en la Red Maestra?")) { ejecutarGuardadoProv(); } }
@@ -437,16 +458,14 @@
             } catch (error) { console.error(error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado."); } finally { btn.disabled = false; btn.textContent = 'REGISTRAR EN RED MAESTRA'; }
         }
 
-        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (CON MODIFICACIONES v16.1) ---
+        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (BLINDADO) ---
         function agregarPaquete(){const c=document.getElementById("paquetes-container"),d=document.createElement("div");d.className="pkg-grid",d.innerHTML='<input type="number" class="pkg-cant" value="0" onfocus="this.select()"><input type="text" class="pkg-concepto" placeholder="EJ: HOTEL"><select class="pkg-servicio"><option value="Hotel" selected>🏨 HOTEL</option><option value="Tour">🏞️ TOUR</option></select><select class="pkg-tipo-hab"><option>SENCILLA</option><option>DOBLE</option></select><input type="number" class="pkg-dias" value="0"><input type="number" class="pkg-noches" value="0"><input type="number" class="pkg-precio" placeholder="0.00"><input type="number" class="pkg-comision-unit" placeholder="0.00"><input type="number" class="pkg-comision-total" placeholder="0.00" readonly><input type="number" class="pkg-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest(\'.pkg-grid\').remove();actualizarCalculosCotizador();">X</button>',c.appendChild(d)}
         
-        // V16.1: MODIFICACIÓN para integrar ASSIST CARD
         function agregarServicioIndividual(){
             const c=document.getElementById("singles-container");
             const d=document.createElement("div");
             d.className="single-grid";
             
-            // Al cambiar el servicio, se actualiza el proveedor si es 'Seguro'
             const handleServiceChange = (selectElement) => {
                 const fila = selectElement.closest('.single-grid');
                 const proveedorInput = fila.querySelector('.single-proveedor');
@@ -464,14 +483,12 @@
             d.innerHTML=`<input type="text" class="single-proveedor" placeholder="EJ: DELTA"><select class="single-servicio" onchange="this.handleServiceChange(this)"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Seguro">🛡️ Seguro</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="0"><input type="number" class="single-costo" placeholder="0.00"><input type="number" class="single-comision-unit" placeholder="0.00"><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove();actualizarCalculosCotizador();">X</button>`;
             
             c.appendChild(d);
-            // Adjuntar la función al elemento select recién creado
             d.querySelector('.single-servicio').handleServiceChange = handleServiceChange;
         }
 
         function agregarPax(){const c=document.getElementById("pax-container"),d=document.createElement("div");d.className="pax-grid",d.innerHTML='<input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"><input type="text" class="pax-id" placeholder="ID / DNI"><input type="number" class="pax-costo" placeholder="0.00" readonly><input type="number" class="pax-comision" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest(\'.pax-grid\').remove();actualizarCalculosCotizador();">X</button>',c.appendChild(d),actualizarCalculosCotizador()}
         function agregarTaxCot(n="",v="",e=!1){const t=document.getElementById("contenedor-taxes-cot"),d=document.createElement("div");d.className="tax-grid tax-row";const l=e?"readonly":"",s=e?'style="visibility:hidden"':"";d.innerHTML=`<button type="button" class="pin-btn" style="visibility:hidden">📌</button><input type="text" class="tax-name" value="${n}" ${l}><div style="position:relative"><input type="number" class="tax-val" value="${v}"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" ${s} onclick="this.parentElement.remove();actualizarCalculosCotizador()">X</button>`,t.appendChild(d),actualizarCalculosCotizador()}
         
-        // V16.1: LÓGICA DE CÁLCULO SIN ALTERACIONES
         function actualizarCalculosCotizador() {
             let totalCostoGlobal = 0, totalComisionGlobal = 0;
             document.querySelectorAll('#paquetes-container .pkg-grid').forEach(f => {
@@ -513,13 +530,12 @@
             document.getElementById('cot-gran-total').innerHTML = `${granTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
         }
 
-        // V16.1: MODIFICACIÓN para generar QR.
         function generarPDFCotizacion() {
             alert("Construyendo documento PDF...");
             
             const qrContainer = document.getElementById('qr-code-container');
             const qrSeal = document.getElementById('qr-verification-seal');
-            qrContainer.innerHTML = ''; // Limpiar QR anterior
+            qrContainer.innerHTML = '';
             
             const idCot = `COT-${Math.floor(10000 + Math.random() * 90000)}`;
             const fecha = new Date().toISOString();
@@ -529,7 +545,7 @@
                 id: idCot,
                 timestamp: fecha,
                 total: total,
-                verificado_por: "ORBIS BRAIN v16.1"
+                verificado_por: "ORBIS BRAIN v16.2"
             });
 
             try {
@@ -549,7 +565,6 @@
             }
         }
         
-        // V16.1: PUENTE DE DATOS SIN ALTERACIONES
         function puenteHaciaCertificacion() {
             if (parseFloat(document.getElementById('cot-gran-total').textContent) <= 0) { alert("🔴 BLOQUEO: El monto total no puede ser cero."); return; }
             
