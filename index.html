@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v16.5</title>
+    <title>ORBIS BRAIN | Master v16.6</title>
     <!-- V16.1: INSTALACIÓN DE LIBRERÍA QRCODE.JS VÍA CDN -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -105,7 +105,7 @@
         .pkg-grid { display: grid; grid-template-columns: 0.4fr 2fr 1.5fr 1.2fr 1.2fr 0.4fr 0.4fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
         .single-grid { display: grid; grid-template-columns: 2fr 1.2fr 1.2fr 0.8fr 1fr 1fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
         .pax-grid { display: grid; grid-template-columns: 3fr 1.5fr 1.5fr 1.2fr 1.2fr 50px; gap: 15px; align-items: center; margin-bottom: 15px; }
-        /* V16.5: JERARQUÍA VISUAL MANIFIESTO */
+        
         #manifiesto-container { 
             background: rgba(212, 175, 55, 0.05); padding: 10px 15px; border-radius: 10px; 
             border: 1px solid rgba(212, 175, 55, 0.2); 
@@ -114,7 +114,7 @@
             margin: 15px auto; text-align: center; text-transform: uppercase; letter-spacing: 1.5px; 
             font-weight: 800;
         }
-        /* V16.5: AJUSTE SUMMARY BOX PARA RETENCIONES */
+        
         #cotizadorModal .summary-box { 
             grid-template-columns: 1.2fr repeat(6, 1fr); 
             max-width: 1600px; margin-left: auto; margin-right: auto; margin-bottom: 20px; align-items: center;
@@ -161,9 +161,9 @@
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V16.5: SIDEBAR -->
+        <!-- V16.6: SIDEBAR -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.5</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.6</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Certificación de Pagos</button>
@@ -249,7 +249,7 @@
         </div>
     </div>
 
-    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (v16.5) -->
+    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (v16.6) -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
             <form id="cotizadorForm" oninput="actualizarCalculosCotizador()">
@@ -311,7 +311,7 @@
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v16.5)
+        //                      JAVASCRIPT UNIFICADO (v16.6)
         // =======================================================================
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
@@ -463,7 +463,7 @@
             } catch (error) { console.error(error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado."); } finally { btn.disabled = false; btn.textContent = 'REGISTRAR EN RED MAESTRA'; }
         }
 
-        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (v16.5) ---
+        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (v16.6) ---
         function agregarPaquete(){
             const c=document.getElementById("paquetes-container"), d=document.createElement("div");
             d.className="pkg-grid";
@@ -486,15 +486,12 @@
             c.appendChild(d);
         }
         
-        // V16.5: Lógica de exoneración
+        // V16.6: Lógica de comisión desbloqueada
         function handleServiceChange(selectElement) {
             const fila = selectElement.closest('.single-grid');
             const comisionInput = fila.querySelector('.single-comision-unit');
             if (selectElement.value === 'Seguro Externo') {
                 comisionInput.value = "0.00";
-                comisionInput.readOnly = true;
-            } else {
-                comisionInput.readOnly = false;
             }
             actualizarCalculosCotizador();
         }
@@ -510,11 +507,19 @@
         function agregarTaxCot(n="",v="",e=!1){const t=document.getElementById("contenedor-taxes-cot"),d=document.createElement("div");d.className="tax-grid tax-row";const l=e?"readonly":"",s=e?'style="visibility:hidden"':"";d.innerHTML=`<button type="button" class="pin-btn" style="visibility:hidden">📌</button><input type="text" class="tax-name" value="${n}" ${l}><div style="position:relative"><input type="number" class="tax-val" value="${v}" step="any"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" ${s} onclick="this.parentElement.remove();actualizarCalculosCotizador()">X</button>`,t.appendChild(d),actualizarCalculosCotizador()}
         
         function actualizarCalculosCotizador() {
+            // V16.6: INTERRUPTOR INTELIGENTE DE SEGURO
+            let seguroExternoActivo = false;
+            document.querySelectorAll('#singles-container .single-servicio').forEach(select => {
+                if (select.value === 'Seguro Externo') {
+                    seguroExternoActivo = true;
+                }
+            });
+
             const filasPax = document.querySelectorAll('#pax-container .pax-grid');
             const totalPax = filasPax.length;
             const assistCardCantInput = document.getElementById('assist-card-cant');
             if (assistCardCantInput) {
-                assistCardCantInput.value = totalPax;
+                assistCardCantInput.value = seguroExternoActivo ? 0 : totalPax;
             }
 
             let costosPorTarget = { TODOS: 0, ADULTOS: 0, NIÑOS: 0, INFANTES: 0, MASCOTAS: 0 };
@@ -587,7 +592,6 @@
             const feeOrbis = (FEE_ORBIS_BASE + FEE_ORBIS_PROTECT) * tasaCambio;
             const baseImponibleReal = subtotal + feeOrbis;
 
-            // V16.5: LÓGICA DE SEPARACIÓN IMPUESTOS Y RETENCIONES
             let totalImpuestos = 0;
             let totalRetenciones = 0;
             document.querySelectorAll('#contenedor-taxes-cot .tax-grid').forEach(r => {
@@ -603,7 +607,7 @@
             
             const subtotalConImpuestos = baseImponibleReal + totalImpuestos;
             const escudoOro = subtotalConImpuestos * ESCUDO_ORO_PORC;
-            const granTotal = subtotalConImpuestos + escudoOro + totalRetenciones; // Sumamos la retención (que ya es negativa)
+            const granTotal = subtotalConImpuestos + escudoOro + totalRetenciones;
 
             document.getElementById('cot-subtotal').innerHTML = `${subtotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-impuestos').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`;
@@ -635,7 +639,7 @@
                 id: idCot,
                 timestamp: fecha,
                 total: total,
-                verificado_por: "ORBIS BRAIN v16.5"
+                verificado_por: "ORBIS BRAIN v16.6"
             });
 
             try {
