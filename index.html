@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v16.2</title>
+    <title>ORBIS BRAIN | Master v16.3</title>
     <!-- V16.1: INSTALACIÓN DE LIBRERÍA QRCODE.JS VÍA CDN -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -99,60 +99,32 @@
         #provModal .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS ESPECÍFICOS COTIZADOR Y CERTIFICACIÓN v16.2 --- */
-        /* V16.2: AJUSTE DE CONTENEDOR DE IMPUESTOS ZONA D */
-        #cotizador-zona-d-container {
-            max-width: 800px; /* Ancho fijo para el contenedor */
-            width: 100%; 
-        }
-        /* V16.2: BOTÓN DE AGREGAR TASA COMPACTO */
-        .btn-add-compacto {
-            background: none;
-            border: 1px dashed var(--gold-metalic);
-            color: var(--gold-metalic);
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-top: 10px;
-            display: inline-block; /* Para que no ocupe todo el ancho */
-            width: auto;
-        }
-
+        /* --- V16.3: ESTILOS MAPEADO INTELIGENTE DE COSTOS --- */
         .tax-container-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
         .tax-grid { display: grid; grid-template-columns: 30px 1fr 100px 40px; gap: 10px; align-items: stretch; }
-        .pkg-grid { display: grid; grid-template-columns: 0.4fr 2fr 1.5fr 1fr 0.4fr 0.4fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
-        .single-grid { display: grid; grid-template-columns: 2fr 1.2fr 0.8fr 0.5fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
-        .pax-grid { display: grid; grid-template-columns: 3fr 1.5fr 1.2fr 1.2fr 50px; gap: 15px; align-items: center; margin-bottom: 15px; }
+        .pkg-grid { display: grid; grid-template-columns: 0.4fr 2fr 1.5fr 1fr 1.2fr 0.4fr 0.4fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
+        .single-grid { display: grid; grid-template-columns: 2fr 1.2fr 1.2fr 0.8fr 0.5fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
+        .pax-grid { display: grid; grid-template-columns: 3fr 1.5fr 1.5fr 1.2fr 1.2fr 50px; gap: 15px; align-items: center; margin-bottom: 15px; }
+        #manifiesto-container { background: rgba(212, 175, 55, 0.05); padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2); font-size: 11px; color: var(--gold-soft); margin: 15px auto; text-align: center; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;}
 
         #cotizadorModal .summary-box { grid-template-columns: 1.2fr repeat(5, 1fr); max-width: 1400px; margin-left: auto; margin-right: auto; margin-bottom: 20px; align-items: center;}
         #cotizadorModal #cot_moneda { background: transparent; border: 1px solid var(--gold-metalic); color: var(--gold-soft); padding: 12px; height: auto; }
         .action-buttons-grid { max-width: 700px; margin: 20px auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
         
-        /* V16.1: ESTILOS PARA SELLO QR */
+        /* --- ESTILOS ESPECÍFICOS COTIZADOR Y CERTIFICACIÓN v16.2 --- */
+        #cotizador-zona-d-container { max-width: 800px; width: 100%; }
+        .btn-add-compacto { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 10px 20px; cursor: pointer; border-radius: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-top: 10px; display: inline-block; width: auto; }
+        
+        /* --- V16.1: ESTILOS PARA SELLO QR --- */
         #qr-verification-seal {
-            margin: 30px auto 0;
-            padding: 20px;
-            background: rgba(255,255,255,0.02);
-            border: 1px solid #222;
-            border-radius: 15px;
-            max-width: 200px;
-            text-align: center;
+            margin: 30px auto 0; padding: 20px; background: rgba(255,255,255,0.02);
+            border: 1px solid #222; border-radius: 15px; max-width: 200px; text-align: center;
         }
         #qr-verification-seal p {
-            font-size: 10px;
-            color: var(--gold-soft);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            margin-bottom: 10px;
+            font-size: 10px; color: var(--gold-soft); text-transform: uppercase;
+            letter-spacing: 1.5px; margin-bottom: 10px;
         }
-        #qr-code-container {
-            background: white;
-            padding: 10px;
-            border-radius: 5px;
-        }
+        #qr-code-container { background: white; padding: 10px; border-radius: 5px; }
     </style>
 </head>
 <body>
@@ -179,9 +151,9 @@
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V16.2: SIDEBAR (sin cambios) -->
+        <!-- V16.3: SIDEBAR (sin cambios) -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.2</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.3</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Certificación de Pagos</button>
@@ -271,14 +243,40 @@
         </div>
     </div>
 
-    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (DISEÑO v16.2) -->
+    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (DISEÑO v16.3) -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
             <form id="cotizadorForm" oninput="actualizarCalculosCotizador()">
                 <hr class="gold-divider"><div class="modal-title">COTIZADOR ESTRATÉGICO PANORÁMICO</div><hr class="gold-divider">
-                <div class="form-section" id="paquetes-section"><h3 class="form-section-header">ZONA A: PAQUETES / HOTELES</h3><div id="paquetes-container-header" class="grid-header pkg-grid" style="padding:0 10px;margin-bottom:10px"><label>Cant.</label><label>Concepto</label><label>Servicio</label><label>Tipo Hab.</label><label>Días</label><label>Noches</label><label>Precio Base</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span></div><div id="paquetes-container"></div><button type="button" class="btn-add" onclick="agregarPaquete()">+ Agregar Paquete</button></div>
-                <div class="form-section" id="singles-section"><h3 class="form-section-header">ZONA B: SERVICIOS INDIVIDUALES</h3><div id="singles-container-header" class="grid-header single-grid" style="padding:0 10px;margin-bottom:10px"><label>Proveedor</label><label>Servicio</label><label>Tipo</label><label>Cant.</label><label>Costo</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span></div><div id="singles-container"></div><button type="button" class="btn-add" onclick="agregarServicioIndividual()">+ Agregar Servicio</button></div>
-                <div class="form-section"><h3 class="form-section-header">ZONA C: DESGLOSE FINAL POR PASAJERO</h3><div id="pax-container-header" class="grid-header pax-grid" style="padding:0 10px;margin-bottom:10px"><label>Nombre del Pasajero</label><label>ID / DNI</label><label>Costo por PAX</label><label>Comisión por PAX</label><span></span></div><div id="pax-container"></div><button type="button" class="btn-add" onclick="agregarPax()">+ Agregar Pasajero</button></div>
+                
+                <div class="form-section" id="paquetes-section">
+                    <h3 class="form-section-header">ZONA A: PAQUETES / HOTELES</h3>
+                    <div id="paquetes-container-header" class="grid-header pkg-grid" style="padding:0 10px;margin-bottom:10px">
+                        <label>Cant.</label><label>Concepto</label><label>Servicio</label><label>Asignar a</label><label>Tipo Hab.</label><label>Días</label><label>Noches</label><label>Precio Base</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span>
+                    </div>
+                    <div id="paquetes-container"></div>
+                    <button type="button" class="btn-add" onclick="agregarPaquete()">+ Agregar Paquete</button>
+                </div>
+                
+                <div class="form-section" id="singles-section">
+                    <h3 class="form-section-header">ZONA B: SERVICIOS INDIVIDUALES</h3>
+                    <div id="singles-container-header" class="grid-header single-grid" style="padding:0 10px;margin-bottom:10px">
+                        <label>Proveedor</label><label>Servicio</label><label>Asignar a</label><label>Tipo</label><label>Cant.</label><label>Costo</label><label>Comisión Unit.</label><label>Total Com.</label><label>Total Línea</label><span></span>
+                    </div>
+                    <div id="singles-container"></div>
+                    <button type="button" class="btn-add" onclick="agregarServicioIndividual()">+ Agregar Servicio</button>
+                </div>
+
+                <div class="form-section">
+                    <h3 class="form-section-header">ZONA C: DESGLOSE FINAL POR PASAJERO</h3>
+                    <div id="pax-container-header" class="grid-header pax-grid" style="padding:0 10px;margin-bottom:10px">
+                        <label>Nombre del Pasajero</label><label>Categoría</label><label>ID / DNI</label><label>Costo por PAX</label><label>Comisión por PAX</label><span></span>
+                    </div>
+                    <div id="pax-container"></div>
+                    <!-- V16.3: CONTADOR DE MANIFIESTO -->
+                    <div id="manifiesto-container">Manifiesto Orbis: [0] Adultos, [0] Niños, [0] Infantes, [0] Mascotas</div>
+                    <button type="button" class="btn-add" onclick="agregarPax()">+ Agregar Pasajero</button>
+                </div>
                 
                 <!-- V16.2: AJUSTE DE MAQUETACIÓN PARA ZONA D -->
                 <div class="form-section" id="cotizador-zona-d-container">
@@ -287,7 +285,7 @@
                     <button type="button" class="btn-add-compacto" onclick="agregarTaxCot()">+ Agregar Tasa Manual</button>
                 </div>
 
-                <div class="summary-box" style="grid-template-columns: 1.2fr repeat(5, 1fr);">
+                <div class="summary-box">
                     <div class="sum-item" style="border-right:1px solid #333"><label for="cot_moneda" class="sum-lbl" style="color:var(--gold-metalic)">MONEDA</label><select id="cot_moneda" onchange="actualizarCalculosCotizador()"><option value="$">USD ($)</option><option value="€">EUR (€)</option><option value="Bs.">Bs. (VE)</option></select></div>
                     <div class="sum-item"><span class="sum-lbl">SUBTOTAL</span><span id="cot-subtotal" class="sum-val">0.00</span></div>
                     <div class="sum-item"><span class="sum-lbl">IMPUESTOS</span><span id="cot-impuestos" class="sum-val">0.00</span></div>
@@ -309,7 +307,7 @@
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v16.2)
+        //                      JAVASCRIPT UNIFICADO (v16.3)
         // =======================================================================
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
@@ -323,7 +321,6 @@
 
         // --- LÓGICA DE INICIALIZACIÓN Y NAVEGACIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
-            // Flujo de Autenticación
             const splash = document.getElementById('splash-screen');
             const authModal = document.getElementById('auth-modal');
             function proceedToAuth() {
@@ -343,13 +340,12 @@
                     orbisSession = { nombre: nombre.toUpperCase(), rif: rif.toUpperCase(), pais };
                     document.getElementById('auth-modal').style.display = 'none';
                     document.getElementById('main-app').classList.remove('hidden');
-                    showView('directorio', document.getElementById('nav-directorio'));
+                    showView('directorio', document.getElementById('nav-dir'));
                 } else {
                     alert("Por favor, complete todos los campos para continuar.");
                 }
             });
 
-            // Listeners globales
             document.addEventListener('input', (e) => { if (e.target.tagName.toLowerCase() === 'input' && (e.target.type === 'text' || e.target.type === 'email')) { e.target.value = e.target.value.toUpperCase(); } });
             document.addEventListener('focusin', (e) => { if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'number') { e.target.select(); } });
             if(document.getElementById('tipo_cobertura_sel')) document.getElementById('tipo_cobertura_sel').addEventListener('change', function() { gestionarEstadoCobertura(this.value === 'interno'); }); 
@@ -373,8 +369,8 @@
             } else if (id === 'cotizadorModal') {
                 document.getElementById('cotizadorForm').reset();
                 ['#pax-container', '#paquetes-container', '#singles-container', '#contenedor-taxes-cot'].forEach(sel => document.querySelector(sel).innerHTML = '');
-                document.getElementById('qr-verification-seal').classList.add('hidden'); // Ocultar QR al abrir
-                document.getElementById('qr-code-container').innerHTML = ''; // Limpiar QR
+                document.getElementById('qr-verification-seal').classList.add('hidden');
+                document.getElementById('qr-code-container').innerHTML = '';
                 const impuestos = TAX_MATRIX[orbisSession.pais] || [];
                 impuestos.forEach(tax => agregarTaxCot(tax.nombre, tax.valor, true));
                 agregarPaquete();
@@ -458,70 +454,142 @@
             } catch (error) { console.error(error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado."); } finally { btn.disabled = false; btn.textContent = 'REGISTRAR EN RED MAESTRA'; }
         }
 
-        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (BLINDADO) ---
-        function agregarPaquete(){const c=document.getElementById("paquetes-container"),d=document.createElement("div");d.className="pkg-grid",d.innerHTML='<input type="number" class="pkg-cant" value="0" onfocus="this.select()"><input type="text" class="pkg-concepto" placeholder="EJ: HOTEL"><select class="pkg-servicio"><option value="Hotel" selected>🏨 HOTEL</option><option value="Tour">🏞️ TOUR</option></select><select class="pkg-tipo-hab"><option>SENCILLA</option><option>DOBLE</option></select><input type="number" class="pkg-dias" value="0"><input type="number" class="pkg-noches" value="0"><input type="number" class="pkg-precio" placeholder="0.00"><input type="number" class="pkg-comision-unit" placeholder="0.00"><input type="number" class="pkg-comision-total" placeholder="0.00" readonly><input type="number" class="pkg-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest(\'.pkg-grid\').remove();actualizarCalculosCotizador();">X</button>',c.appendChild(d)}
+        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (v16.3) ---
+        function agregarPaquete(){
+            const c=document.getElementById("paquetes-container"), d=document.createElement("div");
+            d.className="pkg-grid";
+            d.innerHTML=`<input type="number" class="pkg-cant" value="1" onfocus="this.select()"><input type="text" class="pkg-concepto" placeholder="EJ: HOTEL"><select class="pkg-servicio"><option value="Hotel" selected>🏨 HOTEL</option><option value="Tour">🏞️ TOUR</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="pkg-tipo-hab"><option>SENCILLA</option><option>DOBLE</option></select><input type="number" class="pkg-dias" value="0"><input type="number" class="pkg-noches" value="0"><input type="number" class="pkg-precio" placeholder="0.00"><input type="number" class="pkg-comision-unit" placeholder="0.00"><input type="number" class="pkg-comision-total" placeholder="0.00" readonly><input type="number" class="pkg-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.pkg-grid').remove();actualizarCalculosCotizador();">X</button>`;
+            c.appendChild(d);
+        }
         
         function agregarServicioIndividual(){
-            const c=document.getElementById("singles-container");
-            const d=document.createElement("div");
+            const c=document.getElementById("singles-container"), d=document.createElement("div");
             d.className="single-grid";
-            
-            const handleServiceChange = (selectElement) => {
-                const fila = selectElement.closest('.single-grid');
-                const proveedorInput = fila.querySelector('.single-proveedor');
-                if (selectElement.value === 'Seguro') {
-                    proveedorInput.value = 'ASSIST CARD';
-                    proveedorInput.readOnly = true;
-                } else {
-                    if (proveedorInput.value === 'ASSIST CARD') {
-                        proveedorInput.value = '';
-                    }
-                    proveedorInput.readOnly = false;
-                }
-            };
-            
-            d.innerHTML=`<input type="text" class="single-proveedor" placeholder="EJ: DELTA"><select class="single-servicio" onchange="this.handleServiceChange(this)"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Seguro">🛡️ Seguro</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="0"><input type="number" class="single-costo" placeholder="0.00"><input type="number" class="single-comision-unit" placeholder="0.00"><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove();actualizarCalculosCotizador();">X</button>`;
-            
+            d.innerHTML=`<input type="text" class="single-proveedor" placeholder="EJ: DELTA"><select class="single-servicio" onchange="handleServiceChange(this)"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Seguro">🛡️ Seguro</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="1"><input type="number" class="single-costo" placeholder="0.00"><input type="number" class="single-comision-unit" placeholder="0.00"><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove();actualizarCalculosCotizador();">X</button>`;
             c.appendChild(d);
-            d.querySelector('.single-servicio').handleServiceChange = handleServiceChange;
         }
+        
+        function handleServiceChange(selectElement) {
+            const fila = selectElement.closest('.single-grid');
+            const proveedorInput = fila.querySelector('.single-proveedor');
+            if (selectElement.value === 'Seguro') {
+                proveedorInput.value = 'ASSIST CARD';
+                proveedorInput.readOnly = true;
+            } else {
+                if (proveedorInput.value === 'ASSIST CARD') {
+                    proveedorInput.value = '';
+                }
+                proveedorInput.readOnly = false;
+            }
+        };
 
-        function agregarPax(){const c=document.getElementById("pax-container"),d=document.createElement("div");d.className="pax-grid",d.innerHTML='<input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"><input type="text" class="pax-id" placeholder="ID / DNI"><input type="number" class="pax-costo" placeholder="0.00" readonly><input type="number" class="pax-comision" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest(\'.pax-grid\').remove();actualizarCalculosCotizador();">X</button>',c.appendChild(d),actualizarCalculosCotizador()}
+        function agregarPax(){
+            const c=document.getElementById("pax-container"), d=document.createElement("div");
+            d.className="pax-grid";
+            d.innerHTML=`<input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"><select class="pax-tipo"><option value="ADULTO">ADULTO</option><option value="NIÑO">NIÑO</option><option value="INFANTE">INFANTE</option><option value="MASCOTA">MASCOTA</option></select><input type="text" class="pax-id" placeholder="ID / DNI"><input type="number" class="pax-costo" placeholder="0.00" readonly><input type="number" class="pax-comision" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.pax-grid').remove();actualizarCalculosCotizador();">X</button>`;
+            c.appendChild(d);
+            actualizarCalculosCotizador();
+        }
+        
         function agregarTaxCot(n="",v="",e=!1){const t=document.getElementById("contenedor-taxes-cot"),d=document.createElement("div");d.className="tax-grid tax-row";const l=e?"readonly":"",s=e?'style="visibility:hidden"':"";d.innerHTML=`<button type="button" class="pin-btn" style="visibility:hidden">📌</button><input type="text" class="tax-name" value="${n}" ${l}><div style="position:relative"><input type="number" class="tax-val" value="${v}"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" ${s} onclick="this.parentElement.remove();actualizarCalculosCotizador()">X</button>`,t.appendChild(d),actualizarCalculosCotizador()}
         
         function actualizarCalculosCotizador() {
-            let totalCostoGlobal = 0, totalComisionGlobal = 0;
+            // V16.3: MAPEADO DE COSTOS
+            let costosPorTarget = { TODOS: 0, ADULTOS: 0, NIÑOS: 0, INFANTES: 0, MASCOTAS: 0 };
+            let comisionesPorTarget = { TODOS: 0, ADULTOS: 0, NIÑOS: 0, INFANTES: 0, MASCOTAS: 0 };
+            let costosSinAsignar = 0;
+
             document.querySelectorAll('#paquetes-container .pkg-grid').forEach(f => {
-                const c = parseFloat(f.querySelector('.pkg-cant').value) || 0;
-                const p = parseFloat(f.querySelector('.pkg-precio').value) || 0;
-                const u = parseFloat(f.querySelector('.pkg-comision-unit').value) || 0;
-                f.querySelector('.pkg-comision-total').value = (c * u).toFixed(2);
-                f.querySelector('.pkg-total').value = ((c * p) + (c * u)).toFixed(2);
-                totalCostoGlobal += c * p;
-                totalComisionGlobal += c * u;
+                const target = f.querySelector('.row-target').value;
+                const cant = parseFloat(f.querySelector('.pkg-cant').value) || 0;
+                const precio = parseFloat(f.querySelector('.pkg-precio').value) || 0;
+                const comisionUnit = parseFloat(f.querySelector('.pkg-comision-unit').value) || 0;
+                const comisionTotal = cant * comisionUnit;
+                const costoTotal = cant * precio;
+                
+                f.querySelector('.pkg-comision-total').value = comisionTotal.toFixed(2);
+                f.querySelector('.pkg-total').value = (costoTotal + comisionTotal).toFixed(2);
+                
+                costosPorTarget[target] += costoTotal;
+                comisionesPorTarget[target] += comisionTotal;
             });
+
             document.querySelectorAll('#singles-container .single-grid').forEach(f => {
-                const c = parseFloat(f.querySelector('.single-cant').value) || 0;
-                const p = parseFloat(f.querySelector('.single-costo').value) || 0;
-                const u = parseFloat(f.querySelector('.single-comision-unit').value) || 0;
-                f.querySelector('.single-total-com').value = (c * u).toFixed(2);
-                f.querySelector('.single-total').value = ((c * p) + (c * u)).toFixed(2);
-                totalCostoGlobal += c * p;
-                totalComisionGlobal += c * u;
+                const target = f.querySelector('.row-target').value;
+                const cant = parseFloat(f.querySelector('.single-cant').value) || 0;
+                const costo = parseFloat(f.querySelector('.single-costo').value) || 0;
+                const comisionUnit = parseFloat(f.querySelector('.single-comision-unit').value) || 0;
+                const comisionTotal = cant * comisionUnit;
+                const costoTotal = cant * costo;
+                
+                f.querySelector('.single-total-com').value = comisionTotal.toFixed(2);
+                f.querySelector('.single-total').value = (costoTotal + comisionTotal).toFixed(2);
+
+                costosPorTarget[target] += costoTotal;
+                comisionesPorTarget[target] += comisionTotal;
             });
-            const filasPax = document.querySelectorAll('#pax-container .pax-grid'), paxConId = Array.from(filasPax).filter(f=>f.querySelector('.pax-id').value.trim()!==''), divisor=paxConId.length||1;
-            filasPax.forEach(f => { const hasId=f.querySelector('.pax-id').value.trim()!==''; f.querySelector('.pax-costo').value=(hasId?totalCostoGlobal/divisor:0).toFixed(2); f.querySelector('.pax-comision').value=(hasId?totalComisionGlobal/divisor:0).toFixed(2); });
             
-            let subtotal = totalCostoGlobal + totalComisionGlobal;
-            let totalImpuestos = 0;
-            document.querySelectorAll('#contenedor-taxes-cot .tax-grid').forEach(r => totalImpuestos += subtotal * (parseFloat(r.querySelector('.tax-val').value) / 100 || 0));
+            const filasPax = document.querySelectorAll('#pax-container .pax-grid');
+            let paxCounts = { ADULTO: 0, NIÑO: 0, INFANTE: 0, MASCOTA: 0 };
+            filasPax.forEach(fila => {
+                const tipo = fila.querySelector('.pax-tipo').value;
+                paxCounts[tipo]++;
+            });
+            const totalPax = filasPax.length;
+
+            document.getElementById('manifiesto-container').textContent = `Manifiesto Orbis: [${paxCounts.ADULTO}] Adultos, [${paxCounts.NIÑO}] Niños, [${paxCounts.INFANTE}] Infantes, [${paxCounts.MASCOTA}] Mascotas`;
+
+            let totalCostoGlobal = 0, totalComisionGlobal = 0;
             
+            // Lógica de división o acumulación si no hay pax de esa categoría
+            if (paxCounts.ADULTO === 0) costosSinAsignar += costosPorTarget.ADULTOS + comisionesPorTarget.ADULTOS; else { totalCostoGlobal += costosPorTarget.ADULTOS; totalComisionGlobal += comisionesPorTarget.ADULTOS; }
+            if (paxCounts.NIÑO === 0) costosSinAsignar += costosPorTarget.NIÑOS + comisionesPorTarget.NIÑOS; else { totalCostoGlobal += costosPorTarget.NIÑOS; totalComisionGlobal += comisionesPorTarget.NIÑOS; }
+            if (paxCounts.INFANTE === 0) costosSinAsignar += costosPorTarget.INFANTES + comisionesPorTarget.INFANTES; else { totalCostoGlobal += costosPorTarget.INFANTES; totalComisionGlobal += comisionesPorTarget.INFANTES; }
+            if (paxCounts.MASCOTA === 0) costosSinAsignar += costosPorTarget.MASCOTAS + comisionesPorTarget.MASCOTAS; else { totalCostoGlobal += costosPorTarget.MASCOTAS; totalComisionGlobal += comisionesPorTarget.MASCOTAS; }
+            
+            // Costos 'TODOS' siempre se suman
+            totalCostoGlobal += costosPorTarget.TODOS;
+            totalComisionGlobal += comisionesPorTarget.TODOS;
+
+            filasPax.forEach(fila => {
+                const tipoPax = fila.querySelector('.pax-tipo').value;
+                let costoPax = 0, comisionPax = 0;
+
+                // Costos de 'TODOS' se dividen entre todos los pasajeros
+                if (totalPax > 0) {
+                    costoPax += costosPorTarget.TODOS / totalPax;
+                    comisionPax += comisionesPorTarget.TODOS / totalPax;
+                }
+
+                // Costos específicos de la categoría se dividen entre los de esa categoría
+                switch (tipoPax) {
+                    case 'ADULTO': if(paxCounts.ADULTO > 0) { costoPax += costosPorTarget.ADULTOS / paxCounts.ADULTO; comisionPax += comisionesPorTarget.ADULTOS / paxCounts.ADULTO; } break;
+                    case 'NIÑO': if(paxCounts.NIÑO > 0) { costoPax += costosPorTarget.NIÑOS / paxCounts.NIÑO; comisionPax += comisionesPorTarget.NIÑOS / paxCounts.NIÑO; } break;
+                    case 'INFANTE': if(paxCounts.INFANTE > 0) { costoPax += costosPorTarget.INFANTES / paxCounts.INFANTE; comisionPax += comisionesPorTarget.INFANTES / paxCounts.INFANTE; } break;
+                    case 'MASCOTA': if(paxCounts.MASCOTA > 0) { costoPax += costosPorTarget.MASCOTAS / paxCounts.MASCOTA; comisionPax += comisionesPorTarget.MASCOTAS / paxCounts.MASCOTA; } break;
+                }
+
+                fila.querySelector('.pax-costo').value = costoPax.toFixed(2);
+                fila.querySelector('.pax-comision').value = comisionPax.toFixed(2);
+            });
+            
+            // CÁLCULO DE TOTALES GENERALES
+            const subtotal = totalCostoGlobal + totalComisionGlobal + costosSinAsignar;
             const sym = document.getElementById('cot_moneda').value;
             const tasaCambio = TASAS_CAMBIO[sym] || 1.00;
             const feeOrbis = (FEE_ORBIS_BASE + FEE_ORBIS_PROTECT) * tasaCambio;
-            const subtotalConFees = subtotal + totalImpuestos + feeOrbis;
-            const escudoOro = subtotalConFees * ESCUDO_ORO_PORC;
-            const granTotal = subtotalConFees + escudoOro;
+
+            const baseImponibleReal = subtotal + feeOrbis;
+
+            let totalImpuestos = 0;
+            document.querySelectorAll('#contenedor-taxes-cot .tax-grid').forEach(r => {
+                const tasaPorcentaje = parseFloat(r.querySelector('.tax-val').value) || 0;
+                totalImpuestos += baseImponibleReal * (tasaPorcentaje / 100);
+            });
+            
+            const subtotalConImpuestos = baseImponibleReal + totalImpuestos;
+            const escudoOro = subtotalConImpuestos * ESCUDO_ORO_PORC;
+            const granTotal = subtotalConImpuestos + escudoOro;
 
             document.getElementById('cot-subtotal').innerHTML = `${subtotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-impuestos').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`;
@@ -533,6 +601,18 @@
         function generarPDFCotizacion() {
             alert("Construyendo documento PDF...");
             
+            // Se asume que el PDF tomará en cuenta los nombres y categorías actualizados en el DOM
+            // Por ejemplo, al leer la tabla de pasajeros:
+            let paxDetails = [];
+            document.querySelectorAll('#pax-container .pax-grid').forEach(f => {
+                const nombre = f.querySelector('.pax-nombre').value;
+                const tipo = f.querySelector('.pax-tipo').value;
+                if(nombre) {
+                    paxDetails.push(`${nombre} - ${tipo}`);
+                }
+            });
+            console.log("Datos para PDF:", paxDetails); // Simulación de datos para PDF
+
             const qrContainer = document.getElementById('qr-code-container');
             const qrSeal = document.getElementById('qr-verification-seal');
             qrContainer.innerHTML = '';
@@ -545,7 +625,7 @@
                 id: idCot,
                 timestamp: fecha,
                 total: total,
-                verificado_por: "ORBIS BRAIN v16.2"
+                verificado_por: "ORBIS BRAIN v16.3"
             });
 
             try {
