@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v16.4</title>
+    <title>ORBIS BRAIN | Master v16.5</title>
     <!-- V16.1: INSTALACIÓN DE LIBRERÍA QRCODE.JS VÍA CDN -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES (v16.2) --- */
+        /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES --- */
         :root {
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
@@ -18,7 +18,7 @@
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; height: 100vh; overflow: hidden; }
         .hidden { display: none !important; }
 
-        /* --- V16.0: SPLASH SCREEN --- */
+        /* --- SPLASH SCREEN --- */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: var(--black-deep);
@@ -43,7 +43,7 @@
         @keyframes pulse-border-metallic { 0%, 100% { box-shadow: 0 0 15px #ffcc00, 0 0 30px #d4af37; } 50% { box-shadow: 0 0 30px #ffcc00, 0 0 60px #f1d592; } }
         @keyframes blink-slow { 0%, 100% { opacity: 0.4; } 50% { opacity: 1.0; } }
 
-        /* --- V16.0: AUTH MODAL --- */
+        /* --- AUTH MODAL --- */
         #auth-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 9998; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
         .auth-content { background: var(--black-deep); padding: 40px 60px; border-radius: 30px; border: 2px solid var(--gold-metalic); text-align: center; width: 100%; max-width: 500px; }
         .auth-content label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; text-align: left; }
@@ -99,16 +99,26 @@
         #provModal .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS COTIZADOR v16.4 --- */
+        /* --- ESTILOS COTIZADOR v16.5 --- */
         .tax-container-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
         .tax-grid { display: grid; grid-template-columns: 30px 1fr 100px 40px; gap: 10px; align-items: stretch; }
         .pkg-grid { display: grid; grid-template-columns: 0.4fr 2fr 1.5fr 1.2fr 1.2fr 0.4fr 0.4fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
-        /* V16.4: AJUSTE DE GRID ZONA B */
         .single-grid { display: grid; grid-template-columns: 2fr 1.2fr 1.2fr 0.8fr 1fr 1fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
         .pax-grid { display: grid; grid-template-columns: 3fr 1.5fr 1.5fr 1.2fr 1.2fr 50px; gap: 15px; align-items: center; margin-bottom: 15px; }
-        #manifiesto-container { background: rgba(212, 175, 55, 0.05); padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2); font-size: 11px; color: var(--gold-soft); margin: 15px auto; text-align: center; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;}
-
-        #cotizadorModal .summary-box { grid-template-columns: 1.2fr repeat(5, 1fr); max-width: 1400px; margin-left: auto; margin-right: auto; margin-bottom: 20px; align-items: center;}
+        /* V16.5: JERARQUÍA VISUAL MANIFIESTO */
+        #manifiesto-container { 
+            background: rgba(212, 175, 55, 0.05); padding: 10px 15px; border-radius: 10px; 
+            border: 1px solid rgba(212, 175, 55, 0.2); 
+            font-size: 14px; 
+            color: var(--gold-metalic); 
+            margin: 15px auto; text-align: center; text-transform: uppercase; letter-spacing: 1.5px; 
+            font-weight: 800;
+        }
+        /* V16.5: AJUSTE SUMMARY BOX PARA RETENCIONES */
+        #cotizadorModal .summary-box { 
+            grid-template-columns: 1.2fr repeat(6, 1fr); 
+            max-width: 1600px; margin-left: auto; margin-right: auto; margin-bottom: 20px; align-items: center;
+        }
         #cotizadorModal #cot_moneda { background: transparent; border: 1px solid var(--gold-metalic); color: var(--gold-soft); padding: 12px; height: auto; }
         .action-buttons-grid { max-width: 700px; margin: 20px auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
         
@@ -151,9 +161,9 @@
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V16.4: SIDEBAR -->
+        <!-- V16.5: SIDEBAR -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.4</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.5</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Certificación de Pagos</button>
@@ -174,7 +184,7 @@
         </div>
     </div>
     
-    <!-- MODAL CERTIFICACIÓN (sin cambios funcionales) -->
+    <!-- MODAL CERTIFICACIÓN (sin cambios) -->
     <div id="opModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">CERTIFICACIÓN DE RECAUDO MAESTRO</div><hr class="gold-divider">
@@ -239,7 +249,7 @@
         </div>
     </div>
 
-    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (v16.4) -->
+    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (v16.5) -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
             <form id="cotizadorForm" oninput="actualizarCalculosCotizador()">
@@ -285,6 +295,7 @@
                     <div class="sum-item"><span class="sum-lbl">IMPUESTOS</span><span id="cot-impuestos" class="sum-val">0.00</span></div>
                     <div class="sum-item"><span class="sum-lbl">FEE ORBIS</span><span id="cot-fee-orbis" class="sum-val">0.00</span></div>
                     <div class="sum-item"><span class="sum-lbl">ESCUDO ORO</span><span id="cot-escudo-oro" class="sum-val">0.00</span></div>
+                    <div class="sum-item"><span class="sum-lbl">RETENCIONES</span><span id="cot-retenciones" class="sum-val">0.00</span></div>
                     <div class="sum-item"><span class="sum-lbl">GRAN TOTAL</span><span id="cot-gran-total" class="sum-val">0.00</span></div>
                 </div>
                 <div class="action-buttons-grid"><button type="button" class="btn-secondary" onclick="generarPDFCotizacion()">GENERAR PDF 📄</button><button type="button" class="btn-gold" onclick="puenteHaciaCertificacion()">PASAR A CERTIFICACIÓN 🏛️</button></div>
@@ -300,7 +311,7 @@
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v16.4)
+        //                      JAVASCRIPT UNIFICADO (v16.5)
         // =======================================================================
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
@@ -350,7 +361,6 @@
             const modal = document.getElementById(id);
             modal.style.display = 'flex';
             if (id === 'opModal') {
-                // Lógica de reseteo para Modal de Certificación
                 document.getElementById('registroForm').reset();
                 document.getElementById('filas-dinamicas').innerHTML = '';
                 document.getElementById('contenedor-taxes-cert').innerHTML = '';
@@ -362,18 +372,15 @@
             } else if (id === 'provModal') {
                 resetFichaDirectorio();
             } else if (id === 'cotizadorModal') {
-                // V16.4: Lógica de reseteo para Cotizador
                 document.getElementById('cotizadorForm').reset();
                 ['#pax-container', '#paquetes-container', '#singles-container', '#contenedor-taxes-cot'].forEach(sel => document.querySelector(sel).innerHTML = '');
                 document.getElementById('qr-verification-seal').classList.add('hidden');
                 document.getElementById('qr-code-container').innerHTML = '';
                 
-                // Cargar impuestos predeterminados
                 const impuestos = TAX_MATRIX[orbisSession.pais] || [];
                 impuestos.forEach(tax => agregarTaxCot(tax.nombre, tax.valor, true));
 
-                // Añadir filas iniciales
-                agregarFilaSeguroAutomatizada(); // Fila blindada Assist Card
+                agregarFilaSeguroAutomatizada();
                 agregarPaquete();
                 agregarServicioIndividual();
                 agregarPax();
@@ -413,7 +420,7 @@
         function guardarImpuestos(impuestos) { localStorage.setItem('orbis_impuestos_predeterminados', JSON.stringify(impuestos)); }
         function cargarImpuestosPredeterminados() { obtenerImpuestosGuardados().forEach(imp => agregarTaxCert(imp.nombre, imp.valor, true)); }
         function gestionarPin(btn) { const fila = btn.closest('.tax-grid'); const nombre = fila.querySelector('.tax-name').value; const valor = fila.querySelector('.tax-val').value; if (!nombre || !valor) { alert('Debe especificar un nombre y un valor para fijar el impuesto.'); return; } let impuestos = obtenerImpuestosGuardados(); const idx = impuestos.findIndex(i => i.nombre.toLowerCase() === nombre.toLowerCase()); if (idx > -1) { impuestos.splice(idx, 1); btn.classList.remove('active'); } else { impuestos.push({ nombre, valor }); btn.classList.add('active'); } guardarImpuestos(impuestos); }
-        function agregarTaxCert(nombre = '', valor = '', esPredeterminado = false) { const container = document.getElementById('contenedor-taxes-cert'); const div = document.createElement('div'); div.className = 'tax-grid tax-row'; const pinActivoClass = esPredeterminado ? 'active' : ''; div.innerHTML = `<button type="button" class="pin-btn ${pinActivoClass}" onclick="gestionarPin(this)">📌</button><input type="text" class="tax-name" list="sugerencias_impuestos" value="${nombre}"><div style="position:relative"><input type="number" class="tax-val tax-input" oninput="calcularTodoCert()" value="${valor}"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" onclick="eliminarFilaImpuesto(this)">X</button>`; container.appendChild(div); calcularTodoCert(); }
+        function agregarTaxCert(nombre = '', valor = '', esPredeterminado = false) { const container = document.getElementById('contenedor-taxes-cert'); const div = document.createElement('div'); div.className = 'tax-grid tax-row'; const pinActivoClass = esPredeterminado ? 'active' : ''; div.innerHTML = `<button type="button" class="pin-btn ${pinActivoClass}" onclick="gestionarPin(this)">📌</button><input type="text" class="tax-name" list="sugerencias_impuestos" value="${nombre}"><div style="position:relative"><input type="number" class="tax-val tax-input" oninput="calcularTodoCert()" value="${valor}" step="any"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" onclick="eliminarFilaImpuesto(this)">X</button>`; container.appendChild(div); calcularTodoCert(); }
         function eliminarFilaImpuesto(btn) { const fila = btn.closest('.tax-grid'); const nombre = fila.querySelector('.tax-name').value; if (nombre && fila.querySelector('.pin-btn').classList.contains('active')) { guardarImpuestos(obtenerImpuestosGuardados().filter(i => i.nombre.toLowerCase() !== nombre.toLowerCase())); } fila.remove(); calcularTodoCert(); }
         function cambiarMoneda() { const sym = document.getElementById('moneda_global').value; document.querySelectorAll('.curr-sym').forEach(el => el.innerText = sym); const dl = document.getElementById('sugerencias_impuestos'); dl.innerHTML = ""; if (SUGERENCIAS_IMPUESTOS_CERT[sym]) { SUGERENCIAS_IMPUESTOS_CERT[sym].forEach(s => { const opt = document.createElement('option'); opt.value = s; dl.appendChild(opt); }); } calcularTodoCert(); }
         function calcularTodoCert() {
@@ -456,7 +463,7 @@
             } catch (error) { console.error(error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado."); } finally { btn.disabled = false; btn.textContent = 'REGISTRAR EN RED MAESTRA'; }
         }
 
-        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (v16.4) ---
+        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (v16.5) ---
         function agregarPaquete(){
             const c=document.getElementById("paquetes-container"), d=document.createElement("div");
             d.className="pkg-grid";
@@ -464,20 +471,32 @@
             c.appendChild(d);
         }
 
-        // V16.4: Nueva función para fila blindada de seguro
         function agregarFilaSeguroAutomatizada() {
             const c=document.getElementById("singles-container"), d=document.createElement("div");
             d.className="single-grid";
-            d.id = "assist-card-row"; // ID para fácil acceso
-            d.innerHTML=`<input type="text" class="single-proveedor" value="ASSIST CARD" readonly><select class="single-servicio" disabled><option value="Seguro" selected>🛡️ Seguro</option></select><select class="row-target"><option value="TODOS" selected>TODOS</option></select><select class="single-tipo" disabled><option selected>DÍA</option></select><input type="number" class="single-cant" id="assist-card-cant" value="0" readonly><input type="number" class="single-costo" value="2.00" readonly><input type="number" class="single-total-costo" placeholder="0.00" readonly><input type="number" class="single-comision-unit" value="1.00" readonly><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><div style="display:flex;align-items:center;justify-content:center;">🔒</div>`;
+            d.id = "assist-card-row";
+            d.innerHTML=`<input type="text" class="single-proveedor" value="ASSIST CARD" readonly><select class="single-servicio" disabled><option value="Seguro Interno" selected>🛡️ Seguro Interno</option></select><select class="row-target" disabled><option value="TODOS" selected>TODOS</option></select><select class="single-tipo" disabled><option selected>DÍA</option></select><input type="number" class="single-cant" id="assist-card-cant" value="0" readonly><input type="number" class="single-costo" value="2.00" readonly><input type="number" class="single-total-costo" placeholder="0.00" readonly><input type="number" class="single-comision-unit" value="1.00" readonly><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><div style="display:flex;align-items:center;justify-content:center;">🔒</div>`;
             c.appendChild(d);
         }
         
         function agregarServicioIndividual(){
             const c=document.getElementById("singles-container"), d=document.createElement("div");
             d.className="single-grid";
-            d.innerHTML=`<input type="text" class="single-proveedor" placeholder="EJ: DELTA"><select class="single-servicio"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="1"><input type="number" class="single-costo" placeholder="0.00"><input type="number" class="single-total-costo" placeholder="0.00" readonly><input type="number" class="single-comision-unit" placeholder="0.00"><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove();actualizarCalculosCotizador();">X</button>`;
+            d.innerHTML=`<input type="text" class="single-proveedor" placeholder="EJ: DELTA"><select class="single-servicio" onchange="handleServiceChange(this)"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Hotel">🏨 Hotel</option><option value="Seguro Externo">🛡️ Seguro Externo</option><option value="Otro">➕ Otro</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="1"><input type="number" class="single-costo" placeholder="0.00"><input type="number" class="single-total-costo" placeholder="0.00" readonly><input type="number" class="single-comision-unit" placeholder="0.00"><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove();actualizarCalculosCotizador();">X</button>`;
             c.appendChild(d);
+        }
+        
+        // V16.5: Lógica de exoneración
+        function handleServiceChange(selectElement) {
+            const fila = selectElement.closest('.single-grid');
+            const comisionInput = fila.querySelector('.single-comision-unit');
+            if (selectElement.value === 'Seguro Externo') {
+                comisionInput.value = "0.00";
+                comisionInput.readOnly = true;
+            } else {
+                comisionInput.readOnly = false;
+            }
+            actualizarCalculosCotizador();
         }
 
         function agregarPax(){
@@ -491,7 +510,6 @@
         function agregarTaxCot(n="",v="",e=!1){const t=document.getElementById("contenedor-taxes-cot"),d=document.createElement("div");d.className="tax-grid tax-row";const l=e?"readonly":"",s=e?'style="visibility:hidden"':"";d.innerHTML=`<button type="button" class="pin-btn" style="visibility:hidden">📌</button><input type="text" class="tax-name" value="${n}" ${l}><div style="position:relative"><input type="number" class="tax-val" value="${v}" step="any"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" ${s} onclick="this.parentElement.remove();actualizarCalculosCotizador()">X</button>`,t.appendChild(d),actualizarCalculosCotizador()}
         
         function actualizarCalculosCotizador() {
-            // V16.4: CONTADOR DE PASAJEROS Y ACTUALIZACIÓN DE FILA ASSIST CARD
             const filasPax = document.querySelectorAll('#pax-container .pax-grid');
             const totalPax = filasPax.length;
             const assistCardCantInput = document.getElementById('assist-card-cant');
@@ -499,7 +517,6 @@
                 assistCardCantInput.value = totalPax;
             }
 
-            // V16.3: MAPEADO DE COSTOS
             let costosPorTarget = { TODOS: 0, ADULTOS: 0, NIÑOS: 0, INFANTES: 0, MASCOTAS: 0 };
             let comisionesPorTarget = { TODOS: 0, ADULTOS: 0, NIÑOS: 0, INFANTES: 0, MASCOTAS: 0 };
             let costosSinAsignar = 0;
@@ -511,10 +528,8 @@
                 const comisionUnit = parseFloat(f.querySelector('.pkg-comision-unit').value) || 0;
                 const comisionTotal = cant * comisionUnit;
                 const costoTotal = cant * precio;
-                
                 f.querySelector('.pkg-comision-total').value = comisionTotal.toFixed(2);
                 f.querySelector('.pkg-total').value = (costoTotal + comisionTotal).toFixed(2);
-                
                 costosPorTarget[target] += costoTotal;
                 comisionesPorTarget[target] += comisionTotal;
             });
@@ -526,11 +541,9 @@
                 const comisionUnit = parseFloat(f.querySelector('.single-comision-unit').value) || 0;
                 const costoTotal = cant * costoUnit;
                 const comisionTotal = cant * comisionUnit;
-                
                 f.querySelector('.single-total-costo').value = costoTotal.toFixed(2);
                 f.querySelector('.single-total-com').value = comisionTotal.toFixed(2);
                 f.querySelector('.single-total').value = (costoTotal + comisionTotal).toFixed(2);
-
                 costosPorTarget[target] += costoTotal;
                 comisionesPorTarget[target] += comisionTotal;
             });
@@ -544,31 +557,26 @@
             document.getElementById('manifiesto-container').textContent = `Manifiesto Orbis: [${paxCounts.ADULTO}] Adultos, [${paxCounts.NIÑO}] Niños, [${paxCounts.INFANTE}] Infantes, [${paxCounts.MASCOTA}] Mascotas`;
 
             let totalCostoGlobal = 0, totalComisionGlobal = 0;
-            
             if (paxCounts.ADULTO === 0) costosSinAsignar += costosPorTarget.ADULTOS + comisionesPorTarget.ADULTOS; else { totalCostoGlobal += costosPorTarget.ADULTOS; totalComisionGlobal += comisionesPorTarget.ADULTOS; }
             if (paxCounts.NIÑO === 0) costosSinAsignar += costosPorTarget.NIÑOS + comisionesPorTarget.NIÑOS; else { totalCostoGlobal += costosPorTarget.NIÑOS; totalComisionGlobal += comisionesPorTarget.NIÑOS; }
             if (paxCounts.INFANTE === 0) costosSinAsignar += costosPorTarget.INFANTES + comisionesPorTarget.INFANTES; else { totalCostoGlobal += costosPorTarget.INFANTES; totalComisionGlobal += comisionesPorTarget.INFANTES; }
             if (paxCounts.MASCOTA === 0) costosSinAsignar += costosPorTarget.MASCOTAS + comisionesPorTarget.MASCOTAS; else { totalCostoGlobal += costosPorTarget.MASCOTAS; totalComisionGlobal += comisionesPorTarget.MASCOTAS; }
-            
             totalCostoGlobal += costosPorTarget.TODOS;
             totalComisionGlobal += comisionesPorTarget.TODOS;
 
             filasPax.forEach(fila => {
                 const tipoPax = fila.querySelector('.pax-tipo').value;
                 let costoPax = 0, comisionPax = 0;
-
                 if (totalPax > 0) {
                     costoPax += costosPorTarget.TODOS / totalPax;
                     comisionPax += comisionesPorTarget.TODOS / totalPax;
                 }
-
                 switch (tipoPax) {
                     case 'ADULTO': if(paxCounts.ADULTO > 0) { costoPax += costosPorTarget.ADULTOS / paxCounts.ADULTO; comisionPax += comisionesPorTarget.ADULTOS / paxCounts.ADULTO; } break;
                     case 'NIÑO': if(paxCounts.NIÑO > 0) { costoPax += costosPorTarget.NIÑOS / paxCounts.NIÑO; comisionPax += comisionesPorTarget.NIÑOS / paxCounts.NIÑO; } break;
                     case 'INFANTE': if(paxCounts.INFANTE > 0) { costoPax += costosPorTarget.INFANTES / paxCounts.INFANTE; comisionPax += comisionesPorTarget.INFANTES / paxCounts.INFANTE; } break;
                     case 'MASCOTA': if(paxCounts.MASCOTA > 0) { costoPax += costosPorTarget.MASCOTAS / paxCounts.MASCOTA; comisionPax += comisionesPorTarget.MASCOTAS / paxCounts.MASCOTA; } break;
                 }
-
                 fila.querySelector('.pax-costo').value = costoPax.toFixed(2);
                 fila.querySelector('.pax-comision').value = comisionPax.toFixed(2);
             });
@@ -577,24 +585,29 @@
             const sym = document.getElementById('cot_moneda').value;
             const tasaCambio = TASAS_CAMBIO[sym] || 1.00;
             const feeOrbis = (FEE_ORBIS_BASE + FEE_ORBIS_PROTECT) * tasaCambio;
-
             const baseImponibleReal = subtotal + feeOrbis;
 
-            // V16.4: SOPORTE PARA RETENCIONES (NÚMEROS NEGATIVOS)
+            // V16.5: LÓGICA DE SEPARACIÓN IMPUESTOS Y RETENCIONES
             let totalImpuestos = 0;
+            let totalRetenciones = 0;
             document.querySelectorAll('#contenedor-taxes-cot .tax-grid').forEach(r => {
                 const tasaPorcentaje = parseFloat(r.querySelector('.tax-val').value);
                 if (!isNaN(tasaPorcentaje)) {
-                    totalImpuestos += baseImponibleReal * (tasaPorcentaje / 100);
+                    if (tasaPorcentaje > 0) {
+                        totalImpuestos += baseImponibleReal * (tasaPorcentaje / 100);
+                    } else if (tasaPorcentaje < 0) {
+                        totalRetenciones += baseImponibleReal * (tasaPorcentaje / 100);
+                    }
                 }
             });
             
             const subtotalConImpuestos = baseImponibleReal + totalImpuestos;
             const escudoOro = subtotalConImpuestos * ESCUDO_ORO_PORC;
-            const granTotal = subtotalConImpuestos + escudoOro;
+            const granTotal = subtotalConImpuestos + escudoOro + totalRetenciones; // Sumamos la retención (que ya es negativa)
 
             document.getElementById('cot-subtotal').innerHTML = `${subtotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-impuestos').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`;
+            document.getElementById('cot-retenciones').innerHTML = `${Math.abs(totalRetenciones).toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-fee-orbis').innerHTML = `${feeOrbis.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-escudo-oro').innerHTML = `${escudoOro.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-gran-total').innerHTML = `${granTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
@@ -606,9 +619,7 @@
             document.querySelectorAll('#pax-container .pax-grid').forEach(f => {
                 const nombre = f.querySelector('.pax-nombre').value;
                 const tipo = f.querySelector('.pax-tipo').value;
-                if(nombre) {
-                    paxDetails.push(`${nombre} - ${tipo}`);
-                }
+                if(nombre) { paxDetails.push(`${nombre} - ${tipo}`); }
             });
             console.log("Datos para PDF:", paxDetails);
 
@@ -624,7 +635,7 @@
                 id: idCot,
                 timestamp: fecha,
                 total: total,
-                verificado_por: "ORBIS BRAIN v16.4"
+                verificado_por: "ORBIS BRAIN v16.5"
             });
 
             try {
