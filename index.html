@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v16.6</title>
+    <title>ORBIS BRAIN | Master v16.7</title>
     <!-- V16.1: INSTALACIÓN DE LIBRERÍA QRCODE.JS VÍA CDN -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -99,7 +99,7 @@
         #provModal .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS COTIZADOR v16.5 --- */
+        /* --- ESTILOS COTIZADOR (Mantenimiento v16.5) --- */
         .tax-container-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
         .tax-grid { display: grid; grid-template-columns: 30px 1fr 100px 40px; gap: 10px; align-items: stretch; }
         .pkg-grid { display: grid; grid-template-columns: 0.4fr 2fr 1.5fr 1.2fr 1.2fr 0.4fr 0.4fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
@@ -161,9 +161,9 @@
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V16.6: SIDEBAR -->
+        <!-- V16.7: SIDEBAR -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.6</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.7</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Certificación de Pagos</button>
@@ -249,7 +249,7 @@
         </div>
     </div>
 
-    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (v16.6) -->
+    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (v16.7) -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
             <form id="cotizadorForm" oninput="actualizarCalculosCotizador()">
@@ -311,7 +311,7 @@
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v16.6)
+        //                      JAVASCRIPT UNIFICADO (v16.7)
         // =======================================================================
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
@@ -463,7 +463,7 @@
             } catch (error) { console.error(error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado."); } finally { btn.disabled = false; btn.textContent = 'REGISTRAR EN RED MAESTRA'; }
         }
 
-        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (v16.6) ---
+        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (v16.7) ---
         function agregarPaquete(){
             const c=document.getElementById("paquetes-container"), d=document.createElement("div");
             d.className="pkg-grid";
@@ -486,12 +486,16 @@
             c.appendChild(d);
         }
         
-        // V16.6: Lógica de comisión desbloqueada
+        // V16.7: Lógica de blindaje anti-fraude y desbloqueo de comisión
         function handleServiceChange(selectElement) {
             const fila = selectElement.closest('.single-grid');
             const comisionInput = fila.querySelector('.single-comision-unit');
+            const cantInput = fila.querySelector('.single-cant');
             if (selectElement.value === 'Seguro Externo') {
                 comisionInput.value = "0.00";
+                cantInput.readOnly = true;
+            } else {
+                cantInput.readOnly = false;
             }
             actualizarCalculosCotizador();
         }
@@ -507,16 +511,13 @@
         function agregarTaxCot(n="",v="",e=!1){const t=document.getElementById("contenedor-taxes-cot"),d=document.createElement("div");d.className="tax-grid tax-row";const l=e?"readonly":"",s=e?'style="visibility:hidden"':"";d.innerHTML=`<button type="button" class="pin-btn" style="visibility:hidden">📌</button><input type="text" class="tax-name" value="${n}" ${l}><div style="position:relative"><input type="number" class="tax-val" value="${v}" step="any"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" ${s} onclick="this.parentElement.remove();actualizarCalculosCotizador()">X</button>`,t.appendChild(d),actualizarCalculosCotizador()}
         
         function actualizarCalculosCotizador() {
-            // V16.6: INTERRUPTOR INTELIGENTE DE SEGURO
-            let seguroExternoActivo = false;
-            document.querySelectorAll('#singles-container .single-servicio').forEach(select => {
-                if (select.value === 'Seguro Externo') {
-                    seguroExternoActivo = true;
-                }
-            });
-
+            let seguroExternoActivo = Array.from(document.querySelectorAll('#singles-container .single-servicio')).some(s => s.value === 'Seguro Externo');
+            
             const filasPax = document.querySelectorAll('#pax-container .pax-grid');
             const totalPax = filasPax.length;
+            let paxCounts = { ADULTO: 0, NIÑO: 0, INFANTE: 0, MASCOTA: 0 };
+            filasPax.forEach(fila => paxCounts[fila.querySelector('.pax-tipo').value]++);
+
             const assistCardCantInput = document.getElementById('assist-card-cant');
             if (assistCardCantInput) {
                 assistCardCantInput.value = seguroExternoActivo ? 0 : totalPax;
@@ -540,8 +541,22 @@
             });
 
             document.querySelectorAll('#singles-container .single-grid').forEach(f => {
+                const esSeguroExterno = f.querySelector('.single-servicio').value === 'Seguro Externo';
                 const target = f.querySelector('.row-target').value;
-                const cant = parseFloat(f.querySelector('.single-cant').value) || 0;
+                const cantInput = f.querySelector('.single-cant');
+
+                // V16.7: Sobreescritura de cantidad para Seguro Externo
+                if (esSeguroExterno) {
+                    switch (target) {
+                        case 'TODOS': cantInput.value = totalPax; break;
+                        case 'ADULTOS': cantInput.value = paxCounts.ADULTO; break;
+                        case 'NIÑOS': cantInput.value = paxCounts.NIÑO; break;
+                        case 'INFANTES': cantInput.value = paxCounts.INFANTE; break;
+                        case 'MASCOTAS': cantInput.value = paxCounts.MASCOTA; break;
+                    }
+                }
+
+                const cant = parseFloat(cantInput.value) || 0;
                 const costoUnit = parseFloat(f.querySelector('.single-costo').value) || 0;
                 const comisionUnit = parseFloat(f.querySelector('.single-comision-unit').value) || 0;
                 const costoTotal = cant * costoUnit;
@@ -553,12 +568,6 @@
                 comisionesPorTarget[target] += comisionTotal;
             });
             
-            let paxCounts = { ADULTO: 0, NIÑO: 0, INFANTE: 0, MASCOTA: 0 };
-            filasPax.forEach(fila => {
-                const tipo = fila.querySelector('.pax-tipo').value;
-                paxCounts[tipo]++;
-            });
-
             document.getElementById('manifiesto-container').textContent = `Manifiesto Orbis: [${paxCounts.ADULTO}] Adultos, [${paxCounts.NIÑO}] Niños, [${paxCounts.INFANTE}] Infantes, [${paxCounts.MASCOTA}] Mascotas`;
 
             let totalCostoGlobal = 0, totalComisionGlobal = 0;
@@ -589,7 +598,9 @@
             const subtotal = totalCostoGlobal + totalComisionGlobal + costosSinAsignar;
             const sym = document.getElementById('cot_moneda').value;
             const tasaCambio = TASAS_CAMBIO[sym] || 1.00;
-            const feeOrbis = (FEE_ORBIS_BASE + FEE_ORBIS_PROTECT) * tasaCambio;
+            // V16.7: Ajuste dinámico de Fee Orbis
+            const feeOrbis = (seguroExternoActivo ? FEE_ORBIS_BASE : (FEE_ORBIS_BASE + FEE_ORBIS_PROTECT)) * tasaCambio;
+            
             const baseImponibleReal = subtotal + feeOrbis;
 
             let totalImpuestos = 0;
@@ -617,7 +628,28 @@
             document.getElementById('cot-gran-total').innerHTML = `${granTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
         }
 
+        // V16.7: Nueva función de validación de seguridad
+        function validarCoberturaTotal() {
+            let segurosContratados = 0;
+            document.querySelectorAll('#singles-container .single-grid').forEach(fila => {
+                const servicio = fila.querySelector('.single-servicio').value;
+                if (servicio === 'Seguro Interno' || servicio === 'Seguro Externo') {
+                    segurosContratados += parseFloat(fila.querySelector('.single-cant').value) || 0;
+                }
+            });
+
+            const totalPax = document.querySelectorAll('#pax-container .pax-grid').length;
+
+            if (segurosContratados < totalPax) {
+                alert(`🔴 BLOQUEO ORBIS: Operación rechazada. El manifiesto cuenta con ${totalPax} pasajeros, pero solo hay ${segurosContratados} seguros asignados. Es política innegociable de la empresa que el 100% de los pasajeros cuente con cobertura.`);
+                return false;
+            }
+            return true;
+        }
+
         function generarPDFCotizacion() {
+            if (!validarCoberturaTotal()) return; // Bloqueo inquebrantable
+
             alert("Construyendo documento PDF...");
             let paxDetails = [];
             document.querySelectorAll('#pax-container .pax-grid').forEach(f => {
@@ -639,7 +671,7 @@
                 id: idCot,
                 timestamp: fecha,
                 total: total,
-                verificado_por: "ORBIS BRAIN v16.6"
+                verificado_por: "ORBIS BRAIN v16.7"
             });
 
             try {
@@ -660,6 +692,8 @@
         }
         
         function puenteHaciaCertificacion() {
+            if (!validarCoberturaTotal()) return; // Bloqueo inquebrantable
+
             if (parseFloat(document.getElementById('cot-gran-total').textContent) <= 0) { alert("🔴 BLOQUEO: El monto total no puede ser cero."); return; }
             
             const tbodyCot = document.getElementById('cuerpo-tabla-cotizacion'), idCot = `COT-${Math.floor(1e4 + Math.random() * 9e4)}`;
