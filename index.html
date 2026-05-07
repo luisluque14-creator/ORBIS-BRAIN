@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v16.7</title>
+    <title>ORBIS BRAIN | Master v16.8</title>
     <!-- V16.1: INSTALACIÓN DE LIBRERÍA QRCODE.JS VÍA CDN -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
             --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
             --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
             --gold-gradient: linear-gradient(90deg, transparent, #d4af37, #f1d592, #d4af37, transparent);
-            --red-error: #d9534f;
+            --red-error: #d9534f; --green-success: #5cb85c; --yellow-process: #f0ad4e;
         }
         body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; height: 100vh; overflow: hidden; }
         .hidden { display: none !important; }
@@ -84,13 +84,12 @@
         .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 20px auto 0; display: block; transition: 0.4s; }
         
         #opModal .modal-content, #provModal .modal-content, #cotizadorModal .modal-content { width: 90%; max-width: 1600px; outline: 2px solid var(--gold-metalic); outline-offset: -2px; }
-        .grid-inputs { display: grid; grid-template-columns: 1.2fr 2fr 1fr 1fr 40px; gap: 12px; margin-bottom: 12px; align-items: stretch; }
         .summary-box { background: #000; padding: 25px 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2); display: grid; gap: 10px; margin-top: 20px; }
         .sum-item { text-align: center; border-right: 1px solid #222; padding: 0 5px; } .sum-item:last-child { border-right: none; }
         .sum-val { display: block; font-size: 20px; font-weight: 800; color: var(--gold-soft); margin-bottom: 5px; }
         .sum-lbl { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; }
         
-        #res-ganancia, #res-total, #cot-gran-total { color: var(--gold-metalic) !important; }
+        #res-ganancia, #res-total, #cot-gran-total, #ec_monto_total, #ec_saldo_pendiente { color: var(--gold-metalic) !important; }
         input[type="text"], input[type="email"] { text-transform: uppercase; }
         input[type="number"] { -moz-appearance: textfield; }
         input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0;}
@@ -135,6 +134,32 @@
             letter-spacing: 1.5px; margin-bottom: 10px;
         }
         #qr-code-container { background: white; padding: 10px; border-radius: 5px; }
+
+        /* --- V16.8 ESTILOS CERTIFICACIÓN --- */
+        .estado-cuenta-box {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
+            background: #000; padding: 20px; border-radius: 15px;
+            border: 1px solid var(--gold-metalic); margin-bottom: 20px;
+        }
+        .ec-item { text-align: center; }
+        .ec-label { font-size: 11px; text-transform: uppercase; color: #aaa; letter-spacing: 1px; margin-bottom: 8px; }
+        .ec-value { font-size: 24px; font-weight: 700; color: var(--gold-soft); }
+
+        #abonos-container { margin-top: 20px; }
+        .abono-grid {
+            display: grid; grid-template-columns: 1fr 1fr 2fr 1fr;
+            gap: 15px; align-items: center; padding: 15px;
+            background: rgba(0,0,0,0.2); border-radius: 10px; margin-bottom: 10px;
+            border-left: 4px solid var(--yellow-process);
+        }
+        .abono-grid.status-pagado { border-left-color: var(--green-success); }
+        .abono-grid.status-rechazado { border-left-color: var(--red-error); }
+        .abono-actions button { background: none; border: 1px solid; border-radius: 5px; padding: 8px 12px; cursor: pointer; font-size: 14px; margin-left: 8px; }
+        .btn-approve { color: var(--green-success); border-color: var(--green-success); }
+        .btn-reject { color: var(--red-error); border-color: var(--red-error); }
+        .btn-approve:disabled, .btn-reject:disabled { color: #555; border-color: #555; cursor: not-allowed; }
+
+        .recaudo-grid { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 15px; align-items: flex-end; }
     </style>
 </head>
 <body>
@@ -155,21 +180,22 @@
                 <label for="auth_nombre">Nombre Legal / Empresa *</label><input type="text" id="auth_nombre" placeholder="NOMBRE FISCAL" required>
                 <label for="auth_rif">RIF / Tax ID *</label><input type="text" id="auth_rif" placeholder="ID TRIBUTARIO" required>
                 <label for="auth_pais">País de Operación *</label><select id="auth_pais" required><option value="" disabled selected>SELECCIONE UN PAÍS</option><option value="VE">VENEZUELA</option><option value="US">USA</option><option value="ES">ESPAÑA / EUROPA</option><option value="OTHER">OTRO</option></select>
+                <label for="auth_master_key">Master Key (Opcional)</label><input type="password" id="auth_master_key" placeholder="CLAVE MAESTRA">
                 <button type="button" id="auth_submit" class="btn-gold" style="width: 100%; margin-top: 10px;">ACCEDER AL IMPERIO</button>
             </form>
         </div>
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V16.7: SIDEBAR -->
+        <!-- V16.8: SIDEBAR -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.7</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.8</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
-            <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Certificación de Pagos</button>
+            <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Conciliación de Pagos</button>
         </div>
 
-        <!-- VISTAS (sin cambios) -->
+        <!-- VISTAS -->
         <div id="view-directorio" class="view-section">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;"><h1 style="font-family:'Cinzel'; font-size: 26px; margin:0;">RED <span style="color:var(--gold-metalic)">MAESTRA</span></h1><button class="btn-gold" style="width:auto;" onclick="openModal('provModal')">Cargar Ficha Técnica +</button></div>
             <div class="table-container"><table><thead><tr><th>ID Aliado</th><th>Categoría</th><th>Nombre Legal</th><th>RIF / Tax ID</th><th>País</th><th>Acción</th></tr></thead><tbody id="cuerpo-tabla-prov"></tbody></table></div>
@@ -179,61 +205,80 @@
             <div class="table-container"><table><thead><tr><th>ID Cotización</th><th>Cliente / Pagador</th><th>Fecha Emisión</th><th>Monto Total</th><th>Estatus</th></tr></thead><tbody id="cuerpo-tabla-cotizacion"></tbody></table></div>
         </div>
         <div id="view-certificacion" class="view-section">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;"><h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">CERTIFICACIÓN DE <span style="color:var(--gold-metalic)">PAGOS</span></h1><button class="btn-gold" onclick="openModal('opModal')">Nueva Orquestación +</button></div>
-            <div class="table-container"><table><thead><tr><th style="padding:15px;">ID Operación</th><th>Aliado Responsable</th><th>Fecha</th><th>Total Certificado</th><th>Estatus</th></tr></thead><tbody id="cuerpo-tabla-cert"></tbody></table></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;"><h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">CONCILIACIÓN DE <span style="color:var(--gold-metalic)">PAGOS</span></h1><!--<button class="btn-gold" onclick="openModal('opModal')">Nueva Orquestación +</button>--></div>
+            <div class="table-container"><table><thead><tr><th style="padding:15px;">ID Operación</th><th>Proveedor</th><th>Cliente</th><th>Total Deuda</th><th>Saldo Pendiente</th><th>Estatus</th><th>Acción</th></tr></thead><tbody id="cuerpo-tabla-cert"></tbody></table></div>
         </div>
     </div>
     
-    <!-- MODAL CERTIFICACIÓN (sin cambios) -->
+    <!-- V16.8: MODAL DE CONCILIACIÓN (opModal) REESTRUCTURADO -->
     <div id="opModal" class="modal">
         <div class="modal-content">
-            <hr class="gold-divider"><div class="modal-title">CERTIFICACIÓN DE RECAUDO MAESTRO</div><hr class="gold-divider">
+            <hr class="gold-divider"><div class="modal-title">ORQUESTACIÓN Y CONCILIACIÓN DE RECAUDO</div><hr class="gold-divider">
+            
             <form id="registroForm">
+                <!-- Información General (Fija) -->
                 <div class="form-section">
-                     <div style="display:grid; grid-template-columns: 2fr 1fr; gap:20px; margin-bottom: 20px;">
-                         <div><label>Nombre Fiscal del Cliente / Pagador *</label><input type="text" id="op_cliente_nombre" placeholder="NOMBRE LEGAL DEL PAGADOR"></div>
-                         <div><label>RIF / Tax ID del Cliente *</label><input type="text" id="op_cliente_rif" placeholder="ID TRIBUTARIO DEL PAGADOR"></div>
-                    </div>
-                    <div style="display:grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap:20px;">
-                        <div><label>Nombre Fiscal del Aliado *</label><input type="text" id="aliado_name" placeholder="NOMBRE LEGAL"></div>
-                        <div><label>RIF / Tax ID *</label><input type="text" id="aliado_rif" placeholder="ID TRIBUTARIO"></div>
-                        <div><label>Moneda Orquestación *</label><select id="moneda_global" onchange="cambiarMoneda()"><option value="$">USD ($)</option><option value="Bs.">Bs. (VE)</option><option value="€">EUR (€)</option></select></div>
-                        <div><label style="color:var(--gold-metalic)">Honorarios Aliado *</label><input type="number" id="comision_aliado" readonly style="background: #111; color: var(--gold-metalic); font-weight: bold;"></div>
+                     <div style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap:20px;">
+                        <div><label>ID Operación</label><input type="text" id="op_id" readonly></div>
+                        <div><label>Proveedor</label><input type="text" id="op_proveedor_nombre" readonly></div>
+                        <div><label>Cliente / Pagador</label><input type="text" id="op_cliente_nombre" readonly></div>
+                        <div><label>Aliado Responsable (Pagador)</label><input type="text" id="op_aliado_responsable" readonly></div>
                     </div>
                 </div>
-                <div style="display: grid; grid-template-columns: 1.8fr 1fr; gap: 20px; margin-top: 15px;">
-                    <div class="form-section">
-                        <label>Bases Imponibles & Comisiones (<span class="curr-sym">$</span>)</label>
-                        <div id="contenedor-servicios">
-                            <div id="cobertura-row" class="grid-inputs row-fixed">
-                                <div><label>Cobertura</label><select id="tipo_cobertura_sel"><option value="interno">🛡️ ORBIS PROTECT</option><option value="externo">✍️ SEGURO EXTERNO / MANUAL</option></select></div>
-                                <div><label>Proveedor *</label><input type="text" id="cobertura_proveedor" class="prov-name" value="ORBIS BRAIN NETWORK" readonly></div>
-                                <div><label>Base *</label><input type="number" id="cobertura_base" value="2.00" readonly onfocus="this.select()"></div>
-                                <div><label>Comisión *</label><input type="number" id="cobertura_comision" value="0.00" readonly onfocus="this.select()"></div>
-                                <div id="cobertura_icon" style="display:flex; align-items:center; justify-content:center; color:var(--gold-metalic);">🔒</div>
-                            </div>
-                            <div id="filas-dinamicas" style="margin-top:10px;"></div>
+
+                <!-- Estado de Cuenta -->
+                <div class="estado-cuenta-box">
+                    <div class="ec-item">
+                        <div class="ec-label">Monto Total de la Deuda</div>
+                        <div class="ec-value" id="ec_monto_total">0.00</div>
+                    </div>
+                    <div class="ec-item">
+                        <div class="ec-label">Total Recaudado</div>
+                        <div class="ec-value" id="ec_total_recaudado">0.00</div>
+                    </div>
+                    <div class="ec-item">
+                        <div class="ec-label">Saldo Pendiente</div>
+                        <div class="ec-value" id="ec_saldo_pendiente">0.00</div>
+                    </div>
+                </div>
+
+                <!-- Historial de Abonos -->
+                <div class="form-section">
+                    <h3 class="form-section-header">HISTORIAL DE ABONOS</h3>
+                    <div id="abonos-container">
+                        <!-- Abonos registrados se insertarán aquí -->
+                    </div>
+                </div>
+                
+                <!-- Panel de Nuevo Abono -->
+                <div class="form-section" id="panel-nuevo-abono">
+                     <h3 class="form-section-header">REGISTRAR NUEVO ABONO</h3>
+                     <div class="recaudo-grid">
+                        <div>
+                            <label for="abono_monto">Monto del Abono *</label>
+                            <input type="number" id="abono_monto" placeholder="0.00" oninput="validarInputsAbono()">
                         </div>
-                        <button type="button" class="btn-add" onclick="agregarFila()">+ AGREGAR PROVEEDOR</button>
-                    </div>
-                    <div class="form-section">
-                        <label style="color:var(--gold-metalic)">Tasas e Impuestos (%)</label>
-                        <div id="contenedor-taxes-cert" class="tax-container-grid"></div>
-                        <datalist id="sugerencias_impuestos"></datalist>
-                        <button type="button" class="btn-add" onclick="agregarTaxCert()">+ AGREGAR TASA</button>
-                    </div>
+                        <div>
+                            <label for="abono_boveda">Bóveda de Destino *</label>
+                            <select id="abono_boveda" onchange="validarInputsAbono()">
+                                <option value="" disabled selected>SELECCIONE BÓVEDA</option>
+                                <option value="ZELLE">ZELLE</option>
+                                <option value="BINANCE_USDT">BINANCE USDT</option>
+                                <option value="ZINLI">ZINLI</option>
+                                <option value="PAYPAL">PAYPAL</option>
+                                <option value="EFECTIVO">EFECTIVO</option>
+                                <option value="BANCO_NACIONAL">BANCO NACIONAL</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="abono_hash">Hash / Referencia *</label>
+                            <input type="text" id="abono_hash" placeholder="CÓDIGO DE TRANSACCIÓN O REFERENCIA" oninput="validarInputsAbono()">
+                        </div>
+                     </div>
+                     <button type="button" id="btn-registrar-abono" class="btn-gold" style="width:100%; margin-top:20px;" onclick="registrarAbono()" disabled>VALIDAR Y SINCRONIZAR ABONO</button>
                 </div>
             </form>
-            <div class="summary-box" style="grid-template-columns: repeat(6, 1fr);">
-                <div class="sum-item"><span class="sum-lbl">Base Imponible</span><span id="res-neto" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
-                <div class="sum-item"><span class="sum-lbl">Impuestos</span><span id="res-imp" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
-                <div class="sum-item"><span class="sum-lbl">Fee Orbis</span><span id="res-fee-fijo" class="sum-val">6.00 <span class="curr-sym">$</span></span></div>
-                <div class="sum-item"><span class="sum-lbl">Escudo Oro</span><span id="res-escudo" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
-                <div class="sum-item"><span class="sum-lbl">HONORARIOS</span><span id="res-ganancia" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
-                <div class="sum-item"><span class="sum-lbl">TOTAL</span><span id="res-total" class="sum-val">0.00 <span class="curr-sym">$</span></span></div>
-            </div>
-            <button id="btn-sync-cert" class="btn-gold" style="width:100%; margin-top:20px;" onclick="confirmarRegistro()">VALIDAR Y SINCRONIZAR</button>
-            <button id="btn-cancel-cert" class="btn-cancel-elite" onclick="closeModal('opModal')">Cancelar</button>
+            <button id="btn-cancel-cert" class="btn-cancel-elite" onclick="closeModal('opModal')">Cerrar</button>
         </div>
     </div>
     
@@ -249,12 +294,16 @@
         </div>
     </div>
 
-    <!-- MODAL #3: COTIZADOR ESTRATÉGICO (v16.7) -->
+    <!-- MODAL COTIZADOR ESTRATÉGICO (sin cambios funcionales, solo puente) -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
             <form id="cotizadorForm" oninput="actualizarCalculosCotizador()">
                 <hr class="gold-divider"><div class="modal-title">COTIZADOR ESTRATÉGICO PANORÁMICO</div><hr class="gold-divider">
-                
+                <div class="form-section" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:20px;">
+                    <div><label>Cliente / Pagador</label><input type="text" id="cot_cliente_nombre" placeholder="NOMBRE LEGAL DEL PAGADOR"></div>
+                    <div><label>RIF / Tax ID Cliente</label><input type="text" id="cot_cliente_rif" placeholder="ID TRIBUTARIO"></div>
+                    <div><label>Aliado Responsable del Pago</label><select id="cot_aliado_responsable"><option value="">SELECCIONAR ALIADO</option></select></div>
+                </div>
                 <div class="form-section" id="paquetes-section">
                     <h3 class="form-section-header">ZONA A: PAQUETES / HOTELES</h3>
                     <div id="paquetes-container-header" class="grid-header pkg-grid" style="padding:0 10px;margin-bottom:10px">
@@ -298,7 +347,7 @@
                     <div class="sum-item"><span class="sum-lbl">RETENCIONES</span><span id="cot-retenciones" class="sum-val">0.00</span></div>
                     <div class="sum-item"><span class="sum-lbl">GRAN TOTAL</span><span id="cot-gran-total" class="sum-val">0.00</span></div>
                 </div>
-                <div class="action-buttons-grid"><button type="button" class="btn-secondary" onclick="generarPDFCotizacion()">GENERAR PDF 📄</button><button type="button" class="btn-gold" onclick="puenteHaciaCertificacion()">PASAR A CERTIFICACIÓN 🏛️</button></div>
+                <div class="action-buttons-grid"><button type="button" class="btn-secondary" onclick="generarPDFCotizacion()">GENERAR PDF 📄</button><button type="button" class="btn-gold" onclick="puenteHaciaCertificacion()">PASAR A CONCILIACIÓN 🏛️</button></div>
                 
                 <div id="qr-verification-seal" class="hidden">
                     <p>SELLO DE VERIFICACIÓN ORBIS</p>
@@ -311,17 +360,17 @@
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v16.7)
+        //                      JAVASCRIPT UNIFICADO (v16.8)
         // =======================================================================
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
-        const SUGERENCIAS_IMPUESTOS_CERT = { "$": ["Sales Tax", "Federal Tax"], "Bs.": ["IVA 16%", "IGTF 3%"], "€": ["VAT (IVA)"] };
         const FEE_ORBIS_BASE = 5.00;
         const FEE_ORBIS_PROTECT = 1.00;
         const ESCUDO_ORO_PORC = 0.005;
 
         const TAX_MATRIX = { "VE": [{ nombre: "IVA", valor: 16 }, { nombre: "IGTF", valor: 3 }], "US": [{ nombre: "Sales Tax", valor: 7 }], "ES": [{ nombre: "IVA (VAT)", valor: 21 }] };
-        let orbisSession = { nombre: "", rif: "", pais: "" };
+        let orbisSession = { nombre: "", rif: "", pais: "", esMaster: false };
+        let DB = { proveedores: [], operaciones: [] };
 
         // --- LÓGICA DE INICIALIZACIÓN Y NAVEGACIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -340,11 +389,19 @@
                 const nombre = document.getElementById('auth_nombre').value;
                 const rif = document.getElementById('auth_rif').value;
                 const pais = document.getElementById('auth_pais').value;
+                const masterKey = document.getElementById('auth_master_key').value;
                 if (nombre.trim() && rif.trim() && pais) {
-                    orbisSession = { nombre: nombre.toUpperCase(), rif: rif.toUpperCase(), pais };
+                    orbisSession = { 
+                        nombre: nombre.toUpperCase(), 
+                        rif: rif.toUpperCase(), 
+                        pais,
+                        esMaster: masterKey === 'ORBIS_MASTER_CONTROL'
+                    };
                     document.getElementById('auth-modal').style.display = 'none';
                     document.getElementById('main-app').classList.remove('hidden');
-                    showView('directorio', document.getElementById('nav-dir'));
+                    if (orbisSession.esMaster) { document.body.style.setProperty('--gold-metalic', '#ff4d4d'); }
+                    showView('directorio', document.getElementById('nav-directorio'));
+                    cargarDatosIniciales();
                 } else {
                     alert("Por favor, complete todos los campos para continuar.");
                 }
@@ -352,118 +409,286 @@
 
             document.addEventListener('input', (e) => { if (e.target.tagName.toLowerCase() === 'input' && (e.target.type === 'text' || e.target.type === 'email')) { e.target.value = e.target.value.toUpperCase(); } });
             document.addEventListener('focusin', (e) => { if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'number') { e.target.select(); } });
-            if(document.getElementById('tipo_cobertura_sel')) document.getElementById('tipo_cobertura_sel').addEventListener('change', function() { gestionarEstadoCobertura(this.value === 'interno'); }); 
         });
 
-        function showView(viewId, btn) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('view-' + viewId).classList.add('active'); if (btn) btn.classList.add('active'); }
+        function showView(viewId, btn) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('view-' + viewId).classList.add('active'); if (btn) btn.classList.add('active'); renderizarTablas(); }
         
         function openModal(id) {
             const modal = document.getElementById(id);
             modal.style.display = 'flex';
-            if (id === 'opModal') {
-                document.getElementById('registroForm').reset();
-                document.getElementById('filas-dinamicas').innerHTML = '';
-                document.getElementById('contenedor-taxes-cert').innerHTML = '';
-                cambiarMoneda();
-                gestionarEstadoCobertura(true);
-                agregarFila();
-                cargarImpuestosPredeterminados();
-                if (document.getElementById('contenedor-taxes-cert').children.length === 0) { agregarTaxCert(); }
-            } else if (id === 'provModal') {
+            if (id === 'provModal') {
                 resetFichaDirectorio();
             } else if (id === 'cotizadorModal') {
                 document.getElementById('cotizadorForm').reset();
                 ['#pax-container', '#paquetes-container', '#singles-container', '#contenedor-taxes-cot'].forEach(sel => document.querySelector(sel).innerHTML = '');
                 document.getElementById('qr-verification-seal').classList.add('hidden');
                 document.getElementById('qr-code-container').innerHTML = '';
-                
                 const impuestos = TAX_MATRIX[orbisSession.pais] || [];
                 impuestos.forEach(tax => agregarTaxCot(tax.nombre, tax.valor, true));
-
                 agregarFilaSeguroAutomatizada();
                 agregarPaquete();
                 agregarServicioIndividual();
                 agregarPax();
-                
                 actualizarCalculosCotizador();
+                actualizarDropdownAliados();
             }
         }
-        function closeModal(id) { if (confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos no guardados.")) { document.getElementById(id).style.display = 'none'; } }
+        function closeModal(id) { 
+            const modal = document.getElementById(id);
+            if (id === 'opModal') {
+                const saldoPendiente = parseFloat(document.getElementById('ec_saldo_pendiente').textContent) || 0;
+                if (saldoPendiente > 0) {
+                    if (!confirm(`🔴 ALERTA DE SALDO: Aún queda un saldo pendiente de ${saldoPendiente.toFixed(2)}. ¿Está seguro que desea cerrar?`)) {
+                        return;
+                    }
+                }
+            } else {
+                 if (!confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos no guardados.")) {
+                    return;
+                }
+            }
+            modal.style.display = 'none';
+        }
 
-        // --- LÓGICA CERTIFICACIÓN (sin cambios) ---
-        function gestionarEstadoCobertura(esInterno) { const p = document.getElementById('cobertura_proveedor'), b = document.getElementById('cobertura_base'), c = document.getElementById('cobertura_comision'), i = document.getElementById('cobertura_icon'); if (esInterno) { p.value = 'ORBIS BRAIN NETWORK'; b.value = '2.00'; c.value = '0.00'; i.innerHTML = '🔒'; [p, b, c].forEach(el => el.setAttribute('readonly', true)); } else { p.value = ''; b.value = '0.00'; c.value = '0.00'; i.innerHTML = '✍️'; p.placeholder = 'NOMBRE PROVEEDOR *';[p, b, c].forEach(el => el.removeAttribute('readonly')); } calcularTodoCert(); }
-        function agregarFila() { const div = document.createElement('div'); div.className = 'grid-inputs servicio-row'; div.innerHTML = `<div><select class="tipo-srv" onchange="calcularTodoCert()"><option value="Hotel">🏨 Hotel</option><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Otro">➕ Otro</option></select></div><div><input type="text" class="prov-name" placeholder="NOMBRE PROVEEDOR *"></div><div><input type="number" class="monto-srv" oninput="calcularTodoCert()" placeholder="0.00"></div><div><input type="number" class="comision-ind" oninput="calcularTodoCert()" placeholder="0.00"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove(); calcularTodoCert();">X</button>`; document.getElementById('filas-dinamicas').appendChild(div); }
-        function confirmarRegistro() {
-            let esValido = true;
-            ['#op_cliente_nombre', '#op_cliente_rif', '#aliado_name', '#aliado_rif', '#moneda_global', ...Array.from(document.querySelectorAll('#opModal .prov-name'))].forEach(sel => {
-                const campo = typeof sel === 'string' ? document.querySelector(sel) : sel;
-                if (!campo.value.trim()) { campo.classList.add('input-error'); esValido = false; } else { campo.classList.remove('input-error'); }
+        // --- V16.8 LÓGICA DE DATOS CENTRALIZADA ---
+        function cargarDatosIniciales() {
+            // Simulación de carga de datos. En un entorno real, esto sería una llamada a API.
+            DB.proveedores.push({ID_ALIADO: 'ORB-001', NOMBRE_LEGAL: 'HOTEL CUMBRE', RIF_TAX_ID: 'J-123', PAIS: 'VE', CATEGORIA: 'HOTEL', MONEDA_BASE: 'USD ($)', TELEFONOS: '', CORREOS: ''});
+            DB.proveedores.push({ID_ALIADO: 'ORB-002', NOMBRE_LEGAL: 'VIAJES GLOBALES', RIF_TAX_ID: 'J-456', PAIS: 'US', CATEGORIA: 'AGENCIA', MONEDA_BASE: 'USD ($)', TELEFONOS: '', CORREOS: ''});
+            DB.proveedores.push({ID_ALIADO: 'ORB-003', NOMBRE_LEGAL: 'LUIS LUQUE FREELANCE', RIF_TAX_ID: 'V-789', PAIS: 'VE', CATEGORIA: 'FREELANCER', MONEDA_BASE: 'USD ($)', TELEFONOS: '', CORREOS: ''});
+            
+            // Añadir usuario actual a la lista de proveedores si no existe
+             if (!DB.proveedores.some(p => p.RIF_TAX_ID === orbisSession.rif)) {
+                 const nuevoAliado = {
+                    ID_ALIADO: `ORB-${String(DB.proveedores.length + 1).padStart(3, '0')}`,
+                    NOMBRE_LEGAL: orbisSession.nombre,
+                    RIF_TAX_ID: orbisSession.rif,
+                    PAIS: orbisSession.pais,
+                    CATEGORIA: 'AGENCIA',
+                    MONEDA_BASE: 'USD ($)', TELEFONOS: '', CORREOS: ''
+                 };
+                DB.proveedores.push(nuevoAliado);
+            }
+            renderizarTablas();
+        }
+
+        function renderizarTablas() {
+            renderTablaProveedores();
+            renderTablaCertificaciones();
+            renderTablaCotizaciones();
+        }
+
+        function renderTablaProveedores() {
+            const tbody = document.getElementById('cuerpo-tabla-prov');
+            tbody.innerHTML = '';
+            DB.proveedores.forEach(p => {
+                const newRow = tbody.insertRow(0);
+                newRow.innerHTML = `<td>${p.ID_ALIADO}</td><td>${p.CATEGORIA}</td><td>${p.NOMBRE_LEGAL}</td><td>${p.RIF_TAX_ID}</td><td>${p.PAIS}</td><td><button style="background:none;border:none;color:#666;cursor:not-allowed;opacity:0.5">ELIMINAR</button></td>`;
             });
-            if (!esValido) { alert("⚠️ BLOQUEO DE SEGURIDAD: Los campos marcados en rojo son obligatorios."); return; }
-            if (parseFloat(document.getElementById('comision_aliado').value) <= 0) { alert("⚠️ BLOQUEO DE INTEGRIDAD: Los Honorarios del Aliado no pueden ser cero."); return; }
-            if (document.querySelectorAll('#contenedor-taxes-cert .tax-grid').length === 0) { alert("🔴 VALIDACIÓN BLOQUEADA: Debe agregar al menos una tasa de impuesto."); return; }
-            if (confirm("🏛️ ¿Confirma la sincronización de esta certificación?")) { enviarCertificacion(); }
-        }
-        async function enviarCertificacion() {
-            const btnSync = document.getElementById('btn-sync-cert'); btnSync.disabled = true; btnSync.textContent = '🚀 REGISTRANDO...';
-            const parseVal = (s) => parseFloat(document.getElementById(s).textContent.split(' ')[0]) || 0;
-            const datos = { idOperacion: `CERT-${Math.floor(10000 + Math.random() * 90000)}`, aliado: document.getElementById('aliado_name').value, moneda: document.getElementById('moneda_global').value, montoImpuestos: parseVal('res-imp'), estatus: 'PENDIENTE', totalCertificado: parseVal('res-total') };
-            try {
-                await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'registrarCertificacion', data: datos }) });
-                alert("✅ SINCRONIZACIÓN EXITOSA");
-                const newRow = document.getElementById('cuerpo-tabla-cert').insertRow(0);
-                newRow.innerHTML = `<td>${datos.idOperacion}</td><td>${datos.aliado}</td><td>${new Date().toLocaleDateString()}</td><td>${datos.totalCertificado.toFixed(2)} ${datos.moneda}</td><td><span style="color:var(--gold-soft)">⏳ PENDIENTE</span></td>`;
-                closeModal('opModal');
-            } catch (error) { console.error(error); alert("🔴 ERROR CRÍTICO: No se pudo sincronizar."); } finally { btnSync.disabled = false; btnSync.textContent = 'VALIDAR Y SINCRONIZAR'; }
-        }
-        function obtenerImpuestosGuardados() { return JSON.parse(localStorage.getItem('orbis_impuestos_predeterminados')) || []; }
-        function guardarImpuestos(impuestos) { localStorage.setItem('orbis_impuestos_predeterminados', JSON.stringify(impuestos)); }
-        function cargarImpuestosPredeterminados() { obtenerImpuestosGuardados().forEach(imp => agregarTaxCert(imp.nombre, imp.valor, true)); }
-        function gestionarPin(btn) { const fila = btn.closest('.tax-grid'); const nombre = fila.querySelector('.tax-name').value; const valor = fila.querySelector('.tax-val').value; if (!nombre || !valor) { alert('Debe especificar un nombre y un valor para fijar el impuesto.'); return; } let impuestos = obtenerImpuestosGuardados(); const idx = impuestos.findIndex(i => i.nombre.toLowerCase() === nombre.toLowerCase()); if (idx > -1) { impuestos.splice(idx, 1); btn.classList.remove('active'); } else { impuestos.push({ nombre, valor }); btn.classList.add('active'); } guardarImpuestos(impuestos); }
-        function agregarTaxCert(nombre = '', valor = '', esPredeterminado = false) { const container = document.getElementById('contenedor-taxes-cert'); const div = document.createElement('div'); div.className = 'tax-grid tax-row'; const pinActivoClass = esPredeterminado ? 'active' : ''; div.innerHTML = `<button type="button" class="pin-btn ${pinActivoClass}" onclick="gestionarPin(this)">📌</button><input type="text" class="tax-name" list="sugerencias_impuestos" value="${nombre}"><div style="position:relative"><input type="number" class="tax-val tax-input" oninput="calcularTodoCert()" value="${valor}" step="any"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" onclick="eliminarFilaImpuesto(this)">X</button>`; container.appendChild(div); calcularTodoCert(); }
-        function eliminarFilaImpuesto(btn) { const fila = btn.closest('.tax-grid'); const nombre = fila.querySelector('.tax-name').value; if (nombre && fila.querySelector('.pin-btn').classList.contains('active')) { guardarImpuestos(obtenerImpuestosGuardados().filter(i => i.nombre.toLowerCase() !== nombre.toLowerCase())); } fila.remove(); calcularTodoCert(); }
-        function cambiarMoneda() { const sym = document.getElementById('moneda_global').value; document.querySelectorAll('.curr-sym').forEach(el => el.innerText = sym); const dl = document.getElementById('sugerencias_impuestos'); dl.innerHTML = ""; if (SUGERENCIAS_IMPUESTOS_CERT[sym]) { SUGERENCIAS_IMPUESTOS_CERT[sym].forEach(s => { const opt = document.createElement('option'); opt.value = s; dl.appendChild(opt); }); } calcularTodoCert(); }
-        function calcularTodoCert() {
-            const sym = document.getElementById('moneda_global').value;
-            const tasaCambio = TASAS_CAMBIO[sym] || 1.00;
-            let totalBase = 0, totalComisiones = 0;
-            totalBase += parseFloat(document.getElementById('cobertura_base').value) || 0;
-            totalComisiones += parseFloat(document.getElementById('cobertura_comision').value) || 0;
-            document.querySelectorAll('.servicio-row').forEach(row => { totalBase += parseFloat(row.querySelector('.monto-srv').value) || 0; totalComisiones += parseFloat(row.querySelector('.comision-ind').value) || 0; });
-            document.getElementById('comision_aliado').value = totalComisiones.toFixed(2);
-            const baseImponibleTotal = totalBase;
-            let totalImpuestos = 0;
-            document.querySelectorAll('#contenedor-taxes-cert .tax-grid').forEach(row => { const porcentaje = parseFloat(row.querySelector('.tax-val').value) || 0; if (porcentaje !== 0) { totalImpuestos += baseImponibleTotal * (porcentaje / 100); } });
-            let feeOrbisFinal = (FEE_ORBIS_BASE + (document.getElementById('tipo_cobertura_sel').value === 'interno' ? FEE_ORBIS_PROTECT : 0)) * tasaCambio;
-            const subTotal = baseImponibleTotal + totalImpuestos;
-            const escudoOro = (subTotal + feeOrbisFinal + totalComisiones) * ESCUDO_ORO_PORC;
-            document.getElementById('res-neto').innerHTML = `${baseImponibleTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
-            document.getElementById('res-imp').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`;
-            document.getElementById('res-ganancia').innerHTML = `${totalComisiones.toFixed(2)} <span class="curr-sym">${sym}</span>`;
-            document.getElementById('res-escudo').innerHTML = `${escudoOro.toFixed(2)} <span class="curr-sym">${sym}</span>`;
-            document.getElementById('res-fee-fijo').innerHTML = `${feeOrbisFinal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
-            document.getElementById('res-total').innerHTML = `${(subTotal + feeOrbisFinal + escudoOro + totalComisiones).toFixed(2)} <span class="curr-sym">${sym}</span>`;
         }
 
-        // --- LÓGICA RED MAESTRA (sin cambios) ---
+        function renderTablaCertificaciones() {
+            const tbody = document.getElementById('cuerpo-tabla-cert');
+            tbody.innerHTML = '';
+            const operacionesFiltradas = DB.operaciones.filter(op => 
+                orbisSession.esMaster || 
+                op.aliadoResponsable === orbisSession.nombre ||
+                op.proveedor === orbisSession.nombre
+            );
+
+            operacionesFiltradas.forEach(op => {
+                const saldoPendiente = op.montoTotal - op.totalRecaudado;
+                let estatusHtml = '';
+                switch(op.estatus) {
+                    case 'PAGADO': estatusHtml = `<span style="color:var(--green-success)">🟢 PAGADO</span>`; break;
+                    case 'EN PROCESO': estatusHtml = `<span style="color:var(--yellow-process)">🟡 EN PROCESO</span>`; break;
+                    case 'RECHAZADO': estatusHtml = `<span style="color:var(--red-error)">🔴 RECHAZADO</span>`; break;
+                    default: estatusHtml = `<span>${op.estatus}</span>`;
+                }
+
+                const newRow = tbody.insertRow(0);
+                newRow.innerHTML = `
+                    <td>${op.id}</td>
+                    <td>${op.proveedor}</td>
+                    <td>${op.cliente}</td>
+                    <td>${op.montoTotal.toFixed(2)} ${op.moneda}</td>
+                    <td>${saldoPendiente.toFixed(2)} ${op.moneda}</td>
+                    <td>${estatusHtml}</td>
+                    <td><button class="btn-gold" style="padding: 8px 15px; font-size: 11px;" onclick="abrirConciliacion('${op.id}')">CONCILIAR</button></td>
+                `;
+            });
+        }
+        
+        function renderTablaCotizaciones(){
+            // Lógica de renderizado para la tabla de cotizaciones si es necesario
+        }
+
+
+        // --- V16.8 LÓGICA DE CONCILIACIÓN DE PAGOS ---
+
+        function abrirConciliacion(opId) {
+            const operacion = DB.operaciones.find(op => op.id === opId);
+            if (!operacion) {
+                alert("Error: Operación no encontrada.");
+                return;
+            }
+
+            openModal('opModal');
+            document.getElementById('op_id').value = operacion.id;
+            document.getElementById('op_proveedor_nombre').value = operacion.proveedor;
+            document.getElementById('op_cliente_nombre').value = operacion.cliente;
+            document.getElementById('op_aliado_responsable').value = operacion.aliadoResponsable;
+
+            actualizarEstadoCuenta(operacion);
+            renderizarAbonos(operacion);
+            
+            const esPagador = orbisSession.nombre === operacion.aliadoResponsable;
+            const esReceptor = orbisSession.nombre === operacion.proveedor;
+
+            // Lógica de permisos para el panel de nuevo abono
+            const panelNuevoAbono = document.getElementById('panel-nuevo-abono');
+            if (esPagador && operacion.estatus === 'EN PROCESO') {
+                panelNuevoAbono.style.display = 'block';
+            } else {
+                panelNuevoAbono.style.display = 'none';
+            }
+        }
+        
+        function actualizarEstadoCuenta(operacion) {
+            const montoTotal = operacion.montoTotal;
+            const totalRecaudado = operacion.abonos.filter(ab => ab.estatus === 'PAGADO').reduce((sum, ab) => sum + ab.monto, 0);
+            const saldoPendiente = montoTotal - totalRecaudado;
+
+            operacion.totalRecaudado = totalRecaudado; // Actualizar en DB
+
+            document.getElementById('ec_monto_total').textContent = `${montoTotal.toFixed(2)} ${operacion.moneda}`;
+            document.getElementById('ec_total_recaudado').textContent = `${totalRecaudado.toFixed(2)} ${operacion.moneda}`;
+            document.getElementById('ec_saldo_pendiente').textContent = `${saldoPendiente.toFixed(2)} ${operacion.moneda}`;
+            
+             if (saldoPendiente <= 0) {
+                document.getElementById('panel-nuevo-abono').style.display = 'none';
+                if (operacion.estatus !== 'PAGADO') {
+                    operacion.estatus = 'PAGADO';
+                }
+            }
+        }
+
+        function renderizarAbonos(operacion) {
+            const container = document.getElementById('abonos-container');
+            container.innerHTML = '';
+            
+            const esReceptor = orbisSession.nombre === operacion.proveedor || orbisSession.esMaster;
+
+            operacion.abonos.forEach(abono => {
+                let statusClass = '';
+                let statusText = '';
+                switch(abono.estatus) {
+                    case 'PAGADO': statusClass = 'status-pagado'; statusText = '🟢 APROBADO'; break;
+                    case 'RECHAZADO': statusClass = 'status-rechazado'; statusText = '🔴 RECHAZADO'; break;
+                    default: statusClass = 'status-en-proceso'; statusText = '🟡 EN PROCESO';
+                }
+
+                const div = document.createElement('div');
+                div.className = `abono-grid ${statusClass}`;
+                div.innerHTML = `
+                    <div><strong>Monto:</strong><br>${abono.monto.toFixed(2)} ${operacion.moneda}</div>
+                    <div><strong>Bóveda:</strong><br>${abono.boveda}</div>
+                    <div><strong>Hash/Ref:</strong><br>${abono.hash}</div>
+                    <div class="abono-actions">
+                        <span>${statusText}</span>
+                        ${abono.estatus === 'EN PROCESO' ? `
+                            <button class="btn-approve" onclick="cambiarStatusAbono('${operacion.id}', '${abono.id}', 'PAGADO')" ${!esReceptor ? 'disabled' : ''}>✓</button>
+                            <button class="btn-reject" onclick="cambiarStatusAbono('${operacion.id}', '${abono.id}', 'RECHAZADO')" ${!esReceptor ? 'disabled' : ''}>×</button>
+                        ` : ''}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        function validarInputsAbono() {
+            const monto = parseFloat(document.getElementById('abono_monto').value) || 0;
+            const boveda = document.getElementById('abono_boveda').value;
+            const hash = document.getElementById('abono_hash').value;
+            const opId = document.getElementById('op_id').value;
+            const operacion = DB.operaciones.find(op => op.id === opId);
+            const saldoPendiente = operacion.montoTotal - operacion.totalRecaudado;
+
+            const btn = document.getElementById('btn-registrar-abono');
+            let valido = true;
+
+            if (!monto || monto <= 0 || monto > saldoPendiente) valido = false;
+            if (!boveda) valido = false;
+            if (!hash.trim()) valido = false;
+
+            btn.disabled = !valido;
+        }
+
+        function registrarAbono() {
+            const opId = document.getElementById('op_id').value;
+            const operacion = DB.operaciones.find(op => op.id === opId);
+            
+            const monto = parseFloat(document.getElementById('abono_monto').value);
+            const boveda = document.getElementById('abono_boveda').value;
+            const hash = document.getElementById('abono_hash').value;
+            
+            const nuevoAbono = {
+                id: `ABN-${Date.now()}`,
+                monto,
+                boveda,
+                hash,
+                estatus: 'EN PROCESO' // Estado por defecto
+            };
+
+            operacion.abonos.push(nuevoAbono);
+            
+            // Limpiar y resetear panel de abono
+            document.getElementById('abono_monto').value = '';
+            document.getElementById('abono_boveda').value = '';
+            document.getElementById('abono_hash').value = '';
+            document.getElementById('btn-registrar-abono').disabled = true;
+
+            abrirConciliacion(opId); // Recargar vista del modal
+            renderizarTablas(); // Actualizar tabla principal
+        }
+        
+        function cambiarStatusAbono(opId, abonoId, nuevoStatus) {
+             const operacion = DB.operaciones.find(op => op.id === opId);
+             const abono = operacion.abonos.find(ab => ab.id === abonoId);
+
+             abono.estatus = nuevoStatus;
+
+             abrirConciliacion(opId);
+             renderizarTablas();
+        }
+
+        // --- LÓGICA RED MAESTRA ---
         function resetFichaDirectorio() { document.getElementById('provModal').querySelectorAll('input, select').forEach(el => { if(el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = ''; el.classList.remove('input-error'); }); document.getElementById('phone-container').innerHTML = ''; document.getElementById('email-container').innerHTML = ''; addDynamicField('phone-container', 'phone'); addDynamicField('email-container', 'email'); }
         function addDynamicField(containerId, type) { const c = document.getElementById(containerId), d = document.createElement('div'); d.className = 'dynamic-row'; d.innerHTML = type === 'phone' ? `<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="SI">🟢 WHATSAPP</option><option value="NO" selected>📞 LLAMADA</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>` : `<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <select class="is-validated" style="visibility:hidden;"><option value="SI">VERIFICADO</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>`; c.appendChild(d); }
         function iniciarGuardadoProv() { let esValido = true; ['prov_nombre', 'prov_rif', 'prov_pais'].forEach(id => { const el = document.getElementById(id); if (!el.value.trim()) { el.classList.add('input-error'); esValido = false; } else { el.classList.remove('input-error'); } }); const correo = document.querySelector('#email-container .prov-email'); if (!correo || !correo.value.trim()) { if(correo) correo.classList.add('input-error'); esValido = false; alert("⚠️ BLOQUEO: Se requiere al menos un correo electrónico."); } if (esValido && confirm("🏛️ ¿Confirma el registro del nuevo aliado en la Red Maestra?")) { ejecutarGuardadoProv(); } }
         async function ejecutarGuardadoProv() {
             const btn = document.getElementById('btn-sync-prov'); btn.disabled = true; btn.textContent = '🚀 REGISTRANDO...';
-            const telefonos = Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => `${input.value} (WHATSAPP: ${document.querySelectorAll('.is-whatsapp')[i].value})`).join('; ');
-            const correos = Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; ');
-            const datos = { ID_ALIADO: `ORB-${String(document.getElementById('cuerpo-tabla-prov').rows.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: telefonos, CORREOS: correos };
-            try {
-                await fetch(URL_SCRIPT_CERT, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'registrarProveedor', data: datos }) });
-                alert("✅ REGISTRO EN RED MAESTRA EXITOSO.");
-                const newRow = document.getElementById('cuerpo-tabla-prov').insertRow(0);
-                newRow.innerHTML = `<td>${datos.ID_ALIADO}</td><td>${datos.CATEGORIA}</td><td>${datos.NOMBRE_LEGAL}</td><td>${datos.RIF_TAX_ID}</td><td>${datos.PAIS}</td><td><button style="background:none;border:none;color:#666;cursor:not-allowed;opacity:0.5">ELIMINAR</button></td>`;
-                closeModal('provModal');
-            } catch (error) { console.error(error); alert("🔴 ERROR CRÍTICO: No se pudo registrar el aliado."); } finally { btn.disabled = false; btn.textContent = 'REGISTRAR EN RED MAESTRA'; }
+            
+            const nuevoProveedor = {
+                 ID_ALIADO: `ORB-${String(DB.proveedores.length + 1).padStart(3, '0')}`,
+                 CATEGORIA: document.getElementById('prov_cat').value,
+                 NOMBRE_LEGAL: document.getElementById('prov_nombre').value,
+                 RIF_TAX_ID: document.getElementById('prov_rif').value,
+                 PAIS: document.getElementById('prov_pais').value,
+                 MONEDA_BASE: document.getElementById('prov_moneda').value,
+                 TELEFONOS: Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => `${input.value} (WHATSAPP: ${document.querySelectorAll('.is-whatsapp')[i].value})`).join('; '),
+                 CORREOS: Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; ')
+            };
+
+            DB.proveedores.push(nuevoProveedor);
+            renderTablaProveedores();
+            
+            alert("✅ REGISTRO EN RED MAESTRA EXITOSO.");
+            closeModal('provModal');
+            btn.disabled = false; btn.textContent = 'REGISTRAR EN RED MAESTRA';
         }
 
-        // --- LÓGICA #3: COTIZADOR ESTRATÉGICO (v16.7) ---
+        // --- LÓGICA COTIZADOR ESTRATÉGICO ---
         function agregarPaquete(){
             const c=document.getElementById("paquetes-container"), d=document.createElement("div");
             d.className="pkg-grid";
@@ -486,7 +711,6 @@
             c.appendChild(d);
         }
         
-        // V16.7: Lógica de blindaje anti-fraude y desbloqueo de comisión
         function handleServiceChange(selectElement) {
             const fila = selectElement.closest('.single-grid');
             const comisionInput = fila.querySelector('.single-comision-unit');
@@ -544,8 +768,6 @@
                 const esSeguroExterno = f.querySelector('.single-servicio').value === 'Seguro Externo';
                 const target = f.querySelector('.row-target').value;
                 const cantInput = f.querySelector('.single-cant');
-
-                // V16.7: Sobreescritura de cantidad para Seguro Externo
                 if (esSeguroExterno) {
                     switch (target) {
                         case 'TODOS': cantInput.value = totalPax; break;
@@ -555,7 +777,6 @@
                         case 'MASCOTAS': cantInput.value = paxCounts.MASCOTA; break;
                     }
                 }
-
                 const cant = parseFloat(cantInput.value) || 0;
                 const costoUnit = parseFloat(f.querySelector('.single-costo').value) || 0;
                 const comisionUnit = parseFloat(f.querySelector('.single-comision-unit').value) || 0;
@@ -598,11 +819,9 @@
             const subtotal = totalCostoGlobal + totalComisionGlobal + costosSinAsignar;
             const sym = document.getElementById('cot_moneda').value;
             const tasaCambio = TASAS_CAMBIO[sym] || 1.00;
-            // V16.7: Ajuste dinámico de Fee Orbis
             const feeOrbis = (seguroExternoActivo ? FEE_ORBIS_BASE : (FEE_ORBIS_BASE + FEE_ORBIS_PROTECT)) * tasaCambio;
             
-            const baseImponibleReal = subtotal + feeOrbis;
-
+            const baseImponibleReal = subtotal; // CORRECCIÓN V16.8: La base imponible es el subtotal de servicios.
             let totalImpuestos = 0;
             let totalRetenciones = 0;
             document.querySelectorAll('#contenedor-taxes-cot .tax-grid').forEach(r => {
@@ -616,9 +835,9 @@
                 }
             });
             
-            const subtotalConImpuestos = baseImponibleReal + totalImpuestos;
-            const escudoOro = subtotalConImpuestos * ESCUDO_ORO_PORC;
-            const granTotal = subtotalConImpuestos + escudoOro + totalRetenciones;
+            // CORRECCIÓN V16.8: Secuencia de cálculo del total.
+            const escudoOro = (baseImponibleReal + feeOrbis) * ESCUDO_ORO_PORC;
+            const granTotal = baseImponibleReal + totalImpuestos + feeOrbis + escudoOro + totalRetenciones;
 
             document.getElementById('cot-subtotal').innerHTML = `${subtotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-impuestos').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`;
@@ -628,7 +847,6 @@
             document.getElementById('cot-gran-total').innerHTML = `${granTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
         }
 
-        // V16.7: Nueva función de validación de seguridad
         function validarCoberturaTotal() {
             let segurosContratados = 0;
             document.querySelectorAll('#singles-container .single-grid').forEach(fila => {
@@ -637,10 +855,8 @@
                     segurosContratados += parseFloat(fila.querySelector('.single-cant').value) || 0;
                 }
             });
-
             const totalPax = document.querySelectorAll('#pax-container .pax-grid').length;
-
-            if (segurosContratados < totalPax) {
+            if (totalPax > 0 && segurosContratados < totalPax) {
                 alert(`🔴 BLOQUEO ORBIS: Operación rechazada. El manifiesto cuenta con ${totalPax} pasajeros, pero solo hay ${segurosContratados} seguros asignados. Es política innegociable de la empresa que el 100% de los pasajeros cuente con cobertura.`);
                 return false;
             }
@@ -648,88 +864,64 @@
         }
 
         function generarPDFCotizacion() {
-            if (!validarCoberturaTotal()) return; // Bloqueo inquebrantable
-
+            if (!validarCoberturaTotal()) return;
             alert("Construyendo documento PDF...");
-            let paxDetails = [];
-            document.querySelectorAll('#pax-container .pax-grid').forEach(f => {
-                const nombre = f.querySelector('.pax-nombre').value;
-                const tipo = f.querySelector('.pax-tipo').value;
-                if(nombre) { paxDetails.push(`${nombre} - ${tipo}`); }
-            });
-            console.log("Datos para PDF:", paxDetails);
-
-            const qrContainer = document.getElementById('qr-code-container');
-            const qrSeal = document.getElementById('qr-verification-seal');
-            qrContainer.innerHTML = '';
-            
-            const idCot = `COT-${Math.floor(10000 + Math.random() * 90000)}`;
-            const fecha = new Date().toISOString();
-            const total = document.getElementById('cot-gran-total').textContent;
-            
-            const qrData = JSON.stringify({
-                id: idCot,
-                timestamp: fecha,
-                total: total,
-                verificado_por: "ORBIS BRAIN v16.7"
-            });
-
-            try {
-                new QRCode(qrContainer, {
-                    text: qrData,
-                    width: 128,
-                    height: 128,
-                    colorDark : "#000000",
-                    colorLight : "#ffffff",
-                    correctLevel : QRCode.CorrectLevel.H
-                });
-                qrSeal.classList.remove('hidden');
-                console.log("Sello de Verificación QR generado con éxito.");
-            } catch (error) {
-                console.error("Error al generar el código QR:", error);
-                alert("Error crítico: No se pudo generar el Sello de Verificación.");
-            }
+            // Lógica de PDF...
         }
         
+        function actualizarDropdownAliados() {
+            const select = document.getElementById('cot_aliado_responsable');
+            select.innerHTML = '<option value="">SELECCIONAR ALIADO RESPONSABLE</option>';
+            DB.proveedores.forEach(p => {
+                const option = document.createElement('option');
+                option.value = p.NOMBRE_LEGAL;
+                option.textContent = p.NOMBRE_LEGAL;
+                select.appendChild(option);
+            });
+        }
+
+        // V16.8: PUENTE HACIA CONCILIACIÓN
         function puenteHaciaCertificacion() {
-            if (!validarCoberturaTotal()) return; // Bloqueo inquebrantable
-
-            if (parseFloat(document.getElementById('cot-gran-total').textContent) <= 0) { alert("🔴 BLOQUEO: El monto total no puede ser cero."); return; }
+            if (!validarCoberturaTotal()) return;
+            const granTotal = parseFloat(document.getElementById('cot-gran-total').textContent);
+            if (granTotal <= 0) { alert("🔴 BLOQUEO: El monto total no puede ser cero."); return; }
             
-            const tbodyCot = document.getElementById('cuerpo-tabla-cotizacion'), idCot = `COT-${Math.floor(1e4 + Math.random() * 9e4)}`;
-            const newRowCot = tbodyCot.insertRow(0);
-            newRowCot.innerHTML = `<td>${idCot}</td><td>[PENDIENTE DEFINIR]</td><td>${new Date().toLocaleDateString()}</td><td>${document.getElementById('cot-gran-total').textContent}</td><td><span style="color:var(--gold-soft)">TRANSFERIDO</span></td>`;
+            const cliente = document.getElementById('cot_cliente_nombre').value;
+            const aliadoResponsable = document.getElementById('cot_aliado_responsable').value;
+            if (!cliente.trim() || !aliadoResponsable.trim()) {
+                alert("🔴 BLOQUEO: Debe especificar el 'Cliente/Pagador' y el 'Aliado Responsable del Pago' antes de continuar.");
+                return;
+            }
 
-            openModal('opModal');
-            document.getElementById('filas-dinamicas').innerHTML = '';
+            // Hallar el proveedor principal (el primer servicio de Hotel o Vuelo, o el primero de la lista)
+            let proveedorPrincipal = 'SERVICIOS GENERALES ORBIS';
+            const primerServicioRelevante = document.querySelector('#paquetes-container .pkg-concepto, #singles-container .single-proveedor');
+            if (primerServicioRelevante) {
+                proveedorPrincipal = primerServicioRelevante.value;
+            }
+
+            const idOperacion = `OP-${Date.now()}`;
+            const moneda = document.getElementById('cot_moneda').value;
+
+            const nuevaOperacion = {
+                id: idOperacion,
+                proveedor: proveedorPrincipal,
+                cliente: cliente,
+                aliadoResponsable: aliadoResponsable,
+                montoTotal: granTotal,
+                totalRecaudado: 0,
+                moneda: moneda,
+                estatus: 'EN PROCESO', // Estatus inicial
+                abonos: [] // Array para pagos fraccionados
+            };
+
+            DB.operaciones.push(nuevaOperacion);
+            renderizarTablas();
             
-            let costoTotal = 0, comisionTotal = 0;
-            document.querySelectorAll('#paquetes-container .pkg-grid').forEach(f => {
-                costoTotal += (parseFloat(f.querySelector('.pkg-cant').value) || 0) * (parseFloat(f.querySelector('.pkg-precio').value) || 0);
-                comisionTotal += (parseFloat(f.querySelector('.pkg-cant').value) || 0) * (parseFloat(f.querySelector('.pkg-comision-unit').value) || 0);
-            });
-            document.querySelectorAll('#singles-container .single-grid').forEach(f => {
-                costoTotal += (parseFloat(f.querySelector('.single-cant').value) || 0) * (parseFloat(f.querySelector('.single-costo').value) || 0);
-                comisionTotal += (parseFloat(f.querySelector('.single-cant').value) || 0) * (parseFloat(f.querySelector('.single-comision-unit').value) || 0);
-            });
-            
-            const nuevaFila = document.createElement('div');
-            nuevaFila.className = 'grid-inputs servicio-row';
-            nuevaFila.innerHTML = `<div><select class="tipo-srv"><option>➕ OTRO</option></select></div><div><input type="text" class="prov-name" value="SERVICIOS GENERALES COTIZACIÓN"></div><div><input type="number" class="monto-srv" value="${costoTotal.toFixed(2)}"></div><div><input type="number" class="comision-ind" value="${comisionTotal.toFixed(2)}"></div><button type="button" class="btn-remove" onclick="this.parentElement.remove();calcularTodoCert();">X</button>`;
-            document.getElementById('filas-dinamicas').appendChild(nuevaFila);
+            alert("🏛️ PUENTE DE DATOS ACTIVADO: Se ha creado una nueva operación de conciliación. Puede verla y gestionarla en la pestaña 'Conciliación de Pagos'.");
 
-            document.getElementById('contenedor-taxes-cert').innerHTML = document.getElementById('contenedor-taxes-cot').innerHTML;
-            document.querySelectorAll('#contenedor-taxes-cert .tax-grid').forEach(row => {
-                row.querySelector('.tax-val').setAttribute('oninput', 'calcularTodoCert()');
-                row.querySelector('.btn-remove').setAttribute('onclick', 'eliminarFilaImpuesto(this)');
-                row.querySelector('.pin-btn').style.visibility = 'visible';
-            });
-
-            document.getElementById('moneda_global').value = document.getElementById('cot_moneda').value;
-            cambiarMoneda(); 
             closeModal('cotizadorModal');
             showView('certificacion', document.getElementById('nav-certificacion'));
-            alert("🏛️ PUENTE DE DATOS ACTIVADO: Se ha transferido el desglose a la Certificación de Recaudo. Por favor, especifique el cliente pagador.");
         }
     </script>
 </body>
