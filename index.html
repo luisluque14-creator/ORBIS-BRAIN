@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v16.8</title>
+    <title>ORBIS BRAIN | Master v16.9</title>
     <!-- V16.1: INSTALACIÓN DE LIBRERÍA QRCODE.JS VÍA CDN -->
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -89,16 +89,14 @@
         .sum-val { display: block; font-size: 20px; font-weight: 800; color: var(--gold-soft); margin-bottom: 5px; }
         .sum-lbl { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; }
         
-        #res-ganancia, #res-total, #cot-gran-total, #ec_monto_total, #ec_saldo_pendiente { color: var(--gold-metalic) !important; }
+        #cot-gran-total, #ec_monto_total, #ec_saldo_pendiente { color: var(--gold-metalic) !important; }
         input[type="text"], input[type="email"] { text-transform: uppercase; }
         input[type="number"] { -moz-appearance: textfield; }
         input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0;}
-        .pin-btn { background: none; border: none; font-size: 18px; cursor: pointer; transition: opacity 0.3s; opacity: 0.3; }
-        .pin-btn.active { opacity: 1; }
         #provModal .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
         .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
         
-        /* --- ESTILOS COTIZADOR (Mantenimiento v16.5) --- */
+        /* --- ESTILOS COTIZADOR --- */
         .tax-container-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
         .tax-grid { display: grid; grid-template-columns: 30px 1fr 100px 40px; gap: 10px; align-items: stretch; }
         .pkg-grid { display: grid; grid-template-columns: 0.4fr 2fr 1.5fr 1.2fr 1.2fr 0.4fr 0.4fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
@@ -124,18 +122,11 @@
         #cotizador-zona-d-container { max-width: 800px; width: 100%; }
         .btn-add-compacto { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 10px 20px; cursor: pointer; border-radius: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-top: 10px; display: inline-block; width: auto; }
         
-        /* ESTILOS SELLO QR */
-        #qr-verification-seal {
-            margin: 30px auto 0; padding: 20px; background: rgba(255,255,255,0.02);
-            border: 1px solid #222; border-radius: 15px; max-width: 200px; text-align: center;
-        }
-        #qr-verification-seal p {
-            font-size: 10px; color: var(--gold-soft); text-transform: uppercase;
-            letter-spacing: 1.5px; margin-bottom: 10px;
-        }
+        #qr-verification-seal { margin: 30px auto 0; padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 15px; max-width: 200px; text-align: center; }
+        #qr-verification-seal p { font-size: 10px; color: var(--gold-soft); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
         #qr-code-container { background: white; padding: 10px; border-radius: 5px; }
 
-        /* --- V16.8 ESTILOS CERTIFICACIÓN --- */
+        /* --- V16.9 ESTILOS CONCILIACIÓN --- */
         .estado-cuenta-box {
             display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
             background: #000; padding: 20px; border-radius: 15px;
@@ -187,9 +178,9 @@
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V16.8: SIDEBAR -->
+        <!-- V16.9: SIDEBAR -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.8</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.9</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Conciliación de Pagos</button>
@@ -205,24 +196,37 @@
             <div class="table-container"><table><thead><tr><th>ID Cotización</th><th>Cliente / Pagador</th><th>Fecha Emisión</th><th>Monto Total</th><th>Estatus</th></tr></thead><tbody id="cuerpo-tabla-cotizacion"></tbody></table></div>
         </div>
         <div id="view-certificacion" class="view-section">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;"><h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">CONCILIACIÓN DE <span style="color:var(--gold-metalic)">PAGOS</span></h1><!--<button class="btn-gold" onclick="openModal('opModal')">Nueva Orquestación +</button>--></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
+                <h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">CONCILIACIÓN DE <span style="color:var(--gold-metalic)">PAGOS</span></h1>
+                <button class="btn-gold" onclick="abrirNuevaConciliacion()">NUEVA CONCILIACIÓN +</button>
+            </div>
             <div class="table-container"><table><thead><tr><th style="padding:15px;">ID Operación</th><th>Proveedor</th><th>Cliente</th><th>Total Deuda</th><th>Saldo Pendiente</th><th>Estatus</th><th>Acción</th></tr></thead><tbody id="cuerpo-tabla-cert"></tbody></table></div>
         </div>
     </div>
     
-    <!-- V16.8: MODAL DE CONCILIACIÓN (opModal) REESTRUCTURADO -->
+    <!-- V16.9: MODAL DE CONCILIACIÓN REESTRUCTURADO -->
     <div id="opModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">ORQUESTACIÓN Y CONCILIACIÓN DE RECAUDO</div><hr class="gold-divider">
             
             <form id="registroForm">
-                <!-- Información General (Fija) -->
-                <div class="form-section">
+                <!-- MODO CREACIÓN: Información General Editable -->
+                <div id="panel-creacion" class="form-section">
                      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap:20px;">
-                        <div><label>ID Operación</label><input type="text" id="op_id" readonly></div>
-                        <div><label>Proveedor</label><input type="text" id="op_proveedor_nombre" readonly></div>
-                        <div><label>Cliente / Pagador</label><input type="text" id="op_cliente_nombre" readonly></div>
-                        <div><label>Aliado Responsable (Pagador)</label><input type="text" id="op_aliado_responsable" readonly></div>
+                        <div><label>ID Operación</label><input type="text" id="op_id_creacion" readonly></div>
+                        <div><label>Proveedor *</label><select id="op_proveedor_creacion"></select></div>
+                        <div><label>Cliente / Pagador *</label><input type="text" id="op_cliente_creacion" placeholder="NOMBRE DEL PAGADOR"></div>
+                        <div><label>Aliado Responsable (Pagador) *</label><select id="op_aliado_responsable_creacion"></select></div>
+                    </div>
+                </div>
+
+                <!-- MODO CONCILIACIÓN: Información General Fija -->
+                <div id="panel-info-fija" class="form-section hidden">
+                     <div style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap:20px;">
+                        <div><label>ID Operación</label><input type="text" id="op_id_fijo" readonly></div>
+                        <div><label>Proveedor</label><input type="text" id="op_proveedor_fijo" readonly></div>
+                        <div><label>Cliente / Pagador</label><input type="text" id="op_cliente_fijo" readonly></div>
+                        <div><label>Aliado Responsable (Pagador)</label><input type="text" id="op_aliado_responsable_fijo" readonly></div>
                     </div>
                 </div>
 
@@ -230,7 +234,7 @@
                 <div class="estado-cuenta-box">
                     <div class="ec-item">
                         <div class="ec-label">Monto Total de la Deuda</div>
-                        <div class="ec-value" id="ec_monto_total">0.00</div>
+                        <input type="number" id="ec_monto_total_input" class="ec-value" value="0.00" style="width:100%; text-align:center; background:transparent; border:none; padding:0;">
                     </div>
                     <div class="ec-item">
                         <div class="ec-label">Total Recaudado</div>
@@ -242,16 +246,19 @@
                     </div>
                 </div>
 
-                <!-- Historial de Abonos -->
-                <div class="form-section">
-                    <h3 class="form-section-header">HISTORIAL DE ABONOS</h3>
-                    <div id="abonos-container">
-                        <!-- Abonos registrados se insertarán aquí -->
-                    </div>
+                <!-- Botón de Creación de Expediente -->
+                <div id="panel-btn-crear">
+                    <button type="button" class="btn-gold" style="width:100%; margin-bottom:20px;" onclick="crearExpediente()">CREAR EXPEDIENTE</button>
                 </div>
                 
-                <!-- Panel de Nuevo Abono -->
-                <div class="form-section" id="panel-nuevo-abono">
+                <!-- Historial de Abonos (Solo modo Conciliación) -->
+                <div id="panel-historial-abonos" class="form-section hidden">
+                    <h3 class="form-section-header">HISTORIAL DE ABONOS</h3>
+                    <div id="abonos-container"></div>
+                </div>
+                
+                <!-- Panel de Nuevo Abono (Solo modo Conciliación) -->
+                <div id="panel-nuevo-abono" class="form-section hidden">
                      <h3 class="form-section-header">REGISTRAR NUEVO ABONO</h3>
                      <div class="recaudo-grid">
                         <div>
@@ -294,16 +301,11 @@
         </div>
     </div>
 
-    <!-- MODAL COTIZADOR ESTRATÉGICO (sin cambios funcionales, solo puente) -->
+    <!-- V16.9: MODAL COTIZADOR LIMPIO -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
             <form id="cotizadorForm" oninput="actualizarCalculosCotizador()">
                 <hr class="gold-divider"><div class="modal-title">COTIZADOR ESTRATÉGICO PANORÁMICO</div><hr class="gold-divider">
-                <div class="form-section" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:20px;">
-                    <div><label>Cliente / Pagador</label><input type="text" id="cot_cliente_nombre" placeholder="NOMBRE LEGAL DEL PAGADOR"></div>
-                    <div><label>RIF / Tax ID Cliente</label><input type="text" id="cot_cliente_rif" placeholder="ID TRIBUTARIO"></div>
-                    <div><label>Aliado Responsable del Pago</label><select id="cot_aliado_responsable"><option value="">SELECCIONAR ALIADO</option></select></div>
-                </div>
                 <div class="form-section" id="paquetes-section">
                     <h3 class="form-section-header">ZONA A: PAQUETES / HOTELES</h3>
                     <div id="paquetes-container-header" class="grid-header pkg-grid" style="padding:0 10px;margin-bottom:10px">
@@ -347,7 +349,7 @@
                     <div class="sum-item"><span class="sum-lbl">RETENCIONES</span><span id="cot-retenciones" class="sum-val">0.00</span></div>
                     <div class="sum-item"><span class="sum-lbl">GRAN TOTAL</span><span id="cot-gran-total" class="sum-val">0.00</span></div>
                 </div>
-                <div class="action-buttons-grid"><button type="button" class="btn-secondary" onclick="generarPDFCotizacion()">GENERAR PDF 📄</button><button type="button" class="btn-gold" onclick="puenteHaciaCertificacion()">PASAR A CONCILIACIÓN 🏛️</button></div>
+                <div class="action-buttons-grid"><button type="button" class="btn-secondary" onclick="generarPDFCotizacion()">GENERAR PDF 📄</button><button type="button" class="btn-gold" onclick="puenteHaciaConciliacion()">PASAR A CONCILIACIÓN 🏛️</button></div>
                 
                 <div id="qr-verification-seal" class="hidden">
                     <p>SELLO DE VERIFICACIÓN ORBIS</p>
@@ -360,7 +362,7 @@
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v16.8)
+        //                      JAVASCRIPT UNIFICADO (v16.9)
         // =======================================================================
         const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
@@ -430,15 +432,16 @@
                 agregarServicioIndividual();
                 agregarPax();
                 actualizarCalculosCotizador();
-                actualizarDropdownAliados();
             }
         }
         function closeModal(id) { 
             const modal = document.getElementById(id);
             if (id === 'opModal') {
                 const saldoPendiente = parseFloat(document.getElementById('ec_saldo_pendiente').textContent) || 0;
-                if (saldoPendiente > 0) {
-                    if (!confirm(`🔴 ALERTA DE SALDO: Aún queda un saldo pendiente de ${saldoPendiente.toFixed(2)}. ¿Está seguro que desea cerrar?`)) {
+                if (saldoPendiente > 0 && !document.getElementById('panel-creacion').classList.contains('hidden')) {
+                   // No warning if we are in creation mode and haven't saved
+                } else if (saldoPendiente > 0) {
+                     if (!confirm(`🔴 ALERTA DE SALDO: Aún queda un saldo pendiente de ${saldoPendiente.toFixed(2)}. ¿Está seguro que desea cerrar?`)) {
                         return;
                     }
                 }
@@ -450,32 +453,23 @@
             modal.style.display = 'none';
         }
 
-        // --- V16.8 LÓGICA DE DATOS CENTRALIZADA ---
+        // --- LÓGICA DE DATOS CENTRALIZADA ---
         function cargarDatosIniciales() {
-            // Simulación de carga de datos. En un entorno real, esto sería una llamada a API.
             DB.proveedores.push({ID_ALIADO: 'ORB-001', NOMBRE_LEGAL: 'HOTEL CUMBRE', RIF_TAX_ID: 'J-123', PAIS: 'VE', CATEGORIA: 'HOTEL', MONEDA_BASE: 'USD ($)', TELEFONOS: '', CORREOS: ''});
             DB.proveedores.push({ID_ALIADO: 'ORB-002', NOMBRE_LEGAL: 'VIAJES GLOBALES', RIF_TAX_ID: 'J-456', PAIS: 'US', CATEGORIA: 'AGENCIA', MONEDA_BASE: 'USD ($)', TELEFONOS: '', CORREOS: ''});
             DB.proveedores.push({ID_ALIADO: 'ORB-003', NOMBRE_LEGAL: 'LUIS LUQUE FREELANCE', RIF_TAX_ID: 'V-789', PAIS: 'VE', CATEGORIA: 'FREELANCER', MONEDA_BASE: 'USD ($)', TELEFONOS: '', CORREOS: ''});
             
-            // Añadir usuario actual a la lista de proveedores si no existe
              if (!DB.proveedores.some(p => p.RIF_TAX_ID === orbisSession.rif)) {
-                 const nuevoAliado = {
-                    ID_ALIADO: `ORB-${String(DB.proveedores.length + 1).padStart(3, '0')}`,
-                    NOMBRE_LEGAL: orbisSession.nombre,
-                    RIF_TAX_ID: orbisSession.rif,
-                    PAIS: orbisSession.pais,
-                    CATEGORIA: 'AGENCIA',
-                    MONEDA_BASE: 'USD ($)', TELEFONOS: '', CORREOS: ''
-                 };
+                 const nuevoAliado = { ID_ALIADO: `ORB-${String(DB.proveedores.length + 1).padStart(3, '0')}`, NOMBRE_LEGAL: orbisSession.nombre, RIF_TAX_ID: orbisSession.rif, PAIS: orbisSession.pais, CATEGORIA: 'AGENCIA', MONEDA_BASE: 'USD ($)', TELEFONOS: '', CORREOS: '' };
                 DB.proveedores.push(nuevoAliado);
             }
+            actualizarDropdownsAliados();
             renderizarTablas();
         }
 
         function renderizarTablas() {
             renderTablaProveedores();
             renderTablaCertificaciones();
-            renderTablaCotizaciones();
         }
 
         function renderTablaProveedores() {
@@ -490,11 +484,7 @@
         function renderTablaCertificaciones() {
             const tbody = document.getElementById('cuerpo-tabla-cert');
             tbody.innerHTML = '';
-            const operacionesFiltradas = DB.operaciones.filter(op => 
-                orbisSession.esMaster || 
-                op.aliadoResponsable === orbisSession.nombre ||
-                op.proveedor === orbisSession.nombre
-            );
+            const operacionesFiltradas = DB.operaciones.filter(op => orbisSession.esMaster || op.aliadoResponsable === orbisSession.nombre || op.proveedor === orbisSession.nombre);
 
             operacionesFiltradas.forEach(op => {
                 const saldoPendiente = op.montoTotal - op.totalRecaudado;
@@ -503,55 +493,112 @@
                     case 'PAGADO': estatusHtml = `<span style="color:var(--green-success)">🟢 PAGADO</span>`; break;
                     case 'EN PROCESO': estatusHtml = `<span style="color:var(--yellow-process)">🟡 EN PROCESO</span>`; break;
                     case 'RECHAZADO': estatusHtml = `<span style="color:var(--red-error)">🔴 RECHAZADO</span>`; break;
-                    default: estatusHtml = `<span>${op.estatus}</span>`;
                 }
-
                 const newRow = tbody.insertRow(0);
-                newRow.innerHTML = `
-                    <td>${op.id}</td>
-                    <td>${op.proveedor}</td>
-                    <td>${op.cliente}</td>
-                    <td>${op.montoTotal.toFixed(2)} ${op.moneda}</td>
-                    <td>${saldoPendiente.toFixed(2)} ${op.moneda}</td>
-                    <td>${estatusHtml}</td>
-                    <td><button class="btn-gold" style="padding: 8px 15px; font-size: 11px;" onclick="abrirConciliacion('${op.id}')">CONCILIAR</button></td>
-                `;
+                newRow.innerHTML = `<td>${op.id}</td><td>${op.proveedor}</td><td>${op.cliente}</td><td>${op.montoTotal.toFixed(2)} ${op.moneda}</td><td>${saldoPendiente.toFixed(2)} ${op.moneda}</td><td>${estatusHtml}</td><td><button class="btn-gold" style="padding: 8px 15px; font-size: 11px;" onclick="abrirConciliacionExistente('${op.id}')">CONCILIAR</button></td>`;
             });
         }
         
-        function renderTablaCotizaciones(){
-            // Lógica de renderizado para la tabla de cotizaciones si es necesario
+        function actualizarDropdownsAliados() {
+            const selects = ['#op_proveedor_creacion', '#op_aliado_responsable_creacion'];
+            selects.forEach(selId => {
+                const select = document.querySelector(selId);
+                select.innerHTML = '<option value="" disabled selected>SELECCIONAR ALIADO</option>';
+                DB.proveedores.forEach(p => {
+                    const option = document.createElement('option');
+                    option.value = p.NOMBRE_LEGAL;
+                    option.textContent = `${p.NOMBRE_LEGAL} (${p.CATEGORIA})`;
+                    select.appendChild(option);
+                });
+            });
         }
 
+        // --- V16.9 LÓGICA DE CONCILIACIÓN DE PAGOS ---
 
-        // --- V16.8 LÓGICA DE CONCILIACIÓN DE PAGOS ---
+        function configurarModalParaCreacion(montoInicial = 0.00) {
+            openModal('opModal');
+            document.getElementById('panel-creacion').classList.remove('hidden');
+            document.getElementById('panel-info-fija').classList.add('hidden');
+            document.getElementById('panel-btn-crear').classList.remove('hidden');
+            document.getElementById('panel-historial-abonos').classList.add('hidden');
+            document.getElementById('panel-nuevo-abono').classList.add('hidden');
+            document.getElementById('ec_monto_total_input').readOnly = false;
+            
+            // Reset fields
+            document.getElementById('op_id_creacion').value = `OP-${Date.now()}`;
+            document.getElementById('op_proveedor_creacion').value = "";
+            document.getElementById('op_cliente_creacion').value = "";
+            document.getElementById('op_aliado_responsable_creacion').value = "";
+            document.getElementById('ec_monto_total_input').value = montoInicial.toFixed(2);
+            document.getElementById('ec_total_recaudado').textContent = "0.00";
+            document.getElementById('ec_saldo_pendiente').textContent = montoInicial.toFixed(2);
+        }
 
-        function abrirConciliacion(opId) {
+        function configurarModalParaConciliacion(operacion) {
+            openModal('opModal');
+            document.getElementById('panel-creacion').classList.add('hidden');
+            document.getElementById('panel-info-fija').classList.remove('hidden');
+            document.getElementById('panel-btn-crear').classList.add('hidden');
+            document.getElementById('panel-historial-abonos').classList.remove('hidden');
+            
+            document.getElementById('ec_monto_total_input').readOnly = true;
+
+            // Load data
+            document.getElementById('op_id_fijo').value = operacion.id;
+            document.getElementById('op_proveedor_fijo').value = operacion.proveedor;
+            document.getElementById('op_cliente_fijo').value = operacion.cliente;
+            document.getElementById('op_aliado_responsable_fijo').value = operacion.aliadoResponsable;
+            
+            actualizarEstadoCuenta(operacion);
+            renderizarAbonos(operacion);
+
+            const esPagador = orbisSession.nombre === operacion.aliadoResponsable;
+            const saldoPendiente = operacion.montoTotal - operacion.totalRecaudado;
+
+            if (esPagador && saldoPendiente > 0) {
+                document.getElementById('panel-nuevo-abono').classList.remove('hidden');
+            } else {
+                document.getElementById('panel-nuevo-abono').classList.add('hidden');
+            }
+        }
+        
+        function abrirNuevaConciliacion() {
+            configurarModalParaCreacion();
+        }
+
+        function abrirConciliacionExistente(opId) {
             const operacion = DB.operaciones.find(op => op.id === opId);
-            if (!operacion) {
-                alert("Error: Operación no encontrada.");
+            if (!operacion) { alert("Error: Operación no encontrada."); return; }
+            configurarModalParaConciliacion(operacion);
+        }
+
+        function crearExpediente() {
+            const proveedor = document.getElementById('op_proveedor_creacion').value;
+            const cliente = document.getElementById('op_cliente_creacion').value;
+            const aliado = document.getElementById('op_aliado_responsable_creacion').value;
+            const monto = parseFloat(document.getElementById('ec_monto_total_input').value);
+
+            if(!proveedor || !cliente.trim() || !aliado || monto <= 0) {
+                alert("🔴 BLOQUEO: Todos los campos son obligatorios y el monto debe ser mayor a cero para crear el expediente.");
                 return;
             }
 
-            openModal('opModal');
-            document.getElementById('op_id').value = operacion.id;
-            document.getElementById('op_proveedor_nombre').value = operacion.proveedor;
-            document.getElementById('op_cliente_nombre').value = operacion.cliente;
-            document.getElementById('op_aliado_responsable').value = operacion.aliadoResponsable;
+            const nuevaOperacion = {
+                id: document.getElementById('op_id_creacion').value,
+                proveedor: proveedor,
+                cliente: cliente,
+                aliadoResponsable: aliado,
+                montoTotal: monto,
+                totalRecaudado: 0,
+                moneda: '$', // Asumiendo USD por defecto para nuevas operaciones manuales
+                estatus: 'EN PROCESO',
+                abonos: []
+            };
 
-            actualizarEstadoCuenta(operacion);
-            renderizarAbonos(operacion);
-            
-            const esPagador = orbisSession.nombre === operacion.aliadoResponsable;
-            const esReceptor = orbisSession.nombre === operacion.proveedor;
-
-            // Lógica de permisos para el panel de nuevo abono
-            const panelNuevoAbono = document.getElementById('panel-nuevo-abono');
-            if (esPagador && operacion.estatus === 'EN PROCESO') {
-                panelNuevoAbono.style.display = 'block';
-            } else {
-                panelNuevoAbono.style.display = 'none';
-            }
+            DB.operaciones.push(nuevaOperacion);
+            renderizarTablas();
+            alert("✅ EXPEDIENTE CREADO: La nueva operación de conciliación ha sido registrada.");
+            configurarModalParaConciliacion(nuevaOperacion);
         }
         
         function actualizarEstadoCuenta(operacion) {
@@ -559,49 +606,32 @@
             const totalRecaudado = operacion.abonos.filter(ab => ab.estatus === 'PAGADO').reduce((sum, ab) => sum + ab.monto, 0);
             const saldoPendiente = montoTotal - totalRecaudado;
 
-            operacion.totalRecaudado = totalRecaudado; // Actualizar en DB
+            operacion.totalRecaudado = totalRecaudado; 
 
-            document.getElementById('ec_monto_total').textContent = `${montoTotal.toFixed(2)} ${operacion.moneda}`;
-            document.getElementById('ec_total_recaudado').textContent = `${totalRecaudado.toFixed(2)} ${operacion.moneda}`;
-            document.getElementById('ec_saldo_pendiente').textContent = `${saldoPendiente.toFixed(2)} ${operacion.moneda}`;
+            document.getElementById('ec_monto_total_input').value = montoTotal.toFixed(2);
+            document.getElementById('ec_total_recaudado').textContent = `${totalRecaudado.toFixed(2)}`;
+            document.getElementById('ec_saldo_pendiente').textContent = `${saldoPendiente.toFixed(2)}`;
             
-             if (saldoPendiente <= 0) {
-                document.getElementById('panel-nuevo-abono').style.display = 'none';
-                if (operacion.estatus !== 'PAGADO') {
-                    operacion.estatus = 'PAGADO';
-                }
+             if (saldoPendiente <= 0 && operacion.estatus !== 'PAGADO') {
+                operacion.estatus = 'PAGADO';
+                document.getElementById('panel-nuevo-abono').classList.add('hidden');
             }
         }
 
         function renderizarAbonos(operacion) {
             const container = document.getElementById('abonos-container');
             container.innerHTML = '';
-            
             const esReceptor = orbisSession.nombre === operacion.proveedor || orbisSession.esMaster;
-
             operacion.abonos.forEach(abono => {
-                let statusClass = '';
-                let statusText = '';
+                let statusClass = '', statusText = '';
                 switch(abono.estatus) {
                     case 'PAGADO': statusClass = 'status-pagado'; statusText = '🟢 APROBADO'; break;
                     case 'RECHAZADO': statusClass = 'status-rechazado'; statusText = '🔴 RECHAZADO'; break;
                     default: statusClass = 'status-en-proceso'; statusText = '🟡 EN PROCESO';
                 }
-
                 const div = document.createElement('div');
                 div.className = `abono-grid ${statusClass}`;
-                div.innerHTML = `
-                    <div><strong>Monto:</strong><br>${abono.monto.toFixed(2)} ${operacion.moneda}</div>
-                    <div><strong>Bóveda:</strong><br>${abono.boveda}</div>
-                    <div><strong>Hash/Ref:</strong><br>${abono.hash}</div>
-                    <div class="abono-actions">
-                        <span>${statusText}</span>
-                        ${abono.estatus === 'EN PROCESO' ? `
-                            <button class="btn-approve" onclick="cambiarStatusAbono('${operacion.id}', '${abono.id}', 'PAGADO')" ${!esReceptor ? 'disabled' : ''}>✓</button>
-                            <button class="btn-reject" onclick="cambiarStatusAbono('${operacion.id}', '${abono.id}', 'RECHAZADO')" ${!esReceptor ? 'disabled' : ''}>×</button>
-                        ` : ''}
-                    </div>
-                `;
+                div.innerHTML = `<div><strong>Monto:</strong><br>${abono.monto.toFixed(2)} ${operacion.moneda}</div><div><strong>Bóveda:</strong><br>${abono.boveda}</div><div><strong>Hash/Ref:</strong><br>${abono.hash}</div><div class="abono-actions"><span>${statusText}</span> ${abono.estatus === 'EN PROCESO' ? `<button class="btn-approve" onclick="cambiarStatusAbono('${operacion.id}', '${abono.id}', 'PAGADO')" ${!esReceptor ? 'disabled' : ''}>✓</button><button class="btn-reject" onclick="cambiarStatusAbono('${operacion.id}', '${abono.id}', 'RECHAZADO')" ${!esReceptor ? 'disabled' : ''}>×</button>` : ''}</div>`;
                 container.appendChild(div);
             });
         }
@@ -610,7 +640,7 @@
             const monto = parseFloat(document.getElementById('abono_monto').value) || 0;
             const boveda = document.getElementById('abono_boveda').value;
             const hash = document.getElementById('abono_hash').value;
-            const opId = document.getElementById('op_id').value;
+            const opId = document.getElementById('op_id_fijo').value;
             const operacion = DB.operaciones.find(op => op.id === opId);
             const saldoPendiente = operacion.montoTotal - operacion.totalRecaudado;
 
@@ -625,40 +655,23 @@
         }
 
         function registrarAbono() {
-            const opId = document.getElementById('op_id').value;
+            const opId = document.getElementById('op_id_fijo').value;
             const operacion = DB.operaciones.find(op => op.id === opId);
-            
-            const monto = parseFloat(document.getElementById('abono_monto').value);
-            const boveda = document.getElementById('abono_boveda').value;
-            const hash = document.getElementById('abono_hash').value;
-            
-            const nuevoAbono = {
-                id: `ABN-${Date.now()}`,
-                monto,
-                boveda,
-                hash,
-                estatus: 'EN PROCESO' // Estado por defecto
-            };
-
+            const nuevoAbono = { id: `ABN-${Date.now()}`, monto: parseFloat(document.getElementById('abono_monto').value), boveda: document.getElementById('abono_boveda').value, hash: document.getElementById('abono_hash').value, estatus: 'EN PROCESO' };
             operacion.abonos.push(nuevoAbono);
-            
-            // Limpiar y resetear panel de abono
             document.getElementById('abono_monto').value = '';
             document.getElementById('abono_boveda').value = '';
             document.getElementById('abono_hash').value = '';
             document.getElementById('btn-registrar-abono').disabled = true;
-
-            abrirConciliacion(opId); // Recargar vista del modal
-            renderizarTablas(); // Actualizar tabla principal
+            abrirConciliacionExistente(opId);
+            renderizarTablas();
         }
         
         function cambiarStatusAbono(opId, abonoId, nuevoStatus) {
              const operacion = DB.operaciones.find(op => op.id === opId);
              const abono = operacion.abonos.find(ab => ab.id === abonoId);
-
              abono.estatus = nuevoStatus;
-
-             abrirConciliacion(opId);
+             abrirConciliacionExistente(opId);
              renderizarTablas();
         }
 
@@ -667,25 +680,12 @@
         function addDynamicField(containerId, type) { const c = document.getElementById(containerId), d = document.createElement('div'); d.className = 'dynamic-row'; d.innerHTML = type === 'phone' ? `<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="SI">🟢 WHATSAPP</option><option value="NO" selected>📞 LLAMADA</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>` : `<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <select class="is-validated" style="visibility:hidden;"><option value="SI">VERIFICADO</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>`; c.appendChild(d); }
         function iniciarGuardadoProv() { let esValido = true; ['prov_nombre', 'prov_rif', 'prov_pais'].forEach(id => { const el = document.getElementById(id); if (!el.value.trim()) { el.classList.add('input-error'); esValido = false; } else { el.classList.remove('input-error'); } }); const correo = document.querySelector('#email-container .prov-email'); if (!correo || !correo.value.trim()) { if(correo) correo.classList.add('input-error'); esValido = false; alert("⚠️ BLOQUEO: Se requiere al menos un correo electrónico."); } if (esValido && confirm("🏛️ ¿Confirma el registro del nuevo aliado en la Red Maestra?")) { ejecutarGuardadoProv(); } }
         async function ejecutarGuardadoProv() {
-            const btn = document.getElementById('btn-sync-prov'); btn.disabled = true; btn.textContent = '🚀 REGISTRANDO...';
-            
-            const nuevoProveedor = {
-                 ID_ALIADO: `ORB-${String(DB.proveedores.length + 1).padStart(3, '0')}`,
-                 CATEGORIA: document.getElementById('prov_cat').value,
-                 NOMBRE_LEGAL: document.getElementById('prov_nombre').value,
-                 RIF_TAX_ID: document.getElementById('prov_rif').value,
-                 PAIS: document.getElementById('prov_pais').value,
-                 MONEDA_BASE: document.getElementById('prov_moneda').value,
-                 TELEFONOS: Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => `${input.value} (WHATSAPP: ${document.querySelectorAll('.is-whatsapp')[i].value})`).join('; '),
-                 CORREOS: Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; ')
-            };
-
+            const nuevoProveedor = { ID_ALIADO: `ORB-${String(DB.proveedores.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => `${input.value} (WHATSAPP: ${document.querySelectorAll('.is-whatsapp')[i].value})`).join('; '), CORREOS: Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; ') };
             DB.proveedores.push(nuevoProveedor);
             renderTablaProveedores();
-            
+            actualizarDropdownsAliados();
             alert("✅ REGISTRO EN RED MAESTRA EXITOSO.");
             closeModal('provModal');
-            btn.disabled = false; btn.textContent = 'REGISTRAR EN RED MAESTRA';
         }
 
         // --- LÓGICA COTIZADOR ESTRATÉGICO ---
@@ -821,21 +821,16 @@
             const tasaCambio = TASAS_CAMBIO[sym] || 1.00;
             const feeOrbis = (seguroExternoActivo ? FEE_ORBIS_BASE : (FEE_ORBIS_BASE + FEE_ORBIS_PROTECT)) * tasaCambio;
             
-            const baseImponibleReal = subtotal; // CORRECCIÓN V16.8: La base imponible es el subtotal de servicios.
-            let totalImpuestos = 0;
-            let totalRetenciones = 0;
+            const baseImponibleReal = subtotal;
+            let totalImpuestos = 0, totalRetenciones = 0;
             document.querySelectorAll('#contenedor-taxes-cot .tax-grid').forEach(r => {
                 const tasaPorcentaje = parseFloat(r.querySelector('.tax-val').value);
                 if (!isNaN(tasaPorcentaje)) {
-                    if (tasaPorcentaje > 0) {
-                        totalImpuestos += baseImponibleReal * (tasaPorcentaje / 100);
-                    } else if (tasaPorcentaje < 0) {
-                        totalRetenciones += baseImponibleReal * (tasaPorcentaje / 100);
-                    }
+                    if (tasaPorcentaje > 0) totalImpuestos += baseImponibleReal * (tasaPorcentaje / 100);
+                    else if (tasaPorcentaje < 0) totalRetenciones += baseImponibleReal * (tasaPorcentaje / 100);
                 }
             });
             
-            // CORRECCIÓN V16.8: Secuencia de cálculo del total.
             const escudoOro = (baseImponibleReal + feeOrbis) * ESCUDO_ORO_PORC;
             const granTotal = baseImponibleReal + totalImpuestos + feeOrbis + escudoOro + totalRetenciones;
 
@@ -863,65 +858,17 @@
             return true;
         }
 
-        function generarPDFCotizacion() {
-            if (!validarCoberturaTotal()) return;
-            alert("Construyendo documento PDF...");
-            // Lógica de PDF...
-        }
+        function generarPDFCotizacion() { if (!validarCoberturaTotal()) return; alert("Construyendo documento PDF..."); }
         
-        function actualizarDropdownAliados() {
-            const select = document.getElementById('cot_aliado_responsable');
-            select.innerHTML = '<option value="">SELECCIONAR ALIADO RESPONSABLE</option>';
-            DB.proveedores.forEach(p => {
-                const option = document.createElement('option');
-                option.value = p.NOMBRE_LEGAL;
-                option.textContent = p.NOMBRE_LEGAL;
-                select.appendChild(option);
-            });
-        }
-
-        // V16.8: PUENTE HACIA CONCILIACIÓN
-        function puenteHaciaCertificacion() {
+        // V16.9: PUENTE HACIA CONCILIACIÓN
+        function puenteHaciaConciliacion() {
             if (!validarCoberturaTotal()) return;
             const granTotal = parseFloat(document.getElementById('cot-gran-total').textContent);
             if (granTotal <= 0) { alert("🔴 BLOQUEO: El monto total no puede ser cero."); return; }
-            
-            const cliente = document.getElementById('cot_cliente_nombre').value;
-            const aliadoResponsable = document.getElementById('cot_aliado_responsable').value;
-            if (!cliente.trim() || !aliadoResponsable.trim()) {
-                alert("🔴 BLOQUEO: Debe especificar el 'Cliente/Pagador' y el 'Aliado Responsable del Pago' antes de continuar.");
-                return;
-            }
-
-            // Hallar el proveedor principal (el primer servicio de Hotel o Vuelo, o el primero de la lista)
-            let proveedorPrincipal = 'SERVICIOS GENERALES ORBIS';
-            const primerServicioRelevante = document.querySelector('#paquetes-container .pkg-concepto, #singles-container .single-proveedor');
-            if (primerServicioRelevante) {
-                proveedorPrincipal = primerServicioRelevante.value;
-            }
-
-            const idOperacion = `OP-${Date.now()}`;
-            const moneda = document.getElementById('cot_moneda').value;
-
-            const nuevaOperacion = {
-                id: idOperacion,
-                proveedor: proveedorPrincipal,
-                cliente: cliente,
-                aliadoResponsable: aliadoResponsable,
-                montoTotal: granTotal,
-                totalRecaudado: 0,
-                moneda: moneda,
-                estatus: 'EN PROCESO', // Estatus inicial
-                abonos: [] // Array para pagos fraccionados
-            };
-
-            DB.operaciones.push(nuevaOperacion);
-            renderizarTablas();
-            
-            alert("🏛️ PUENTE DE DATOS ACTIVADO: Se ha creado una nueva operación de conciliación. Puede verla y gestionarla en la pestaña 'Conciliación de Pagos'.");
 
             closeModal('cotizadorModal');
-            showView('certificacion', document.getElementById('nav-certificacion'));
+            configurarModalParaCreacion(granTotal);
+            alert("🏛️ PUENTE DE DATOS ACTIVADO: Se ha transferido el monto total. Por favor, complete la información y cree el expediente de conciliación.");
         }
     </script>
 </body>
