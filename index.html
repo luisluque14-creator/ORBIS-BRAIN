@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v17.3</title>
+    <title>ORBIS BRAIN | Master v17.4</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -35,7 +35,7 @@
             display: none !important;
         }
 
-        /* --- V17.0: PORTAL DE IDENTIDAD (SPLASH SCREEN) --- */
+        /* --- PORTAL DE IDENTIDAD (SPLASH SCREEN) --- */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -353,6 +353,19 @@
             text-transform: uppercase;
             margin-top: 10px;
         }
+        
+        .btn-add-small { 
+            background: transparent; 
+            border: 1px dashed var(--gold-metalic); 
+            color: var(--gold-metalic); padding: 8px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-size: 12px; 
+            text-transform: uppercase; 
+            width: 100%; 
+            margin-bottom: 15px; 
+            font-weight: 700; 
+        }
 
         .btn-remove {
             background: none;
@@ -459,6 +472,13 @@
         input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
+        }
+        
+        #provModal .dynamic-row { 
+            display: grid; 
+            grid-template-columns: 2fr 1fr 40px; 
+            gap: 10px; 
+            margin-bottom: 10px; 
         }
 
         /* ESTILOS COTIZADOR */
@@ -667,7 +687,7 @@
     <div class="main-container hidden" id="main-app">
         <!-- SIDEBAR -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V17.3</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V17.4</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Conciliación de Pagos</button>
@@ -675,7 +695,6 @@
 
         <!-- VISTAS -->
         <div id="view-directorio" class="view-section">
-             <!-- V17.3: Botón restaurado -->
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
                 <h1 style="font-family:'Cinzel'; font-size: 26px; margin:0;">RED <span style="color:var(--gold-metalic)">MAESTRA</span></h1>
                 <button class="btn-gold" style="width:auto;" onclick="openModal('provModal')">Cargar Ficha Técnica +</button>
@@ -740,8 +759,41 @@
         </div>
     </div>
     
-    <!-- MODAL RED MAESTRA (Placeholder - Funcionalidad no implementada en esta versión) -->
-    <div id="provModal" class="modal"><div class="modal-content"><hr class="gold-divider"><div class="modal-title">FICHA TÉCNICA DE ALIADO</div><hr class="gold-divider"><p style="text-align:center; color: #aaa;">La edición de fichas de la Red Maestra se gestiona desde el panel de control de Super-Usuario.</p><button class="btn-cancel-elite" onclick="closeModal('provModal')">Cerrar</button></div></div>
+    <!-- V17.4: MODAL RED MAESTRA RESTAURADO -->
+    <div id="provModal" class="modal">
+        <div class="modal-content">
+            <hr class="gold-divider"><div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div><hr class="gold-divider">
+            <div class="form-section">
+                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;">
+                    <div><label>Categoría / Rol *</label><select id="prov_cat"><option value="AGENCIA">🏢 AGENCIA</option><option value="FREELANCER">👨‍💻 FREELANCER</option><option value="HOTEL">🏨 HOTEL</option><option value="SEGURO">🛡️ SEGURO</option><option value="TRASLADO">🚐 TRASLADO</option></select></div>
+                    <div><label>Nombre Legal *</label><input type="text" id="prov_nombre" placeholder="NOMBRE LEGAL"></div>
+                    <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="RIF / TAX ID"></div>
+                </div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:20px;">
+                <div class="form-section">
+                    <label>Canales de Telefonía / WhatsApp</label>
+                    <div id="phone-container"></div>
+                    <button type="button" class="btn-add-small" onclick="addDynamicField('phone-container', 'phone')">+ Agregar Teléfono</button>
+                    <label style="margin-top:15px;">Canales de Correo Electrónico *</label>
+                    <div id="email-container"></div>
+                    <button type="button" class="btn-add-small" onclick="addDynamicField('email-container', 'email')">+ Agregar Correo</button>
+                </div>
+                <div class="form-section">
+                    <label>Ubicación y Operación</label>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom:15px;">
+                        <div><label>País *</label><input type="text" id="prov_pais" placeholder="PAÍS"></div>
+                        <div><label>Contraseña Acceso *</label><input type="password" id="prov_password" placeholder="DEFINIR CONTRASEÑA"></div>
+                    </div>
+                    <div style="background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);">
+                        <p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.5;"><b>RED GLOBAL ORBIS:</b> Este proveedor será integrado a la red maestra para orquestación internacional y tendrá acceso al portal.</p>
+                    </div>
+                </div>
+            </div>
+            <button id="btn-sync-prov" class="btn-gold" style="padding: 22px; width:100%; margin-top:20px;" onclick="iniciarGuardadoProv()">REGISTRAR EN RED MAESTRA</button>
+            <button id="btn-cancel-prov" class="btn-cancel-elite" onclick="closeModal('provModal')">Cancelar</button>
+        </div>
+    </div>
 
     <!-- MODAL COTIZADOR -->
     <div id="cotizadorModal" class="modal">
@@ -792,9 +844,10 @@
                     <div class="sum-item"><span class="sum-lbl">RETENCIONES</span><span id="cot-retenciones" class="sum-val">0.00</span></div>
                     <div class="sum-item"><span class="sum-lbl">GRAN TOTAL</span><span id="cot-gran-total" class="sum-val">0.00</span></div>
                 </div>
-                <!-- V17.3: Botón PDF restaurado -->
+                
                 <div class="action-buttons-grid">
-                    <button type="button" class="btn-secondary btn-cancel-elite" style="margin:0; width:100%;" onclick="generarPDFCotizacion()">GENERAR PDF 📄</button>
+                     <!-- V17.4: Botón PDF con estilo VIP -->
+                    <button type="button" style="width: 100%; margin: 0; background: #0a0a0a; color: var(--gold-metalic); border: 2px solid var(--gold-metalic); padding: 15px; border-radius: 8px; font-family: 'Cinzel'; font-size: 16px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; box-shadow: 0 0 10px rgba(212,175,55,0.2);" onclick="generarPDFCotizacion()">GENERAR PDF ESTRATÉGICO 📄</button>
                     <button type="button" class="btn-gold" onclick="puenteHaciaConciliacion()">PASAR A CONCILIACIÓN 🏛️</button>
                 </div>
             </form>
@@ -804,7 +857,7 @@
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v17.3)
+        //                      JAVASCRIPT UNIFICADO (v17.4)
         // =======================================================================
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
         const FEE_ORBIS_BASE = 5.00;
@@ -843,17 +896,9 @@
             const pais = document.getElementById('reg_pais').value;
             const rol = document.getElementById('reg_rol').value;
             const password = document.getElementById('reg_password').value;
-
-            if (!nombre || !rif || !pais || !rol || !password) {
-                alert("🔴 Todos los campos son obligatorios.");
-                return;
-            }
-
+            if (!nombre || !rif || !pais || !rol || !password) { alert("🔴 Todos los campos son obligatorios."); return; }
             let aliados = getAliadosDB();
-            if (aliados.some(aliado => aliado.rif === rif)) {
-                alert("🔴 BLOQUEO: El RIF/Tax ID ya se encuentra registrado. Intente acceder.");
-                return;
-            }
+            if (aliados.some(aliado => aliado.rif === rif)) { alert("🔴 BLOQUEO: El RIF/Tax ID ya se encuentra registrado. Intente acceder."); return; }
             const nuevoAliado = { id: `ORB-${String(aliados.length + 1).padStart(3, '0')}`, nombre, rif, pais, rol, password };
             aliados.push(nuevoAliado);
             saveAliadosDB(aliados);
@@ -866,7 +911,6 @@
             const rif = document.getElementById('login_rif').value.toUpperCase();
             const password = document.getElementById('login_password').value;
             const esMaster = rif === 'MASTER' && password === 'ORBIS_MASTER_CONTROL';
-            
             let aliado;
             if(esMaster) {
                 aliado = { nombre: 'ORBIS MASTER', rif: 'MASTER', rol: 'MASTER', esMaster: true };
@@ -874,7 +918,6 @@
                 const aliados = getAliadosDB();
                 aliado = aliados.find(a => a.rif === rif && a.password === password);
             }
-
             if (aliado) {
                 orbisSession = aliado;
                 closeAuthModal('loginModal');
@@ -914,6 +957,9 @@
         function openModal(id) {
             const modal = document.getElementById(id);
             modal.style.display = 'flex';
+            if (id === 'provModal') {
+                resetFichaDirectorio();
+            }
             if (id === 'cotizadorModal') {
                 document.getElementById('cotizadorForm').reset();
                 ['#pax-container', '#paquetes-container', '#singles-container', '#contenedor-taxes-cot'].forEach(sel => document.querySelector(sel).innerHTML = '');
@@ -934,14 +980,7 @@
             tbody.innerHTML = '';
             getAliadosDB().forEach(p => {
                 const newRow = tbody.insertRow(0);
-                newRow.innerHTML = `
-                    <td>${p.id}</td>
-                    <td>${p.rol}</td>
-                    <td>${p.nombre}</td>
-                    <td>${p.rif}</td>
-                    <td>${p.pais}</td>
-                    <td><button style="background:none; border:none; color:#666; cursor:not-allowed; opacity:0.5;">EDITAR</button></td>
-                `;
+                newRow.innerHTML = `<td>${p.id}</td><td>${p.rol}</td><td>${p.nombre}</td><td>${p.rif}</td><td>${p.pais}</td><td><button style="background:none; border:none; color:#666; cursor:not-allowed; opacity:0.5;">EDITAR</button></td>`;
             });
         }
 
@@ -967,12 +1006,7 @@
             tbody.innerHTML = '';
             DB.cotizaciones.forEach(cot => {
                 const newRow = tbody.insertRow(0);
-                newRow.innerHTML = `
-                    <td>${cot.id}</td>
-                    <td>${cot.cliente}</td>
-                    <td>${cot.fecha}</td>
-                    <td>${cot.total}</td>
-                    <td><span style="color:var(--gold-soft)">GENERADA</span></td>`;
+                newRow.innerHTML = `<td>${cot.id}</td><td>${cot.cliente}</td><td>${cot.fecha}</td><td>${cot.total}</td><td><span style="color:var(--gold-soft)">GENERADA</span></td>`;
             });
         }
 
@@ -989,6 +1023,70 @@
                     select.appendChild(option);
                 });
             });
+        }
+
+        // --- V17.4: LÓGICA RED MAESTRA RESTAURADA ---
+        function resetFichaDirectorio() {
+            document.getElementById('provModal').querySelectorAll('input, select').forEach(el => {
+                if (el.tagName === 'SELECT') el.selectedIndex = 0;
+                else el.value = '';
+                el.classList.remove('input-error');
+            });
+            document.getElementById('phone-container').innerHTML = '';
+            document.getElementById('email-container').innerHTML = '';
+            addDynamicField('phone-container', 'phone');
+            addDynamicField('email-container', 'email');
+        }
+
+        function addDynamicField(containerId, type) {
+            const c = document.getElementById(containerId), d = document.createElement('div');
+            d.className = 'dynamic-row';
+            d.innerHTML = type === 'phone' ? `<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="SI">🟢 WHATSAPP</option><option value="NO" selected>📞 LLAMADA</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>` : `<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <select class="is-validated" style="visibility:hidden;"><option value="SI">VERIFICADO</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>`;
+            c.appendChild(d);
+        }
+
+        function iniciarGuardadoProv() {
+            let esValido = true;
+            ['prov_nombre', 'prov_rif', 'prov_pais', 'prov_password'].forEach(id => {
+                const el = document.getElementById(id);
+                if (!el.value.trim()) {
+                    el.classList.add('input-error');
+                    esValido = false;
+                } else {
+                    el.classList.remove('input-error');
+                }
+            });
+            const correo = document.querySelector('#email-container .prov-email');
+            if (!correo || !correo.value.trim()) {
+                if (correo) correo.classList.add('input-error');
+                esValido = false;
+                alert("⚠️ BLOQUEO: Se requiere al menos un correo electrónico.");
+            }
+            if (esValido && confirm("🏛️ ¿Confirma el registro del nuevo aliado en la Red Maestra?")) {
+                ejecutarGuardadoProv();
+            }
+        }
+        
+        function ejecutarGuardadoProv() {
+            const nombre = document.getElementById('prov_nombre').value.toUpperCase();
+            const rif = document.getElementById('prov_rif').value.toUpperCase();
+            const pais = document.getElementById('prov_pais').value;
+            const rol = document.getElementById('prov_cat').value;
+            const password = document.getElementById('prov_password').value;
+
+            let aliados = getAliadosDB();
+            if (aliados.some(aliado => aliado.rif === rif)) {
+                alert("🔴 BLOQUEO: El RIF/Tax ID ya se encuentra registrado. Utilice la función de registro principal.");
+                return;
+            }
+            const nuevoAliado = { id: `ORB-${String(aliados.length + 1).padStart(3, '0')}`, nombre, rif, pais, rol, password };
+            aliados.push(nuevoAliado);
+            saveAliadosDB(aliados);
+
+            renderTablaProveedores();
+            actualizarDropdownsAliados();
+            alert("✅ REGISTRO EN RED MAESTRA EXITOSO.");
+            closeModal('provModal');
         }
 
         // --- LÓGICA DE CONCILIACIÓN DE PAGOS ---
