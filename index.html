@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v17.2</title>
+    <title>ORBIS BRAIN | Master v17.3</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -111,7 +111,7 @@
             50% { box-shadow: 0 0 30px #ffcc00, 0 0 60px #f1d592; }
         }
 
-        /* --- V17.2: AUTH MODALS (Z-INDEX CORREGIDO) --- */
+        /* --- AUTH MODALS --- */
         .auth-modal {
             display: none;
             position: fixed;
@@ -120,7 +120,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.96);
-            z-index: 10000; /* CORRECCIÓN: 9998 -> 10000 */
+            z-index: 10000;
             justify-content: center;
             align-items: center;
             backdrop-filter: blur(10px);
@@ -622,7 +622,7 @@
     </style>
 </head>
 <body>
-    <!-- V17.0: PORTAL DE IDENTIDAD (SPLASH SCREEN) -->
+    <!-- PORTAL DE IDENTIDAD -->
     <div id="splash-screen">
         <div class="splash-block">
             <img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN Logo" class="splash-logo">
@@ -633,7 +633,7 @@
         </div>
     </div>
 
-    <!-- V17.0: MODAL DE REGISTRO -->
+    <!-- MODAL DE REGISTRO -->
     <div id="registerModal" class="auth-modal">
         <div class="auth-content">
             <div class="modal-logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" style="width: 280px;"></div>
@@ -650,7 +650,7 @@
         </div>
     </div>
 
-    <!-- V17.0: MODAL DE LOGIN -->
+    <!-- MODAL DE LOGIN -->
     <div id="loginModal" class="auth-modal">
         <div class="auth-content">
             <div class="modal-logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" style="width: 280px;"></div>
@@ -665,9 +665,9 @@
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V17.2: SIDEBAR -->
+        <!-- SIDEBAR -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V17.2</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V17.3</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Conciliación de Pagos</button>
@@ -675,7 +675,11 @@
 
         <!-- VISTAS -->
         <div id="view-directorio" class="view-section">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;"><h1 style="font-family:'Cinzel'; font-size: 26px; margin:0;">RED <span style="color:var(--gold-metalic)">MAESTRA</span></h1></div>
+             <!-- V17.3: Botón restaurado -->
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+                <h1 style="font-family:'Cinzel'; font-size: 26px; margin:0;">RED <span style="color:var(--gold-metalic)">MAESTRA</span></h1>
+                <button class="btn-gold" style="width:auto;" onclick="openModal('provModal')">Cargar Ficha Técnica +</button>
+            </div>
             <div class="table-container"><table><thead><tr><th>ID Aliado</th><th>Rol</th><th>Nombre Legal</th><th>RIF / Tax ID</th><th>País</th><th>Acción</th></tr></thead><tbody id="cuerpo-tabla-prov"></tbody></table></div>
         </div>
         <div id="view-cotizador" class="view-section">
@@ -736,18 +740,15 @@
         </div>
     </div>
     
+    <!-- MODAL RED MAESTRA (Placeholder - Funcionalidad no implementada en esta versión) -->
+    <div id="provModal" class="modal"><div class="modal-content"><hr class="gold-divider"><div class="modal-title">FICHA TÉCNICA DE ALIADO</div><hr class="gold-divider"><p style="text-align:center; color: #aaa;">La edición de fichas de la Red Maestra se gestiona desde el panel de control de Super-Usuario.</p><button class="btn-cancel-elite" onclick="closeModal('provModal')">Cerrar</button></div></div>
+
     <!-- MODAL COTIZADOR -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
             <form id="cotizadorForm" oninput="actualizarCalculosCotizador()">
                 <hr class="gold-divider"><div class="modal-title">COTIZADOR ESTRATÉGICO PANORÁMICO</div><hr class="gold-divider">
                 
-                <!-- V17.1: Input simple para nombre de cliente -->
-                <div class="form-section" style="max-width: 600px; margin-left: auto; margin-right: auto;">
-                    <label>Nombre del Cliente (Para PDF y Registro)</label>
-                    <input type="text" id="cot_cliente_simple" placeholder="EJ: JOHN DOE">
-                </div>
-
                 <div class="form-section" id="paquetes-section">
                     <h3 class="form-section-header">ZONA A: PAQUETES / HOTELES</h3>
                     <div id="paquetes-container-header" class="grid-header pkg-grid" style="padding:0 10px;margin-bottom:10px">
@@ -791,7 +792,11 @@
                     <div class="sum-item"><span class="sum-lbl">RETENCIONES</span><span id="cot-retenciones" class="sum-val">0.00</span></div>
                     <div class="sum-item"><span class="sum-lbl">GRAN TOTAL</span><span id="cot-gran-total" class="sum-val">0.00</span></div>
                 </div>
-                <div class="action-buttons-grid"><button type="button" class="btn-gold" onclick="puenteHaciaConciliacion()">PASAR A CONCILIACIÓN 🏛️</button></div>
+                <!-- V17.3: Botón PDF restaurado -->
+                <div class="action-buttons-grid">
+                    <button type="button" class="btn-secondary btn-cancel-elite" style="margin:0; width:100%;" onclick="generarPDFCotizacion()">GENERAR PDF 📄</button>
+                    <button type="button" class="btn-gold" onclick="puenteHaciaConciliacion()">PASAR A CONCILIACIÓN 🏛️</button>
+                </div>
             </form>
             <button class="btn-cancel-elite" onclick="closeModal('cotizadorModal')">Cancelar</button>
         </div>
@@ -799,7 +804,7 @@
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v17.2)
+        //                      JAVASCRIPT UNIFICADO (v17.3)
         // =======================================================================
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
         const FEE_ORBIS_BASE = 5.00;
@@ -1275,16 +1280,21 @@
             }
             return true;
         }
+
+        function generarPDFCotizacion() {
+            if (!validarCoberturaTotal()) return;
+            alert("FUNCIONALIDAD PDF: En construcción.");
+        }
         
         function puenteHaciaConciliacion() {
             if (!validarCoberturaTotal()) return;
             const granTotal = parseFloat(document.getElementById('cot-gran-total').textContent);
             if (granTotal <= 0) { alert("🔴 BLOQUEO: El monto total no puede ser cero."); return; }
             
-            const cliente = document.getElementById('cot_cliente_simple').value.toUpperCase();
-            if (!cliente) {
-                alert("🔴 BLOQUEO: Debe ingresar un nombre de cliente para el registro.");
-                return;
+            let cliente = "CLIENTE POR DEFINIR";
+            const primerPaxInput = document.querySelector("#pax-container .pax-nombre");
+            if (primerPaxInput && primerPaxInput.value.trim() !== "") {
+                cliente = primerPaxInput.value.trim().toUpperCase();
             }
 
             const idCot = `COT-${Date.now()}`;
