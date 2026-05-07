@@ -3,184 +3,671 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v16.9</title>
-    <!-- V16.1: INSTALACIÓN DE LIBRERÍA QRCODE.JS VÍA CDN -->
+    <title>ORBIS BRAIN | Master v17.1</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         /* --- ESTILOS UNIFICADOS RAIZ Y GLOBALES --- */
         :root {
-            --black-mate: #121212; --black-deep: #0a0a0a; --gold-metalic: #d4af37;
-            --gold-soft: #f1d592; --gray-dark: #1e1e1e; --gray-border: #333; --text-main: #e0e0e0;
+            --black-mate: #121212;
+            --black-deep: #0a0a0a;
+            --gold-metalic: #d4af37;
+            --gold-soft: #f1d592;
+            --gray-dark: #1e1e1e;
+            --gray-border: #333;
+            --text-main: #e0e0e0;
             --gold-gradient: linear-gradient(90deg, transparent, #d4af37, #f1d592, #d4af37, transparent);
-            --red-error: #d9534f; --green-success: #5cb85c; --yellow-process: #f0ad4e;
+            --red-error: #d9534f;
+            --green-success: #5cb85c;
+            --yellow-process: #f0ad4e;
         }
-        body { background-color: var(--black-mate); color: var(--text-main); font-family: 'Inter', sans-serif; margin: 0; height: 100vh; overflow: hidden; }
-        .hidden { display: none !important; }
 
-        /* --- SPLASH SCREEN --- */
+        body {
+            background-color: var(--black-mate);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* --- V17.0: PORTAL DE IDENTIDAD (SPLASH SCREEN) --- */
         #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background-color: var(--black-deep);
             z-index: 9999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             transition: opacity 0.5s ease-out;
-            cursor: pointer;
         }
-        #splash-screen.fade-out { opacity: 0; }
+
+        #splash-screen.fade-out {
+            opacity: 0;
+        }
+
         .splash-block {
-            padding: 60px; text-align: center;
-            outline: 2px solid var(--gold-metalic); outline-offset: -2px;
+            padding: 60px;
+            text-align: center;
+            outline: 2px solid var(--gold-metalic);
+            outline-offset: -2px;
             background-color: var(--black-deep);
             animation: pulse-border-metallic 2.5s infinite;
         }
-        .splash-logo { width: 650px; height: auto; }
-        .splash-prompt {
-            font-family: 'Inter', sans-serif; color: var(--gold-soft);
-            margin-top: 30px; font-size: 12px; letter-spacing: 2px;
-            text-transform: uppercase; animation: blink-slow 3s linear infinite;
+
+        .splash-logo {
+            width: 650px;
+            height: auto;
+            margin-bottom: 40px;
         }
-        @keyframes pulse-border-metallic { 0%, 100% { box-shadow: 0 0 15px #ffcc00, 0 0 30px #d4af37; } 50% { box-shadow: 0 0 30px #ffcc00, 0 0 60px #f1d592; } }
-        @keyframes blink-slow { 0%, 100% { opacity: 0.4; } 50% { opacity: 1.0; } }
 
-        /* --- AUTH MODAL --- */
-        #auth-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 9998; justify-content: center; align-items: center; backdrop-filter: blur(10px); }
-        .auth-content { background: var(--black-deep); padding: 40px 60px; border-radius: 30px; border: 2px solid var(--gold-metalic); text-align: center; width: 100%; max-width: 500px; }
-        .auth-content label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; text-align: left; }
-        .auth-content input, .auth-content select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; transition: border-color 0.3s; margin-bottom: 20px; }
+        .btn-gold,
+        .btn-gold-outline {
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Cinzel';
+            text-transform: uppercase;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: 0.3s;
+            margin: 0 15px;
+        }
 
-        .main-container { display: flex; height: 100vh; }
-        .sidebar { width: 280px; background-color: var(--black-deep); border-right: 1px solid var(--gold-metalic); padding: 25px; display: flex; flex-direction: column; z-index: 1000; }
-        .logo-container { text-align: center; margin-bottom: 40px; border-bottom: 1px solid var(--gray-border); padding-bottom: 20px; }
-        .sidebar-logo { width: 220px; height: auto; }
-        .nav-btn { background: transparent; border: 1px solid transparent; color: #888; padding: 15px; text-align: left; font-family: 'Cinzel'; font-size: 12px; letter-spacing: 2px; cursor: pointer; transition: 0.3s; margin-bottom: 10px; border-radius: 8px; width: 100%; }
-        .nav-btn.active { color: var(--gold-metalic); border: 1px solid var(--gold-metalic); background: rgba(212, 175, 55, 0.1); }
-        .view-section { display: none; flex: 1; height: 100vh; overflow-y: auto; background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%); padding: 50px; }
-        .view-section.active { display: block; }
-        .btn-gold { background: linear-gradient(45deg, #d4af37, #f1d592); color: #000; border: none; padding: 14px 28px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Cinzel'; text-transform: uppercase; font-size: 13px; letter-spacing: 1px; transition: 0.3s; }
-        .btn-gold:disabled { background: var(--gray-dark); color: #666; cursor: not-allowed; }
-        .table-container { background: rgba(0,0,0,0.6); padding: 30px; border-radius: 20px; border: 1px solid #333; margin-top: 20px; }
-        table { width: 100%; border-collapse: collapse; }
-        thead { border-bottom: 2px solid var(--gold-metalic); }
-        th { text-align: left; color: var(--gold-soft); font-size: 11px; text-transform: uppercase; padding: 15px; letter-spacing: 1px; }
-        td { padding: 15px; border-bottom: 1px solid #222; font-size: 13px; }
-        
-        /* --- MODAL GENÉRICO --- */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); z-index: 2000; justify-content: center; align-items: flex-start; backdrop-filter: blur(10px); overflow-y: auto; padding-top: 2vh; padding-bottom: 2vh; }
-        .modal-content { background: var(--black-deep); padding: 40px 60px; border-radius: 30px; border: 2px solid var(--gold-metalic); }
-        .gold-divider { height: 2px; background: var(--gold-gradient); border: none; margin: 20px 0; opacity: 0.9; }
-        .modal-title { font-family: 'Cinzel', serif; color: var(--gold-metalic); text-align: center; font-size: 26px; letter-spacing: 3px; margin: 0; }
-        
-        #opModal .form-section, #provModal .form-section, #cotizadorModal .form-section { background: rgba(255,255,255,0.02); padding: 20px 30px; border-radius: 20px; border: 1px solid #222; margin-bottom: 15px; }
-        #opModal label, #provModal label, #cotizadorModal label { display: block; font-size: 12.5px; color: var(--gold-soft); margin-bottom: 8px; text-transform: uppercase; font-weight: 700; letter-spacing: 1.2px; }
-        #opModal input, #opModal select, #provModal input, #provModal select, #cotizadorModal input, #cotizadorModal select { width: 100%; background: #000; border: 1px solid var(--gray-border); color: #fff; padding: 14px; border-radius: 10px; font-size: 15px; box-sizing: border-box; transition: border-color 0.3s; }
-        
-        .btn-add { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); width: 100%; padding: 10px; cursor: pointer; border-radius: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-top: 10px; }
-        .btn-add-small { background: transparent; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 8px; border-radius: 5px; cursor: pointer; font-size: 12px; text-transform: uppercase; width: 100%; margin-bottom: 15px; font-weight: 700; }
-        .btn-remove { background: none; color: #d9534f; border: 1px solid #d9534f; border-radius: 8px; cursor: pointer; height: 100%; width: 100%; display: flex; align-items: center; justify-content: center; }
+        .btn-gold {
+            background: linear-gradient(45deg, #d4af37, #f1d592);
+            color: #000;
+        }
 
-        input[readonly] { background: #111; color: #777; cursor: not-allowed; }
-        .input-error { border-color: var(--red-error) !important; }
-        .btn-cancel-elite { background: transparent; color: #666; border: 1px solid #333; padding: 10px 25px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin: 20px auto 0; display: block; transition: 0.4s; }
-        
-        #opModal .modal-content, #provModal .modal-content, #cotizadorModal .modal-content { width: 90%; max-width: 1600px; outline: 2px solid var(--gold-metalic); outline-offset: -2px; }
-        .summary-box { background: #000; padding: 25px 35px; border-radius: 20px; border: 1px solid var(--gold-metalic); box-shadow: 0 0 25px rgba(212, 175, 55, 0.2); display: grid; gap: 10px; margin-top: 20px; }
-        .sum-item { text-align: center; border-right: 1px solid #222; padding: 0 5px; } .sum-item:last-child { border-right: none; }
-        .sum-val { display: block; font-size: 20px; font-weight: 800; color: var(--gold-soft); margin-bottom: 5px; }
-        .sum-lbl { font-size: 10px; color: #aaa; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 600; }
-        
-        #cot-gran-total, #ec_monto_total, #ec_saldo_pendiente { color: var(--gold-metalic) !important; }
-        input[type="text"], input[type="email"] { text-transform: uppercase; }
-        input[type="number"] { -moz-appearance: textfield; }
-        input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0;}
-        #provModal .dynamic-row { display: grid; grid-template-columns: 2fr 1fr 40px; gap: 10px; margin-bottom: 10px; }
-        .warning-box { background: rgba(217, 83, 79, 0.1); border: 1px solid #d9534f; padding: 15px; border-radius: 10px; margin-bottom: 20px; display: flex; align-items: center; gap: 15px; }
-        
-        /* --- ESTILOS COTIZADOR --- */
-        .tax-container-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
-        .tax-grid { display: grid; grid-template-columns: 30px 1fr 100px 40px; gap: 10px; align-items: stretch; }
-        .pkg-grid { display: grid; grid-template-columns: 0.4fr 2fr 1.5fr 1.2fr 1.2fr 0.4fr 0.4fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
-        .single-grid { display: grid; grid-template-columns: 2fr 1.2fr 1.2fr 0.8fr 1fr 1fr 1fr 1fr 1fr 1fr 50px; gap: 10px; align-items: stretch; margin-bottom: 15px; }
-        .pax-grid { display: grid; grid-template-columns: 3fr 1.5fr 1.5fr 1.2fr 1.2fr 50px; gap: 15px; align-items: center; margin-bottom: 15px; }
-        
-        #manifiesto-container { 
-            background: rgba(212, 175, 55, 0.05); padding: 10px 15px; border-radius: 10px; 
-            border: 1px solid rgba(212, 175, 55, 0.2); 
-            font-size: 14px; 
-            color: var(--gold-metalic); 
-            margin: 15px auto; text-align: center; text-transform: uppercase; letter-spacing: 1.5px; 
+        .btn-gold:disabled {
+            background: var(--gray-dark);
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .btn-gold-outline {
+            background: transparent;
+            color: var(--gold-metalic);
+            border: 2px solid var(--gold-metalic);
+        }
+
+        .btn-gold-outline:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        @keyframes pulse-border-metallic {
+            0%, 100% { box-shadow: 0 0 15px #ffcc00, 0 0 30px #d4af37; }
+            50% { box-shadow: 0 0 30px #ffcc00, 0 0 60px #f1d592; }
+        }
+
+        /* --- V17.0: AUTH MODALS --- */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.96);
+            z-index: 9998;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .auth-content {
+            background: var(--black-deep);
+            padding: 40px 60px;
+            border-radius: 30px;
+            border: 2px solid var(--gold-metalic);
+            text-align: center;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .auth-content label {
+            display: block;
+            font-size: 12.5px;
+            color: var(--gold-soft);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-align: left;
+        }
+
+        .auth-content input,
+        .auth-content select {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--gray-border);
+            color: #fff;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .auth-content .btn-gold {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .main-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: var(--black-deep);
+            border-right: 1px solid var(--gold-metalic);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--gray-border);
+            padding-bottom: 20px;
+        }
+
+        .sidebar-logo {
+            width: 220px;
+            height: auto;
+        }
+
+        .nav-btn {
+            background: transparent;
+            border: 1px solid transparent;
+            color: #888;
+            padding: 15px;
+            text-align: left;
+            font-family: 'Cinzel';
+            font-size: 12px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .nav-btn.active {
+            color: var(--gold-metalic);
+            border: 1px solid var(--gold-metalic);
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .view-section {
+            display: none;
+            flex: 1;
+            height: 100vh;
+            overflow-y: auto;
+            background-image: radial-gradient(circle at center, #1a1a1a 0%, #121212 100%);
+            padding: 50px;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        .table-container {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid #333;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            border-bottom: 2px solid var(--gold-metalic);
+        }
+
+        th {
+            text-align: left;
+            color: var(--gold-soft);
+            font-size: 11px;
+            text-transform: uppercase;
+            padding: 15px;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #222;
+            font-size: 13px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.96);
+            z-index: 2000;
+            justify-content: center;
+            align-items: flex-start;
+            backdrop-filter: blur(10px);
+            overflow-y: auto;
+            padding-top: 2vh;
+            padding-bottom: 2vh;
+        }
+
+        .modal-content {
+            background: var(--black-deep);
+            padding: 40px 60px;
+            border-radius: 30px;
+            border: 2px solid var(--gold-metalic);
+        }
+
+        .gold-divider {
+            height: 2px;
+            background: var(--gold-gradient);
+            border: none;
+            margin: 20px 0;
+            opacity: 0.9;
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            color: var(--gold-metalic);
+            text-align: center;
+            font-size: 26px;
+            letter-spacing: 3px;
+            margin: 0;
+        }
+
+        #opModal .form-section,
+        #provModal .form-section,
+        #cotizadorModal .form-section {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 20px 30px;
+            border-radius: 20px;
+            border: 1px solid #222;
+            margin-bottom: 15px;
+        }
+
+        #opModal label,
+        #provModal label,
+        #cotizadorModal label {
+            display: block;
+            font-size: 12.5px;
+            color: var(--gold-soft);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+        }
+
+        #opModal input,
+        #opModal select,
+        #provModal input,
+        #provModal select,
+        #cotizadorModal input,
+        #cotizadorModal select {
+            width: 100%;
+            background: #000;
+            border: 1px solid var(--gray-border);
+            color: #fff;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .btn-add {
+            background: none;
+            border: 1px dashed var(--gold-metalic);
+            color: var(--gold-metalic);
+            width: 100%;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        .btn-remove {
+            background: none;
+            color: #d9534f;
+            border: 1px solid #d9534f;
+            border-radius: 8px;
+            cursor: pointer;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input[readonly],
+        select[disabled] {
+            background: #111;
+            color: #777;
+            cursor: not-allowed;
+        }
+
+        .input-error {
+            border-color: var(--red-error) !important;
+        }
+
+        .btn-cancel-elite {
+            background: transparent;
+            color: #666;
+            border: 1px solid #333;
+            padding: 10px 25px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 20px auto 0;
+            display: block;
+            transition: 0.4s;
+        }
+
+        #opModal .modal-content,
+        #provModal .modal-content,
+        #cotizadorModal .modal-content {
+            width: 90%;
+            max-width: 1600px;
+            outline: 2px solid var(--gold-metalic);
+            outline-offset: -2px;
+        }
+
+        .summary-box {
+            background: #000;
+            padding: 25px 35px;
+            border-radius: 20px;
+            border: 1px solid var(--gold-metalic);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.2);
+            display: grid;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .sum-item {
+            text-align: center;
+            border-right: 1px solid #222;
+            padding: 0 5px;
+        }
+
+        .sum-item:last-child {
+            border-right: none;
+        }
+
+        .sum-val {
+            display: block;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--gold-soft);
+            margin-bottom: 5px;
+        }
+
+        .sum-lbl {
+            font-size: 10px;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            font-weight: 600;
+        }
+
+        #cot-gran-total,
+        #ec_monto_total,
+        #ec_saldo_pendiente {
+            color: var(--gold-metalic) !important;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            text-transform: uppercase;
+        }
+
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* ESTILOS COTIZADOR */
+        .tax-container-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .tax-grid {
+            display: grid;
+            grid-template-columns: 30px 1fr 100px 40px;
+            gap: 10px;
+            align-items: stretch;
+        }
+
+        .pkg-grid {
+            display: grid;
+            grid-template-columns: 0.4fr 2fr 1.5fr 1.2fr 1.2fr 0.4fr 0.4fr 1fr 1fr 1fr 1fr 50px;
+            gap: 10px;
+            align-items: stretch;
+            margin-bottom: 15px;
+        }
+
+        .single-grid {
+            display: grid;
+            grid-template-columns: 2fr 1.2fr 1.2fr 0.8fr 1fr 1fr 1fr 1fr 1fr 1fr 50px;
+            gap: 10px;
+            align-items: stretch;
+            margin-bottom: 15px;
+        }
+
+        .pax-grid {
+            display: grid;
+            grid-template-columns: 3fr 1.5fr 1.5fr 1.2fr 1.2fr 50px;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        #manifiesto-container {
+            background: rgba(212, 175, 55, 0.05);
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            font-size: 14px;
+            color: var(--gold-metalic);
+            margin: 15px auto;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
             font-weight: 800;
         }
-        
-        #cotizadorModal .summary-box { 
-            grid-template-columns: 1.2fr repeat(6, 1fr); 
-            max-width: 1600px; margin-left: auto; margin-right: auto; margin-bottom: 20px; align-items: center;
-        }
-        #cotizadorModal #cot_moneda { background: transparent; border: 1px solid var(--gold-metalic); color: var(--gold-soft); padding: 12px; height: auto; }
-        .action-buttons-grid { max-width: 700px; margin: 20px auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: stretch; }
-        
-        #cotizador-zona-d-container { max-width: 800px; width: 100%; }
-        .btn-add-compacto { background: none; border: 1px dashed var(--gold-metalic); color: var(--gold-metalic); padding: 10px 20px; cursor: pointer; border-radius: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; margin-top: 10px; display: inline-block; width: auto; }
-        
-        #qr-verification-seal { margin: 30px auto 0; padding: 20px; background: rgba(255,255,255,0.02); border: 1px solid #222; border-radius: 15px; max-width: 200px; text-align: center; }
-        #qr-verification-seal p { font-size: 10px; color: var(--gold-soft); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
-        #qr-code-container { background: white; padding: 10px; border-radius: 5px; }
 
-        /* --- V16.9 ESTILOS CONCILIACIÓN --- */
+        #cotizadorModal .summary-box {
+            grid-template-columns: 1.2fr repeat(6, 1fr);
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        #cotizadorModal #cot_moneda {
+            background: transparent;
+            border: 1px solid var(--gold-metalic);
+            color: var(--gold-soft);
+            padding: 12px;
+            height: auto;
+        }
+
+        .action-buttons-grid {
+            max-width: 700px;
+            margin: 20px auto 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .btn-add-compacto {
+            background: none;
+            border: 1px dashed var(--gold-metalic);
+            color: var(--gold-metalic);
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-top: 10px;
+            display: inline-block;
+            width: auto;
+        }
+
+        /* ESTILOS CONCILIACIÓN */
         .estado-cuenta-box {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;
-            background: #000; padding: 20px; border-radius: 15px;
-            border: 1px solid var(--gold-metalic); margin-bottom: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            background: #000;
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid var(--gold-metalic);
+            margin-bottom: 20px;
         }
-        .ec-item { text-align: center; }
-        .ec-label { font-size: 11px; text-transform: uppercase; color: #aaa; letter-spacing: 1px; margin-bottom: 8px; }
-        .ec-value { font-size: 24px; font-weight: 700; color: var(--gold-soft); }
 
-        #abonos-container { margin-top: 20px; }
+        .ec-item {
+            text-align: center;
+        }
+
+        .ec-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #aaa;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .ec-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gold-soft);
+        }
+
         .abono-grid {
-            display: grid; grid-template-columns: 1fr 1fr 2fr 1fr;
-            gap: 15px; align-items: center; padding: 15px;
-            background: rgba(0,0,0,0.2); border-radius: 10px; margin-bottom: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr 1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-bottom: 10px;
             border-left: 4px solid var(--yellow-process);
         }
+
         .abono-grid.status-pagado { border-left-color: var(--green-success); }
         .abono-grid.status-rechazado { border-left-color: var(--red-error); }
-        .abono-actions button { background: none; border: 1px solid; border-radius: 5px; padding: 8px 12px; cursor: pointer; font-size: 14px; margin-left: 8px; }
+        
+        .abono-actions button {
+            background: none;
+            border: 1px solid;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 8px;
+        }
+
         .btn-approve { color: var(--green-success); border-color: var(--green-success); }
         .btn-reject { color: var(--red-error); border-color: var(--red-error); }
         .btn-approve:disabled, .btn-reject:disabled { color: #555; border-color: #555; cursor: not-allowed; }
-
-        .recaudo-grid { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 15px; align-items: flex-end; }
+        
+        .recaudo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr;
+            gap: 15px;
+            align-items: flex-end;
+        }
     </style>
 </head>
 <body>
-    <!-- SPLASH SCREEN -->
+    <!-- V17.0: PORTAL DE IDENTIDAD (SPLASH SCREEN) -->
     <div id="splash-screen">
         <div class="splash-block">
             <img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN Logo" class="splash-logo">
+            <div>
+                <button class="btn-gold" onclick="openAuthModal('registerModal')">REGISTRAR NUEVO ALIADO</button>
+                <button class="btn-gold-outline" onclick="openAuthModal('loginModal')">ACCESO ALIADO REGISTRADO</button>
+            </div>
         </div>
-        <div class="splash-prompt">HAGA CLICK PARA CONTINUAR</div>
     </div>
 
-    <!-- AUTH MODAL -->
-    <div id="auth-modal">
+    <!-- V17.0: MODAL DE REGISTRO -->
+    <div id="registerModal" class="auth-modal">
         <div class="auth-content">
-            <div class="modal-logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="modal-logo" style="width: 280px;"></div>
-            <hr class="gold-divider"><div class="modal-title">REGISTRO DE IDENTIDAD</div><hr class="gold-divider" style="margin-bottom: 30px;">
-            <form id="authForm">
-                <label for="auth_nombre">Nombre Legal / Empresa *</label><input type="text" id="auth_nombre" placeholder="NOMBRE FISCAL" required>
-                <label for="auth_rif">RIF / Tax ID *</label><input type="text" id="auth_rif" placeholder="ID TRIBUTARIO" required>
-                <label for="auth_pais">País de Operación *</label><select id="auth_pais" required><option value="" disabled selected>SELECCIONE UN PAÍS</option><option value="VE">VENEZUELA</option><option value="US">USA</option><option value="ES">ESPAÑA / EUROPA</option><option value="OTHER">OTRO</option></select>
-                <label for="auth_master_key">Master Key (Opcional)</label><input type="password" id="auth_master_key" placeholder="CLAVE MAESTRA">
-                <button type="button" id="auth_submit" class="btn-gold" style="width: 100%; margin-top: 10px;">ACCEDER AL IMPERIO</button>
+            <div class="modal-logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" style="width: 280px;"></div>
+            <hr class="gold-divider"><div class="modal-title">REGISTRO DE NUEVO ALIADO</div><hr class="gold-divider" style="margin-bottom: 30px;">
+            <form id="registerForm">
+                <label for="reg_nombre">Nombre Legal / Empresa *</label><input type="text" id="reg_nombre" required>
+                <label for="reg_rif">RIF / Tax ID (Será su usuario) *</label><input type="text" id="reg_rif" required>
+                <label for="reg_pais">País de Operación *</label><select id="reg_pais" required><option value="" disabled selected>SELECCIONE UN PAÍS</option><option value="VE">VENEZUELA</option><option value="US">USA</option><option value="ES">ESPAÑA / EUROPA</option><option value="OTHER">OTRO</option></select>
+                <label for="reg_rol">Rol Principal *</label><select id="reg_rol" required><option value="" disabled selected>SELECCIONE ROL</option><option value="AGENCIA">🏢 AGENCIA</option><option value="FREELANCER">👨‍💻 FREELANCER</option><option value="HOTEL">🏨 HOTEL</option><option value="SEGURO">🛡️ SEGURO</option><option value="TRASLADO">🚐 TRASLADO</option></select>
+                <label for="reg_password">Contraseña *</label><input type="password" id="reg_password" required>
+                <button type="button" id="register_submit" class="btn-gold">CREAR IDENTIDAD</button>
+                <button type="button" class="btn-cancel-elite" onclick="closeAuthModal('registerModal')">Cancelar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- V17.0: MODAL DE LOGIN -->
+    <div id="loginModal" class="auth-modal">
+        <div class="auth-content">
+            <div class="modal-logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" style="width: 280px;"></div>
+            <hr class="gold-divider"><div class="modal-title">ACCESO AL IMPERIO</div><hr class="gold-divider" style="margin-bottom: 30px;">
+            <form id="loginForm">
+                <label for="login_rif">RIF / Tax ID *</label><input type="text" id="login_rif" required>
+                <label for="login_password">Contraseña *</label><input type="password" id="login_password" required>
+                <button type="button" id="login_submit" class="btn-gold">ACCEDER</button>
+                <button type="button" class="btn-cancel-elite" onclick="closeAuthModal('loginModal')">Cancelar</button>
             </form>
         </div>
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V16.9: SIDEBAR -->
+        <!-- V17.1: SIDEBAR -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V16.9</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V17.1</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Conciliación de Pagos</button>
@@ -188,8 +675,8 @@
 
         <!-- VISTAS -->
         <div id="view-directorio" class="view-section">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;"><h1 style="font-family:'Cinzel'; font-size: 26px; margin:0;">RED <span style="color:var(--gold-metalic)">MAESTRA</span></h1><button class="btn-gold" style="width:auto;" onclick="openModal('provModal')">Cargar Ficha Técnica +</button></div>
-            <div class="table-container"><table><thead><tr><th>ID Aliado</th><th>Categoría</th><th>Nombre Legal</th><th>RIF / Tax ID</th><th>País</th><th>Acción</th></tr></thead><tbody id="cuerpo-tabla-prov"></tbody></table></div>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;"><h1 style="font-family:'Cinzel'; font-size: 26px; margin:0;">RED <span style="color:var(--gold-metalic)">MAESTRA</span></h1></div>
+            <div class="table-container"><table><thead><tr><th>ID Aliado</th><th>Rol</th><th>Nombre Legal</th><th>RIF / Tax ID</th><th>País</th><th>Acción</th></tr></thead><tbody id="cuerpo-tabla-prov"></tbody></table></div>
         </div>
         <div id="view-cotizador" class="view-section">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;"><h1 style="font-family:'Cinzel'; font-size: 28px; margin:0;">COTIZADOR <span style="color:var(--gold-metalic)">ESTRATÉGICO</span></h1><button class="btn-gold" onclick="openModal('cotizadorModal')">Nueva Cotización +</button></div>
@@ -204,13 +691,11 @@
         </div>
     </div>
     
-    <!-- V16.9: MODAL DE CONCILIACIÓN REESTRUCTURADO -->
+    <!-- MODAL DE CONCILIACIÓN -->
     <div id="opModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">ORQUESTACIÓN Y CONCILIACIÓN DE RECAUDO</div><hr class="gold-divider">
-            
             <form id="registroForm">
-                <!-- MODO CREACIÓN: Información General Editable -->
                 <div id="panel-creacion" class="form-section">
                      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap:20px;">
                         <div><label>ID Operación</label><input type="text" id="op_id_creacion" readonly></div>
@@ -219,8 +704,6 @@
                         <div><label>Aliado Responsable (Pagador) *</label><select id="op_aliado_responsable_creacion"></select></div>
                     </div>
                 </div>
-
-                <!-- MODO CONCILIACIÓN: Información General Fija -->
                 <div id="panel-info-fija" class="form-section hidden">
                      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap:20px;">
                         <div><label>ID Operación</label><input type="text" id="op_id_fijo" readonly></div>
@@ -229,83 +712,42 @@
                         <div><label>Aliado Responsable (Pagador)</label><input type="text" id="op_aliado_responsable_fijo" readonly></div>
                     </div>
                 </div>
-
-                <!-- Estado de Cuenta -->
                 <div class="estado-cuenta-box">
                     <div class="ec-item">
                         <div class="ec-label">Monto Total de la Deuda</div>
                         <input type="number" id="ec_monto_total_input" class="ec-value" value="0.00" style="width:100%; text-align:center; background:transparent; border:none; padding:0;">
                     </div>
-                    <div class="ec-item">
-                        <div class="ec-label">Total Recaudado</div>
-                        <div class="ec-value" id="ec_total_recaudado">0.00</div>
-                    </div>
-                    <div class="ec-item">
-                        <div class="ec-label">Saldo Pendiente</div>
-                        <div class="ec-value" id="ec_saldo_pendiente">0.00</div>
-                    </div>
+                    <div class="ec-item"><div class="ec-label">Total Recaudado</div><div class="ec-value" id="ec_total_recaudado">0.00</div></div>
+                    <div class="ec-item"><div class="ec-label">Saldo Pendiente</div><div class="ec-value" id="ec_saldo_pendiente">0.00</div></div>
                 </div>
-
-                <!-- Botón de Creación de Expediente -->
-                <div id="panel-btn-crear">
-                    <button type="button" class="btn-gold" style="width:100%; margin-bottom:20px;" onclick="crearExpediente()">CREAR EXPEDIENTE</button>
-                </div>
-                
-                <!-- Historial de Abonos (Solo modo Conciliación) -->
-                <div id="panel-historial-abonos" class="form-section hidden">
-                    <h3 class="form-section-header">HISTORIAL DE ABONOS</h3>
-                    <div id="abonos-container"></div>
-                </div>
-                
-                <!-- Panel de Nuevo Abono (Solo modo Conciliación) -->
+                <div id="panel-btn-crear"><button type="button" class="btn-gold" style="width:100%; margin-bottom:20px;" onclick="crearExpediente()">CREAR EXPEDIENTE</button></div>
+                <div id="panel-historial-abonos" class="form-section hidden"><h3 class="form-section-header">HISTORIAL DE ABONOS</h3><div id="abonos-container"></div></div>
                 <div id="panel-nuevo-abono" class="form-section hidden">
                      <h3 class="form-section-header">REGISTRAR NUEVO ABONO</h3>
                      <div class="recaudo-grid">
-                        <div>
-                            <label for="abono_monto">Monto del Abono *</label>
-                            <input type="number" id="abono_monto" placeholder="0.00" oninput="validarInputsAbono()">
-                        </div>
-                        <div>
-                            <label for="abono_boveda">Bóveda de Destino *</label>
-                            <select id="abono_boveda" onchange="validarInputsAbono()">
-                                <option value="" disabled selected>SELECCIONE BÓVEDA</option>
-                                <option value="ZELLE">ZELLE</option>
-                                <option value="BINANCE_USDT">BINANCE USDT</option>
-                                <option value="ZINLI">ZINLI</option>
-                                <option value="PAYPAL">PAYPAL</option>
-                                <option value="EFECTIVO">EFECTIVO</option>
-                                <option value="BANCO_NACIONAL">BANCO NACIONAL</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="abono_hash">Hash / Referencia *</label>
-                            <input type="text" id="abono_hash" placeholder="CÓDIGO DE TRANSACCIÓN O REFERENCIA" oninput="validarInputsAbono()">
-                        </div>
+                        <div><label for="abono_monto">Monto del Abono *</label><input type="number" id="abono_monto" placeholder="0.00" oninput="validarInputsAbono()"></div>
+                        <div><label for="abono_boveda">Bóveda de Destino *</label><select id="abono_boveda" onchange="validarInputsAbono()"><option value="" disabled selected>SELECCIONE BÓVEDA</option><option value="ZELLE">ZELLE</option><option value="BINANCE_USDT">BINANCE USDT</option><option value="ZINLI">ZINLI</option><option value="PAYPAL">PAYPAL</option><option value="EFECTIVO">EFECTIVO</option><option value="BANCO_NACIONAL">BANCO NACIONAL</option></select></div>
+                        <div><label for="abono_hash">Hash / Referencia *</label><input type="text" id="abono_hash" placeholder="CÓDIGO DE TRANSACCIÓN O REFERENCIA" oninput="validarInputsAbono()"></div>
                      </div>
                      <button type="button" id="btn-registrar-abono" class="btn-gold" style="width:100%; margin-top:20px;" onclick="registrarAbono()" disabled>VALIDAR Y SINCRONIZAR ABONO</button>
                 </div>
             </form>
-            <button id="btn-cancel-cert" class="btn-cancel-elite" onclick="closeModal('opModal')">Cerrar</button>
+            <button class="btn-cancel-elite" onclick="closeModal('opModal')">Cerrar</button>
         </div>
     </div>
     
-    <!-- MODAL RED MAESTRA (sin cambios) -->
-    <div id="provModal" class="modal">
-        <div class="modal-content">
-            <hr class="gold-divider"><div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div><hr class="gold-divider">
-            <div class="warning-box" style="margin-top:20px;"><span style="font-size: 20px;">⚠️</span><p style="font-size: 11px; margin: 0; color: #f8d7da;"><b>POLÍTICA DE INTEGRIDAD:</b> NOMBRE, RIF Y PAÍS SON OBLIGATORIOS.</p></div>
-            <div class="form-section"><div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;"><div><label>Categoría *</label><select id="prov_cat"><option value="HOTEL">🏨 HOTEL</option><option value="AGENCIA">🏢 AGENCIA</option><option value="FREELANCER">👨‍💻 FREELANCER</option><option value="TRASLADO">🚐 TRASLADO</option><option value="SEGURO">🛡️ SEGURO</option></select></div><div><label>Nombre Legal *</label><input type="text" id="prov_nombre" placeholder="NOMBRE LEGAL"></div><div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="RIF / TAX ID"></div></div></div>
-            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:20px;"><div class="form-section"><label>Canales de Telefonía / WhatsApp</label><div id="phone-container"></div><button type="button" class="btn-add-small" onclick="addDynamicField('phone-container', 'phone')">+ Agregar Teléfono</button><label style="margin-top:15px;">Canales de Correo Electrónico *</label><div id="email-container"></div><button type="button" class="btn-add-small" onclick="addDynamicField('email-container', 'email')">+ Agregar Correo</button></div><div class="form-section"><label>Ubicación y Operación</label><div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom:15px;"><div><label>País *</label><input type="text" id="prov_pais" placeholder="PAÍS"></div><div><label>Moneda Base *</label><select id="prov_moneda"><option value="USD ($)">USD ($)</option><option value="VES (Bs.)">VES (Bs.)</option><option value="EUR (€)">EUR (€)</option></select></div></div><div style="background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);"><p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.5;"><b>RED GLOBAL ORBIS:</b> Este proveedor será integrado a la red maestra para orquestación internacional.</p></div></div></div>
-            <button id="btn-sync-prov" class="btn-gold" style="padding: 22px; width:100%; margin-top:20px;" onclick="iniciarGuardadoProv()">REGISTRAR EN RED MAESTRA</button>
-            <button id="btn-cancel-prov" class="btn-cancel-elite" onclick="closeModal('provModal')">Cancelar</button>
-        </div>
-    </div>
-
-    <!-- V16.9: MODAL COTIZADOR LIMPIO -->
+    <!-- MODAL COTIZADOR -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
             <form id="cotizadorForm" oninput="actualizarCalculosCotizador()">
                 <hr class="gold-divider"><div class="modal-title">COTIZADOR ESTRATÉGICO PANORÁMICO</div><hr class="gold-divider">
+                
+                <!-- V17.1: Input simple para nombre de cliente -->
+                <div class="form-section" style="max-width: 600px; margin-left: auto; margin-right: auto;">
+                    <label>Nombre del Cliente (Para PDF y Registro)</label>
+                    <input type="text" id="cot_cliente_simple" placeholder="EJ: JOHN DOE">
+                </div>
+
                 <div class="form-section" id="paquetes-section">
                     <h3 class="form-section-header">ZONA A: PAQUETES / HOTELES</h3>
                     <div id="paquetes-container-header" class="grid-header pkg-grid" style="padding:0 10px;margin-bottom:10px">
@@ -349,82 +791,127 @@
                     <div class="sum-item"><span class="sum-lbl">RETENCIONES</span><span id="cot-retenciones" class="sum-val">0.00</span></div>
                     <div class="sum-item"><span class="sum-lbl">GRAN TOTAL</span><span id="cot-gran-total" class="sum-val">0.00</span></div>
                 </div>
-                <div class="action-buttons-grid"><button type="button" class="btn-secondary" onclick="generarPDFCotizacion()">GENERAR PDF 📄</button><button type="button" class="btn-gold" onclick="puenteHaciaConciliacion()">PASAR A CONCILIACIÓN 🏛️</button></div>
-                
-                <div id="qr-verification-seal" class="hidden">
-                    <p>SELLO DE VERIFICACIÓN ORBIS</p>
-                    <div id="qr-code-container"></div>
-                </div>
+                <div class="action-buttons-grid"><button type="button" class="btn-gold" onclick="puenteHaciaConciliacion()">PASAR A CONCILIACIÓN 🏛️</button></div>
             </form>
-            <button type="button" class="btn-cancel-elite" onclick="closeModal('cotizadorModal')">Cancelar</button>
+            <button class="btn-cancel-elite" onclick="closeModal('cotizadorModal')">Cancelar</button>
         </div>
     </div>
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v16.9)
+        //                      JAVASCRIPT UNIFICADO (v17.1)
         // =======================================================================
-        const URL_SCRIPT_CERT = "https://script.google.com/macros/s/AKfycbxBj7SszlYo6F52igEjUhBlo26Rt-lOK9FBYb0wYtyBAk80syigVY07PIKAIua_orEIgg/exec";
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
         const FEE_ORBIS_BASE = 5.00;
         const FEE_ORBIS_PROTECT = 1.00;
         const ESCUDO_ORO_PORC = 0.005;
-
         const TAX_MATRIX = { "VE": [{ nombre: "IVA", valor: 16 }, { nombre: "IGTF", valor: 3 }], "US": [{ nombre: "Sales Tax", valor: 7 }], "ES": [{ nombre: "IVA (VAT)", valor: 21 }] };
-        let orbisSession = { nombre: "", rif: "", pais: "", esMaster: false };
-        let DB = { proveedores: [], operaciones: [] };
+        
+        let orbisSession = null;
+        let DB = { operaciones: [], cotizaciones: [] };
 
-        // --- LÓGICA DE INICIALIZACIÓN Y NAVEGACIÓN ---
+        // --- V17.0: LÓGICA DE AUTENTICACIÓN Y SESIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
-            const splash = document.getElementById('splash-screen');
-            const authModal = document.getElementById('auth-modal');
-            function proceedToAuth() {
+            document.getElementById('register_submit').addEventListener('click', handleRegister);
+            document.getElementById('login_submit').addEventListener('click', handleLogin);
+        });
+
+        function openAuthModal(modalId) {
+            document.getElementById(modalId).style.display = 'flex';
+        }
+
+        function closeAuthModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function getAliadosDB() {
+            return JSON.parse(localStorage.getItem('orbis_aliados_v17')) || [];
+        }
+
+        function saveAliadosDB(db) {
+            localStorage.setItem('orbis_aliados_v17', JSON.stringify(db));
+        }
+
+        function handleRegister() {
+            const nombre = document.getElementById('reg_nombre').value.toUpperCase();
+            const rif = document.getElementById('reg_rif').value.toUpperCase();
+            const pais = document.getElementById('reg_pais').value;
+            const rol = document.getElementById('reg_rol').value;
+            const password = document.getElementById('reg_password').value;
+
+            if (!nombre || !rif || !pais || !rol || !password) {
+                alert("🔴 Todos los campos son obligatorios.");
+                return;
+            }
+
+            let aliados = getAliadosDB();
+            if (aliados.some(aliado => aliado.rif === rif)) {
+                alert("🔴 BLOQUEO: El RIF/Tax ID ya se encuentra registrado. Intente acceder.");
+                return;
+            }
+            const nuevoAliado = { id: `ORB-${String(aliados.length + 1).padStart(3, '0')}`, nombre, rif, pais, rol, password };
+            aliados.push(nuevoAliado);
+            saveAliadosDB(aliados);
+            alert("✅ IDENTIDAD CREADA: Registro exitoso. Ahora puede acceder con sus credenciales.");
+            closeAuthModal('registerModal');
+            openAuthModal('loginModal');
+        }
+
+        function handleLogin() {
+            const rif = document.getElementById('login_rif').value.toUpperCase();
+            const password = document.getElementById('login_password').value;
+            const esMaster = rif === 'MASTER' && password === 'ORBIS_MASTER_CONTROL';
+            
+            let aliado;
+            if(esMaster) {
+                aliado = { nombre: 'ORBIS MASTER', rif: 'MASTER', rol: 'MASTER', esMaster: true };
+            } else {
+                const aliados = getAliadosDB();
+                aliado = aliados.find(a => a.rif === rif && a.password === password);
+            }
+
+            if (aliado) {
+                orbisSession = aliado;
+                closeAuthModal('loginModal');
+                const splash = document.getElementById('splash-screen');
                 splash.classList.add('fade-out');
                 setTimeout(() => {
                     splash.style.display = 'none';
-                    authModal.style.display = 'flex';
-                }, 500);
-            }
-            splash.addEventListener('click', proceedToAuth, { once: true });
-            window.addEventListener('keydown', proceedToAuth, { once: true });
-            document.getElementById('auth_submit').addEventListener('click', () => {
-                const nombre = document.getElementById('auth_nombre').value;
-                const rif = document.getElementById('auth_rif').value;
-                const pais = document.getElementById('auth_pais').value;
-                const masterKey = document.getElementById('auth_master_key').value;
-                if (nombre.trim() && rif.trim() && pais) {
-                    orbisSession = { 
-                        nombre: nombre.toUpperCase(), 
-                        rif: rif.toUpperCase(), 
-                        pais,
-                        esMaster: masterKey === 'ORBIS_MASTER_CONTROL'
-                    };
-                    document.getElementById('auth-modal').style.display = 'none';
                     document.getElementById('main-app').classList.remove('hidden');
                     if (orbisSession.esMaster) { document.body.style.setProperty('--gold-metalic', '#ff4d4d'); }
-                    showView('directorio', document.getElementById('nav-directorio'));
-                    cargarDatosIniciales();
-                } else {
-                    alert("Por favor, complete todos los campos para continuar.");
-                }
-            });
+                    initializeMainApp();
+                }, 500);
+            } else {
+                alert("🔴 ACCESO DENEGADO: Credenciales incorrectas.");
+            }
+        }
 
-            document.addEventListener('input', (e) => { if (e.target.tagName.toLowerCase() === 'input' && (e.target.type === 'text' || e.target.type === 'email')) { e.target.value = e.target.value.toUpperCase(); } });
-            document.addEventListener('focusin', (e) => { if (e.target.tagName.toLowerCase() === 'input' && e.target.type === 'number') { e.target.select(); } });
-        });
+        function initializeMainApp() {
+            showView('directorio', document.getElementById('nav-directorio'));
+            actualizarDropdownsAliados();
+        }
 
-        function showView(viewId, btn) { document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active')); document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active')); document.getElementById('view-' + viewId).classList.add('active'); if (btn) btn.classList.add('active'); renderizarTablas(); }
+        // --- LÓGICA DE NAVEGACIÓN Y VISTAS ---
+        function showView(viewId, btn) {
+            document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('view-' + viewId).classList.add('active');
+            if (btn) btn.classList.add('active');
+            renderCurrentView();
+        }
+
+        function renderCurrentView() {
+            if (document.getElementById('view-directorio').classList.contains('active')) renderTablaProveedores();
+            if (document.getElementById('view-certificacion').classList.contains('active')) renderTablaCertificaciones();
+            if (document.getElementById('view-cotizador').classList.contains('active')) renderTablaCotizaciones();
+        }
         
         function openModal(id) {
             const modal = document.getElementById(id);
             modal.style.display = 'flex';
-            if (id === 'provModal') {
-                resetFichaDirectorio();
-            } else if (id === 'cotizadorModal') {
+            if (id === 'cotizadorModal') {
                 document.getElementById('cotizadorForm').reset();
                 ['#pax-container', '#paquetes-container', '#singles-container', '#contenedor-taxes-cot'].forEach(sel => document.querySelector(sel).innerHTML = '');
-                document.getElementById('qr-verification-seal').classList.add('hidden');
-                document.getElementById('qr-code-container').innerHTML = '';
                 const impuestos = TAX_MATRIX[orbisSession.pais] || [];
                 impuestos.forEach(tax => agregarTaxCot(tax.nombre, tax.valor, true));
                 agregarFilaSeguroAutomatizada();
@@ -434,50 +921,22 @@
                 actualizarCalculosCotizador();
             }
         }
-        function closeModal(id) { 
-            const modal = document.getElementById(id);
-            if (id === 'opModal') {
-                const saldoPendiente = parseFloat(document.getElementById('ec_saldo_pendiente').textContent) || 0;
-                if (saldoPendiente > 0 && !document.getElementById('panel-creacion').classList.contains('hidden')) {
-                   // No warning if we are in creation mode and haven't saved
-                } else if (saldoPendiente > 0) {
-                     if (!confirm(`🔴 ALERTA DE SALDO: Aún queda un saldo pendiente de ${saldoPendiente.toFixed(2)}. ¿Está seguro que desea cerrar?`)) {
-                        return;
-                    }
-                }
-            } else {
-                 if (!confirm("🏛️ ATENCIÓN: ¿Seguro que desea cancelar? Se perderán los datos no guardados.")) {
-                    return;
-                }
-            }
-            modal.style.display = 'none';
-        }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        // --- LÓGICA DE DATOS CENTRALIZADA ---
-        function cargarDatosIniciales() {
-            DB.proveedores.push({ID_ALIADO: 'ORB-001', NOMBRE_LEGAL: 'HOTEL CUMBRE', RIF_TAX_ID: 'J-123', PAIS: 'VE', CATEGORIA: 'HOTEL', MONEDA_BASE: 'USD ($)', TELEFONOS: '', CORREOS: ''});
-            DB.proveedores.push({ID_ALIADO: 'ORB-002', NOMBRE_LEGAL: 'VIAJES GLOBALES', RIF_TAX_ID: 'J-456', PAIS: 'US', CATEGORIA: 'AGENCIA', MONEDA_BASE: 'USD ($)', TELEFONOS: '', CORREOS: ''});
-            DB.proveedores.push({ID_ALIADO: 'ORB-003', NOMBRE_LEGAL: 'LUIS LUQUE FREELANCE', RIF_TAX_ID: 'V-789', PAIS: 'VE', CATEGORIA: 'FREELANCER', MONEDA_BASE: 'USD ($)', TELEFONOS: '', CORREOS: ''});
-            
-             if (!DB.proveedores.some(p => p.RIF_TAX_ID === orbisSession.rif)) {
-                 const nuevoAliado = { ID_ALIADO: `ORB-${String(DB.proveedores.length + 1).padStart(3, '0')}`, NOMBRE_LEGAL: orbisSession.nombre, RIF_TAX_ID: orbisSession.rif, PAIS: orbisSession.pais, CATEGORIA: 'AGENCIA', MONEDA_BASE: 'USD ($)', TELEFONOS: '', CORREOS: '' };
-                DB.proveedores.push(nuevoAliado);
-            }
-            actualizarDropdownsAliados();
-            renderizarTablas();
-        }
-
-        function renderizarTablas() {
-            renderTablaProveedores();
-            renderTablaCertificaciones();
-        }
-
+        // --- LÓGICA DE RENDERIZADO DE TABLAS ---
         function renderTablaProveedores() {
             const tbody = document.getElementById('cuerpo-tabla-prov');
             tbody.innerHTML = '';
-            DB.proveedores.forEach(p => {
+            getAliadosDB().forEach(p => {
                 const newRow = tbody.insertRow(0);
-                newRow.innerHTML = `<td>${p.ID_ALIADO}</td><td>${p.CATEGORIA}</td><td>${p.NOMBRE_LEGAL}</td><td>${p.RIF_TAX_ID}</td><td>${p.PAIS}</td><td><button style="background:none;border:none;color:#666;cursor:not-allowed;opacity:0.5">ELIMINAR</button></td>`;
+                newRow.innerHTML = `
+                    <td>${p.id}</td>
+                    <td>${p.rol}</td>
+                    <td>${p.nombre}</td>
+                    <td>${p.rif}</td>
+                    <td>${p.pais}</td>
+                    <td><button style="background:none; border:none; color:#666; cursor:not-allowed; opacity:0.5;">EDITAR</button></td>
+                `;
             });
         }
 
@@ -485,7 +944,6 @@
             const tbody = document.getElementById('cuerpo-tabla-cert');
             tbody.innerHTML = '';
             const operacionesFiltradas = DB.operaciones.filter(op => orbisSession.esMaster || op.aliadoResponsable === orbisSession.nombre || op.proveedor === orbisSession.nombre);
-
             operacionesFiltradas.forEach(op => {
                 const saldoPendiente = op.montoTotal - op.totalRecaudado;
                 let estatusHtml = '';
@@ -499,22 +957,36 @@
             });
         }
         
+        function renderTablaCotizaciones() {
+            const tbody = document.getElementById('cuerpo-tabla-cotizacion');
+            tbody.innerHTML = '';
+            DB.cotizaciones.forEach(cot => {
+                const newRow = tbody.insertRow(0);
+                newRow.innerHTML = `
+                    <td>${cot.id}</td>
+                    <td>${cot.cliente}</td>
+                    <td>${cot.fecha}</td>
+                    <td>${cot.total}</td>
+                    <td><span style="color:var(--gold-soft)">GENERADA</span></td>`;
+            });
+        }
+
         function actualizarDropdownsAliados() {
             const selects = ['#op_proveedor_creacion', '#op_aliado_responsable_creacion'];
+            const aliados = getAliadosDB();
             selects.forEach(selId => {
                 const select = document.querySelector(selId);
                 select.innerHTML = '<option value="" disabled selected>SELECCIONAR ALIADO</option>';
-                DB.proveedores.forEach(p => {
+                aliados.forEach(p => {
                     const option = document.createElement('option');
-                    option.value = p.NOMBRE_LEGAL;
-                    option.textContent = `${p.NOMBRE_LEGAL} (${p.CATEGORIA})`;
+                    option.value = p.nombre;
+                    option.textContent = `${p.nombre} (${p.rol})`;
                     select.appendChild(option);
                 });
             });
         }
 
-        // --- V16.9 LÓGICA DE CONCILIACIÓN DE PAGOS ---
-
+        // --- LÓGICA DE CONCILIACIÓN DE PAGOS ---
         function configurarModalParaCreacion(montoInicial = 0.00) {
             openModal('opModal');
             document.getElementById('panel-creacion').classList.remove('hidden');
@@ -524,11 +996,14 @@
             document.getElementById('panel-nuevo-abono').classList.add('hidden');
             document.getElementById('ec_monto_total_input').readOnly = false;
             
-            // Reset fields
             document.getElementById('op_id_creacion').value = `OP-${Date.now()}`;
             document.getElementById('op_proveedor_creacion').value = "";
             document.getElementById('op_cliente_creacion').value = "";
-            document.getElementById('op_aliado_responsable_creacion').value = "";
+            
+            const selectAliadoResp = document.getElementById('op_aliado_responsable_creacion');
+            selectAliadoResp.value = orbisSession.nombre;
+            selectAliadoResp.setAttribute('disabled', 'true');
+
             document.getElementById('ec_monto_total_input').value = montoInicial.toFixed(2);
             document.getElementById('ec_total_recaudado').textContent = "0.00";
             document.getElementById('ec_saldo_pendiente').textContent = montoInicial.toFixed(2);
@@ -540,10 +1015,8 @@
             document.getElementById('panel-info-fija').classList.remove('hidden');
             document.getElementById('panel-btn-crear').classList.add('hidden');
             document.getElementById('panel-historial-abonos').classList.remove('hidden');
-            
             document.getElementById('ec_monto_total_input').readOnly = true;
 
-            // Load data
             document.getElementById('op_id_fijo').value = operacion.id;
             document.getElementById('op_proveedor_fijo').value = operacion.proveedor;
             document.getElementById('op_cliente_fijo').value = operacion.cliente;
@@ -562,15 +1035,8 @@
             }
         }
         
-        function abrirNuevaConciliacion() {
-            configurarModalParaCreacion();
-        }
-
-        function abrirConciliacionExistente(opId) {
-            const operacion = DB.operaciones.find(op => op.id === opId);
-            if (!operacion) { alert("Error: Operación no encontrada."); return; }
-            configurarModalParaConciliacion(operacion);
-        }
+        function abrirNuevaConciliacion() { configurarModalParaCreacion(); }
+        function abrirConciliacionExistente(opId) { const operacion = DB.operaciones.find(op => op.id === opId); if (operacion) configurarModalParaConciliacion(operacion); }
 
         function crearExpediente() {
             const proveedor = document.getElementById('op_proveedor_creacion').value;
@@ -579,40 +1045,23 @@
             const monto = parseFloat(document.getElementById('ec_monto_total_input').value);
 
             if(!proveedor || !cliente.trim() || !aliado || monto <= 0) {
-                alert("🔴 BLOQUEO: Todos los campos son obligatorios y el monto debe ser mayor a cero para crear el expediente.");
+                alert("🔴 BLOQUEO: Todos los campos son obligatorios y el monto debe ser mayor a cero.");
                 return;
             }
-
-            const nuevaOperacion = {
-                id: document.getElementById('op_id_creacion').value,
-                proveedor: proveedor,
-                cliente: cliente,
-                aliadoResponsable: aliado,
-                montoTotal: monto,
-                totalRecaudado: 0,
-                moneda: '$', // Asumiendo USD por defecto para nuevas operaciones manuales
-                estatus: 'EN PROCESO',
-                abonos: []
-            };
-
+            const nuevaOperacion = { id: document.getElementById('op_id_creacion').value, proveedor, cliente, aliadoResponsable: aliado, montoTotal: monto, totalRecaudado: 0, moneda: '$', estatus: 'EN PROCESO', abonos: [] };
             DB.operaciones.push(nuevaOperacion);
-            renderizarTablas();
-            alert("✅ EXPEDIENTE CREADO: La nueva operación de conciliación ha sido registrada.");
+            renderTablaCertificaciones();
+            alert("✅ EXPEDIENTE CREADO.");
             configurarModalParaConciliacion(nuevaOperacion);
         }
         
         function actualizarEstadoCuenta(operacion) {
-            const montoTotal = operacion.montoTotal;
             const totalRecaudado = operacion.abonos.filter(ab => ab.estatus === 'PAGADO').reduce((sum, ab) => sum + ab.monto, 0);
-            const saldoPendiente = montoTotal - totalRecaudado;
-
             operacion.totalRecaudado = totalRecaudado; 
-
-            document.getElementById('ec_monto_total_input').value = montoTotal.toFixed(2);
-            document.getElementById('ec_total_recaudado').textContent = `${totalRecaudado.toFixed(2)}`;
-            document.getElementById('ec_saldo_pendiente').textContent = `${saldoPendiente.toFixed(2)}`;
-            
-             if (saldoPendiente <= 0 && operacion.estatus !== 'PAGADO') {
+            document.getElementById('ec_monto_total_input').value = operacion.montoTotal.toFixed(2);
+            document.getElementById('ec_total_recaudado').textContent = totalRecaudado.toFixed(2);
+            document.getElementById('ec_saldo_pendiente').textContent = (operacion.montoTotal - totalRecaudado).toFixed(2);
+            if ((operacion.montoTotal - totalRecaudado) <= 0 && operacion.estatus !== 'PAGADO') {
                 operacion.estatus = 'PAGADO';
                 document.getElementById('panel-nuevo-abono').classList.add('hidden');
             }
@@ -638,33 +1087,22 @@
         
         function validarInputsAbono() {
             const monto = parseFloat(document.getElementById('abono_monto').value) || 0;
-            const boveda = document.getElementById('abono_boveda').value;
-            const hash = document.getElementById('abono_hash').value;
             const opId = document.getElementById('op_id_fijo').value;
             const operacion = DB.operaciones.find(op => op.id === opId);
             const saldoPendiente = operacion.montoTotal - operacion.totalRecaudado;
-
-            const btn = document.getElementById('btn-registrar-abono');
-            let valido = true;
-
-            if (!monto || monto <= 0 || monto > saldoPendiente) valido = false;
-            if (!boveda) valido = false;
-            if (!hash.trim()) valido = false;
-
-            btn.disabled = !valido;
+            const valido = monto > 0 && monto <= saldoPendiente && document.getElementById('abono_boveda').value && document.getElementById('abono_hash').value.trim();
+            document.getElementById('btn-registrar-abono').disabled = !valido;
         }
 
         function registrarAbono() {
             const opId = document.getElementById('op_id_fijo').value;
             const operacion = DB.operaciones.find(op => op.id === opId);
-            const nuevoAbono = { id: `ABN-${Date.now()}`, monto: parseFloat(document.getElementById('abono_monto').value), boveda: document.getElementById('abono_boveda').value, hash: document.getElementById('abono_hash').value, estatus: 'EN PROCESO' };
+            const nuevoAbono = { id: `ABN-${Date.now()}`, monto: parseFloat(document.getElementById('abono_monto').value), boveda: document.getElementById('abono_boveda').value, hash: document.getElementById('abono_hash').value.toUpperCase(), estatus: 'EN PROCESO' };
             operacion.abonos.push(nuevoAbono);
-            document.getElementById('abono_monto').value = '';
-            document.getElementById('abono_boveda').value = '';
-            document.getElementById('abono_hash').value = '';
+            ['abono_monto', 'abono_boveda', 'abono_hash'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('btn-registrar-abono').disabled = true;
             abrirConciliacionExistente(opId);
-            renderizarTablas();
+            renderTablaCertificaciones();
         }
         
         function cambiarStatusAbono(opId, abonoId, nuevoStatus) {
@@ -672,45 +1110,32 @@
              const abono = operacion.abonos.find(ab => ab.id === abonoId);
              abono.estatus = nuevoStatus;
              abrirConciliacionExistente(opId);
-             renderizarTablas();
-        }
-
-        // --- LÓGICA RED MAESTRA ---
-        function resetFichaDirectorio() { document.getElementById('provModal').querySelectorAll('input, select').forEach(el => { if(el.tagName === 'SELECT') el.selectedIndex = 0; else el.value = ''; el.classList.remove('input-error'); }); document.getElementById('phone-container').innerHTML = ''; document.getElementById('email-container').innerHTML = ''; addDynamicField('phone-container', 'phone'); addDynamicField('email-container', 'email'); }
-        function addDynamicField(containerId, type) { const c = document.getElementById(containerId), d = document.createElement('div'); d.className = 'dynamic-row'; d.innerHTML = type === 'phone' ? `<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="SI">🟢 WHATSAPP</option><option value="NO" selected>📞 LLAMADA</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>` : `<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <select class="is-validated" style="visibility:hidden;"><option value="SI">VERIFICADO</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>`; c.appendChild(d); }
-        function iniciarGuardadoProv() { let esValido = true; ['prov_nombre', 'prov_rif', 'prov_pais'].forEach(id => { const el = document.getElementById(id); if (!el.value.trim()) { el.classList.add('input-error'); esValido = false; } else { el.classList.remove('input-error'); } }); const correo = document.querySelector('#email-container .prov-email'); if (!correo || !correo.value.trim()) { if(correo) correo.classList.add('input-error'); esValido = false; alert("⚠️ BLOQUEO: Se requiere al menos un correo electrónico."); } if (esValido && confirm("🏛️ ¿Confirma el registro del nuevo aliado en la Red Maestra?")) { ejecutarGuardadoProv(); } }
-        async function ejecutarGuardadoProv() {
-            const nuevoProveedor = { ID_ALIADO: `ORB-${String(DB.proveedores.length + 1).padStart(3, '0')}`, CATEGORIA: document.getElementById('prov_cat').value, NOMBRE_LEGAL: document.getElementById('prov_nombre').value, RIF_TAX_ID: document.getElementById('prov_rif').value, PAIS: document.getElementById('prov_pais').value, MONEDA_BASE: document.getElementById('prov_moneda').value, TELEFONOS: Array.from(document.querySelectorAll('.prov-phone')).map((input, i) => `${input.value} (WHATSAPP: ${document.querySelectorAll('.is-whatsapp')[i].value})`).join('; '), CORREOS: Array.from(document.querySelectorAll('.prov-email')).map(input => input.value).join('; ') };
-            DB.proveedores.push(nuevoProveedor);
-            renderTablaProveedores();
-            actualizarDropdownsAliados();
-            alert("✅ REGISTRO EN RED MAESTRA EXITOSO.");
-            closeModal('provModal');
+             renderTablaCertificaciones();
         }
 
         // --- LÓGICA COTIZADOR ESTRATÉGICO ---
-        function agregarPaquete(){
-            const c=document.getElementById("paquetes-container"), d=document.createElement("div");
-            d.className="pkg-grid";
-            d.innerHTML=`<input type="number" class="pkg-cant" value="1" onfocus="this.select()"><input type="text" class="pkg-concepto" placeholder="EJ: HOTEL"><select class="pkg-servicio"><option value="Hotel" selected>🏨 HOTEL</option><option value="Tour">🏞️ TOUR</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="pkg-tipo-hab"><option>SENCILLA</option><option>DOBLE</option></select><input type="number" class="pkg-dias" value="0"><input type="number" class="pkg-noches" value="0"><input type="number" class="pkg-precio" placeholder="0.00"><input type="number" class="pkg-comision-unit" placeholder="0.00"><input type="number" class="pkg-comision-total" placeholder="0.00" readonly><input type="number" class="pkg-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.pkg-grid').remove();actualizarCalculosCotizador();">X</button>`;
+        function agregarPaquete() {
+            const c = document.getElementById("paquetes-container"), d = document.createElement("div");
+            d.className = "pkg-grid";
+            d.innerHTML = `<input type="number" class="pkg-cant" value="1" onfocus="this.select()"><input type="text" class="pkg-concepto" placeholder="EJ: HOTEL"><select class="pkg-servicio"><option value="Hotel" selected>🏨 HOTEL</option><option value="Tour">🏞️ TOUR</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="pkg-tipo-hab"><option>SENCILLA</option><option>DOBLE</option></select><input type="number" class="pkg-dias" value="0"><input type="number" class="pkg-noches" value="0"><input type="number" class="pkg-precio" placeholder="0.00"><input type="number" class="pkg-comision-unit" placeholder="0.00"><input type="number" class="pkg-comision-total" placeholder="0.00" readonly><input type="number" class="pkg-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.pkg-grid').remove();actualizarCalculosCotizador();">X</button>`;
             c.appendChild(d);
         }
 
         function agregarFilaSeguroAutomatizada() {
-            const c=document.getElementById("singles-container"), d=document.createElement("div");
-            d.className="single-grid";
+            const c = document.getElementById("singles-container"), d = document.createElement("div");
+            d.className = "single-grid";
             d.id = "assist-card-row";
-            d.innerHTML=`<input type="text" class="single-proveedor" value="ASSIST CARD" readonly><select class="single-servicio" disabled><option value="Seguro Interno" selected>🛡️ Seguro Interno</option></select><select class="row-target" disabled><option value="TODOS" selected>TODOS</option></select><select class="single-tipo" disabled><option selected>DÍA</option></select><input type="number" class="single-cant" id="assist-card-cant" value="0" readonly><input type="number" class="single-costo" value="2.00" readonly><input type="number" class="single-total-costo" placeholder="0.00" readonly><input type="number" class="single-comision-unit" value="1.00" readonly><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><div style="display:flex;align-items:center;justify-content:center;">🔒</div>`;
+            d.innerHTML = `<input type="text" class="single-proveedor" value="ASSIST CARD" readonly><select class="single-servicio" disabled><option value="Seguro Interno" selected>🛡️ Seguro Interno</option></select><select class="row-target" disabled><option value="TODOS" selected>TODOS</option></select><select class="single-tipo" disabled><option selected>DÍA</option></select><input type="number" class="single-cant" id="assist-card-cant" value="0" readonly><input type="number" class="single-costo" value="2.00" readonly><input type="number" class="single-total-costo" placeholder="0.00" readonly><input type="number" class="single-comision-unit" value="1.00" readonly><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><div style="display:flex;align-items:center;justify-content:center;">🔒</div>`;
             c.appendChild(d);
         }
-        
-        function agregarServicioIndividual(){
-            const c=document.getElementById("singles-container"), d=document.createElement("div");
-            d.className="single-grid";
-            d.innerHTML=`<input type="text" class="single-proveedor" placeholder="EJ: DELTA"><select class="single-servicio" onchange="handleServiceChange(this)"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Hotel">🏨 Hotel</option><option value="Seguro Externo">🛡️ Seguro Externo</option><option value="Otro">➕ Otro</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="1"><input type="number" class="single-costo" placeholder="0.00"><input type="number" class="single-total-costo" placeholder="0.00" readonly><input type="number" class="single-comision-unit" placeholder="0.00"><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove();actualizarCalculosCotizador();">X</button>`;
+
+        function agregarServicioIndividual() {
+            const c = document.getElementById("singles-container"), d = document.createElement("div");
+            d.className = "single-grid";
+            d.innerHTML = `<input type="text" class="single-proveedor" placeholder="EJ: DELTA"><select class="single-servicio" onchange="handleServiceChange(this)"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Hotel">🏨 Hotel</option><option value="Seguro Externo">🛡️ Seguro Externo</option><option value="Otro">➕ Otro</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="1"><input type="number" class="single-costo" placeholder="0.00"><input type="number" class="single-total-costo" placeholder="0.00" readonly><input type="number" class="single-comision-unit" placeholder="0.00"><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove();actualizarCalculosCotizador();">X</button>`;
             c.appendChild(d);
         }
-        
+
         function handleServiceChange(selectElement) {
             const fila = selectElement.closest('.single-grid');
             const comisionInput = fila.querySelector('.single-comision-unit');
@@ -724,33 +1149,34 @@
             actualizarCalculosCotizador();
         }
 
-        function agregarPax(){
-            const c=document.getElementById("pax-container"), d=document.createElement("div");
-            d.className="pax-grid";
-            d.innerHTML=`<input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"><select class="pax-tipo"><option value="ADULTO">ADULTO</option><option value="NIÑO">NIÑO</option><option value="INFANTE">INFANTE</option><option value="MASCOTA">MASCOTA</option></select><input type="text" class="pax-id" placeholder="ID / DNI"><input type="number" class="pax-costo" placeholder="0.00" readonly><input type="number" class="pax-comision" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.pax-grid').remove();actualizarCalculosCotizador();">X</button>`;
+        function agregarPax() {
+            const c = document.getElementById("pax-container"), d = document.createElement("div");
+            d.className = "pax-grid";
+            d.innerHTML = `<input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"><select class="pax-tipo"><option value="ADULTO">ADULTO</option><option value="NIÑO">NIÑO</option><option value="INFANTE">INFANTE</option><option value="MASCOTA">MASCOTA</option></select><input type="text" class="pax-id" placeholder="ID / DNI"><input type="number" class="pax-costo" placeholder="0.00" readonly><input type="number" class="pax-comision" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.pax-grid').remove();actualizarCalculosCotizador();">X</button>`;
             c.appendChild(d);
             actualizarCalculosCotizador();
         }
-        
-        function agregarTaxCot(n="",v="",e=!1){const t=document.getElementById("contenedor-taxes-cot"),d=document.createElement("div");d.className="tax-grid tax-row";const l=e?"readonly":"",s=e?'style="visibility:hidden"':"";d.innerHTML=`<button type="button" class="pin-btn" style="visibility:hidden">📌</button><input type="text" class="tax-name" value="${n}" ${l}><div style="position:relative"><input type="number" class="tax-val" value="${v}" step="any"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" ${s} onclick="this.parentElement.remove();actualizarCalculosCotizador()">X</button>`,t.appendChild(d),actualizarCalculosCotizador()}
-        
+
+        function agregarTaxCot(n = "", v = "", e = !1) {
+            const t = document.getElementById("contenedor-taxes-cot"), d = document.createElement("div");
+            d.className = "tax-grid tax-row";
+            const l = e ? "readonly" : "", s = e ? 'style="visibility:hidden"' : "";
+            d.innerHTML = `<button type="button" class="pin-btn" style="visibility:hidden">📌</button><input type="text" class="tax-name" value="${n}" ${l}><div style="position:relative"><input type="number" class="tax-val" value="${v}" step="any"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" ${s} onclick="this.parentElement.remove();actualizarCalculosCotizador()">X</button>`;
+            t.appendChild(d);
+            actualizarCalculosCotizador();
+        }
+
         function actualizarCalculosCotizador() {
             let seguroExternoActivo = Array.from(document.querySelectorAll('#singles-container .single-servicio')).some(s => s.value === 'Seguro Externo');
-            
             const filasPax = document.querySelectorAll('#pax-container .pax-grid');
             const totalPax = filasPax.length;
             let paxCounts = { ADULTO: 0, NIÑO: 0, INFANTE: 0, MASCOTA: 0 };
             filasPax.forEach(fila => paxCounts[fila.querySelector('.pax-tipo').value]++);
-
             const assistCardCantInput = document.getElementById('assist-card-cant');
-            if (assistCardCantInput) {
-                assistCardCantInput.value = seguroExternoActivo ? 0 : totalPax;
-            }
-
+            if (assistCardCantInput) { assistCardCantInput.value = seguroExternoActivo ? 0 : totalPax; }
             let costosPorTarget = { TODOS: 0, ADULTOS: 0, NIÑOS: 0, INFANTES: 0, MASCOTAS: 0 };
             let comisionesPorTarget = { TODOS: 0, ADULTOS: 0, NIÑOS: 0, INFANTES: 0, MASCOTAS: 0 };
             let costosSinAsignar = 0;
-
             document.querySelectorAll('#paquetes-container .pkg-grid').forEach(f => {
                 const target = f.querySelector('.row-target').value;
                 const cant = parseFloat(f.querySelector('.pkg-cant').value) || 0;
@@ -763,7 +1189,6 @@
                 costosPorTarget[target] += costoTotal;
                 comisionesPorTarget[target] += comisionTotal;
             });
-
             document.querySelectorAll('#singles-container .single-grid').forEach(f => {
                 const esSeguroExterno = f.querySelector('.single-servicio').value === 'Seguro Externo';
                 const target = f.querySelector('.row-target').value;
@@ -788,17 +1213,14 @@
                 costosPorTarget[target] += costoTotal;
                 comisionesPorTarget[target] += comisionTotal;
             });
-            
             document.getElementById('manifiesto-container').textContent = `Manifiesto Orbis: [${paxCounts.ADULTO}] Adultos, [${paxCounts.NIÑO}] Niños, [${paxCounts.INFANTE}] Infantes, [${paxCounts.MASCOTA}] Mascotas`;
-
             let totalCostoGlobal = 0, totalComisionGlobal = 0;
-            if (paxCounts.ADULTO === 0) costosSinAsignar += costosPorTarget.ADULTOS + comisionesPorTarget.ADULTOS; else { totalCostoGlobal += costosPorTarget.ADULTOS; totalComisionGlobal += comisionesPorTarget.ADULTOS; }
-            if (paxCounts.NIÑO === 0) costosSinAsignar += costosPorTarget.NIÑOS + comisionesPorTarget.NIÑOS; else { totalCostoGlobal += costosPorTarget.NIÑOS; totalComisionGlobal += comisionesPorTarget.NIÑOS; }
-            if (paxCounts.INFANTE === 0) costosSinAsignar += costosPorTarget.INFANTES + comisionesPorTarget.INFANTES; else { totalCostoGlobal += costosPorTarget.INFANTES; totalComisionGlobal += comisionesPorTarget.INFANTES; }
-            if (paxCounts.MASCOTA === 0) costosSinAsignar += costosPorTarget.MASCOTAS + comisionesPorTarget.MASCOTAS; else { totalCostoGlobal += costosPorTarget.MASCOTAS; totalComisionGlobal += comisionesPorTarget.MASCOTAS; }
+            if (paxCounts.ADULTO === 0) { costosSinAsignar += costosPorTarget.ADULTOS + comisionesPorTarget.ADULTOS; } else { totalCostoGlobal += costosPorTarget.ADULTOS; totalComisionGlobal += comisionesPorTarget.ADULTOS; }
+            if (paxCounts.NIÑO === 0) { costosSinAsignar += costosPorTarget.NIÑOS + comisionesPorTarget.NIÑOS; } else { totalCostoGlobal += costosPorTarget.NIÑOS; totalComisionGlobal += comisionesPorTarget.NIÑOS; }
+            if (paxCounts.INFANTE === 0) { costosSinAsignar += costosPorTarget.INFANTES + comisionesPorTarget.INFANTES; } else { totalCostoGlobal += costosPorTarget.INFANTES; totalComisionGlobal += comisionesPorTarget.INFANTES; }
+            if (paxCounts.MASCOTA === 0) { costosSinAsignar += costosPorTarget.MASCOTAS + comisionesPorTarget.MASCOTAS; } else { totalCostoGlobal += costosPorTarget.MASCOTAS; totalComisionGlobal += comisionesPorTarget.MASCOTAS; }
             totalCostoGlobal += costosPorTarget.TODOS;
             totalComisionGlobal += comisionesPorTarget.TODOS;
-
             filasPax.forEach(fila => {
                 const tipoPax = fila.querySelector('.pax-tipo').value;
                 let costoPax = 0, comisionPax = 0;
@@ -807,33 +1229,29 @@
                     comisionPax += comisionesPorTarget.TODOS / totalPax;
                 }
                 switch (tipoPax) {
-                    case 'ADULTO': if(paxCounts.ADULTO > 0) { costoPax += costosPorTarget.ADULTOS / paxCounts.ADULTO; comisionPax += comisionesPorTarget.ADULTOS / paxCounts.ADULTO; } break;
-                    case 'NIÑO': if(paxCounts.NIÑO > 0) { costoPax += costosPorTarget.NIÑOS / paxCounts.NIÑO; comisionPax += comisionesPorTarget.NIÑOS / paxCounts.NIÑO; } break;
-                    case 'INFANTE': if(paxCounts.INFANTE > 0) { costoPax += costosPorTarget.INFANTES / paxCounts.INFANTE; comisionPax += comisionesPorTarget.INFANTES / paxCounts.INFANTE; } break;
-                    case 'MASCOTA': if(paxCounts.MASCOTA > 0) { costoPax += costosPorTarget.MASCOTAS / paxCounts.MASCOTA; comisionPax += comisionesPorTarget.MASCOTAS / paxCounts.MASCOTA; } break;
+                    case 'ADULTO': if (paxCounts.ADULTO > 0) { costoPax += costosPorTarget.ADULTOS / paxCounts.ADULTO; comisionPax += comisionesPorTarget.ADULTOS / paxCounts.ADULTO; } break;
+                    case 'NIÑO': if (paxCounts.NIÑO > 0) { costoPax += costosPorTarget.NIÑOS / paxCounts.NIÑO; comisionPax += comisionesPorTarget.NIÑOS / paxCounts.NIÑO; } break;
+                    case 'INFANTE': if (paxCounts.INFANTE > 0) { costoPax += costosPorTarget.INFANTES / paxCounts.INFANTE; comisionPax += comisionesPorTarget.INFANTES / paxCounts.INFANTE; } break;
+                    case 'MASCOTA': if (paxCounts.MASCOTA > 0) { costoPax += costosPorTarget.MASCOTAS / paxCounts.MASCOTA; comisionPax += comisionesPorTarget.MASCOTAS / paxCounts.MASCOTA; } break;
                 }
                 fila.querySelector('.pax-costo').value = costoPax.toFixed(2);
                 fila.querySelector('.pax-comision').value = comisionPax.toFixed(2);
             });
-            
             const subtotal = totalCostoGlobal + totalComisionGlobal + costosSinAsignar;
             const sym = document.getElementById('cot_moneda').value;
             const tasaCambio = TASAS_CAMBIO[sym] || 1.00;
             const feeOrbis = (seguroExternoActivo ? FEE_ORBIS_BASE : (FEE_ORBIS_BASE + FEE_ORBIS_PROTECT)) * tasaCambio;
-            
             const baseImponibleReal = subtotal;
-            let totalImpuestos = 0, totalRetenciones = 0;
+            let totalImpuestos = 0; let totalRetenciones = 0;
             document.querySelectorAll('#contenedor-taxes-cot .tax-grid').forEach(r => {
                 const tasaPorcentaje = parseFloat(r.querySelector('.tax-val').value);
                 if (!isNaN(tasaPorcentaje)) {
-                    if (tasaPorcentaje > 0) totalImpuestos += baseImponibleReal * (tasaPorcentaje / 100);
-                    else if (tasaPorcentaje < 0) totalRetenciones += baseImponibleReal * (tasaPorcentaje / 100);
+                    if (tasaPorcentaje > 0) { totalImpuestos += baseImponibleReal * (tasaPorcentaje / 100); }
+                    else if (tasaPorcentaje < 0) { totalRetenciones += baseImponibleReal * (tasaPorcentaje / 100); }
                 }
             });
-            
             const escudoOro = (baseImponibleReal + feeOrbis) * ESCUDO_ORO_PORC;
             const granTotal = baseImponibleReal + totalImpuestos + feeOrbis + escudoOro + totalRetenciones;
-
             document.getElementById('cot-subtotal').innerHTML = `${subtotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-impuestos').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-retenciones').innerHTML = `${Math.abs(totalRetenciones).toFixed(2)} <span class="curr-sym">${sym}</span>`;
@@ -857,18 +1275,28 @@
             }
             return true;
         }
-
-        function generarPDFCotizacion() { if (!validarCoberturaTotal()) return; alert("Construyendo documento PDF..."); }
         
-        // V16.9: PUENTE HACIA CONCILIACIÓN
         function puenteHaciaConciliacion() {
             if (!validarCoberturaTotal()) return;
             const granTotal = parseFloat(document.getElementById('cot-gran-total').textContent);
             if (granTotal <= 0) { alert("🔴 BLOQUEO: El monto total no puede ser cero."); return; }
+            
+            const cliente = document.getElementById('cot_cliente_simple').value.toUpperCase();
+            if (!cliente) {
+                alert("🔴 BLOQUEO: Debe ingresar un nombre de cliente para el registro.");
+                return;
+            }
+
+            const idCot = `COT-${Date.now()}`;
+            const fecha = new Date().toLocaleDateString();
+            const total = `${granTotal.toFixed(2)} ${document.getElementById('cot_moneda').value}`;
+            DB.cotizaciones.push({id: idCot, cliente, fecha, total});
+            renderTablaCotizaciones();
 
             closeModal('cotizadorModal');
             configurarModalParaCreacion(granTotal);
-            alert("🏛️ PUENTE DE DATOS ACTIVADO: Se ha transferido el monto total. Por favor, complete la información y cree el expediente de conciliación.");
+            document.getElementById('op_cliente_creacion').value = cliente; // Pasar el nombre del cliente
+            alert("🏛️ PUENTE DE DATOS ACTIVADO: Se ha transferido el monto total y el cliente. Por favor, complete la información y cree el expediente de conciliación.");
         }
     </script>
 </body>
