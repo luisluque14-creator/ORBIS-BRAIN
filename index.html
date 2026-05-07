@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v17.1</title>
+    <title>ORBIS BRAIN | Master v17.2</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -111,7 +111,7 @@
             50% { box-shadow: 0 0 30px #ffcc00, 0 0 60px #f1d592; }
         }
 
-        /* --- V17.0: AUTH MODALS --- */
+        /* --- V17.2: AUTH MODALS (Z-INDEX CORREGIDO) --- */
         .auth-modal {
             display: none;
             position: fixed;
@@ -120,7 +120,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.96);
-            z-index: 9998;
+            z-index: 10000; /* CORRECCIÓN: 9998 -> 10000 */
             justify-content: center;
             align-items: center;
             backdrop-filter: blur(10px);
@@ -665,9 +665,9 @@
     </div>
     
     <div class="main-container hidden" id="main-app">
-        <!-- V17.1: SIDEBAR -->
+        <!-- V17.2: SIDEBAR -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V17.1</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V17.2</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Conciliación de Pagos</button>
@@ -799,7 +799,7 @@
 
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v17.1)
+        //                      JAVASCRIPT UNIFICADO (v17.2)
         // =======================================================================
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
         const FEE_ORBIS_BASE = 5.00;
@@ -810,7 +810,7 @@
         let orbisSession = null;
         let DB = { operaciones: [], cotizaciones: [] };
 
-        // --- V17.0: LÓGICA DE AUTENTICACIÓN Y SESIÓN ---
+        // --- LÓGICA DE AUTENTICACIÓN Y SESIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('register_submit').addEventListener('click', handleRegister);
             document.getElementById('login_submit').addEventListener('click', handleLogin);
@@ -1295,7 +1295,7 @@
 
             closeModal('cotizadorModal');
             configurarModalParaCreacion(granTotal);
-            document.getElementById('op_cliente_creacion').value = cliente; // Pasar el nombre del cliente
+            document.getElementById('op_cliente_creacion').value = cliente;
             alert("🏛️ PUENTE DE DATOS ACTIVADO: Se ha transferido el monto total y el cliente. Por favor, complete la información y cree el expediente de conciliación.");
         }
     </script>
