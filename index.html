@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v17.4</title>
+    <title>ORBIS BRAIN | Master v17.8</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -357,7 +357,8 @@
         .btn-add-small { 
             background: transparent; 
             border: 1px dashed var(--gold-metalic); 
-            color: var(--gold-metalic); padding: 8px; 
+            color: var(--gold-metalic); 
+            padding: 8px; 
             border-radius: 5px; 
             cursor: pointer; 
             font-size: 12px; 
@@ -639,9 +640,147 @@
             gap: 15px;
             align-items: flex-end;
         }
+        
+        /* --- MOTOR PDF NATIVO --- */
+        #documento-pdf {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height */
+            background: white;
+            color: black;
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            padding: 15mm;
+            box-sizing: border-box;
+            z-index: -100;
+            visibility: hidden;
+        }
+        
+        .pdf-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .pdf-logo { width: 150px; }
+        .pdf-header-info { text-align: right; font-size: 11px; }
+        .pdf-title { text-align: center; font-size: 22px; font-weight: bold; margin: 20px 0; letter-spacing: 2px; }
+        .pdf-client-info { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: #f4f4f4; padding: 15px; border-radius: 5px; font-size: 12px; margin-bottom: 20px; }
+        .pdf-section-title { font-size: 16px; font-weight: bold; color: #333; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-top: 25px; margin-bottom: 15px; }
+        .pdf-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        .pdf-table th, .pdf-table td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .pdf-table th { background-color: #f2f2f2; font-weight: bold; }
+        .pdf-summary { display: grid; grid-template-columns: 2fr 1fr; margin-top: 20px; font-size: 12px; }
+        .pdf-summary-labels { text-align: right; padding-right: 15px; font-weight: bold; }
+        .pdf-summary-values { text-align: right; }
+        .pdf-grand-total { font-size: 16px; font-weight: bold; }
+        .pdf-footer { position: absolute; bottom: 15mm; left: 15mm; right: 15mm; display: flex; justify-content: space-between; align-items: flex-end; font-size: 10px; color: #777; border-top: 1px solid #ccc; padding-top: 10px; }
+        #pdf-qr-code { width: 80px; height: 80px; }
+        
+        .hidden-print {
+            display: block; /* o flex, grid, etc. */
+        }
+
+        @media print {
+            body, .main-container, .modal {
+                display: none !important;
+            }
+            .hidden-print {
+                display: none !important;
+            }
+            #documento-pdf {
+                display: block !important;
+                position: static;
+                z-index: 10000;
+                visibility: visible;
+                width: 100%;
+                min-height: 0;
+                margin: 0;
+                padding: 0;
+                border: none;
+                box-shadow: none;
+            }
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- MOTOR PDF (ESTRUCTURA OCULTA) -->
+    <div id="documento-pdf" class="hidden-print">
+        <div class="pdf-header">
+            <img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis-black.png" alt="ORBIS Logo" class="pdf-logo">
+            <div class="pdf-header-info">
+                <strong>ORBIS MASTER OPERATOR</strong><br>
+                RIF: J-50012345-6<br>
+                <span id="pdf-header-fecha"></span><br>
+                Cotización ID: <span id="pdf-header-cot-id"></span>
+            </div>
+        </div>
+
+        <div class="pdf-title">COTIZACIÓN ESTRATÉGICA</div>
+
+        <div class="pdf-client-info">
+            <div>
+                <strong>CLIENTE:</strong> <span id="pdf-client-nombre"></span><br>
+                <strong>CONTACTO:</strong> <span id="pdf-client-id"></span>
+            </div>
+            <div>
+                <strong>ALIADO EMISOR:</strong> <span id="pdf-aliado-nombre"></span><br>
+                <strong>ID:</strong> <span id="pdf-aliado-id"></span>
+            </div>
+        </div>
+
+        <div class="pdf-section-title">DETALLE DE SERVICIOS</div>
+        <table class="pdf-table">
+            <thead id="pdf-tabla-servicios-head">
+                <tr>
+                    <th>Cant.</th>
+                    <th>Concepto</th>
+                    <th>Servicio</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="pdf-tabla-servicios-body"></tbody>
+        </table>
+
+        <div class="pdf-section-title">MANIFIESTO DE PASAJEROS</div>
+        <table class="pdf-table">
+            <thead>
+                <tr>
+                    <th>Nombre Pasajero</th>
+                    <th>Categoría</th>
+                    <th>ID / DNI</th>
+                </tr>
+            </thead>
+            <tbody id="pdf-tabla-pax-body"></tbody>
+        </table>
+
+        <div class="pdf-summary">
+            <div><!-- Espacio en blanco --></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px 20px;">
+                <div class="pdf-summary-labels">SUBTOTAL:</div>
+                <div class="pdf-summary-values" id="pdf-summary-subtotal"></div>
+                <div class="pdf-summary-labels">IMPUESTOS:</div>
+                <div class="pdf-summary-values" id="pdf-summary-impuestos"></div>
+                <div class="pdf-summary-labels">FEE ORBIS:</div>
+                <div class="pdf-summary-values" id="pdf-summary-fee"></div>
+                <div class="pdf-summary-labels">ESCUDO ORO:</div>
+                <div class="pdf-summary-values" id="pdf-summary-escudo"></div>
+                <div class="pdf-summary-labels">RETENCIONES:</div>
+                <div class="pdf-summary-values" id="pdf-summary-retenciones"></div>
+                <div class="pdf-summary-labels pdf-grand-total">GRAN TOTAL:</div>
+                <div class="pdf-summary-values pdf-grand-total" id="pdf-summary-total"></div>
+            </div>
+        </div>
+
+        <div class="pdf-footer">
+            <div id="pdf-qr-code"></div>
+            <div>
+                <em>Este documento es una cotización y no representa un compromiso de pago.</em><br>
+                <em>Precios sujetos a cambio sin previo aviso. Válido por 48 horas.</em>
+            </div>
+        </div>
+    </div>
+
     <!-- PORTAL DE IDENTIDAD -->
     <div id="splash-screen">
         <div class="splash-block">
@@ -687,7 +826,7 @@
     <div class="main-container hidden" id="main-app">
         <!-- SIDEBAR -->
         <div class="sidebar">
-            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V17.4</div></div>
+            <div class="logo-container"><img src="https://raw.githubusercontent.com/luisluque14-creator/ORBIS-BRAIN/main/logo-orbis.png" alt="ORBIS BRAIN" class="sidebar-logo"><div style="font-size: 9px; color: var(--gold-soft); letter-spacing: 2px; margin-top: 10px;">V17.8</div></div>
             <button id="nav-directorio" class="nav-btn" onclick="showView('directorio', this)">👥 Red Maestra</button>
             <button id="nav-cotizador" class="nav-btn" onclick="showView('cotizador', this)">🧾 Cotizador Estratégico</button>
             <button id="nav-certificacion" class="nav-btn" onclick="showView('certificacion', this)">🏛️ Conciliación de Pagos</button>
@@ -738,7 +877,7 @@
                 <div class="estado-cuenta-box">
                     <div class="ec-item">
                         <div class="ec-label">Monto Total de la Deuda</div>
-                        <input type="number" id="ec_monto_total_input" class="ec-value" value="0.00" style="width:100%; text-align:center; background:transparent; border:none; padding:0;">
+                        <input type="number" id="ec_monto_total_input" class="ec-value" value="0.00" style="width:100%; text-align:center; background:transparent; border:none; padding:0;" onfocus="this.select()">
                     </div>
                     <div class="ec-item"><div class="ec-label">Total Recaudado</div><div class="ec-value" id="ec_total_recaudado">0.00</div></div>
                     <div class="ec-item"><div class="ec-label">Saldo Pendiente</div><div class="ec-value" id="ec_saldo_pendiente">0.00</div></div>
@@ -748,7 +887,7 @@
                 <div id="panel-nuevo-abono" class="form-section hidden">
                      <h3 class="form-section-header">REGISTRAR NUEVO ABONO</h3>
                      <div class="recaudo-grid">
-                        <div><label for="abono_monto">Monto del Abono *</label><input type="number" id="abono_monto" placeholder="0.00" oninput="validarInputsAbono()"></div>
+                        <div><label for="abono_monto">Monto del Abono *</label><input type="number" id="abono_monto" placeholder="0.00" oninput="validarInputsAbono()" onfocus="this.select()"></div>
                         <div><label for="abono_boveda">Bóveda de Destino *</label><select id="abono_boveda" onchange="validarInputsAbono()"><option value="" disabled selected>SELECCIONE BÓVEDA</option><option value="ZELLE">ZELLE</option><option value="BINANCE_USDT">BINANCE USDT</option><option value="ZINLI">ZINLI</option><option value="PAYPAL">PAYPAL</option><option value="EFECTIVO">EFECTIVO</option><option value="BANCO_NACIONAL">BANCO NACIONAL</option></select></div>
                         <div><label for="abono_hash">Hash / Referencia *</label><input type="text" id="abono_hash" placeholder="CÓDIGO DE TRANSACCIÓN O REFERENCIA" oninput="validarInputsAbono()"></div>
                      </div>
@@ -759,7 +898,7 @@
         </div>
     </div>
     
-    <!-- V17.4: MODAL RED MAESTRA RESTAURADO -->
+    <!-- MODAL RED MAESTRA (v17.8) -->
     <div id="provModal" class="modal">
         <div class="modal-content">
             <hr class="gold-divider"><div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div><hr class="gold-divider">
@@ -780,14 +919,13 @@
                     <button type="button" class="btn-add-small" onclick="addDynamicField('email-container', 'email')">+ Agregar Correo</button>
                 </div>
                 <div class="form-section">
-                    <label>Ubicación y Operación</label>
+                    <label>Ubicación y Credenciales</label>
                     <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom:15px;">
                         <div><label>País *</label><input type="text" id="prov_pais" placeholder="PAÍS"></div>
                         <div><label>Contraseña Acceso *</label><input type="password" id="prov_password" placeholder="DEFINIR CONTRASEÑA"></div>
                     </div>
-                    <div style="background: rgba(212, 175, 55, 0.05); padding: 15px; border-radius: 10px; border: 1px solid rgba(212, 175, 55, 0.2);">
-                        <p style="font-size: 11px; color: var(--gold-soft); margin: 0; line-height: 1.5;"><b>RED GLOBAL ORBIS:</b> Este proveedor será integrado a la red maestra para orquestación internacional y tendrá acceso al portal.</p>
-                    </div>
+                    <label>Contraseña de Autorización (Sesión Actual) *</label>
+                    <input type="password" id="prov_auth_password" placeholder="INGRESE SU CONTRASEÑA">
                 </div>
             </div>
             <button id="btn-sync-prov" class="btn-gold" style="padding: 22px; width:100%; margin-top:20px;" onclick="iniciarGuardadoProv()">REGISTRAR EN RED MAESTRA</button>
@@ -795,7 +933,7 @@
         </div>
     </div>
 
-    <!-- MODAL COTIZADOR -->
+    <!-- MODAL COTIZADOR (v17.8) -->
     <div id="cotizadorModal" class="modal">
         <div class="modal-content">
             <form id="cotizadorForm" oninput="actualizarCalculosCotizador()">
@@ -846,7 +984,6 @@
                 </div>
                 
                 <div class="action-buttons-grid">
-                     <!-- V17.4: Botón PDF con estilo VIP -->
                     <button type="button" style="width: 100%; margin: 0; background: #0a0a0a; color: var(--gold-metalic); border: 2px solid var(--gold-metalic); padding: 15px; border-radius: 8px; font-family: 'Cinzel'; font-size: 16px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; box-shadow: 0 0 10px rgba(212,175,55,0.2);" onclick="generarPDFCotizacion()">GENERAR PDF ESTRATÉGICO 📄</button>
                     <button type="button" class="btn-gold" onclick="puenteHaciaConciliacion()">PASAR A CONCILIACIÓN 🏛️</button>
                 </div>
@@ -854,10 +991,9 @@
             <button class="btn-cancel-elite" onclick="closeModal('cotizadorModal')">Cancelar</button>
         </div>
     </div>
-
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v17.4)
+        //                      JAVASCRIPT UNIFICADO (v17.8)
         // =======================================================================
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
         const FEE_ORBIS_BASE = 5.00;
@@ -867,6 +1003,7 @@
         
         let orbisSession = null;
         let DB = { operaciones: [], cotizaciones: [] };
+        let qrCodeInstance = null;
 
         // --- LÓGICA DE AUTENTICACIÓN Y SESIÓN ---
         document.addEventListener('DOMContentLoaded', () => {
@@ -896,12 +1033,31 @@
             const pais = document.getElementById('reg_pais').value;
             const rol = document.getElementById('reg_rol').value;
             const password = document.getElementById('reg_password').value;
-            if (!nombre || !rif || !pais || !rol || !password) { alert("🔴 Todos los campos son obligatorios."); return; }
+            
+            if (!nombre || !rif || !pais || !rol || !password) {
+                alert("🔴 Todos los campos son obligatorios.");
+                return;
+            }
+            
             let aliados = getAliadosDB();
-            if (aliados.some(aliado => aliado.rif === rif)) { alert("🔴 BLOQUEO: El RIF/Tax ID ya se encuentra registrado. Intente acceder."); return; }
-            const nuevoAliado = { id: `ORB-${String(aliados.length + 1).padStart(3, '0')}`, nombre, rif, pais, rol, password };
+            
+            if (aliados.some(aliado => aliado.rif === rif)) {
+                alert("🔴 BLOQUEO: El RIF/Tax ID ya se encuentra registrado. Intente acceder.");
+                return;
+            }
+            
+            const nuevoAliado = {
+                id: `ORB-${String(aliados.length + 1).padStart(3, '0')}`,
+                nombre,
+                rif,
+                pais,
+                rol,
+                password
+            };
+            
             aliados.push(nuevoAliado);
             saveAliadosDB(aliados);
+            
             alert("✅ IDENTIDAD CREADA: Registro exitoso. Ahora puede acceder con sus credenciales.");
             closeAuthModal('registerModal');
             openAuthModal('loginModal');
@@ -912,21 +1068,26 @@
             const password = document.getElementById('login_password').value;
             const esMaster = rif === 'MASTER' && password === 'ORBIS_MASTER_CONTROL';
             let aliado;
+
             if(esMaster) {
-                aliado = { nombre: 'ORBIS MASTER', rif: 'MASTER', rol: 'MASTER', esMaster: true };
+                aliado = { nombre: 'ORBIS MASTER', rif: 'MASTER', rol: 'MASTER', password: password, esMaster: true };
             } else {
                 const aliados = getAliadosDB();
                 aliado = aliados.find(a => a.rif === rif && a.password === password);
             }
+
             if (aliado) {
                 orbisSession = aliado;
                 closeAuthModal('loginModal');
                 const splash = document.getElementById('splash-screen');
                 splash.classList.add('fade-out');
+                
                 setTimeout(() => {
                     splash.style.display = 'none';
                     document.getElementById('main-app').classList.remove('hidden');
-                    if (orbisSession.esMaster) { document.body.style.setProperty('--gold-metalic', '#ff4d4d'); }
+                    if (orbisSession.esMaster) {
+                        document.body.style.setProperty('--gold-metalic', '#ff4d4d');
+                    }
                     initializeMainApp();
                 }, 500);
             } else {
@@ -944,22 +1105,32 @@
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('view-' + viewId).classList.add('active');
-            if (btn) btn.classList.add('active');
+            if (btn) {
+                btn.classList.add('active');
+            }
             renderCurrentView();
         }
 
         function renderCurrentView() {
-            if (document.getElementById('view-directorio').classList.contains('active')) renderTablaProveedores();
-            if (document.getElementById('view-certificacion').classList.contains('active')) renderTablaCertificaciones();
-            if (document.getElementById('view-cotizador').classList.contains('active')) renderTablaCotizaciones();
+            if (document.getElementById('view-directorio').classList.contains('active')) {
+                renderTablaProveedores();
+            }
+            if (document.getElementById('view-certificacion').classList.contains('active')) {
+                renderTablaCertificaciones();
+            }
+            if (document.getElementById('view-cotizador').classList.contains('active')) {
+                renderTablaCotizaciones();
+            }
         }
         
         function openModal(id) {
             const modal = document.getElementById(id);
             modal.style.display = 'flex';
+            
             if (id === 'provModal') {
                 resetFichaDirectorio();
             }
+            
             if (id === 'cotizadorModal') {
                 document.getElementById('cotizadorForm').reset();
                 ['#pax-container', '#paquetes-container', '#singles-container', '#contenedor-taxes-cot'].forEach(sel => document.querySelector(sel).innerHTML = '');
@@ -972,7 +1143,10 @@
                 actualizarCalculosCotizador();
             }
         }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
 
         // --- LÓGICA DE RENDERIZADO DE TABLAS ---
         function renderTablaProveedores() {
@@ -988,14 +1162,17 @@
             const tbody = document.getElementById('cuerpo-tabla-cert');
             tbody.innerHTML = '';
             const operacionesFiltradas = DB.operaciones.filter(op => orbisSession.esMaster || op.aliadoResponsable === orbisSession.nombre || op.proveedor === orbisSession.nombre);
+            
             operacionesFiltradas.forEach(op => {
                 const saldoPendiente = op.montoTotal - op.totalRecaudado;
                 let estatusHtml = '';
+                
                 switch(op.estatus) {
                     case 'PAGADO': estatusHtml = `<span style="color:var(--green-success)">🟢 PAGADO</span>`; break;
                     case 'EN PROCESO': estatusHtml = `<span style="color:var(--yellow-process)">🟡 EN PROCESO</span>`; break;
                     case 'RECHAZADO': estatusHtml = `<span style="color:var(--red-error)">🔴 RECHAZADO</span>`; break;
                 }
+                
                 const newRow = tbody.insertRow(0);
                 newRow.innerHTML = `<td>${op.id}</td><td>${op.proveedor}</td><td>${op.cliente}</td><td>${op.montoTotal.toFixed(2)} ${op.moneda}</td><td>${saldoPendiente.toFixed(2)} ${op.moneda}</td><td>${estatusHtml}</td><td><button class="btn-gold" style="padding: 8px 15px; font-size: 11px;" onclick="abrirConciliacionExistente('${op.id}')">CONCILIAR</button></td>`;
             });
@@ -1013,6 +1190,7 @@
         function actualizarDropdownsAliados() {
             const selects = ['#op_proveedor_creacion', '#op_aliado_responsable_creacion'];
             const aliados = getAliadosDB();
+            
             selects.forEach(selId => {
                 const select = document.querySelector(selId);
                 select.innerHTML = '<option value="" disabled selected>SELECCIONAR ALIADO</option>';
@@ -1025,11 +1203,14 @@
             });
         }
 
-        // --- V17.4: LÓGICA RED MAESTRA RESTAURADA ---
+        // --- LÓGICA RED MAESTRA (v17.8) ---
         function resetFichaDirectorio() {
             document.getElementById('provModal').querySelectorAll('input, select').forEach(el => {
-                if (el.tagName === 'SELECT') el.selectedIndex = 0;
-                else el.value = '';
+                if (el.tagName === 'SELECT') {
+                    el.selectedIndex = 0;
+                } else {
+                    el.value = '';
+                }
                 el.classList.remove('input-error');
             });
             document.getElementById('phone-container').innerHTML = '';
@@ -1039,15 +1220,23 @@
         }
 
         function addDynamicField(containerId, type) {
-            const c = document.getElementById(containerId), d = document.createElement('div');
-            d.className = 'dynamic-row';
-            d.innerHTML = type === 'phone' ? `<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="SI">🟢 WHATSAPP</option><option value="NO" selected>📞 LLAMADA</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>` : `<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <select class="is-validated" style="visibility:hidden;"><option value="SI">VERIFICADO</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>`;
-            c.appendChild(d);
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = 'dynamic-row';
+            
+            if (type === 'phone') {
+                div.innerHTML = `<input type="text" class="prov-phone" placeholder="+XXXXXXXXXX"> <select class="is-whatsapp"><option value="SI">🟢 WHATSAPP</option><option value="NO" selected>📞 LLAMADA</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>`;
+            } else {
+                div.innerHTML = `<input type="email" class="prov-email" placeholder="CORREO@EJEMPLO.COM"> <select class="is-validated" style="visibility:hidden;"><option value="SI">VERIFICADO</option></select> <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="border:none;background:transparent;font-size:18px;">×</button>`;
+            }
+            container.appendChild(div);
         }
 
         function iniciarGuardadoProv() {
             let esValido = true;
-            ['prov_nombre', 'prov_rif', 'prov_pais', 'prov_password'].forEach(id => {
+            const campos = ['prov_nombre', 'prov_rif', 'prov_pais', 'prov_password', 'prov_auth_password'];
+            
+            campos.forEach(id => {
                 const el = document.getElementById(id);
                 if (!el.value.trim()) {
                     el.classList.add('input-error');
@@ -1056,21 +1245,32 @@
                     el.classList.remove('input-error');
                 }
             });
+            
             const correo = document.querySelector('#email-container .prov-email');
             if (!correo || !correo.value.trim()) {
-                if (correo) correo.classList.add('input-error');
+                if (correo) {
+                    correo.classList.add('input-error');
+                }
                 esValido = false;
                 alert("⚠️ BLOQUEO: Se requiere al menos un correo electrónico.");
             }
+            
             if (esValido && confirm("🏛️ ¿Confirma el registro del nuevo aliado en la Red Maestra?")) {
                 ejecutarGuardadoProv();
             }
         }
         
         function ejecutarGuardadoProv() {
+            const authPassword = document.getElementById('prov_auth_password').value;
+            if (authPassword !== orbisSession.password) {
+                alert("🔴 AUTORIZACIÓN DENEGADA: La contraseña de autorización no coincide con su sesión actual.");
+                document.getElementById('prov_auth_password').classList.add('input-error');
+                return;
+            }
+
             const nombre = document.getElementById('prov_nombre').value.toUpperCase();
             const rif = document.getElementById('prov_rif').value.toUpperCase();
-            const pais = document.getElementById('prov_pais').value;
+            const pais = document.getElementById('prov_pais').value.toUpperCase();
             const rol = document.getElementById('prov_cat').value;
             const password = document.getElementById('prov_password').value;
 
@@ -1079,12 +1279,22 @@
                 alert("🔴 BLOQUEO: El RIF/Tax ID ya se encuentra registrado. Utilice la función de registro principal.");
                 return;
             }
-            const nuevoAliado = { id: `ORB-${String(aliados.length + 1).padStart(3, '0')}`, nombre, rif, pais, rol, password };
+            
+            const nuevoAliado = { 
+                id: `ORB-${String(aliados.length + 1).padStart(3, '0')}`,
+                nombre, 
+                rif, 
+                pais, 
+                rol, 
+                password 
+            };
+            
             aliados.push(nuevoAliado);
             saveAliadosDB(aliados);
 
             renderTablaProveedores();
             actualizarDropdownsAliados();
+            
             alert("✅ REGISTRO EN RED MAESTRA EXITOSO.");
             closeModal('provModal');
         }
@@ -1138,8 +1348,16 @@
             }
         }
         
-        function abrirNuevaConciliacion() { configurarModalParaCreacion(); }
-        function abrirConciliacionExistente(opId) { const operacion = DB.operaciones.find(op => op.id === opId); if (operacion) configurarModalParaConciliacion(operacion); }
+        function abrirNuevaConciliacion() { 
+            configurarModalParaCreacion(); 
+        }
+        
+        function abrirConciliacionExistente(opId) {
+            const operacion = DB.operaciones.find(op => op.id === opId);
+            if (operacion) {
+                configurarModalParaConciliacion(operacion);
+            }
+        }
 
         function crearExpediente() {
             const proveedor = document.getElementById('op_proveedor_creacion').value;
@@ -1151,19 +1369,34 @@
                 alert("🔴 BLOQUEO: Todos los campos son obligatorios y el monto debe ser mayor a cero.");
                 return;
             }
-            const nuevaOperacion = { id: document.getElementById('op_id_creacion').value, proveedor, cliente, aliadoResponsable: aliado, montoTotal: monto, totalRecaudado: 0, moneda: '$', estatus: 'EN PROCESO', abonos: [] };
+            
+            const nuevaOperacion = {
+                id: document.getElementById('op_id_creacion').value,
+                proveedor,
+                cliente,
+                aliadoResponsable: aliado,
+                montoTotal: monto,
+                totalRecaudado: 0,
+                moneda: '$',
+                estatus: 'EN PROCESO',
+                abonos: []
+            };
+            
             DB.operaciones.push(nuevaOperacion);
             renderTablaCertificaciones();
+            
             alert("✅ EXPEDIENTE CREADO.");
             configurarModalParaConciliacion(nuevaOperacion);
         }
         
         function actualizarEstadoCuenta(operacion) {
             const totalRecaudado = operacion.abonos.filter(ab => ab.estatus === 'PAGADO').reduce((sum, ab) => sum + ab.monto, 0);
-            operacion.totalRecaudado = totalRecaudado; 
+            operacion.totalRecaudado = totalRecaudado;
+            
             document.getElementById('ec_monto_total_input').value = operacion.montoTotal.toFixed(2);
             document.getElementById('ec_total_recaudado').textContent = totalRecaudado.toFixed(2);
             document.getElementById('ec_saldo_pendiente').textContent = (operacion.montoTotal - totalRecaudado).toFixed(2);
+            
             if ((operacion.montoTotal - totalRecaudado) <= 0 && operacion.estatus !== 'PAGADO') {
                 operacion.estatus = 'PAGADO';
                 document.getElementById('panel-nuevo-abono').classList.add('hidden');
@@ -1174,13 +1407,17 @@
             const container = document.getElementById('abonos-container');
             container.innerHTML = '';
             const esReceptor = orbisSession.nombre === operacion.proveedor || orbisSession.esMaster;
+            
             operacion.abonos.forEach(abono => {
-                let statusClass = '', statusText = '';
+                let statusClass = '';
+                let statusText = '';
+                
                 switch(abono.estatus) {
                     case 'PAGADO': statusClass = 'status-pagado'; statusText = '🟢 APROBADO'; break;
                     case 'RECHAZADO': statusClass = 'status-rechazado'; statusText = '🔴 RECHAZADO'; break;
                     default: statusClass = 'status-en-proceso'; statusText = '🟡 EN PROCESO';
                 }
+                
                 const div = document.createElement('div');
                 div.className = `abono-grid ${statusClass}`;
                 div.innerHTML = `<div><strong>Monto:</strong><br>${abono.monto.toFixed(2)} ${operacion.moneda}</div><div><strong>Bóveda:</strong><br>${abono.boveda}</div><div><strong>Hash/Ref:</strong><br>${abono.hash}</div><div class="abono-actions"><span>${statusText}</span> ${abono.estatus === 'EN PROCESO' ? `<button class="btn-approve" onclick="cambiarStatusAbono('${operacion.id}', '${abono.id}', 'PAGADO')" ${!esReceptor ? 'disabled' : ''}>✓</button><button class="btn-reject" onclick="cambiarStatusAbono('${operacion.id}', '${abono.id}', 'RECHAZADO')" ${!esReceptor ? 'disabled' : ''}>×</button>` : ''}</div>`;
@@ -1194,16 +1431,26 @@
             const operacion = DB.operaciones.find(op => op.id === opId);
             const saldoPendiente = operacion.montoTotal - operacion.totalRecaudado;
             const valido = monto > 0 && monto <= saldoPendiente && document.getElementById('abono_boveda').value && document.getElementById('abono_hash').value.trim();
+            
             document.getElementById('btn-registrar-abono').disabled = !valido;
         }
 
         function registrarAbono() {
             const opId = document.getElementById('op_id_fijo').value;
             const operacion = DB.operaciones.find(op => op.id === opId);
-            const nuevoAbono = { id: `ABN-${Date.now()}`, monto: parseFloat(document.getElementById('abono_monto').value), boveda: document.getElementById('abono_boveda').value, hash: document.getElementById('abono_hash').value.toUpperCase(), estatus: 'EN PROCESO' };
+            
+            const nuevoAbono = {
+                id: `ABN-${Date.now()}`,
+                monto: parseFloat(document.getElementById('abono_monto').value),
+                boveda: document.getElementById('abono_boveda').value,
+                hash: document.getElementById('abono_hash').value.toUpperCase(),
+                estatus: 'EN PROCESO'
+            };
+            
             operacion.abonos.push(nuevoAbono);
             ['abono_monto', 'abono_boveda', 'abono_hash'].forEach(id => document.getElementById(id).value = '');
             document.getElementById('btn-registrar-abono').disabled = true;
+            
             abrirConciliacionExistente(opId);
             renderTablaCertificaciones();
         }
@@ -1212,37 +1459,63 @@
              const operacion = DB.operaciones.find(op => op.id === opId);
              const abono = operacion.abonos.find(ab => ab.id === abonoId);
              abono.estatus = nuevoStatus;
+             
              abrirConciliacionExistente(opId);
              renderTablaCertificaciones();
         }
 
-        // --- LÓGICA COTIZADOR ESTRATÉGICO ---
+        // --- LÓGICA COTIZADOR ESTRATÉGICO (v17.8) ---
+        function cargarProveedoresEnCotizador(selectElement) {
+            const aliados = getAliadosDB();
+            selectElement.innerHTML = '<option value="" selected>DEFINIR</option>';
+            aliados.forEach(aliado => {
+                if(aliado.rol === "HOTEL" || aliado.rol === "TRASLADO" || aliado.rol === "SEGURO" || aliado.rol === "AGENCIA"){
+                    const option = document.createElement('option');
+                    option.value = aliado.nombre;
+                    option.textContent = `${aliado.nombre} (${aliado.rol})`;
+                    selectElement.appendChild(option);
+                }
+            });
+        }
+        
         function agregarPaquete() {
-            const c = document.getElementById("paquetes-container"), d = document.createElement("div");
-            d.className = "pkg-grid";
-            d.innerHTML = `<input type="number" class="pkg-cant" value="1" onfocus="this.select()"><input type="text" class="pkg-concepto" placeholder="EJ: HOTEL"><select class="pkg-servicio"><option value="Hotel" selected>🏨 HOTEL</option><option value="Tour">🏞️ TOUR</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="pkg-tipo-hab"><option>SENCILLA</option><option>DOBLE</option></select><input type="number" class="pkg-dias" value="0"><input type="number" class="pkg-noches" value="0"><input type="number" class="pkg-precio" placeholder="0.00"><input type="number" class="pkg-comision-unit" placeholder="0.00"><input type="number" class="pkg-comision-total" placeholder="0.00" readonly><input type="number" class="pkg-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.pkg-grid').remove();actualizarCalculosCotizador();">X</button>`;
-            c.appendChild(d);
+            const container = document.getElementById("paquetes-container");
+            const div = document.createElement("div");
+            div.className = "pkg-grid";
+            div.innerHTML = `<input type="number" class="pkg-cant" value="1" onfocus="this.select()"><select class="pkg-concepto"></select><select class="pkg-servicio"><option value="Hotel" selected>🏨 HOTEL</option><option value="Tour">🏞️ TOUR</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="pkg-tipo-hab"><option>SENCILLA</option><option>DOBLE</option></select><input type="number" class="pkg-dias" value="0" onfocus="this.select()"><input type="number" class="pkg-noches" value="0" onfocus="this.select()"><input type="number" class="pkg-precio" placeholder="0.00" onfocus="this.select()"><input type="number" class="pkg-comision-unit" placeholder="0.00" onfocus="this.select()"><input type="number" class="pkg-comision-total" placeholder="0.00" readonly onfocus="this.select()"><input type="number" class="pkg-total" placeholder="0.00" readonly onfocus="this.select()"><button type="button" class="btn-remove" onclick="this.closest('.pkg-grid').remove();actualizarCalculosCotizador();">X</button>`;
+            
+            const conceptoSelect = div.querySelector('.pkg-concepto');
+            cargarProveedoresEnCotizador(conceptoSelect);
+            
+            container.appendChild(div);
         }
 
         function agregarFilaSeguroAutomatizada() {
-            const c = document.getElementById("singles-container"), d = document.createElement("div");
-            d.className = "single-grid";
-            d.id = "assist-card-row";
-            d.innerHTML = `<input type="text" class="single-proveedor" value="ASSIST CARD" readonly><select class="single-servicio" disabled><option value="Seguro Interno" selected>🛡️ Seguro Interno</option></select><select class="row-target" disabled><option value="TODOS" selected>TODOS</option></select><select class="single-tipo" disabled><option selected>DÍA</option></select><input type="number" class="single-cant" id="assist-card-cant" value="0" readonly><input type="number" class="single-costo" value="2.00" readonly><input type="number" class="single-total-costo" placeholder="0.00" readonly><input type="number" class="single-comision-unit" value="1.00" readonly><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><div style="display:flex;align-items:center;justify-content:center;">🔒</div>`;
-            c.appendChild(d);
+            const container = document.getElementById("singles-container");
+            const div = document.createElement("div");
+            div.className = "single-grid";
+            div.id = "assist-card-row";
+            div.innerHTML = `<input type="text" class="single-proveedor" value="ASSIST CARD" readonly><select class="single-servicio" disabled><option value="Seguro Interno" selected>🛡️ Seguro Interno</option></select><select class="row-target" disabled><option value="TODOS" selected>TODOS</option></select><select class="single-tipo" disabled><option selected>DÍA</option></select><input type="number" class="single-cant" id="assist-card-cant" value="0" readonly onfocus="this.select()"><input type="number" class="single-costo" value="2.00" readonly onfocus="this.select()"><input type="number" class="single-total-costo" placeholder="0.00" readonly onfocus="this.select()"><input type="number" class="single-comision-unit" value="1.00" readonly onfocus="this.select()"><input type="number" class="single-total-com" placeholder="0.00" readonly onfocus="this.select()"><input type="number" class="single-total" placeholder="0.00" readonly onfocus="this.select()"><div style="display:flex;align-items:center;justify-content:center;">🔒</div>`;
+            container.appendChild(div);
         }
 
         function agregarServicioIndividual() {
-            const c = document.getElementById("singles-container"), d = document.createElement("div");
-            d.className = "single-grid";
-            d.innerHTML = `<input type="text" class="single-proveedor" placeholder="EJ: DELTA"><select class="single-servicio" onchange="handleServiceChange(this)"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Hotel">🏨 Hotel</option><option value="Seguro Externo">🛡️ Seguro Externo</option><option value="Otro">➕ Otro</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="1"><input type="number" class="single-costo" placeholder="0.00"><input type="number" class="single-total-costo" placeholder="0.00" readonly><input type="number" class="single-comision-unit" placeholder="0.00"><input type="number" class="single-total-com" placeholder="0.00" readonly><input type="number" class="single-total" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove();actualizarCalculosCotizador();">X</button>`;
-            c.appendChild(d);
+            const container = document.getElementById("singles-container");
+            const div = document.createElement("div");
+            div.className = "single-grid";
+            div.innerHTML = `<select class="single-proveedor"></select><select class="single-servicio" onchange="handleServiceChange(this)"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Hotel">🏨 Hotel</option><option value="Seguro Externo">🛡️ Seguro Externo</option><option value="Otro">➕ Otro</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="1" onfocus="this.select()"><input type="number" class="single-costo" placeholder="0.00" onfocus="this.select()"><input type="number" class="single-total-costo" placeholder="0.00" readonly onfocus="this.select()"><input type="number" class="single-total-com" placeholder="0.00" readonly onfocus="this.select()"><input type="number" class="single-comision-unit" placeholder="0.00" onfocus="this.select()"><input type="number" class="single-total" placeholder="0.00" readonly onfocus="this.select()"><button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove();actualizarCalculosCotizador();">X</button>`;
+            
+            const proveedorSelect = div.querySelector('.single-proveedor');
+            cargarProveedoresEnCotizador(proveedorSelect);
+            
+            container.appendChild(div);
         }
 
         function handleServiceChange(selectElement) {
             const fila = selectElement.closest('.single-grid');
             const comisionInput = fila.querySelector('.single-comision-unit');
             const cantInput = fila.querySelector('.single-cant');
+            
             if (selectElement.value === 'Seguro Externo') {
                 comisionInput.value = "0.00";
                 cantInput.readOnly = true;
@@ -1253,19 +1526,24 @@
         }
 
         function agregarPax() {
-            const c = document.getElementById("pax-container"), d = document.createElement("div");
-            d.className = "pax-grid";
-            d.innerHTML = `<input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"><select class="pax-tipo"><option value="ADULTO">ADULTO</option><option value="NIÑO">NIÑO</option><option value="INFANTE">INFANTE</option><option value="MASCOTA">MASCOTA</option></select><input type="text" class="pax-id" placeholder="ID / DNI"><input type="number" class="pax-costo" placeholder="0.00" readonly><input type="number" class="pax-comision" placeholder="0.00" readonly><button type="button" class="btn-remove" onclick="this.closest('.pax-grid').remove();actualizarCalculosCotizador();">X</button>`;
-            c.appendChild(d);
+            const container = document.getElementById("pax-container");
+            const div = document.createElement("div");
+            div.className = "pax-grid";
+            div.innerHTML = `<input type="text" class="pax-nombre" placeholder="NOMBRE Y APELLIDO"><select class="pax-tipo"><option value="ADULTO">ADULTO</option><option value="NIÑO">NIÑO</option><option value="INFANTE">INFANTE</option><option value="MASCOTA">MASCOTA</option></select><input type="text" class="pax-id" placeholder="ID / DNI"><input type="number" class="pax-costo" placeholder="0.00" readonly onfocus="this.select()"><input type="number" class="pax-comision" placeholder="0.00" readonly onfocus="this.select()"><button type="button" class="btn-remove" onclick="this.closest('.pax-grid').remove();actualizarCalculosCotizador();">X</button>`;
+            
+            container.appendChild(div);
             actualizarCalculosCotizador();
         }
 
-        function agregarTaxCot(n = "", v = "", e = !1) {
-            const t = document.getElementById("contenedor-taxes-cot"), d = document.createElement("div");
-            d.className = "tax-grid tax-row";
-            const l = e ? "readonly" : "", s = e ? 'style="visibility:hidden"' : "";
-            d.innerHTML = `<button type="button" class="pin-btn" style="visibility:hidden">📌</button><input type="text" class="tax-name" value="${n}" ${l}><div style="position:relative"><input type="number" class="tax-val" value="${v}" step="any"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" ${s} onclick="this.parentElement.remove();actualizarCalculosCotizador()">X</button>`;
-            t.appendChild(d);
+        function agregarTaxCot(nombre = "", valor = "", esFijo = false) {
+            const container = document.getElementById("contenedor-taxes-cot");
+            const div = document.createElement("div");
+            div.className = "tax-grid tax-row";
+            const readonlyAttr = esFijo ? "readonly" : "";
+            const hiddenStyle = esFijo ? 'style="visibility:hidden"' : "";
+            
+            div.innerHTML = `<button type="button" class="pin-btn" style="visibility:hidden">📌</button><input type="text" class="tax-name" value="${nombre}" ${readonlyAttr}><div style="position:relative"><input type="number" class="tax-val" value="${valor}" step="any" onfocus="this.select()"><span style="position:absolute;right:15px;top:50%;transform:translateY(-50%);color:var(--gold-soft);font-weight:bold">%</span></div><button type="button" class="btn-remove" ${hiddenStyle} onclick="this.parentElement.remove();actualizarCalculosCotizador()">X</button>`;
+            container.appendChild(div);
             actualizarCalculosCotizador();
         }
 
@@ -1273,13 +1551,16 @@
             let seguroExternoActivo = Array.from(document.querySelectorAll('#singles-container .single-servicio')).some(s => s.value === 'Seguro Externo');
             const filasPax = document.querySelectorAll('#pax-container .pax-grid');
             const totalPax = filasPax.length;
+            
             let paxCounts = { ADULTO: 0, NIÑO: 0, INFANTE: 0, MASCOTA: 0 };
             filasPax.forEach(fila => paxCounts[fila.querySelector('.pax-tipo').value]++);
+            
             const assistCardCantInput = document.getElementById('assist-card-cant');
             if (assistCardCantInput) { assistCardCantInput.value = seguroExternoActivo ? 0 : totalPax; }
+            
             let costosPorTarget = { TODOS: 0, ADULTOS: 0, NIÑOS: 0, INFANTES: 0, MASCOTAS: 0 };
             let comisionesPorTarget = { TODOS: 0, ADULTOS: 0, NIÑOS: 0, INFANTES: 0, MASCOTAS: 0 };
-            let costosSinAsignar = 0;
+            
             document.querySelectorAll('#paquetes-container .pkg-grid').forEach(f => {
                 const target = f.querySelector('.row-target').value;
                 const cant = parseFloat(f.querySelector('.pkg-cant').value) || 0;
@@ -1292,10 +1573,12 @@
                 costosPorTarget[target] += costoTotal;
                 comisionesPorTarget[target] += comisionTotal;
             });
+
             document.querySelectorAll('#singles-container .single-grid').forEach(f => {
                 const esSeguroExterno = f.querySelector('.single-servicio').value === 'Seguro Externo';
                 const target = f.querySelector('.row-target').value;
                 const cantInput = f.querySelector('.single-cant');
+                
                 if (esSeguroExterno) {
                     switch (target) {
                         case 'TODOS': cantInput.value = totalPax; break;
@@ -1305,6 +1588,7 @@
                         case 'MASCOTAS': cantInput.value = paxCounts.MASCOTA; break;
                     }
                 }
+                
                 const cant = parseFloat(cantInput.value) || 0;
                 const costoUnit = parseFloat(f.querySelector('.single-costo').value) || 0;
                 const comisionUnit = parseFloat(f.querySelector('.single-comision-unit').value) || 0;
@@ -1316,21 +1600,23 @@
                 costosPorTarget[target] += costoTotal;
                 comisionesPorTarget[target] += comisionTotal;
             });
+            
             document.getElementById('manifiesto-container').textContent = `Manifiesto Orbis: [${paxCounts.ADULTO}] Adultos, [${paxCounts.NIÑO}] Niños, [${paxCounts.INFANTE}] Infantes, [${paxCounts.MASCOTA}] Mascotas`;
-            let totalCostoGlobal = 0, totalComisionGlobal = 0;
-            if (paxCounts.ADULTO === 0) { costosSinAsignar += costosPorTarget.ADULTOS + comisionesPorTarget.ADULTOS; } else { totalCostoGlobal += costosPorTarget.ADULTOS; totalComisionGlobal += comisionesPorTarget.ADULTOS; }
-            if (paxCounts.NIÑO === 0) { costosSinAsignar += costosPorTarget.NIÑOS + comisionesPorTarget.NIÑOS; } else { totalCostoGlobal += costosPorTarget.NIÑOS; totalComisionGlobal += comisionesPorTarget.NIÑOS; }
-            if (paxCounts.INFANTE === 0) { costosSinAsignar += costosPorTarget.INFANTES + comisionesPorTarget.INFANTES; } else { totalCostoGlobal += costosPorTarget.INFANTES; totalComisionGlobal += comisionesPorTarget.INFANTES; }
-            if (paxCounts.MASCOTA === 0) { costosSinAsignar += costosPorTarget.MASCOTAS + comisionesPorTarget.MASCOTAS; } else { totalCostoGlobal += costosPorTarget.MASCOTAS; totalComisionGlobal += comisionesPorTarget.MASCOTAS; }
-            totalCostoGlobal += costosPorTarget.TODOS;
-            totalComisionGlobal += comisionesPorTarget.TODOS;
+            
+            let costosSinAsignar = 0;
+            let totalCostoGlobal = costosPorTarget.TODOS;
+            let totalComisionGlobal = comisionesPorTarget.TODOS;
+
+            if (paxCounts.ADULTO > 0) { totalCostoGlobal += costosPorTarget.ADULTOS; totalComisionGlobal += comisionesPorTarget.ADULTOS; } else { costosSinAsignar += costosPorTarget.ADULTOS + comisionesPorTarget.ADULTOS; }
+            if (paxCounts.NIÑO > 0) { totalCostoGlobal += costosPorTarget.NIÑOS; totalComisionGlobal += comisionesPorTarget.NIÑOS; } else { costosSinAsignar += costosPorTarget.NIÑOS + comisionesPorTarget.NIÑOS; }
+            if (paxCounts.INFANTE > 0) { totalCostoGlobal += costosPorTarget.INFANTES; totalComisionGlobal += comisionesPorTarget.INFANTES; } else { costosSinAsignar += costosPorTarget.INFANTES + comisionesPorTarget.INFANTES; }
+            if (paxCounts.MASCOTA > 0) { totalCostoGlobal += costosPorTarget.MASCOTAS; totalComisionGlobal += comisionesPorTarget.MASCOTAS; } else { costosSinAsignar += costosPorTarget.MASCOTAS + comisionesPorTarget.MASCOTAS; }
+
             filasPax.forEach(fila => {
                 const tipoPax = fila.querySelector('.pax-tipo').value;
-                let costoPax = 0, comisionPax = 0;
-                if (totalPax > 0) {
-                    costoPax += costosPorTarget.TODOS / totalPax;
-                    comisionPax += comisionesPorTarget.TODOS / totalPax;
-                }
+                let costoPax = (totalPax > 0) ? costosPorTarget.TODOS / totalPax : 0;
+                let comisionPax = (totalPax > 0) ? comisionesPorTarget.TODOS / totalPax : 0;
+                
                 switch (tipoPax) {
                     case 'ADULTO': if (paxCounts.ADULTO > 0) { costoPax += costosPorTarget.ADULTOS / paxCounts.ADULTO; comisionPax += comisionesPorTarget.ADULTOS / paxCounts.ADULTO; } break;
                     case 'NIÑO': if (paxCounts.NIÑO > 0) { costoPax += costosPorTarget.NIÑOS / paxCounts.NIÑO; comisionPax += comisionesPorTarget.NIÑOS / paxCounts.NIÑO; } break;
@@ -1340,21 +1626,29 @@
                 fila.querySelector('.pax-costo').value = costoPax.toFixed(2);
                 fila.querySelector('.pax-comision').value = comisionPax.toFixed(2);
             });
+
             const subtotal = totalCostoGlobal + totalComisionGlobal + costosSinAsignar;
             const sym = document.getElementById('cot_moneda').value;
             const tasaCambio = TASAS_CAMBIO[sym] || 1.00;
             const feeOrbis = (seguroExternoActivo ? FEE_ORBIS_BASE : (FEE_ORBIS_BASE + FEE_ORBIS_PROTECT)) * tasaCambio;
             const baseImponibleReal = subtotal;
-            let totalImpuestos = 0; let totalRetenciones = 0;
+            let totalImpuestos = 0;
+            let totalRetenciones = 0;
+            
             document.querySelectorAll('#contenedor-taxes-cot .tax-grid').forEach(r => {
                 const tasaPorcentaje = parseFloat(r.querySelector('.tax-val').value);
                 if (!isNaN(tasaPorcentaje)) {
-                    if (tasaPorcentaje > 0) { totalImpuestos += baseImponibleReal * (tasaPorcentaje / 100); }
-                    else if (tasaPorcentaje < 0) { totalRetenciones += baseImponibleReal * (tasaPorcentaje / 100); }
+                    if (tasaPorcentaje > 0) {
+                        totalImpuestos += baseImponibleReal * (tasaPorcentaje / 100);
+                    } else if (tasaPorcentaje < 0) {
+                        totalRetenciones += baseImponibleReal * (tasaPorcentaje / 100);
+                    }
                 }
             });
+            
             const escudoOro = (baseImponibleReal + feeOrbis) * ESCUDO_ORO_PORC;
             const granTotal = baseImponibleReal + totalImpuestos + feeOrbis + escudoOro + totalRetenciones;
+            
             document.getElementById('cot-subtotal').innerHTML = `${subtotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-impuestos').innerHTML = `${totalImpuestos.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-retenciones').innerHTML = `${Math.abs(totalRetenciones).toFixed(2)} <span class="curr-sym">${sym}</span>`;
@@ -1371,6 +1665,7 @@
                     segurosContratados += parseFloat(fila.querySelector('.single-cant').value) || 0;
                 }
             });
+            
             const totalPax = document.querySelectorAll('#pax-container .pax-grid').length;
             if (totalPax > 0 && segurosContratados < totalPax) {
                 alert(`🔴 BLOQUEO ORBIS: Operación rechazada. El manifiesto cuenta con ${totalPax} pasajeros, pero solo hay ${segurosContratados} seguros asignados. Es política innegociable de la empresa que el 100% de los pasajeros cuente con cobertura.`);
@@ -1380,14 +1675,81 @@
         }
 
         function generarPDFCotizacion() {
-            if (!validarCoberturaTotal()) return;
-            alert("FUNCIONALIDAD PDF: En construcción.");
+            if (!validarCoberturaTotal()) {
+                return;
+            }
+
+            const idCot = `COT-${Date.now()}`;
+            const fechaHoy = new Date();
+            document.getElementById('pdf-header-fecha').textContent = fechaHoy.toLocaleDateString('es-ES');
+            document.getElementById('pdf-header-cot-id').textContent = idCot;
+
+            let primerPax = document.querySelector("#pax-container .pax-nombre");
+            let clienteNombre = (primerPax && primerPax.value.trim()) ? primerPax.value.trim().toUpperCase() : "CLIENTE POR DEFINIR";
+            let clienteId = (primerPax && primerPax.value.trim()) ? (document.querySelector("#pax-container .pax-id").value || 'N/A') : 'N/A';
+            document.getElementById('pdf-client-nombre').textContent = clienteNombre;
+            document.getElementById('pdf-client-id').textContent = clienteId;
+
+            document.getElementById('pdf-aliado-nombre').textContent = orbisSession.nombre;
+            document.getElementById('pdf-aliado-id').textContent = orbisSession.id;
+            
+            const serviciosBody = document.getElementById('pdf-tabla-servicios-body');
+            serviciosBody.innerHTML = '';
+            
+            document.querySelectorAll('#paquetes-container .pkg-grid, #singles-container .single-grid').forEach(fila => {
+                const tr = document.createElement('tr');
+                const cant = fila.querySelector('.pkg-cant, .single-cant').value;
+                const concepto = fila.querySelector('.pkg-concepto, .single-proveedor').value;
+                const servicio = fila.querySelector('.pkg-servicio, .single-servicio').value;
+                const total = fila.querySelector('.pkg-total, .single-total').value;
+                
+                tr.innerHTML = `<td>${cant}</td><td>${concepto}</td><td>${servicio}</td><td>${parseFloat(total).toFixed(2)}</td>`;
+                serviciosBody.appendChild(tr);
+            });
+            
+            const paxBody = document.getElementById('pdf-tabla-pax-body');
+            paxBody.innerHTML = '';
+            document.querySelectorAll('#pax-container .pax-grid').forEach(fila => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${fila.querySelector('.pax-nombre').value}</td><td>${fila.querySelector('.pax-tipo').value}</td><td>${fila.querySelector('.pax-id').value}</td>`;
+                paxBody.appendChild(tr);
+            });
+
+            const sym = document.getElementById('cot_moneda').value;
+            document.getElementById('pdf-summary-subtotal').textContent = `${sym} ${document.getElementById('cot-subtotal').textContent.replace(sym, '')}`;
+            document.getElementById('pdf-summary-impuestos').textContent = `${sym} ${document.getElementById('cot-impuestos').textContent.replace(sym, '')}`;
+            document.getElementById('pdf-summary-fee').textContent = `${sym} ${document.getElementById('cot-fee-orbis').textContent.replace(sym, '')}`;
+            document.getElementById('pdf-summary-escudo').textContent = `${sym} ${document.getElementById('cot-escudo-oro').textContent.replace(sym, '')}`;
+            document.getElementById('pdf-summary-retenciones').textContent = `-${sym} ${document.getElementById('cot-retenciones').textContent.replace(sym, '')}`;
+            document.getElementById('pdf-summary-total').textContent = `${sym} ${document.getElementById('cot-gran-total').textContent.replace(sym, '')}`;
+
+            const qrContainer = document.getElementById('pdf-qr-code');
+            qrContainer.innerHTML = '';
+            if (qrCodeInstance) {
+                qrCodeInstance.clear();
+            }
+            qrCodeInstance = new QRCode(qrContainer, {
+                text: `ORBIS_COT;${idCot};${document.getElementById('cot-gran-total').textContent.trim()};${orbisSession.id}`,
+                width: 80,
+                height: 80,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+            
+            setTimeout(() => { window.print(); }, 250);
         }
         
         function puenteHaciaConciliacion() {
-            if (!validarCoberturaTotal()) return;
+            if (!validarCoberturaTotal()) {
+                return;
+            }
+            
             const granTotal = parseFloat(document.getElementById('cot-gran-total').textContent);
-            if (granTotal <= 0) { alert("🔴 BLOQUEO: El monto total no puede ser cero."); return; }
+            if (granTotal <= 0) {
+                alert("🔴 BLOQUEO: El monto total no puede ser cero.");
+                return;
+            }
             
             let cliente = "CLIENTE POR DEFINIR";
             const primerPaxInput = document.querySelector("#pax-container .pax-nombre");
@@ -1398,14 +1760,16 @@
             const idCot = `COT-${Date.now()}`;
             const fecha = new Date().toLocaleDateString();
             const total = `${granTotal.toFixed(2)} ${document.getElementById('cot_moneda').value}`;
+            
             DB.cotizaciones.push({id: idCot, cliente, fecha, total});
             renderTablaCotizaciones();
 
             closeModal('cotizadorModal');
             configurarModalParaCreacion(granTotal);
             document.getElementById('op_cliente_creacion').value = cliente;
+            
             alert("🏛️ PUENTE DE DATOS ACTIVADO: Se ha transferido el monto total y el cliente. Por favor, complete la información y cree el expediente de conciliación.");
         }
-    </script>
-</body>
-</html>
+        </script>
+        </body>
+        </html>
