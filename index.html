@@ -898,40 +898,39 @@
         </div>
     </div>
     
-    <!-- MODAL RED MAESTRA (v17.8) -->
-    <div id="provModal" class="modal">
-        <div class="modal-content">
-            <hr class="gold-divider"><div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div><hr class="gold-divider">
-            <div class="form-section">
-                <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;">
-                    <div><label>Categoría / Rol *</label><select id="prov_cat"><option value="AGENCIA">🏢 AGENCIA</option><option value="FREELANCER">👨‍💻 FREELANCER</option><option value="HOTEL">🏨 HOTEL</option><option value="SEGURO">🛡️ SEGURO</option><option value="TRASLADO">🚐 TRASLADO</option></select></div>
-                    <div><label>Nombre Legal *</label><input type="text" id="prov_nombre" placeholder="NOMBRE LEGAL"></div>
-                    <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="RIF / TAX ID"></div>
-                </div>
+    <!-- MODAL RED MAESTRA (v18.0) -->
+<div id="provModal" class="modal">
+    <div class="modal-content">
+        <hr class="gold-divider"><div class="modal-title">RED MAESTRA - FICHA TÉCNICA</div><hr class="gold-divider">
+        <div class="form-section">
+            <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;">
+                <div><label>Categoría / Rol *</label><select id="prov_cat"><option value="AGENCIA">🏢 AGENCIA</option><option value="FREELANCER">👨‍💻 FREELANCER</option><option value="HOTEL">🏨 HOTEL</option><option value="SEGURO">🛡️ SEGURO</option><option value="TRASLADO">🚐 TRASLADO</option></select></div>
+                <div><label>Nombre Legal *</label><input type="text" id="prov_nombre" placeholder="NOMBRE LEGAL"></div>
+                <div><label>RIF / Tax ID *</label><input type="text" id="prov_rif" placeholder="RIF / TAX ID"></div>
             </div>
-            <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:20px;">
-                <div class="form-section">
-                    <label>Canales de Telefonía / WhatsApp</label>
-                    <div id="phone-container"></div>
-                    <button type="button" class="btn-add-small" onclick="addDynamicField('phone-container', 'phone')">+ Agregar Teléfono</button>
-                    <label style="margin-top:15px;">Canales de Correo Electrónico *</label>
-                    <div id="email-container"></div>
-                    <button type="button" class="btn-add-small" onclick="addDynamicField('email-container', 'email')">+ Agregar Correo</button>
-                </div>
-                <div class="form-section">
-                    <label>Ubicación y Credenciales</label>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom:15px;">
-                        <div><label>País *</label><input type="text" id="prov_pais" placeholder="PAÍS"></div>
-                        <div><label>Contraseña Acceso *</label><input type="password" id="prov_password" placeholder="DEFINIR CONTRASEÑA"></div>
-                    </div>
-                    <label>Contraseña de Autorización (Sesión Actual) *</label>
-                    <input type="password" id="prov_auth_password" placeholder="INGRESE SU CONTRASEÑA">
-                </div>
-            </div>
-            <button id="btn-sync-prov" class="btn-gold" style="padding: 22px; width:100%; margin-top:20px;" onclick="iniciarGuardadoProv()">REGISTRAR EN RED MAESTRA</button>
-            <button id="btn-cancel-prov" class="btn-cancel-elite" onclick="closeModal('provModal')">Cancelar</button>
         </div>
+        <div style="display:grid; grid-template-columns: 1fr 1.2fr; gap:20px;">
+            <div class="form-section">
+                <label>Canales de Telefonía / WhatsApp</label>
+                <div id="phone-container"></div>
+                <button type="button" class="btn-add-small" onclick="addDynamicField('phone-container', 'phone')">+ Agregar Teléfono</button>
+                <label style="margin-top:15px;">Canales de Correo Electrónico *</label>
+                <div id="email-container"></div>
+                <button type="button" class="btn-add-small" onclick="addDynamicField('email-container', 'email')">+ Agregar Correo</button>
+            </div>
+            <div class="form-section">
+                <label>Ubicación y Credenciales</label>
+                <div style="display:grid; grid-template-columns: 1fr; gap: 15px; margin-bottom:15px;">
+                    <div><label>País *</label><input type="text" id="prov_pais" placeholder="PAÍS"></div>
+                </div>
+                <label>Contraseña de Autorización (Su Sesión Actual) *</label>
+                <input type="password" id="prov_auth_password" placeholder="INGRESE SU CONTRASEÑA PARA CONFIRMAR">
+            </div>
+        </div>
+        <button id="btn-sync-prov" class="btn-gold" style="padding: 22px; width:100%; margin-top:20px;" onclick="iniciarGuardadoProv()">REGISTRAR EN RED MAESTRA</button>
+        <button id="btn-cancel-prov" class="btn-cancel-elite" onclick="closeModal('provModal')">Cancelar</button>
     </div>
+</div>
 
     <!-- MODAL COTIZADOR (v17.8) -->
     <div id="cotizadorModal" class="modal">
@@ -988,12 +987,12 @@
                     <button type="button" class="btn-gold" onclick="puenteHaciaConciliacion()">PASAR A CONCILIACIÓN 🏛️</button>
                 </div>
             </form>
-            <button class="btn-cancel-elite" onclick="closeModal('cotizadorModal')">Cancelar</button>
+            <button class="btn-cancel-elite" onclick="intentarCerrarCotizador()">Cancelar</button>
         </div>
     </div>
     <script>
         // =======================================================================
-        //                      JAVASCRIPT UNIFICADO (v17.8)
+        //                      JAVASCRIPT UNIFICADO (v18.0)
         // =======================================================================
         const TASAS_CAMBIO = { "$": 1.00, "Bs.": 45.00, "€": 0.93 };
         const FEE_ORBIS_BASE = 5.00;
@@ -1132,15 +1131,18 @@
             }
             
             if (id === 'cotizadorModal') {
-                document.getElementById('cotizadorForm').reset();
-                ['#pax-container', '#paquetes-container', '#singles-container', '#contenedor-taxes-cot'].forEach(sel => document.querySelector(sel).innerHTML = '');
-                const impuestos = TAX_MATRIX[orbisSession.pais] || [];
-                impuestos.forEach(tax => agregarTaxCot(tax.nombre, tax.valor, true));
-                agregarFilaSeguroAutomatizada();
-                agregarPaquete();
-                agregarServicioIndividual();
-                agregarPax();
-                actualizarCalculosCotizador();
+                // No resetea si ya hay datos, el control lo tiene intentarCerrarCotizador
+                if (document.getElementById('paquetes-container').innerHTML.trim() === '') {
+                     document.getElementById('cotizadorForm').reset();
+                    ['#pax-container', '#paquetes-container', '#singles-container', '#contenedor-taxes-cot'].forEach(sel => document.querySelector(sel).innerHTML = '');
+                    const impuestos = TAX_MATRIX[orbisSession.pais] || [];
+                    impuestos.forEach(tax => agregarTaxCot(tax.nombre, tax.valor, true));
+                    agregarFilaSeguroAutomatizada();
+                    agregarPaquete();
+                    agregarServicioIndividual();
+                    agregarPax();
+                    actualizarCalculosCotizador();
+                }
             }
         }
         
@@ -1154,7 +1156,7 @@
             tbody.innerHTML = '';
             getAliadosDB().forEach(p => {
                 const newRow = tbody.insertRow(0);
-                newRow.innerHTML = `<td>${p.id}</td><td>${p.rol}</td><td>${p.nombre}</td><td>${p.rif}</td><td>${p.pais}</td><td><button style="background:none; border:none; color:#666; cursor:not-allowed; opacity:0.5;">EDITAR</button></td>`;
+                newRow.innerHTML = `<td>${p.id}</td><td>${p.rol}</td><td>${p.nombre}</td><td>${p.rif}</td><td>${p.pais}</td><td><button style="background:none; border: 1px solid var(--red-error); color:var(--red-error); cursor:pointer; padding: 5px 10px; border-radius: 4px;" onclick="eliminarProveedor('${p.rif}')">ELIMINAR</button></td>`;
             });
         }
 
@@ -1203,7 +1205,24 @@
             });
         }
 
-        // --- LÓGICA RED MAESTRA (v17.8) ---
+        // --- LÓGICA RED MAESTRA (v18.0) ---
+        function eliminarProveedor(rif) {
+            const passwordPrompt = prompt(`SEGURIDAD ORBIS: Para eliminar al proveedor con RIF ${rif}, ingrese su contraseña de sesión.`);
+            if (passwordPrompt === null) {
+                return; // El usuario canceló
+            }
+            if (passwordPrompt === orbisSession.password) {
+                let aliados = getAliadosDB();
+                const aliadosFiltrados = aliados.filter(aliado => aliado.rif !== rif);
+                saveAliadosDB(aliadosFiltrados);
+                renderTablaProveedores();
+                actualizarDropdownsAliados();
+                alert(`✅ ELIMINACIÓN EXITOSA: El proveedor con RIF ${rif} ha sido removido de la Red Maestra.`);
+            } else {
+                alert("🔴 ACCESO DENEGADO: Contraseña incorrecta. La operación ha sido cancelada.");
+            }
+        }
+        
         function resetFichaDirectorio() {
             document.getElementById('provModal').querySelectorAll('input, select').forEach(el => {
                 if (el.tagName === 'SELECT') {
@@ -1234,7 +1253,7 @@
 
         function iniciarGuardadoProv() {
             let esValido = true;
-            const campos = ['prov_nombre', 'prov_rif', 'prov_pais', 'prov_password', 'prov_auth_password'];
+            const campos = ['prov_nombre', 'prov_rif', 'prov_pais', 'prov_auth_password'];
             
             campos.forEach(id => {
                 const el = document.getElementById(id);
@@ -1263,7 +1282,7 @@
         function ejecutarGuardadoProv() {
             const authPassword = document.getElementById('prov_auth_password').value;
             if (authPassword !== orbisSession.password) {
-                alert("🔴 AUTORIZACIÓN DENEGADA: La contraseña de autorización no coincide con su sesión actual.");
+                alert("🔴 AUTORIZACIÓN DENEGADA: La contraseña de autorización no coincide con su sesión actual. El proceso ha sido detenido.");
                 document.getElementById('prov_auth_password').classList.add('input-error');
                 return;
             }
@@ -1272,7 +1291,9 @@
             const rif = document.getElementById('prov_rif').value.toUpperCase();
             const pais = document.getElementById('prov_pais').value.toUpperCase();
             const rol = document.getElementById('prov_cat').value;
-            const password = document.getElementById('prov_password').value;
+            
+            // La nueva contraseña es la misma del que lo crea para mantener la simplicidad del ejercicio
+            const password = authPassword;
 
             let aliados = getAliadosDB();
             if (aliados.some(aliado => aliado.rif === rif)) {
@@ -1464,7 +1485,7 @@
              renderTablaCertificaciones();
         }
 
-        // --- LÓGICA COTIZADOR ESTRATÉGICO (v17.8) ---
+        // --- LÓGICA COTIZADOR ESTRATÉGICO (v18.0) ---
         function cargarProveedoresEnCotizador(selectElement) {
             const aliados = getAliadosDB();
             selectElement.innerHTML = '<option value="" selected>DEFINIR</option>';
@@ -1503,12 +1524,23 @@
             const container = document.getElementById("singles-container");
             const div = document.createElement("div");
             div.className = "single-grid";
-            div.innerHTML = `<select class="single-proveedor"></select><select class="single-servicio" onchange="handleServiceChange(this)"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Hotel">🏨 Hotel</option><option value="Seguro Externo">🛡️ Seguro Externo</option><option value="Otro">➕ Otro</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="1" onfocus="this.select()"><input type="number" class="single-costo" placeholder="0.00" onfocus="this.select()"><input type="number" class="single-total-costo" placeholder="0.00" readonly onfocus="this.select()"><input type="number" class="single-total-com" placeholder="0.00" readonly onfocus="this.select()"><input type="number" class="single-comision-unit" placeholder="0.00" onfocus="this.select()"><input type="number" class="single-total" placeholder="0.00" readonly onfocus="this.select()"><button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove();actualizarCalculosCotizador();">X</button>`;
+            div.innerHTML = `<select class="single-proveedor"></select><select class="single-servicio" onchange="handleServiceChange(this)"><option value="Vuelo">✈️ Vuelo</option><option value="Traslado">🚐 Traslado</option><option value="Hotel">🏨 Hotel</option><option value="Seguro Externo">🛡️ Seguro Externo</option><option value="Otro">➕ Otro</option></select><select class="row-target"><option value="TODOS">TODOS</option><option value="ADULTOS">ADULTOS</option><option value="NIÑOS">NIÑOS</option><option value="INFANTES">INFANTES</option><option value="MASCOTAS">MASCOTAS</option></select><select class="single-tipo"><option>DÍA</option><option>NOCHE</option></select><input type="number" class="single-cant" value="1" onfocus="this.select()"><input type="number" class="single-costo" placeholder="0.00" onfocus="this.select()"><input type="number" class="single-total-costo" placeholder="0.00" readonly onfocus="this.select()"><input type="number" class="single-comision-unit" placeholder="0.00" onfocus="this.select()"><input type="number" class="single-total-com" placeholder="0.00" readonly onfocus="this.select()"><input type="number" class="single-total" placeholder="0.00" readonly onfocus="this.select()"><button type="button" class="btn-remove" onclick="this.closest('.single-grid').remove();actualizarCalculosCotizador();">X</button>`;
             
             const proveedorSelect = div.querySelector('.single-proveedor');
             cargarProveedoresEnCotizador(proveedorSelect);
             
             container.appendChild(div);
+        }
+        
+        function intentarCerrarCotizador() {
+            const conservar = confirm("¿Desea CONSERVAR los datos ingresados?\n\n[ACEPTAR] = Ocultar y conservar para luego.\n[CANCELAR] = Borrar todo y salir.");
+            if (conservar) {
+                closeModal('cotizadorModal');
+            } else {
+                document.getElementById('cotizadorForm').reset();
+                ['#pax-container', '#paquetes-container', '#singles-container', '#contenedor-taxes-cot'].forEach(sel => document.querySelector(sel).innerHTML = '');
+                closeModal('cotizadorModal');
+            }
         }
 
         function handleServiceChange(selectElement) {
@@ -1656,6 +1688,20 @@
             document.getElementById('cot-escudo-oro').innerHTML = `${escudoOro.toFixed(2)} <span class="curr-sym">${sym}</span>`;
             document.getElementById('cot-gran-total').innerHTML = `${granTotal.toFixed(2)} <span class="curr-sym">${sym}</span>`;
         }
+        
+        function validarProveedoresAsignados() {
+            const selects = document.querySelectorAll('#paquetes-container .pkg-concepto, #singles-container .single-proveedor');
+            for (const select of selects) {
+                if (select.value === "" || select.value === "DEFINIR") {
+                     alert("🔴 BLOQUEO ORBIS: No se permite registrar ni cotizar servicios sin un proveedor asignado.");
+                     select.closest('.pkg-grid, .single-grid').style.border = '2px solid red';
+                     return false;
+                } else {
+                     select.closest('.pkg-grid, .single-grid').style.border = 'none';
+                }
+            }
+            return true;
+        }
 
         function validarCoberturaTotal() {
             let segurosContratados = 0;
@@ -1675,7 +1721,7 @@
         }
 
         function generarPDFCotizacion() {
-            if (!validarCoberturaTotal()) {
+            if (!validarCoberturaTotal() || !validarProveedoresAsignados()) {
                 return;
             }
 
@@ -1737,11 +1783,23 @@
                 correctLevel : QRCode.CorrectLevel.H
             });
             
-            setTimeout(() => { window.print(); }, 250);
+            setTimeout(() => {
+                window.print();
+                
+                // --- Flujo Post-Impresión ---
+                const granTotal = parseFloat(document.getElementById('cot-gran-total').textContent);
+                const totalStr = `${granTotal.toFixed(2)} ${document.getElementById('cot_moneda').value}`;
+                DB.cotizaciones.push({id: idCot, cliente: clienteNombre, fecha: fechaHoy.toLocaleDateString(), total: totalStr});
+                renderTablaCotizaciones();
+                
+                document.getElementById('cotizadorForm').reset();
+                ['#pax-container', '#paquetes-container', '#singles-container', '#contenedor-taxes-cot'].forEach(sel => document.querySelector(sel).innerHTML = '');
+                closeModal('cotizadorModal');
+            }, 500);
         }
         
         function puenteHaciaConciliacion() {
-            if (!validarCoberturaTotal()) {
+            if (!validarCoberturaTotal() || !validarProveedoresAsignados()) {
                 return;
             }
             
