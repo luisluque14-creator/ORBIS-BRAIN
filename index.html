@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ORBIS BRAIN | Master v17.8</title>
+    <title>ORBIS BRAIN | Master v19.6</title>
     <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -1000,16 +1000,18 @@
 </div>
     <script>
     // =======================================================================
-    //                      JAVASCRIPT UNIFICADO (v18.9)
+    //                      JAVASCRIPT UNIFICADO (v19.6)
     // =======================================================================
     const TASAS_CAMBIO = {
         "$": 1.00,
         "Bs.": 45.00,
         "€": 0.93
     };
-    const FEE_ORBIS_BASE = 5.00;
+    // --- INICIO DE CORRECCIÓN v19.6: Ajuste de Parámetros Financieros ---
+    const FEE_ORBIS_BASE = 0.00;
     const FEE_ORBIS_PROTECT = 1.00;
-    const ESCUDO_ORO_PORC = 0.005;
+    const ESCUDO_ORO_PORC = 0.05;
+    // --- FIN DE CORRECCIÓN v19.6 ---
     const TAX_MATRIX = {
         "VE": [{
             nombre: "IVA",
@@ -1555,9 +1557,8 @@
         renderTablaCertificaciones();
     }
 
-    // --- LÓGICA COTIZADOR ESTRATÉGICO (v18.9) ---
+    // --- LÓGICA COTIZADOR ESTRATÉGICO (v19.6) ---
 
-    // -- NUEVA FUNCIÓN v18.9 para Eliminación Segura --
     function eliminarServicioYLimpiarSegmentos(botonElemento) {
         const filaServicio = botonElemento.closest('.pkg-grid, .single-grid');
         if (!filaServicio) return;
@@ -1568,9 +1569,8 @@
             document.querySelectorAll('#segmentos-tiempo-container .segmento-tiempo-row').forEach(filaSegmento => {
                 const selectServicio = filaSegmento.querySelector('.seg-servicio');
                 if (selectServicio.value === identificador) {
-                    // Consideramos más seguro resetear que eliminar, para que el usuario se de cuenta.
                     selectServicio.value = "";
-                    calcularDiasNochesPorSegmento(selectServicio); // Resetea dias/noches de la fila que quedó huerfana
+                    calcularDiasNochesPorSegmento(selectServicio);
                 }
             });
         }
@@ -1580,8 +1580,7 @@
         actualizarCalculosCotizador();
     }
 
-
-    // -- FUNCIONES v18.8 para ZONA 0 --
+    // --- INICIO DE CORRECCIÓN v19.6: Refactorización de Carga Visual ---
     function agregarSegmentoDeTiempo(data = {}) {
         const container = document.getElementById("segmentos-tiempo-container");
         const div = document.createElement("div");
@@ -1593,23 +1592,28 @@
 
         const dateInputStyle = `font-size: 16px; font-weight: bold; color: var(--gold-metalic); padding: 12px;`;
 
+        // a) Inyectar la estructura HTML
         div.innerHTML = `
             <select class="seg-servicio" onchange="calcularDiasNochesPorSegmento(this)"></select>
             <input type="date" class="seg-checkin" style="${dateInputStyle}" value="${data.checkin || ''}" onchange="calcularDiasNochesPorSegmento(this)">
             <input type="date" class="seg-checkout" style="${dateInputStyle}" value="${data.checkout || ''}" onchange="calcularDiasNochesPorSegmento(this)">
             <button type="button" class="btn-remove" onclick="this.closest('.segmento-tiempo-row').remove();">X</button>
         `;
-
         container.appendChild(div);
-        
         const selectServicio = div.querySelector('.seg-servicio');
+        
+        // b) Invocar inmediatamente a actualizarOpcionesServiciosEnSegmentos()
         actualizarOpcionesServiciosEnSegmentos();
+        
+        // c) Validar si data.servicio existe y forzar la selección visual
         if (data.servicio) {
             selectServicio.value = data.servicio;
         }
         
+        // d) Ejecutar finalmente calcularDiasNochesPorSegmento()
         calcularDiasNochesPorSegmento(selectServicio);
     }
+    // --- FIN DE CORRECCIÓN v19.6 ---
     
     function actualizarOpcionesServiciosEnSegmentos() {
         const serviciosActivos = new Set();
@@ -1647,7 +1651,7 @@
             if (serviciosActivos.has(currentValue)) {
                  select.value = currentValue;
             } else {
-                 select.value = ""; // Limpia si el servicio ya no existe
+                 select.value = "";
             }
         });
     }
@@ -1657,12 +1661,15 @@
         const servicioIdentifier = filaSegmento.querySelector('.seg-servicio').value;
         const checkin = filaSegmento.querySelector('.seg-checkin').value;
         const checkout = filaSegmento.querySelector('.seg-checkout').value;
-
-        // Desvincular dias/noches de cualquier fila de servicio previamente asociada
-        document.querySelectorAll('[data-dias-vinculado-a="' + filaSegmento.dataset.rowId + '"]').forEach(el => {
-             el.removeAttribute('data-dias-vinculado-a');
-             el.value = 0;
-             el.readOnly = false;
+        
+        document.querySelectorAll('[data-dias-vinculado-a]').forEach(el => {
+             if(el.dataset.diasVinculadoA === filaSegmento.dataset.rowId) {
+                el.removeAttribute('data-dias-vinculado-a');
+                el.closest('.pkg-grid').querySelector('.pkg-dias').value = 0;
+                el.closest('.pkg-grid').querySelector('.pkg-noches').value = 0;
+                el.closest('.pkg-grid').querySelector('.pkg-dias').readOnly = false;
+                el.closest('.pkg-grid').querySelector('.pkg-noches').readOnly = false;
+             }
         });
         
         if (!servicioIdentifier || !checkin || !checkout) {
@@ -1684,14 +1691,14 @@
             if(filaServicio.matches('.pkg-grid')) {
                 const diasInput = filaServicio.querySelector('.pkg-dias');
                 const nochesInput = filaServicio.querySelector('.pkg-noches');
-                
                 diasInput.value = days;
                 nochesInput.value = nights;
                 diasInput.readOnly = true;
                 nochesInput.readOnly = true;
-
-                // Marcar la fila como vinculada a este segmento
-                if(!filaSegmento.dataset.rowId) filaSegmento.dataset.rowId = `seg-${Date.now()}`;
+                
+                if(!filaSegmento.dataset.rowId) {
+                    filaSegmento.dataset.rowId = `seg-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`;
+                }
                 diasInput.dataset.diasVinculadoA = filaSegmento.dataset.rowId;
             }
         }
@@ -1731,8 +1738,6 @@
         return true;
     }
 
-
-    // --- LÓGICA DE FILAS Y CÁLCULOS (MODIFICADA v18.9) ---
     function cargarProveedoresEnCotizador(selectElement) {
         const aliados = getAliadosDB();
         selectElement.innerHTML = '<option value="" selected>DEFINIR</option>';
@@ -1915,7 +1920,9 @@
         const subtotal = totalCostoGlobal + totalComisionGlobal + costosSinAsignar;
         const sym = document.getElementById('cot_moneda').value;
         const tasaCambio = TASAS_CAMBIO[sym] || 1.00;
+        // --- INICIO DE CORRECCIÓN v19.6: Lógica de cálculo de Fee ---
         const feeOrbis = (seguroExternoActivo ? FEE_ORBIS_BASE : (FEE_ORBIS_BASE + FEE_ORBIS_PROTECT)) * tasaCambio;
+        // --- FIN DE CORRECCIÓN v19.6 ---
         const baseImponibleReal = subtotal;
         let totalImpuestos = 0;
         let totalRetenciones = 0;
@@ -1971,7 +1978,7 @@
     }
 
     function generarPDFCotizacion(cotId = null) {
-        if (cotId) {
+        if (cotId && !document.getElementById('cotizadorModal').hasAttribute('data-cot-id')) {
             cargarCotizacionEnModal(cotId, true);
             return;
         }
@@ -1979,12 +1986,14 @@
         if (!validarCoberturaTotal() || !validarProveedoresAsignados() || !auditarCoherenciaTemporal()) {
             return;
         }
-
-        const idCot = document.getElementById('cotizadorModal').dataset.cotId || `COT-${Date.now()}`;
+        
+        guardarBorradorCotizacion();
+        
+        const idUnico = document.getElementById('cotizadorModal').dataset.cotId;
         const fechaHoy = new Date();
         document.getElementById('pdf-header-fecha').textContent = fechaHoy.toLocaleDateString('es-ES');
-        document.getElementById('pdf-header-cot-id').textContent = idCot;
-
+        document.getElementById('pdf-header-cot-id').textContent = idUnico;
+        
         let primerPax = document.querySelector("#pax-container .pax-nombre");
         let clienteNombre = (primerPax && primerPax.value.trim()) ? primerPax.value.trim().toUpperCase() : "CLIENTE POR DEFINIR";
         let clienteId = (primerPax && primerPax.value.trim()) ? (document.querySelector("#pax-container .pax-id").value || 'N/A') : 'N/A';
@@ -2029,7 +2038,7 @@
             qrCodeInstance.clear();
         }
         qrCodeInstance = new QRCode(qrContainer, {
-            text: `ORBIS_COT;${idCot};${document.getElementById('cot-gran-total').textContent.trim()};${orbisSession.id}`,
+            text: `ORBIS_COT;${idUnico};${document.getElementById('cot-gran-total').textContent.trim()};${orbisSession.id}`,
             width: 80,
             height: 80,
             colorDark: "#000000",
@@ -2039,7 +2048,6 @@
 
         setTimeout(() => {
             window.print();
-            guardarBorradorCotizacion(true);
             renderTablaCotizaciones();
             resetCotizadorForm();
             closeModal('cotizadorModal');
@@ -2068,7 +2076,6 @@
         alert("🏛️ PUENTE DE DATOS ACTIVADO: Se ha transferido el monto total y el cliente. Por favor, complete la información y cree el expediente de conciliación.");
     }
 
-    // --- FUNCIONES DE BORRADOR Y PERSISTENCIA (MODIFICADAS v18.9) ---
     function resetCotizadorForm() {
         const cotizadorModal = document.getElementById('cotizadorModal');
         cotizadorModal.removeAttribute('data-cot-id');
@@ -2079,6 +2086,9 @@
     function nuevaCotizacion() {
         openModal('cotizadorModal');
         resetCotizadorForm();
+        
+        document.getElementById('cotizadorModal').dataset.cotId = `COT-${Date.now()}`;
+
         const impuestos = TAX_MATRIX[orbisSession.pais] || [];
         impuestos.forEach(tax => agregarTaxCot(tax.nombre, tax.valor, true));
         agregarFilaSeguroAutomatizada();
@@ -2104,11 +2114,19 @@
 
         cotizacion.data.paquetes.forEach(pkg => agregarPaquete(pkg));
         cotizacion.data.servicios.forEach(srv => {
-            if (srv.servicio === "Seguro Interno") { agregarFilaSeguroAutomatizada(srv); } 
-            else { agregarServicioIndividual(srv); }
+            if (srv.servicio === "Seguro Interno") {
+                agregarFilaSeguroAutomatizada(srv);
+            } else {
+                agregarServicioIndividual(srv);
+            }
         });
-        
-        if (cotizacion.data.segmentos) { cotizacion.data.segmentos.forEach(seg => agregarSegmentoDeTiempo(seg)); }
+
+        if (cotizacion.data.segmentos && Array.isArray(cotizacion.data.segmentos)) {
+            cotizacion.data.segmentos.forEach(seg => {
+                agregarSegmentoDeTiempo(seg);
+            });
+        }
+
         cotizacion.data.pasajeros.forEach(pax => agregarPax(pax));
         cotizacion.data.impuestos.forEach(tax => agregarTaxCot(tax.nombre, tax.valor, tax.esFijo));
         document.getElementById('cot_moneda').value = cotizacion.data.moneda;
@@ -2120,8 +2138,13 @@
         }
     }
 
-    function guardarBorradorCotizacion(postImpresion = false) {
-        const cotId = document.getElementById('cotizadorModal').dataset.cotId || `COT-${Date.now()}`;
+    function guardarBorradorCotizacion() {
+        const cotId = document.getElementById('cotizadorModal').dataset.cotId;
+        if (!cotId) {
+            console.error("ERROR CRÍTICO: No se encontró un ID de cotización absoluto. Guardado abortado.");
+            return;
+        }
+
         const fecha = new Date().toLocaleDateString('es-ES');
         const total = document.getElementById('cot-gran-total').textContent.trim();
         const primerPax = document.querySelector("#pax-container .pax-nombre");
@@ -2180,11 +2203,13 @@
         };
 
         const index = DB.cotizaciones.findIndex(c => c.id === cotId);
-        if (index > -1) { DB.cotizaciones[index] = borrador; } 
-        else { DB.cotizaciones.push(borrador); }
+        if (index > -1) {
+            DB.cotizaciones[index] = borrador;
+        } else {
+            DB.cotizaciones.push(borrador);
+        }
 
         saveOrbisDB();
-        if(!postImpresion) alert("✅ Borrador de cotización guardado exitosamente.");
     }
 </script>
         </body>
